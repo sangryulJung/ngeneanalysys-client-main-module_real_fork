@@ -5,6 +5,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.exceptions.WebAPIException;
 
 /**
  * Dialog 출력 Util Class
@@ -111,4 +112,15 @@ public class DialogUtil {
             stage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
     }
+	public static void showWebApiException(Throwable throwable, Stage stage) {
+		Exception e = new Exception(throwable);
+		e.printStackTrace();
+		if (e instanceof WebAPIException) {
+			WebAPIException wae = (WebAPIException)e;
+			generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+					stage, true);
+		} else {
+			DialogUtil.error("Unknown Error", e.getMessage(), stage, true);
+		}
+	}
 }

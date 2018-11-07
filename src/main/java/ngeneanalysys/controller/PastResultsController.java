@@ -236,22 +236,39 @@ public class PastResultsController extends SubPaneController {
 
 	private void updateAutoCompletion(final String value, final CustomTextField textField) {
 		if(!StringUtils.isEmpty(value)) {
-			try {
-				Map<String, Object> params = new HashMap<>();
-				params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
-				params.put("keyword", textField.getText());
-				params.put("resultCount", 15);
-				HttpClientResponse response = apiService.get("/filter", params, null, false);
-				logger.debug(response.getContentString());
-				JSONParser jsonParser = new JSONParser();
-				JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
-				provider.clearSuggestions();
-				provider.addPossibleSuggestions(getAllData(jsonArray));
-			} catch (WebAPIException wae) {
-				wae.printStackTrace();
-			} catch (ParseException pe) {
-				pe.printStackTrace();
-			}
+			Map<String, Object> params = new HashMap<>();
+			params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
+			params.put("keyword", textField.getText());
+			params.put("resultCount", 15);
+			Task task = new Task() {
+				JSONArray jsonArray;
+
+				@Override
+				protected Object call() throws Exception {
+					HttpClientResponse response = apiService.get("/filter", params, null, false);
+					logger.debug(response.getContentString());
+					JSONParser jsonParser = new JSONParser();
+					jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
+					return null;
+				}
+
+				@Override
+				protected void succeeded() {
+					super.succeeded();
+					provider.clearSuggestions();
+					provider.addPossibleSuggestions(getAllData(jsonArray));
+					jsonArray = null;
+				}
+
+				@Override
+				protected void failed() {
+					super.failed();
+					getException().printStackTrace();
+					jsonArray = null;
+				}
+			};
+			Thread thread = new Thread(task);
+			thread.start();
 		}
 	}
 

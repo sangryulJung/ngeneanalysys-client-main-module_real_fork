@@ -256,29 +256,39 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void setAccordionContents() {
+        Task task = new Task() {
+            SnpInDelInterpretationLogsList memoList;
+            @Override
+            protected Object call() throws Exception {
+                // Memo 데이터 API 요청
+                //Map<String, Object> commentParamMap = new HashMap<>();
+                HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId()  + "/snpInDelInterpretationLogs", null, null, false);
 
-        try {
-            // Memo 데이터 API 요청
-            //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId()  + "/snpInDelInterpretationLogs", null, null, false);
-
-            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
-            SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
-
-            // comment tab 화면 출력
-            if (interpretationLogsTitledPane.getContent() == null) {
-                showMemoTab(FXCollections.observableList(memoList.getResult()));
-            } else {
-                memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
+                // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
+                memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
+                return null;
             }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                // comment tab 화면 출력
+                if (interpretationLogsTitledPane.getContent() == null) {
+                    showMemoTab(FXCollections.observableList(memoList.getResult()));
+                } else {
+                    memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
+                }
+                memoList = null;
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void setCheckBoxFilter() {
@@ -826,48 +836,53 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private void showVariantDetail(VariantAndInterpretationEvidence analysisResultVariant) {
         // 선택된 변이 객체 정보 설정
         selectedAnalysisResultVariant = analysisResultVariant;
-
         // 탭 메뉴 활성화 토글
-        //setDetailTabActivationToggle(false);
-        try {
-            // Detail 데이터 API 요청
-            //HttpClientResponse responseDetail = apiService.get(
-            //        "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
-            // 상세 데이터 요청이 정상 요청된 경우 진행.
-            //SnpInDel snpInDel
-            //        = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
-            // VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
+        Task task = new Task() {
 
-            // variantAndInterpretationEvidence.setSnpInDel(snpInDel);
-            // variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
+            @Override
+            protected Object call() throws Exception {
+                // Detail 데이터 API 요청
+                //HttpClientResponse responseDetail = apiService.get(
+                //        "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
+                // 상세 데이터 요청이 정상 요청된 경우 진행.
+                //SnpInDel snpInDel
+                //        = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
+                // VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
 
-            paramMap.put("variant", analysisResultVariant);
+                // variantAndInterpretationEvidence.setSnpInDel(snpInDel);
+                // variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
 
-            HttpClientResponse response = apiService.get(
-                    "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
+                paramMap.put("variant", analysisResultVariant);
 
-            List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
-            paramMap.put("detail", item);
+                HttpClientResponse response = apiService.get(
+                        "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
 
-            showDetailTab();
-            if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
-                overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
-            } else {
-                overviewAccordion.getPanes().remove(interpretationTitledPane);
-                showClinicalSignificant();
+                List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
+                paramMap.put("detail", item);
+                return null;
             }
 
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        }
-        catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-        overviewAccordion.setExpandedPane(variantDetailTitledPane);
-        //setDetailTabActivationToggle(true);
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                showDetailTab();
+                if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
+                    overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
+                } else {
+                    overviewAccordion.getPanes().remove(interpretationTitledPane);
+                    showClinicalSignificant();
+                }
+                overviewAccordion.setExpandedPane(variantDetailTitledPane);
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void showClinicalSignificant() {
@@ -920,7 +935,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         mainController.setMainMaskerPane(true);
 
         headerCheckBox.setSelected(false);
-        compareColumnOrder();
+
+        if(variantListTableView.getColumns().size() == 1) return;
+        String currentColumnString = variantListTableView.getColumns().stream()
+                .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
+                    if (column.isVisible()) {
+                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":Y";
+                    } else {
+                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":N";
+                    }
+                }).collect(Collectors.joining(","));
+
+        //compareColumnOrder();
 
         // API 서버 조회
         Map<String, Object> params = new HashMap<>();
@@ -933,11 +959,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             private PagedVariantAndInterpretationEvidence analysisResultVariantList;
             private List<VariantAndInterpretationEvidence> list;
             private int totalCount;
-
+            private String serverSnvColumnStr = "";
+            private String defaultSnvColumnStr = "";
             @Override
             protected Void call() throws Exception {
                 HttpClientResponse response1;
                 HttpClientResponse response2;
+
                 response1 = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
                         null, sortAndSearchItem);
                 analysisResultVariantList =
@@ -949,6 +977,23 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 response2 = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
                 sample.setAnalysisResultSummary(response2.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+                HttpClientResponse response3 = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
+                if(response3 != null && response3.getStatus() == 200) {
+                    serverSnvColumnStr = response3.getContentString();
+                }
+                if(StringUtils.isEmpty(serverSnvColumnStr)) {
+                    if (PipelineCode.isHemePipeline(panel.getCode())) {
+                        defaultSnvColumnStr = PropertiesUtil.getJsonString(CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
+                    } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
+                        defaultSnvColumnStr = PropertiesUtil.getJsonString(CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
+                    } else if (panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+                        defaultSnvColumnStr = PropertiesUtil.getJsonString(CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);
+                    } else if (PipelineCode.isBRCAPipeline(panel.getCode())) {
+                        defaultSnvColumnStr = PropertiesUtil.getJsonString(CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
+                    } else if (PipelineCode.isHeredPipeline(panel.getCode())) {
+                        defaultSnvColumnStr = PropertiesUtil.getJsonString(CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
+                    }
+                }
                 return null;
             }
 
@@ -957,6 +1002,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 super.succeeded();
                 Platform.runLater(() -> {
                     mainController.setMainMaskerPane(false);
+                    variantListTableView.getItems().clear();
+                    if(serverSnvColumnStr.isEmpty()) {
+                        if(!defaultSnvColumnStr.equals(currentColumnString)) {
+                            deleteColumn();
+                            runColumnAction();
+                        }
+                    } else if(!currentColumnString.equals(serverSnvColumnStr)) {
+                        deleteColumn();
+                        runColumnAction();
+                    }
                     searchCountLabel.setText(totalCount +"/");
 
                     //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
@@ -965,10 +1020,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
                     if (list != null && !list.isEmpty()) {
                         displayList = FXCollections.observableArrayList(list);
-                    }
-                    // 리스트 삽입
-                    if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
-                        variantListTableView.getItems().clear();
                     }
                     variantListTableView.setItems(displayList);
 
@@ -1768,48 +1819,48 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     }
 
-    private void compareColumnOrder() {
-        mainController.setContentsMaskerPaneVisible(true);
-        if(variantListTableView.getColumns().size() == 1) return;
-        String columnString = variantListTableView.getColumns().stream()
-                .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
-                    if (column.isVisible()) {
-                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":Y";
-                    } else {
-                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":N";
-                    }
-                }).collect(Collectors.joining(","));
-        HttpClientResponse response = null;
-        try {
-            response = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
-        } catch (WebAPIException wae) { }
-
-        if(response != null && response.getStatus() == 200) {
-            if(StringUtils.isEmpty(response.getContentString())) {
-                String str = "";
-                if(PipelineCode.isHemePipeline(panel.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
-                } else if(PipelineCode.isSolidPipeline(panel.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
-                } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);
-                } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
-                } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
-                }
-
-                if(!str.equals(columnString)) {
-                    deleteColumn();
-                    runColumnAction();
-                }
-            } else if(!columnString.equals(response.getContentString())) {
-                deleteColumn();
-                runColumnAction();
-            }
-        }
-        mainController.setContentsMaskerPaneVisible(false);
-    }
+//    private void compareColumnOrder() {
+//        mainController.setContentsMaskerPaneVisible(true);
+//        if(variantListTableView.getColumns().size() == 1) return;
+//        String columnString = variantListTableView.getColumns().stream()
+//                .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
+//                    if (column.isVisible()) {
+//                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":Y";
+//                    } else {
+//                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":N";
+//                    }
+//                }).collect(Collectors.joining(","));
+//        HttpClientResponse response = null;
+//        try {
+//            response = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
+//        } catch (WebAPIException wae) { }
+//
+//        if(response != null && response.getStatus() == 200) {
+//            if(StringUtils.isEmpty(response.getContentString())) {
+//                String str = "";
+//                if(PipelineCode.isHemePipeline(panel.getCode())) {
+//                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
+//                } else if(PipelineCode.isSolidPipeline(panel.getCode())) {
+//                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
+//                } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+//                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);
+//                } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
+//                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
+//                } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
+//                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
+//                }
+//
+//                if(!str.equals(columnString)) {
+//                    deleteColumn();
+//                    runColumnAction();
+//                }
+//            } else if(!columnString.equals(response.getContentString())) {
+//                deleteColumn();
+//                runColumnAction();
+//            }
+//        }
+//        mainController.setContentsMaskerPaneVisible(false);
+//    }
 
     private void deleteColumn() {
         variantListTableView.getColumns().removeListener(tableColumnListChangeListener);
@@ -1832,7 +1883,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             putTableColumn("heredColumnOrder", CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
         }
-        variantListTableView.getColumns().addListener(tableColumnListChangeListener);
     }
 
     private void removeColumnOrder(String key) {
@@ -1882,11 +1932,23 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void putTableColumn(String key, String path) {
-        try {
-            HttpClientResponse response = apiService.get("/member/memberOption/" + key, null, null, null);
-            if(response != null && response.getStatus() == 200) {
-                String[] columnList = response.getContentString().split(",");
-                if (StringUtils.isNotEmpty(response.getContentString()) && columnList.length > 0) {
+        maskerPane.setVisible(true);
+        Task<Void> task = new Task<Void>() {
+            String[] columnList;
+            @Override
+            protected Void call() throws Exception {
+                HttpClientResponse response = apiService.get("/member/memberOption/" + key, null, null, null);
+                if(response != null && response.getStatus() == 200) {
+                    columnList = response.getContentString().split(",");
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                maskerPane.setVisible(false);
+                if (columnList != null && columnList.length > 0) {
                     List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
                             .map(v -> v.split(":"))
                             .filter(v -> v.length == 3 && !v[1].equals("0"))
@@ -1902,11 +1964,19 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     removeColumnOrder(key);
                     setDefaultTableColumnOrder(path);
                 }
+                variantListTableView.getColumns().addListener(tableColumnListChangeListener);
+                columnList = null;
             }
-        } catch (WebAPIException wae) {
-            setDefaultTableColumnOrder(path);
-        }
 
+            @Override
+            protected void failed() {
+                super.failed();
+                maskerPane.setVisible(false);
+                //setDefaultTableColumnOrder(path);
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private String getColumnOrderType() {
