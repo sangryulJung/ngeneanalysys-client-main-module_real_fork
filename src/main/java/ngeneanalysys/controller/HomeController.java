@@ -176,21 +176,36 @@ public class HomeController extends SubPaneController{
     @SuppressWarnings("unchecked")
     private void setToolsAndDatabase() {
         databaseVersionVBox.getChildren().removeAll(databaseVersionVBox.getChildren());
-        try {
-            HttpClientResponse response = apiService.get("pipelineVersions/currentVersionGroupByPanel", null, null, null);
+        Task task = new Task() {
+            List<PipelineVersionView> pipelineVersionViewList;
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response = apiService.get("pipelineVersions/currentVersionGroupByPanel", null, null, null);
 
-            List<PipelineVersionView> pipelineVersionViewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
-            if(pipelineVersionViewList != null && !pipelineVersionViewList.isEmpty()) {
-                for (PipelineVersionView pipelineVersionView : pipelineVersionViewList) {
-                    createPipelineVersionHBox(pipelineVersionView);
-                }
-            } else {
-                createDefaultVersionHBox();
+                pipelineVersionViewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
+                return null;
             }
 
-        } catch (WebAPIException wae) {
-            createDefaultVersionHBox();
-        }
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                if(pipelineVersionViewList != null && !pipelineVersionViewList.isEmpty()) {
+                    for (PipelineVersionView pipelineVersionView : pipelineVersionViewList) {
+                        createPipelineVersionHBox(pipelineVersionView);
+                    }
+                } else {
+                    createDefaultVersionHBox();
+                }
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                createDefaultVersionHBox();
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void createDefaultVersionHBox() {
@@ -368,45 +383,47 @@ public class HomeController extends SubPaneController{
         hddCheck();
         setNoticeArea(0);
         setToolsAndDatabase();
-        final int maxRunNumberOfPage = 4;
-        CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
-        CompletableFuture.supplyAsync(() -> {
+
+        Task task = new Task() {
             HttpClientResponse response;
-            Map<String, Object> params = new HashMap<>();
-            try {
-                params.clear();
+            final int maxRunNumberOfPage = 4;
+            @Override
+            protected Object call() throws Exception {
+                Map<String, Object> params = new HashMap<>();
                 params.put("limit", maxRunNumberOfPage);
                 params.put("offset", 0);
                 params.put("ordering", "DESC");
-
                 response = apiService.get("/runs", params, null, false);
+                return null;
+            }
 
-                PagedRun searchedSamples = response
-                        .getObjectBeforeConvertResponseToJSON(PagedRun.class);
-                //logger.debug(pagedRun.toString());
-                getPagedRun.complete(searchedSamples);
-            } catch (Exception e) {
-                getPagedRun.completeExceptionally(e);
-            }
-            return getPagedRun;
-        });
-        try {
-            PagedRun pagedRun = getPagedRun.get();
-            int runCount = pagedRun.getResult().size();
-            for(int i = 0; i < runCount; i++) {
-                Run run = pagedRun.getResult().get(i);
-                runList.get(i).setRunStatus(run);
-                runList.get(i).setVisible(true);
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
+                int runCount = pagedRun.getResult().size();
+                for(int i = 0; i < runCount; i++) {
+                    Run run = pagedRun.getResult().get(i);
+                    runList.get(i).setRunStatus(run);
+                    runList.get(i).setVisible(true);
 
+                }
+                for(int i = runCount; i < maxRunNumberOfPage; i++){
+                    runList.get(i).reset();
+                    runList.get(i).setVisible(false);
+                }
+                getMainController().setContentsMaskerPaneVisible(false);
             }
-            for(int i = runCount; i < maxRunNumberOfPage; i++){
-                runList.get(i).reset();
-                runList.get(i).setVisible(false);
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getMainController().setContentsMaskerPaneVisible(false);
+                logger.error("HOME -> SHOW RUN LIST", getException());
             }
-        } catch (Exception e) {
-            logger.error("HOME -> SHOW RUN LIST", e);
-        }
-        getMainController().setContentsMaskerPaneVisible(false);
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     static class RunStatusVBox extends VBox {
