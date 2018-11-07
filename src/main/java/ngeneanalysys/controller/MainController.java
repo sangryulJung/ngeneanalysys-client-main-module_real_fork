@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -348,21 +349,35 @@ public class MainController extends BaseStageController {
             });
 
         //settingPanelAndDiseases();
-        Platform.runLater(this::createFilter);
+        createFilter();
         //primaryStage.setResizable(false);
     }
 
     private void getSoftwareVersionInfo() {
-        Platform.runLater(() -> {
-            try {
-                HttpClientResponse response = apiService.get("", null, null, null);
-                NGeneAnalySysVersion nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
-                labelSystemBuild.setText("System version : " + nGeneAnalySysVersion.getSystem());
-            } catch (WebAPIException wae) {
-                logger.debug(wae.getMessage());
-            }
-        });
+        Task task = new Task() {
+            NGeneAnalySysVersion nGeneAnalySysVersion;
 
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response = apiService.get("", null, null, null);
+                nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                labelSystemBuild.setText("System version : " + nGeneAnalySysVersion.getSystem());
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getException().printStackTrace();
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void closeEvent(Event event) {
@@ -396,60 +411,49 @@ public class MainController extends BaseStageController {
     }
 
     private void createFilter() {
-        HttpClientResponse response;
+        Task task = new Task() {
 
-        Map<String, List<Object>> somaticFilter = new HashMap<>();
+            Map<String, List<Object>> somaticFilter;
+            Map<String, List<Object>> germlineFilter;
 
-        try {
-            response = apiService.get("member/memberOption/hemeFilter", null, null, null);
-            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-        } catch (WebAPIException wae) {
-            somaticFilter = new HashMap<>();
-        } finally {
-            basicInformationMap.put("hemeFilter", somaticFilter);
-        }
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response;
 
-        try {
-            response = apiService.get("member/memberOption/solidFilter", null, null, null);
-            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-        } catch (WebAPIException wae) {
-            somaticFilter = new HashMap<>();
-        } finally {
-            basicInformationMap.put("solidFilter", somaticFilter);
-        }
+                somaticFilter = new HashMap<>();
+                response = apiService.get("member/memberOption/hemeFilter", null, null, null);
+                somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+                basicInformationMap.put("hemeFilter", somaticFilter);
+                response = apiService.get("member/memberOption/solidFilter", null, null, null);
+                somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+                basicInformationMap.put("solidFilter", somaticFilter);
+                response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
+                somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
+                basicInformationMap.put("tstDNAFilter", somaticFilter);
+                germlineFilter = new HashMap<>();
+                response = apiService.get("member/memberOption/brcaFilter", null, null, null);
+                germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
+                basicInformationMap.put("brcaFilter", germlineFilter);
+                response = apiService.get("member/memberOption/heredFilter", null, null, null);
+                germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
+                basicInformationMap.put("heredFilter", germlineFilter);
+                return null;
+            }
 
-        try {
-            response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
-            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-        } catch (WebAPIException wae) {
-            somaticFilter = new HashMap<>();
-        } finally {
-            basicInformationMap.put("tstDNAFilter", somaticFilter);
-        }
-
-        Map<String, List<Object>> germlineFilter = new HashMap<>();
-
-        try {
-            response = apiService
-                    .get("member/memberOption/brcaFilter", null, null, null);
-            germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
-
-        } catch (WebAPIException wae) {
-            germlineFilter = new HashMap<>();
-        } finally {
-            basicInformationMap.put("brcaFilter", germlineFilter);
-        }
-
-        try {
-            response = apiService
-                    .get("member/memberOption/heredFilter", null, null, null);
-            germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
-
-        } catch (WebAPIException wae) {
-            germlineFilter = new HashMap<>();
-        } finally {
-            basicInformationMap.put("heredFilter", germlineFilter);
-        }
+            @Override
+            protected void failed() {
+                super.failed();
+                somaticFilter = new HashMap<>();
+                basicInformationMap.put("hemeFilter", somaticFilter);
+                basicInformationMap.put("solidFilter", somaticFilter);
+                basicInformationMap.put("tstDNAFilter", somaticFilter);
+                germlineFilter = new HashMap<>();
+                basicInformationMap.put("brcaFilter", germlineFilter);
+                basicInformationMap.put("heredFilter", germlineFilter);
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     /**
