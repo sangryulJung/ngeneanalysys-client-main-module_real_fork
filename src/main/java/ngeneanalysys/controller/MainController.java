@@ -413,43 +413,30 @@ public class MainController extends BaseStageController {
     private void createFilter() {
         Task task = new Task() {
 
-            Map<String, List<Object>> somaticFilter;
-            Map<String, List<Object>> germlineFilter;
-
             @Override
             protected Object call() throws Exception {
                 HttpClientResponse response;
-
-                somaticFilter = new HashMap<>();
                 response = apiService.get("member/memberOption/hemeFilter", null, null, null);
-                somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-                basicInformationMap.put("hemeFilter", somaticFilter);
+                basicInformationMap.put("hemeFilter", JsonUtil.fromJsonToMap(response.getContentString()));
                 response = apiService.get("member/memberOption/solidFilter", null, null, null);
-                somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-                basicInformationMap.put("solidFilter", somaticFilter);
+                basicInformationMap.put("solidFilter", JsonUtil.fromJsonToMap(response.getContentString()));
                 response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
-                somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-                basicInformationMap.put("tstDNAFilter", somaticFilter);
-                germlineFilter = new HashMap<>();
+                basicInformationMap.put("tstDNAFilter", JsonUtil.fromJsonToMap(response.getContentString()));
                 response = apiService.get("member/memberOption/brcaFilter", null, null, null);
-                germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
-                basicInformationMap.put("brcaFilter", germlineFilter);
+                basicInformationMap.put("brcaFilter", JsonUtil.fromJsonToMap(response.getContentString()));
                 response = apiService.get("member/memberOption/heredFilter", null, null, null);
-                germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
-                basicInformationMap.put("heredFilter", germlineFilter);
+                basicInformationMap.put("heredFilter", JsonUtil.fromJsonToMap(response.getContentString()));
                 return null;
             }
 
             @Override
             protected void failed() {
                 super.failed();
-                somaticFilter = new HashMap<>();
-                basicInformationMap.put("hemeFilter", somaticFilter);
-                basicInformationMap.put("solidFilter", somaticFilter);
-                basicInformationMap.put("tstDNAFilter", somaticFilter);
-                germlineFilter = new HashMap<>();
-                basicInformationMap.put("brcaFilter", germlineFilter);
-                basicInformationMap.put("heredFilter", germlineFilter);
+                basicInformationMap.put("hemeFilter", new HashMap<>());
+                basicInformationMap.put("solidFilter", new HashMap<>());
+                basicInformationMap.put("tstDNAFilter", new HashMap<>());
+                basicInformationMap.put("brcaFilter", new HashMap<>());
+                basicInformationMap.put("heredFilter", new HashMap<>());
             }
         };
         Thread thread = new Thread(task);

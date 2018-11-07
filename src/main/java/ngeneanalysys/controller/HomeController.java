@@ -385,39 +385,40 @@ public class HomeController extends SubPaneController{
         setToolsAndDatabase();
 
         Task task = new Task() {
-            HttpClientResponse response;
-            final int maxRunNumberOfPage = 4;
+            private PagedRun pagedRun;
+            private final int maxRunNumberOfPage = 4;
             @Override
             protected Object call() throws Exception {
                 Map<String, Object> params = new HashMap<>();
                 params.put("limit", maxRunNumberOfPage);
                 params.put("offset", 0);
                 params.put("ordering", "DESC");
-                response = apiService.get("/runs", params, null, false);
+                HttpClientResponse response = apiService.get("/runs", params, null, false);
+                pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
                 return null;
             }
 
             @Override
             protected void succeeded() {
                 super.succeeded();
-                PagedRun pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
+                getMainController().setContentsMaskerPaneVisible(false);
                 int runCount = pagedRun.getResult().size();
                 for(int i = 0; i < runCount; i++) {
                     Run run = pagedRun.getResult().get(i);
                     runList.get(i).setRunStatus(run);
                     runList.get(i).setVisible(true);
-
                 }
                 for(int i = runCount; i < maxRunNumberOfPage; i++){
                     runList.get(i).reset();
                     runList.get(i).setVisible(false);
                 }
-                getMainController().setContentsMaskerPaneVisible(false);
+                pagedRun = null;
             }
 
             @Override
             protected void failed() {
                 super.failed();
+                pagedRun = null;
                 getMainController().setContentsMaskerPaneVisible(false);
                 logger.error("HOME -> SHOW RUN LIST", getException());
             }
