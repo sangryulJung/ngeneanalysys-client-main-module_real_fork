@@ -11,14 +11,18 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedBrcaCNV;
 import ngeneanalysys.model.paged.PagedBrcaCNVExon;
+import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -66,13 +70,15 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     private TableColumn<BrcaCnvExon, Integer> exonCopyNumberTableColumn;
     @FXML
-    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberOneAmpliconCountTableColumn;
+    private TableColumn<BrcaCnvExon, String> exonWarningTableColumn;
     @FXML
-    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberTwoAmpliconCountTableColumn;
+    private TableColumn<BrcaCnvExon, Double> exonCopyNumberOneAmpliconCountTableColumn;
     @FXML
-    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberThreeAmpliconCountTableColumn;
+    private TableColumn<BrcaCnvExon, Double> exonCopyNumberTwoAmpliconCountTableColumn;
     @FXML
-    private TableColumn<BrcaCnvExon, Integer> exonCopyNumberTotalAmpliconCountTableColumn;
+    private TableColumn<BrcaCnvExon, Double> exonCopyNumberThreeAmpliconCountTableColumn;
+    @FXML
+    private TableColumn<BrcaCnvExon, Boolean> exonSeqTableColumn;
     @FXML
     private TableView<BrcaCnvAmplicon> cnvAmpliconTableView;
     @FXML
@@ -181,49 +187,12 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
-//        exonReportTableColumn.getStyleClass().add("alignment_center");
-//        exonReportTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getIncludedInReport()));
-//        exonReportTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
-//            @Override
-//            public void updateItem(String item, boolean empty) {
-//                if(StringUtils.isEmpty(item) || empty) {
-//                    setGraphic(null);
-//                    return;
-//                }
-//                BrcaCnvExon brcaCNVExon = getTableView().getItems().get(getIndex());
-//                Label label = new Label();
-//                label.getStyleClass().remove("label");
-//                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-//                    label.setText("R");
-//                    label.getStyleClass().add("report_check");
-//                } else {
-//                    label.getStyleClass().add("report_uncheck");
-//                }
-//                label.setCursor(Cursor.HAND);
-//                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-//                    try {
-//                        Map<String, Object> params = new HashMap<>();
-//                        params.put("sampleId", brcaCNVExon.getId());
-//                        params.put("snpInDelIds", brcaCNVExon.getId().toString());
-//                        params.put("comment", "N/A");
-//                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-//                            params.put("includeInReport", "N");
-//                        } else {
-//                            params.put("includeInReport", "Y");
-//                        }
-//                        apiService.put("analysisResults/brcaCnvExon/updateIncludeInReport", params, null, true);
-//                        exonTableView.refresh();
-//                    } catch (WebAPIException wae) {
-//                        wae.printStackTrace();
-//                    }
-//                });
-//                setGraphic(label);
-//            }
-//        });
+
         exonCopyNumberTableColumn.setText("Copy\nNumber");
         exonCopyNumberTableColumn.getStyleClass().add("alignment_center");
         exonCopyNumberTableColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getCopyNumber()));
+                new SimpleObjectProperty<>(cellData.getValue().getExpertCopyNumber() != null ?
+                        cellData.getValue().getExpertCopyNumber() : cellData.getValue().getSwCopyNumber()));
         exonCopyNumberTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, Integer>() {
             @Override
             public void updateItem(Integer item, boolean empty) {
@@ -231,50 +200,96 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     setGraphic(null);
                     return;
                 }
-                //BrcaCnvExon brcaCNVExon = getTableView().getItems().get(getIndex());
+                BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
                 Label label = new Label(item.toString());
                 label.getStyleClass().remove("label");
-                if (item == 2) {
-                    label.getStyleClass().add("cnv_normal");
-                } else if(item == 3) {
-                    label.getStyleClass().add("cnv_duplication");
-                } else if(item == 1) {
-                    label.getStyleClass().add("cnv_deletion");
+                if(brcaCnvExon.getExpertCopyNumber() != null) {
+                    if (item == 2) {
+                        label.getStyleClass().add("expert_cnv_normal");
+                    } else if (item == 3) {
+                        label.getStyleClass().add("expert_cnv_duplication");
+                    } else if (item == 1) {
+                        label.getStyleClass().add("expert_cnv_deletion");
+                    } else {
+                        setGraphic(null);
+                        return;
+                    }
                 } else {
-                    setGraphic(null);
-                    return;
+                    if (item == 2) {
+                        label.getStyleClass().add("cnv_normal");
+                    } else if (item == 3) {
+                        label.getStyleClass().add("cnv_duplication");
+                    } else if (item == 1) {
+                        label.getStyleClass().add("cnv_deletion");
+                    } else {
+                        setGraphic(null);
+                        return;
+                    }
                 }
-//                label.setCursor(Cursor.HAND);
-//                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-//                    try {
-//                        Map<String, Object> params = new HashMap<>();
-//                        params.put("sampleId", brcaCNVExon.getId());
-//                        params.put("snpInDelIds", brcaCNVExon.getId().toString());
-//                        params.put("comment", "N/A");
-//                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-//                            params.put("includeInReport", "N");
-//                        } else {
-//                            params.put("includeInReport", "Y");
-//                        }
-//                        apiService.put("analysisResults/brcaCnvExon/updateIncludeInReport", params, null, true);
-//                        exonTableView.refresh();
-//                    } catch (WebAPIException wae) {
-//                        wae.printStackTrace();
-//                    }
-//                });
                 setGraphic(label);
             }
         });
         exonExonTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExon()));
         exonDomainTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDomain()));
         exonCopyNumberOneAmpliconCountTableColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getCopyNumberOneAmpliconCount()));
+                new SimpleObjectProperty<>(cellData.getValue().getCopyNumberOneAmpliconPercentage()));
         exonCopyNumberTwoAmpliconCountTableColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getCopyNumberTwoAmpliconCount()));
+                new SimpleObjectProperty<>(cellData.getValue().getCopyNumberTwoAmpliconPercentage()));
         exonCopyNumberThreeAmpliconCountTableColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getCopyNumberThreeAmpliconCount()));
-        exonCopyNumberTotalAmpliconCountTableColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getTotalAmpliconCount()));
+                new SimpleObjectProperty<>(cellData.getValue().getCopyNumberThreeAmpliconPercentage()));
+        exonWarningTableColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getWarning()));
+        exonWarningTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                setGraphic((StringUtils.isNotEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
+            }
+        });
+        exonSeqTableColumn.setCellValueFactory(param -> new SimpleBooleanProperty(brcaCnvAmpliconList.stream()
+                .anyMatch(item -> item.getExon().equalsIgnoreCase(param.getValue().getExon()))));
+        exonSeqTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, Boolean>(){
+            @Override
+            public void updateItem(Boolean item, boolean empty) {
+                if(!empty && item) {
+                    BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
+                    List<BrcaCnvAmplicon> brcaCnvAmplicons = brcaCnvAmpliconList.stream().filter(brcaCnvAmplicon ->
+                            brcaCnvExon.getGene().equalsIgnoreCase(brcaCnvAmplicon.getGene())
+                                    && brcaCnvExon.getExon().equalsIgnoreCase(brcaCnvAmplicon.getExon()))
+                            .collect(Collectors.toList());
+                    int maxWidth = 110;
+                    Canvas canvas = new Canvas(maxWidth, 20);
+                    GraphicsContext gc = canvas.getGraphicsContext2D();
+                    double size = (double)maxWidth / brcaCnvAmplicons.size();
+                    for(int idx = 0; idx < brcaCnvAmplicons.size(); idx++) {
+                        BrcaCnvAmplicon amplicon = brcaCnvAmplicons.get(idx);
+                        if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().
+                                equalsIgnoreCase(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+                            if(amplicon.getDistributionPrediction().equals(1)) {
+                                gc.setFill(Color.rgb(240, 73, 120));
+                            } else if(amplicon.getDistributionPrediction().equals(2)) {
+                                gc.setFill(Color.LIGHTGRAY);
+                            } else {
+                                gc.setFill(Color.rgb(45, 112, 232));
+                            }
+                        } else {
+                            if(amplicon.getRawPrediction().equals(1)) {
+                                gc.setFill(Color.rgb(240, 73, 120));
+                            } else if(amplicon.getRawPrediction().equals(2)) {
+                                gc.setFill(Color.LIGHTGRAY);
+                            } else {
+                                gc.setFill(Color.rgb(45, 112, 232));
+                            }
+                        }
+
+                        double xPos = idx * size;
+                        double wPos = xPos + size;
+                        gc.fillRect(xPos, 0, wPos, 20);
+                    }
+
+                    setGraphic(canvas);
+                }
+            }
+        });
 
         exonTableView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
             final TableHeaderRow header = (TableHeaderRow) exonTableView.lookup("TableHeaderRow");
@@ -393,16 +408,19 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         .filter(obj -> obj.getId() != null && obj.getId().equals(exonObjId)).findFirst();
 
                 optionalNode.ifPresent(node -> {
-                    if(exon.getCopyNumber() == 1) {
+                    if((exon.getExpertCopyNumber() != null && exon.getExpertCopyNumber() == 1) ||
+                            exon.getSwCopyNumber() == 1) {
                         node.getStyleClass().add("brca_cnv_1");
-                    } else if(exon.getCopyNumber() == 3) {
+                    } else if((exon.getExpertCopyNumber() != null && exon.getExpertCopyNumber() == 3) ||
+                            exon.getSwCopyNumber() == 3) {
                         node.getStyleClass().add("brca_cnv_3");
                     } else {
                         node.getStyleClass().removeAll("brca_cnv_3", "brca_cnv_1");
                     }
                     for(Node tempNode : ((HBox)node).getChildren()) {
                         if(tempNode instanceof Label) {
-                            ((Label)tempNode).setText(exon.getCopyNumber().toString());
+                            ((Label)tempNode).setText(exon.getExpertCopyNumber() != null ?
+                                    exon.getExpertCopyNumber().toString(): exon.getSwCopyNumber().toString());
                         }
                     }
                 });
