@@ -1,6 +1,8 @@
 package ngeneanalysys.controller.fragment;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -24,8 +26,6 @@ import java.io.IOException;
  */
 public class AnalysisDetailVariantStatisticsController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
-
-    private final int gaugeSpeed = 10;
 
     @FXML
     private Canvas canvasVariantStatisticsRun;
@@ -52,62 +52,63 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
      */
     public void showVariantStatistics() {
         VariantAndInterpretationEvidence analysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
-        try {
-            if(analysisResultVariant != null) {
-                HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelStatistics", null, null, false);
-                VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
 
-                if(variantStatistics != null) {
-                    int variantFrequencyRunCount = variantStatistics.getSameVariantSampleCountInRun();
-                    int variantFrequencyRunTotalCount = variantStatistics.getTotalSampleCountInRun();
-                    int variantFrequencyPanelCount = variantStatistics.getSamePanelSameVariantSampleCountInMemberGroup();
-                    int variantFrequencyPanelTotalCount = variantStatistics.getTotalSamePanelSampleCountInMemberGroup();
-                    int variantFrequencyAccountCount = variantStatistics.getSameVariantSampleCountInMemberGroup();
-                    int variantFrequencyAccountTotalCount = variantStatistics.getTotalSampleCountInMemberGroup();
+        if (analysisResultVariant != null) {
+            Task<Void> task = new Task<Void>() {
+                VariantStatistics variantStatistics;
 
-                    double variantFrequencyRun = (double) variantFrequencyRunCount / (double) variantFrequencyRunTotalCount;
-                    double variantFrequencyPanel = (double) variantFrequencyPanelCount / (double) variantFrequencyPanelTotalCount;
-                    double variantFrequencyAccount = (double) variantFrequencyAccountCount / (double) variantFrequencyAccountTotalCount;
-
-                    AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
-                            canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-                            String.format("%.2f%%\n(%s)", variantFrequencyRun * 100.0, variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount), this.gaugeSpeed);
-                    AnimationTimer variantStatisticsPanelTimer = new VariantStatisticsTimer(
-                            canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-                            String.format("%.2f%%\n(%s)", variantFrequencyPanel * 100.0, variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount), this.gaugeSpeed);
-                    AnimationTimer variantStatisticsGroupTimer = new VariantStatisticsTimer(
-                            canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-                            String.format("%.2f%%\n(%s)", variantFrequencyAccount * 100.0, variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount), this.gaugeSpeed);
-                    variantStatisticsRunTimer.start();
-                    variantStatisticsPanelTimer.start();
-                    variantStatisticsGroupTimer.start();
-//            AnimationTimer variantStatisticsRunTimer1 = new VariantStatisticsTimer(
-//                    canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
-//                    variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount, gaugeSpeed);
-//            AnimationTimer variantStatisticsPanelTimer1 = new VariantStatisticsTimer(
-//                    canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
-//                    variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount, gaugeSpeed);
-//            AnimationTimer variantStatisticsGroupTimer1 = new VariantStatisticsTimer(
-//                    canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
-//                    variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount, gaugeSpeed);
-//            canvasVariantStatisticsRun.setOnMouseEntered(event ->
-//                    variantStatisticsRunTimer1.start());
-//            canvasVariantStatisticsRun.setOnMouseExited(event ->
-//                    variantStatisticsRunTimer.start());
-//            canvasVariantStatisticsPanel.setOnMouseEntered(event ->
-//                    variantStatisticsPanelTimer1.start());
-//            canvasVariantStatisticsPanel.setOnMouseExited(event ->
-//                    variantStatisticsPanelTimer.start());
-//            canvasVariantStatisticsGroup.setOnMouseEntered(event ->
-//                    variantStatisticsGroupTimer1.start());
-//            canvasVariantStatisticsGroup.setOnMouseExited(event ->
-//                    variantStatisticsGroupTimer.start());
+                @Override
+                protected Void call() throws Exception {
+                    HttpClientResponse response = apiService.get(
+                            "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelStatistics",
+                            null, null, false);
+                    variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
+                    return null;
                 }
 
-            }
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
+                @Override
+                protected void succeeded() {
+                    super.succeeded();
+                    if (variantStatistics != null) {
+                        Platform.runLater(() -> {
+                            int gaugeSpeed = 10;
+                            int variantFrequencyRunCount = variantStatistics.getSameVariantSampleCountInRun();
+                            int variantFrequencyRunTotalCount = variantStatistics.getTotalSampleCountInRun();
+                            int variantFrequencyPanelCount = variantStatistics.getSamePanelSameVariantSampleCountInMemberGroup();
+                            int variantFrequencyPanelTotalCount = variantStatistics.getTotalSamePanelSampleCountInMemberGroup();
+                            int variantFrequencyAccountCount = variantStatistics.getSameVariantSampleCountInMemberGroup();
+                            int variantFrequencyAccountTotalCount = variantStatistics.getTotalSampleCountInMemberGroup();
+
+                            double variantFrequencyRun = (double) variantFrequencyRunCount / (double) variantFrequencyRunTotalCount;
+                            double variantFrequencyPanel = (double) variantFrequencyPanelCount / (double) variantFrequencyPanelTotalCount;
+                            double variantFrequencyAccount = (double) variantFrequencyAccountCount / (double) variantFrequencyAccountTotalCount;
+
+                            AnimationTimer variantStatisticsRunTimer = new VariantStatisticsTimer(
+                                    canvasVariantStatisticsRun.getGraphicsContext2D(), variantFrequencyRun, "RUN",
+                                    String.format("%.2f%%\n(%s)", variantFrequencyRun * 100.0, variantFrequencyRunCount + "/" + variantFrequencyRunTotalCount), gaugeSpeed);
+                            AnimationTimer variantStatisticsPanelTimer = new VariantStatisticsTimer(
+                                    canvasVariantStatisticsPanel.getGraphicsContext2D(), variantFrequencyPanel, "PANEL",
+                                    String.format("%.2f%%\n(%s)", variantFrequencyPanel * 100.0, variantFrequencyPanelCount + "/" + variantFrequencyPanelTotalCount), gaugeSpeed);
+                            AnimationTimer variantStatisticsGroupTimer = new VariantStatisticsTimer(
+                                    canvasVariantStatisticsGroup.getGraphicsContext2D(), variantFrequencyAccount, "GROUP",
+                                    String.format("%.2f%%\n(%s)", variantFrequencyAccount * 100.0, variantFrequencyAccountCount + "/" + variantFrequencyAccountTotalCount), gaugeSpeed);
+                            variantStatisticsRunTimer.start();
+                            variantStatisticsPanelTimer.start();
+                            variantStatisticsGroupTimer.start();
+                            variantStatistics = null;
+                        });
+                    }
+                }
+
+                @Override
+                protected void failed() {
+                    super.failed();
+                    variantStatistics = null;
+                    DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
         }
     }
 }
