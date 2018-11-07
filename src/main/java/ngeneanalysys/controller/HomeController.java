@@ -100,9 +100,9 @@ public class HomeController extends SubPaneController{
         apiService.setStage(getMainController().getPrimaryStage());
 
         homeWrapper.add(maskerPane,0 ,0, 5, 6);
-        maskerPane.setPrefWidth(homeWrapper.getPrefWidth());
-        maskerPane.setPrefHeight(homeWrapper.getPrefHeight());
-        maskerPane.setVisible(false);
+        setMaskerPanePrefWidth(homeWrapper.getPrefWidth());
+        setMaskerPanePrefHeight(homeWrapper.getPrefHeight());
+        setMaskerPaneVisable(false);
 
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             logger.debug("init");

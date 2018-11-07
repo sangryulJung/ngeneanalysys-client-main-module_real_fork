@@ -272,13 +272,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             @Override
             protected void succeeded() {
                 super.succeeded();
-                // comment tab 화면 출력
-                if (interpretationLogsTitledPane.getContent() == null) {
-                    showMemoTab(FXCollections.observableList(memoList.getResult()));
-                } else {
-                    memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
-                }
-                memoList = null;
+                Platform.runLater(() -> {
+                    // comment tab 화면 출력
+                    if (interpretationLogsTitledPane.getContent() == null) {
+                        showMemoTab(FXCollections.observableList(memoList.getResult()));
+                    } else {
+                        memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
+                    }
+                    memoList = null;
+                });
             }
 
             @Override
@@ -431,6 +433,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
 
         setTableViewColumn();
+        runColumnAction();
         setCheckBoxFilter();
         //foldLeft();
         foldRight();
@@ -837,10 +840,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         // 선택된 변이 객체 정보 설정
         selectedAnalysisResultVariant = analysisResultVariant;
         // 탭 메뉴 활성화 토글
-        Task task = new Task() {
+        Task<Void> task = new Task<Void>() {
 
             @Override
-            protected Object call() throws Exception {
+            protected Void call() throws Exception {
                 // Detail 데이터 API 요청
                 //HttpClientResponse responseDetail = apiService.get(
                 //        "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
@@ -865,14 +868,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             @Override
             protected void succeeded() {
                 super.succeeded();
-                showDetailTab();
-                if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
-                    overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
-                } else {
-                    overviewAccordion.getPanes().remove(interpretationTitledPane);
-                    showClinicalSignificant();
-                }
-                overviewAccordion.setExpandedPane(variantDetailTitledPane);
+                Platform.runLater(() -> {
+                    showDetailTab();
+                    if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
+                        overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
+                    } else {
+                        overviewAccordion.getPanes().remove(interpretationTitledPane);
+                        showClinicalSignificant();
+                    }
+                    overviewAccordion.setExpandedPane(variantDetailTitledPane);
+                });
             }
 
             @Override
@@ -932,10 +937,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     public void showVariantList(int selectedIdx) {
-        mainController.setMainMaskerPane(true);
-
         headerCheckBox.setSelected(false);
-
         if(variantListTableView.getColumns().size() == 1) return;
         String currentColumnString = variantListTableView.getColumns().stream()
                 .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
@@ -977,10 +979,17 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 response2 = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
                 sample.setAnalysisResultSummary(response2.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
-                HttpClientResponse response3 = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
-                if(response3 != null && response3.getStatus() == 200) {
-                    serverSnvColumnStr = response3.getContentString();
+                try {
+                    HttpClientResponse response3 = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
+                    if(response3 != null && response3.getStatus() == 200) {
+                        serverSnvColumnStr = response3.getContentString();
+                    }
+                } catch (WebAPIException wae) {
+                    if (wae.getResponse().getStatus() != 404) {
+                        throw wae;
+                    }
                 }
+
                 if(StringUtils.isEmpty(serverSnvColumnStr)) {
                     if (PipelineCode.isHemePipeline(panel.getCode())) {
                         defaultSnvColumnStr = PropertiesUtil.getJsonString(CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
@@ -1002,14 +1011,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 super.succeeded();
                 Platform.runLater(() -> {
                     mainController.setMainMaskerPane(false);
-                    variantListTableView.getItems().clear();
+                    if (variantListTableView.getItems() != null) variantListTableView.getItems().clear();
                     if(serverSnvColumnStr.isEmpty()) {
                         if(!defaultSnvColumnStr.equals(currentColumnString)) {
-                            deleteColumn();
                             runColumnAction();
                         }
                     } else if(!currentColumnString.equals(serverSnvColumnStr)) {
-                        deleteColumn();
                         runColumnAction();
                     }
                     searchCountLabel.setText(totalCount +"/");
@@ -1035,6 +1042,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             @Override
             protected void failed() {
                 super.failed();
+                mainController.setMainMaskerPane(false);
                 try {
                     throw new Exception(getException());
                 } catch (WebAPIException wae) {
@@ -1046,11 +1054,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     logger.error("Unknown Error", e);
                     variantListTableView.setItems(null);
                     DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-                } finally {
-                    mainController.setMainMaskerPane(false);
                 }
             }
         };
+        mainController.setMainMaskerPane(true);
         Thread thread = new Thread(task);
         thread.start();
     }
@@ -1077,13 +1084,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     public void resetTableColumnOrder() {
-        Platform.runLater(() -> {
-            mainController.setContentsMaskerPaneVisible(true);
-            deleteColumn();
-            removeColumnOrder(getColumnOrderType());
-            runColumnAction();
-            mainController.setContentsMaskerPaneVisible(false);
-        });
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    apiService.delete("/member/memberOption/" + getColumnOrderType());
+                } catch (WebAPIException wae) {
+                    if (wae.getResponse() == null || wae.getResponse().getStatus() != 404) {
+                        logger.error(wae.getMessage());
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                runColumnAction();
+                mainController.setContentsMaskerPaneVisible(false);
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     @FXML
@@ -1814,9 +1836,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         });
-
-        runColumnAction();
-
     }
 
 //    private void compareColumnOrder() {
@@ -1862,37 +1881,71 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 //        mainController.setContentsMaskerPaneVisible(false);
 //    }
 
-    private void deleteColumn() {
+    private void runColumnAction() {
+        String key = "";
+        String path = "";
         variantListTableView.getColumns().removeListener(tableColumnListChangeListener);
         int columnSize = variantListTableView.getColumns().size();
 
         if (columnSize > 1) {
             variantListTableView.getColumns().subList(1, columnSize).clear();
         }
-    }
-
-    private void runColumnAction() {
         if(PipelineCode.isHemePipeline(panel.getCode())) {
-            putTableColumn("hemeColumnOrder", CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
+            key = "hemeColumnOrder";
+            path = CommonConstants.BASE_HEME_COLUMN_ORDER_PATH;
         } else if(PipelineCode.isSolidPipeline(panel.getCode())) {
-            putTableColumn("solidColumnOrder", CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
+            key = "solidColumnOrder";
+            path = CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH;
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-            putTableColumn("tstDNAColumnOrder", CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);
+            key = "tstDNAColumnOrder";
+            path = CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH;
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
-            putTableColumn("brcaColumnOrder", CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
+            key = "brcaColumnOrder";
+            path = CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH;
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
-            putTableColumn("heredColumnOrder", CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
+            key = "heredColumnOrder";
+            path = CommonConstants.BASE_HERED_COLUMN_ORDER_PATH;
         }
+        HttpClientResponse response = null;
+        String[] columnList = null;
+        try {
+            try {
+                response = apiService.get("/member/memberOption/" + key, null, null, null);
+                if(response != null && response.getStatus() == 200) {
+                     columnList = response.getContentString().split(",");
+                }
+            } catch (WebAPIException wae) {
+                if (wae.getResponse().getStatus() != 404) {
+                    throw wae;
+                }
+            }
+
+            if (columnList != null && columnList.length > 0) {
+                List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
+                        .map(v -> v.split(":"))
+                        .filter(v -> v.length == 3 && !v[1].equals("0"))
+                        .map(v -> {
+                            TableColumnInfo tableColumnInfo = new TableColumnInfo();
+                            tableColumnInfo.setVisible(v[2].equals("Y"));
+                            tableColumnInfo.setColumnName(v[0]);
+                            tableColumnInfo.setOrder(Integer.parseInt(v[1]));
+                            return tableColumnInfo;
+                        }).collect(Collectors.toList());
+                addAColumnToTable(tableColumnInfos);
+            } else {
+                //removeColumnOrder(key);
+                setDefaultTableColumnOrder(path);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            setDefaultTableColumnOrder(path);
+        }
+        variantListTableView.getColumns().addListener(tableColumnListChangeListener);
     }
 
     private void removeColumnOrder(String key) {
-        try {
-            apiService.delete("/member/memberOption/" + key);
-        } catch (WebAPIException wae) {
-            if (wae.getResponse() == null || wae.getResponse().getStatus() != 404) {
-                logger.error(wae.getMessage());
-            }
-        }
+
     }
 
     private void saveColumnInfoToServer() {
@@ -1917,64 +1970,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             @Override
             protected void succeeded() {
                 super.succeeded();
-                maskerPane.setVisible(false);
+                setMaskerPaneVisable(false);
             }
 
             @Override
             protected void failed() {
                 super.failed();
-                maskerPane.setVisible(false);
+                setMaskerPaneVisable(false);
             }
         };
-        maskerPane.setVisible(true);
-        Thread thread = new Thread(task);
-        thread.start();
-    }
-
-    private void putTableColumn(String key, String path) {
-        maskerPane.setVisible(true);
-        Task<Void> task = new Task<Void>() {
-            String[] columnList;
-            @Override
-            protected Void call() throws Exception {
-                HttpClientResponse response = apiService.get("/member/memberOption/" + key, null, null, null);
-                if(response != null && response.getStatus() == 200) {
-                    columnList = response.getContentString().split(",");
-                }
-                return null;
-            }
-
-            @Override
-            protected void succeeded() {
-                super.succeeded();
-                maskerPane.setVisible(false);
-                if (columnList != null && columnList.length > 0) {
-                    List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
-                            .map(v -> v.split(":"))
-                            .filter(v -> v.length == 3 && !v[1].equals("0"))
-                            .map(v -> {
-                                TableColumnInfo tableColumnInfo = new TableColumnInfo();
-                                tableColumnInfo.setVisible(v[2].equals("Y"));
-                                tableColumnInfo.setColumnName(v[0]);
-                                tableColumnInfo.setOrder(Integer.parseInt(v[1]));
-                                return tableColumnInfo;
-                            }).collect(Collectors.toList());
-                    addAColumnToTable(tableColumnInfos);
-                } else {
-                    removeColumnOrder(key);
-                    setDefaultTableColumnOrder(path);
-                }
-                variantListTableView.getColumns().addListener(tableColumnListChangeListener);
-                columnList = null;
-            }
-
-            @Override
-            protected void failed() {
-                super.failed();
-                maskerPane.setVisible(false);
-                //setDefaultTableColumnOrder(path);
-            }
-        };
+        setMaskerPaneVisable(true);
         Thread thread = new Thread(task);
         thread.start();
     }

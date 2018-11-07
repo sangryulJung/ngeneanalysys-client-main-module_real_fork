@@ -1002,7 +1002,7 @@ public class MainController extends BaseStageController {
     }
 
     void setMainMaskerPane(boolean status) {
-        maskerPane.setVisible(status);
+        Platform.runLater(() -> maskerPane.setVisible(status));
     }
     
     public void applyTheme(String theme) {
