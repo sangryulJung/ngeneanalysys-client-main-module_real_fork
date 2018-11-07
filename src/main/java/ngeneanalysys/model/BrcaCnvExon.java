@@ -9,16 +9,15 @@ public class BrcaCnvExon {
     private Integer id;
     private Integer sampleId;
     private String gene;
-    private String cnv;
     private String exon;
+    private String warning;
     private String includedInReport;
     private String domain;
-    private Integer copyNumber;
+    private Integer swCopyNumber;
     private Integer expertCopyNumber;
-    private Integer totalAmpliconCount;
-    private Integer copyNumberOneAmpliconCount;
-    private Integer copyNumberTwoAmpliconCount;
-    private Integer copyNumberThreeAmpliconCount;
+    private Double copyNumberOneAmpliconPercentage;
+    private Double copyNumberTwoAmpliconPercentage;
+    private Double copyNumberThreeAmpliconPercentage;
 
     /**
      * @param checkItem
@@ -28,10 +27,10 @@ public class BrcaCnvExon {
     }
 
     /**
-     * @return expertCopyNumber
+     * @return checkItem
      */
-    public Integer getExpertCopyNumber() {
-        return expertCopyNumber;
+    public Boolean getCheckItem() {
+        return checkItem;
     }
 
     /**
@@ -56,17 +55,17 @@ public class BrcaCnvExon {
     }
 
     /**
-     * @return checkItem
+     * @return exon
      */
-    public Boolean getCheckItem() {
-        return checkItem;
+    public String getExon() {
+        return exon;
     }
 
     /**
-     * @return cnvValue
+     * @return warning
      */
-    public String getCnv() {
-        return cnv;
+    public String getWarning() {
+        return warning;
     }
 
     /**
@@ -77,13 +76,6 @@ public class BrcaCnvExon {
     }
 
     /**
-     * @return exon
-     */
-    public String getExon() {
-        return exon;
-    }
-
-    /**
      * @return domain
      */
     public String getDomain() {
@@ -91,25 +83,37 @@ public class BrcaCnvExon {
     }
 
     /**
-     * @return copyNumber
+     * @return swCopyNumber
      */
-    public Integer getCopyNumber() {
-        return copyNumber;
+    public Integer getSwCopyNumber() {
+        return swCopyNumber;
     }
 
-    public Integer getTotalAmpliconCount() {
-        return totalAmpliconCount;
+    /**
+     * @return expertCopyNumber
+     */
+    public Integer getExpertCopyNumber() {
+        return expertCopyNumber;
     }
 
-    public Integer getCopyNumberOneAmpliconCount() {
-        return copyNumberOneAmpliconCount;
+    /**
+     * @return copyNumberOneAmpliconPercentage
+     */
+    public Double getCopyNumberOneAmpliconPercentage() {
+        return copyNumberOneAmpliconPercentage;
     }
 
-    public Integer getCopyNumberTwoAmpliconCount() {
-        return copyNumberTwoAmpliconCount;
+    /**
+     * @return copyNumberTwoAmpliconPercentage
+     */
+    public Double getCopyNumberTwoAmpliconPercentage() {
+        return copyNumberTwoAmpliconPercentage;
     }
 
-    public Integer getCopyNumberThreeAmpliconCount() {
-        return copyNumberThreeAmpliconCount;
+    /**
+     * @return copyNumberThreeAmpliconPercentage
+     */
+    public Double getCopyNumberThreeAmpliconPercentage() {
+        return copyNumberThreeAmpliconPercentage;
     }
 }

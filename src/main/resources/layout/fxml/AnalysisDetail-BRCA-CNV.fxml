@@ -39,15 +39,16 @@
               <columns>
                   <TableColumn fx:id="exonExonTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Exon" />
                   <TableColumn fx:id="exonCopyNumberTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Copy Number" />
+                  <TableColumn fx:id="exonWarningTableColumn" prefWidth="75.0" text="Warning" />
                   <TableColumn fx:id="exonDomainTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Domain" />
                   <TableColumn maxWidth="150.0" minWidth="-Infinity" prefWidth="150.0" text="Amplicon">
                      <columns>
-                        <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" maxWidth="30.0" minWidth="-Infinity" prefWidth="30.0" styleClass="alignment_center_right" text="1" />
-                        <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn" maxWidth="30.0" minWidth="-Infinity" prefWidth="30.0" styleClass="alignment_center_right" text="2" />
-                        <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn" maxWidth="30.0" minWidth="-Infinity" prefWidth="30.0" styleClass="alignment_center_right" text="3" />
-                        <TableColumn fx:id="exonCopyNumberTotalAmpliconCountTableColumn" maxWidth="50.0" minWidth="-Infinity" prefWidth="50.0" styleClass="alignment_center_right" text="Total" />
+                        <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center_right" text="1" />
+                        <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center_right" text="2" />
+                        <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center_right" text="3" />
                      </columns>
                   </TableColumn>
+                  <TableColumn fx:id="exonSeqTableColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Test" />
               </columns>
             </TableView>
             <TableView fx:id="cnvAmpliconTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
