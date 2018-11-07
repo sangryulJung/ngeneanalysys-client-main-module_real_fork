@@ -4,6 +4,7 @@ import javafx.concurrent.Task;
 import ngeneanalysys.controller.AnalysisDetailRawDataController;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
@@ -18,8 +19,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @author Jang
@@ -31,88 +35,92 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
     /** 컨트롤러 클래스 */
     private AnalysisDetailRawDataController controller;
     /** 분석 결과 파일 객체 */
-    private AnalysisFile analysisResultFile;
+    private List<AnalysisFile> analysisResultFiles;
     /** 저장 파일 객체 */
-    private File saveFile;
+    private File downloadDirectory;
 
     /** 진행상태 박스 id */
-    private String progressBoxId;
-    public AnalysisResultFileDownloadTask(AnalysisDetailRawDataController controller, AnalysisFile analysisResultFile, File saveFile) {
+    private String taskID;
+    public AnalysisResultFileDownloadTask(AnalysisDetailRawDataController controller, List<AnalysisFile> analysisResultFiles, File downloadDirectory, String taskID) {
         this.controller = controller;
-        this.analysisResultFile = analysisResultFile;
-        this.saveFile = saveFile;
-        this.progressBoxId = "DOWN_" + analysisResultFile.getSampleId() + "_" + analysisResultFile.getId();
+        this.analysisResultFiles = analysisResultFiles;
+        this.downloadDirectory = downloadDirectory;
+        this.taskID = taskID;
     }
 
     @Override
     protected Void call() throws Exception {
-        if(analysisResultFile != null && saveFile != null) {
+        if(analysisResultFiles != null && !analysisResultFiles.isEmpty() && downloadDirectory != null) {
             APIService apiService = APIService.getInstance();
             apiService.setStage(controller.getMainController().getPrimaryStage());
+            double downloadFileIndex = 0;
+            double totalDownlodFileCount = analysisResultFiles.size();
+            for(AnalysisFile analysisResultFile : analysisResultFiles) {
+                CloseableHttpClient httpclient = null;
+                CloseableHttpResponse response = null;
+                String downloadUrl = "/analysisFiles/" + analysisResultFile.getSampleId() + "/" +
+                        analysisResultFile.getName();
 
-            CloseableHttpClient httpclient = null;
-            CloseableHttpResponse response = null;
-            String downloadUrl = "/analysisFiles/" + analysisResultFile.getSampleId() + "/" +
-                    analysisResultFile.getName();
+                OutputStream os = null;
+                try {
+                    String connectURL = apiService.getConvertConnectURL(downloadUrl);
 
-            OutputStream os = null;
-            try {
-                String connectURL = apiService.getConvertConnectURL(downloadUrl);
+                    // 헤더 삽입 정보 설정
+                    Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
 
-                // 헤더 삽입 정보 설정
-                Map<String,Object> headerMap = apiService.getDefaultHeaders(true);
+                    HttpGet get = new HttpGet(connectURL);
+                    logger.debug("GET:" + get.getURI());
 
-                HttpGet get = new HttpGet(connectURL);
-                logger.debug("GET:" + get.getURI());
-
-                // 지정된 헤더 삽입 정보가 있는 경우 추가
-                if(headerMap != null && headerMap.size() > 0) {
-                    for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
-                        get.setHeader(entry.getKey(), entry.getValue().toString());
-                    }
-                }
-
-                httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
-                if (httpclient != null)
-                    response = httpclient.execute(get);
-                if (response == null){
-                    logger.error("httpclient response is null");
-                    throw new NullPointerException();
-                }
-                int status = response.getStatusLine().getStatusCode();
-
-                if(status >= 200 && status < 300) {
-                    HttpEntity entity = response.getEntity();
-                    InputStream content = entity.getContent();
-                    long fileLength = entity.getContentLength();
-
-                    os = Files.newOutputStream(Paths.get(saveFile.toURI()));
-
-                    long nread = 0L;
-                    byte[] buf = new byte[8192];
-                    int n;
-                    while ((n = content.read(buf)) > 0) {
-                        if (isCancelled()) {
-                            break;
+                    // 지정된 헤더 삽입 정보가 있는 경우 추가
+                    if(headerMap != null && headerMap.size() > 0) {
+                        for (Map.Entry<String, Object> entry : headerMap.entrySet()) {
+                            get.setHeader(entry.getKey(), entry.getValue().toString());
                         }
-                        os.write(buf, 0, n);
-                        nread += n;
-                        updateProgress(nread, fileLength);
-                        updateMessage(String.valueOf(Math.round(((double) nread / (double) fileLength) * 100)) + "%");
                     }
-                    content.close();
-                    os.flush();
-                    if (httpclient != null) httpclient.close();
-                    if (response != null) response.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if(os != null) {
-                    try {
-                        os.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                    httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+                    if (httpclient != null)
+                        response = httpclient.execute(get);
+                    if (response == null){
+                        logger.error("httpclient response is null");
+                        throw new NullPointerException();
+                    }
+                    int status = response.getStatusLine().getStatusCode();
+
+                    if(status >= 200 && status < 300) {
+                        HttpEntity entity = response.getEntity();
+                        InputStream content = entity.getContent();
+                        double fileLength = (double)(entity.getContentLength());
+
+                        os = Files.newOutputStream(Paths.get(downloadDirectory.getAbsolutePath() + analysisResultFile.getName()));
+
+                        double nread = 0L;
+                        byte[] buf = new byte[8192];
+                        int n;
+                        while ((n = content.read(buf)) > 0) {
+                            if (isCancelled()) {
+                                break;
+                            }
+                            os.write(buf, 0, n);
+                            nread += n;
+                            updateProgress(((nread / fileLength) + downloadFileIndex) / totalDownlodFileCount, 1.0);
+                            updateMessage(String.valueOf(Math.round(((nread / fileLength) + downloadFileIndex) / totalDownlodFileCount * 100.0)) + "%");
+                        }
+                        content.close();
+                        os.flush();
+                        httpclient.close();
+                        response.close();
+                        downloadFileIndex += 1;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if(os != null) {
+                        try {
+                            os.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -127,7 +135,9 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
     @Override
     protected void failed() {
         //logger.error(String.format("download task fail!! [original : %s, save : %s]", anlysisResultFile.getName(), saveFile.getName()));
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        controller.getMainController().removeProgressTaskItemById(taskID);
+        getException().printStackTrace();
+        DialogUtil.showWebApiException(getException(), this.controller.getMainController().getPrimaryStage());
         //DialogUtil.error("Failed Application Update File Download.", "An error occurred during download.\n file : " + saveFile.getName(), this.controller.getMainController().getPrimaryStage(), false);
     }
 
@@ -137,7 +147,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
     @Override
     protected void succeeded() {
         //logger.debug(String.format("download task complete [original : %s, save : %s]", analysisResultFile.getName(), saveFile.getName()));
-        controller.getMainController().removeProgressTaskItemById(progressBoxId);
+        controller.getMainController().removeProgressTaskItemById(taskID);
 
         /*try {
             // 다운로드 파일 실행 여부 확인

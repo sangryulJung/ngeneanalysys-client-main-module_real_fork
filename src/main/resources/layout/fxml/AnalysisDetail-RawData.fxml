@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="380.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailRawDataController">
+<BorderPane prefHeight="380.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailRawDataController">
    <stylesheets>
       <URL value="@../css/common.css" />
       <URL value="@../css/raw_data.css" />
       <URL value="@../css/analysisDetail.css" />
    </stylesheets>
    <top>
-      <HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="63.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="filterArea" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="63.0" prefWidth="1280.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <HBox fx:id="filterTitleArea" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="70.0">
                <children>
@@ -34,7 +34,8 @@
                </children>
             </HBox>
             <HBox fx:id="filterList" alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="62.0" prefWidth="900.0" HBox.hgrow="ALWAYS" />
-            <Label maxHeight="25.0" maxWidth="80.0" minHeight="25.0" minWidth="80.0" onMouseClicked="#fileDelete" prefHeight="25.0" prefWidth="80.0" style="-fx-cursor: hand;" styleClass="submitBtn" text="Delete" />
+            <Label maxHeight="25.0" maxWidth="80.0" minHeight="25.0" minWidth="80.0" onMouseClicked="#downloadSelectedFiles" prefHeight="25.0" prefWidth="80.0" style="-fx-cursor: hand;" styleClass="submitBtn" text="Download" />
+            <Label maxHeight="25.0" maxWidth="80.0" minHeight="25.0" minWidth="80.0" onMouseClicked="#deleteSelectedFiles" prefHeight="25.0" prefWidth="80.0" style="-fx-cursor: hand;" styleClass="submitBtn" text="Delete" />
          </children>
          <padding>
             <Insets left="19.0" right="15.0" />
@@ -48,7 +49,6 @@
           <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="440.0" text="File" />
             <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Size" />
             <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Date" />
-            <TableColumn fx:id="downloadColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="110.0" resizable="false" text="Download" />
         </columns>
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

@@ -14,10 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -38,10 +35,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +55,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     private SampleView sample;
 
     /** 전체 파일 목록 객체 */
-    private List<AnalysisFile> totalList;
+    //private List<AnalysisFile> totalList;
 
     @FXML
     private HBox filterTitleArea;
@@ -90,8 +84,8 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     private TableColumn<AnalysisFile,String> createdColumn;
 
     /** 파일 다운로드 버튼 컬럼 */
-    @FXML
-    private TableColumn<AnalysisFile,Object> downloadColumn;
+//    @FXML
+//    private TableColumn<AnalysisFile,Object> downloadColumn;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -106,21 +100,21 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         filenameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize())));
         createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy/MM/dd")));
-        downloadColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
-        downloadColumn.setCellFactory(param -> new TableCell<AnalysisFile, Object>() {
-            @Override
-            public void updateItem(Object item, boolean empty) {
-                if (item != null) {
-                    Button button = new Button("Download");
-                    button.getStyleClass().add("btn_raw_data_download");
-                    button.setOnAction(event -> download((AnalysisFile) item));
-                    setGraphic(button);
-                } else {
-                    setGraphic(null);
-                }
-            }
-        });
-        downloadColumn.setSortable(false);
+//        downloadColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
+//        downloadColumn.setCellFactory(param -> new TableCell<AnalysisFile, Object>() {
+//            @Override
+//            public void updateItem(Object item, boolean empty) {
+//                if (item != null) {
+//                    Button button = new Button("Download");
+//                    button.getStyleClass().add("btn_raw_data_download");
+//                    button.setOnAction(event -> download((AnalysisFile) item));
+//                    setGraphic(button);
+//                } else {
+//                    setGraphic(null);
+//                }
+//            }
+//        });
+//        downloadColumn.setSortable(false);
 
         sizeColumn.setComparator((o1, o2) -> {
 
@@ -179,27 +173,59 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     }
 
     private void getAnalysisFiles() {
-        Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("sampleId", sample.getId());
-        try {
-            HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
-            totalList = null;
-            AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
-            totalList = analysisFileList.getResult();
-            totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
+        Task<Void> task = new Task<Void>() {
+            List<AnalysisFile> totalList;
+            @Override
+            protected Void call() throws Exception {
+                Map<String,Object> paramMap = new HashMap<>();
+                paramMap.put("sampleId", sample.getId());
+                HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
+                totalList = null;
+                AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+                totalList = analysisFileList.getResult();
+                totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
 
-            filterTitleArea.setVisible(false);
-            filterTitleArea.setPrefWidth(0);
-            filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
-            setList("ALL");
+                return null;
+            }
 
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                filterTitleArea.setVisible(false);
+                filterTitleArea.setPrefWidth(0);
+                filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
+                ObservableList<AnalysisFile> displayList = null;
+                String tag = "ALL";
+                if(StringUtils.isEmpty(tag) || "ALL".equals(tag)) {
+                    if(totalList != null && !totalList.isEmpty()) {
+                        displayList = FXCollections.observableArrayList(totalList);
+                    }
+                } else {
+                    if(totalList != null && !totalList.isEmpty()) {
+                        displayList = FXCollections.observableArrayList();
+                        for (AnalysisFile item : totalList) {
+                            if(tag.equals(item.getFileType())) {
+                                displayList.add(item);
+                            }
+                        }
+                    }
+                }
+
+                // 목록 초기화
+                if(rawListTableView.getItems() != null && rawListTableView.getItems().size() > 0) {
+                    rawListTableView.getItems().clear();
+                }
+                rawListTableView.setItems(displayList);
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                DialogUtil.showWebApiException(getException(), currentStage);
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private BigDecimal returnData(String value, String unit) {
@@ -231,59 +257,24 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     }
 
     /**
-     * 목록 화면 출력
-     * @param tag String
-     */
-    public void setList(String tag) {
-        ObservableList<AnalysisFile> displayList = null;
-
-        if(StringUtils.isEmpty(tag) || "ALL".equals(tag)) {
-            if(totalList != null && !totalList.isEmpty()) {
-                displayList = FXCollections.observableArrayList(totalList);
-            }
-        } else {
-            if(totalList != null && !totalList.isEmpty()) {
-                displayList = FXCollections.observableArrayList();
-                for (AnalysisFile item : totalList) {
-                    if(tag.equals(item.getFileType())) {
-                        displayList.add(item);
-                    }
-                }
-            }
-        }
-
-        // 목록 초기화
-        if(rawListTableView.getItems() != null && rawListTableView.getItems().size() > 0) {
-            rawListTableView.getItems().clear();
-        }
-        rawListTableView.setItems(displayList);
-    }
-
-    /**
      * 파일 다운로드
-     * @param resultFile AnalysisFile
+     * @param downloadFiles List<AnalysisFile></AnalysisFile>
      */
     @SuppressWarnings("static-access")
-    public void download(AnalysisFile resultFile) {
-        logger.debug(resultFile.getName());
-        String fileExtension = FilenameUtils.getExtension(resultFile.getName());
-        String extensionFilterTypeName = String.format("%s (*.%s)", fileExtension.toUpperCase(), fileExtension);
-        String extensionFilterName = String.format("*.%s", fileExtension);
-
+    public void download(List<AnalysisFile> downloadFiles) {
         // Show save bedFile dialog
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialFileName(resultFile.getName());
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(extensionFilterTypeName, extensionFilterName));
-        File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File file = directoryChooser.showDialog(this.getMainApp().getPrimaryStage());
 
         try {
             if(file != null) {
                 logger.debug(String.format("start download..[%s]", file.getName()));
-
-                Task<Void> task = new AnalysisResultFileDownloadTask(this, resultFile, file);
+                String taskID = "DOWN_" + new Random().nextInt();
+                Task<Void> task = new AnalysisResultFileDownloadTask(this, downloadFiles, new File(file.getAbsolutePath()), taskID);
                 final Thread downloadThread = new Thread(task);
                 HBox mainProgressTaskPane = getMainController().getProgressTaskContentArea();
-                String progressBoxId = "DOWN_" + resultFile.getSampleId() + "_" + resultFile.getId();
+                String progressBoxId = taskID;
 
                 HBox box = new HBox();
                 box.setId(progressBoxId);
@@ -295,7 +286,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                     box.setMargin(separatorLabel, new Insets(0, 0, 0, 5));
                 }
 
-                Label titleLabel = new Label("Download File : " + resultFile.getName());
+                Label titleLabel = new Label("Download Files");
                 ProgressBar progressBar = new ProgressBar();
                 progressBar.getStyleClass().add("progress-bar");
                 progressBar.progressProperty().bind(task.progressProperty());
@@ -337,6 +328,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 // Thread 실행
                 downloadThread.setDaemon(true);
                 downloadThread.start();
+                currentStage.close();
             }
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", "An error occurred during the download.",
@@ -346,19 +338,55 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     }
 
     @FXML
-    public void fileDelete() {
+    public void deleteSelectedFiles() {
         List<AnalysisFile> files = rawListTableView.getItems().stream().filter(AnalysisFile::getCheckItem)
                 .collect(Collectors.toList());
 
         if(!files.isEmpty()) {
-            for(AnalysisFile analysisFile : files) {
-                try {
-                    apiService.delete("analysisFiles/" + analysisFile.getId());
-                } catch (WebAPIException wae) {
-                    logger.debug(wae.getMessage());
+            Task<Void> task = new Task<Void>() {
+
+                @Override
+                protected Void call() throws Exception {
+                    for(AnalysisFile analysisFile : files) {
+                        try {
+                            apiService.delete("analysisFiles/" + analysisFile.getId());
+                        } catch (WebAPIException wae) {
+                            logger.debug(wae.getMessage());
+                        }
+                    }
+                    return null;
                 }
-            }
-            getAnalysisFiles();
+
+                @Override
+                protected void succeeded() {
+                    super.succeeded();
+                    getAnalysisFiles();
+                }
+
+                @Override
+                protected void failed() {
+                    super.failed();
+                    DialogUtil.showWebApiException(getException(), currentStage);
+                }
+            };
+            Thread thread = new Thread(task);
+            thread.start();
+        } else {
+            DialogUtil.alert("Selected Files Deletion", "Please select the files to delete.",
+                    getMainController().getPrimaryStage(), false);
+        }
+    }
+
+    @FXML
+    public void downloadSelectedFiles() {
+        List<AnalysisFile> files = rawListTableView.getItems().stream().filter(AnalysisFile::getCheckItem)
+                .collect(Collectors.toList());
+
+        if(!files.isEmpty()) {
+            download(files);
+        } else {
+            DialogUtil.alert("Selected Files Download", "Please select the files to download.",
+                    getMainController().getPrimaryStage(), false);
         }
 
     }
