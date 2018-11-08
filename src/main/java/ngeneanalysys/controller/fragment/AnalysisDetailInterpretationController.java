@@ -678,13 +678,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
-                    wae.printStackTrace();
-                } catch (IOException e) {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(),
-                            getMainApp().getPrimaryStage(), true);
+                } catch (Exception e) {
+                    DialogUtil.warning("Evidence Save Warning", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
-
             } else {
                 DialogUtil.warning("Primary check error", "Check primary radio button", getMainApp().getPrimaryStage(), true);
             }
@@ -698,15 +694,23 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    private List<Map<String, Object>> returnEvidenceMap() {
+    private List<Map<String, Object>> returnEvidenceMap() throws Exception {
         List<Map<String, Object>> list = new ArrayList<>();
         for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
             Map<String, Object> params = new HashMap<>();
-
             params.put("provider", StringUtils.isEmpty(snpInDelEvidence.getProvider()) ? "Clinician" : snpInDelEvidence.getProvider());
+            if (snpInDelEvidence.getEvidenceType() == null) {
+                throw new Exception("evidenceType is empty.");
+            }
             params.put("evidenceType", snpInDelEvidence.getEvidenceType());
+            if (snpInDelEvidence.getEvidenceLevel() == null) {
+                throw new Exception("evidenceLevel is empty.");
+            }
             params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
             params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() != null ? snpInDelEvidence.getPrimaryEvidence() : false);
+            if (snpInDelEvidence.getEvidence() == null) {
+                throw new Exception("evidence is empty.");
+            }
             params.put("evidence", snpInDelEvidence.getEvidence());
             list.add(params);
         }
@@ -714,7 +718,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void delete(SnpInDelEvidence snpInDelEvidence) {
+
         evidenceTableView.getItems().remove(snpInDelEvidence);
+        evidenceTableView.refresh();
         if(evidenceTableView.getItems().isEmpty()) saveBtn.setDisable(true);
     }
 }
