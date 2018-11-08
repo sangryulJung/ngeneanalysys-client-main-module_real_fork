@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -10,7 +16,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="380.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailRawDataController">
+<BorderPane prefHeight="380.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailRawDataController">
    <stylesheets>
       <URL value="@../css/common.css" />
       <URL value="@../css/raw_data.css" />
@@ -45,10 +51,10 @@
    <center>
       <TableView fx:id="rawListTableView" prefHeight="465.0" prefWidth="968.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Type" />
-          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="440.0" text="File" />
-            <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Size" />
-            <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="170.0" resizable="false" text="Date" />
+          <TableColumn fx:id="typeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="130.0" resizable="false" text="Type" />
+          <TableColumn fx:id="filenameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="450.0" text="File" />
+            <TableColumn fx:id="sizeColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" resizable="false" text="Size" />
+            <TableColumn fx:id="createdColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="130.0" resizable="false" text="Date" />
         </columns>
          <BorderPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

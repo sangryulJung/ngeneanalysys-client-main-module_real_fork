@@ -1,8 +1,12 @@
 package ngeneanalysys.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,9 +19,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.*;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.AnalysisFileList;
 import ngeneanalysys.model.SampleView;
@@ -26,17 +31,7 @@ import ngeneanalysys.task.AnalysisResultFileDownloadTask;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -53,9 +48,6 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /** 현재 샘플 정보 객체 */
     private SampleView sample;
-
-    /** 전체 파일 목록 객체 */
-    //private List<AnalysisFile> totalList;
 
     @FXML
     private HBox filterTitleArea;
@@ -83,10 +75,6 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     @FXML
     private TableColumn<AnalysisFile,String> createdColumn;
 
-    /** 파일 다운로드 버튼 컬럼 */
-//    @FXML
-//    private TableColumn<AnalysisFile,Object> downloadColumn;
-
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -100,22 +88,6 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         filenameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         sizeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.convertFileSizeFormat(cellData.getValue().getSize())));
         createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy/MM/dd")));
-//        downloadColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
-//        downloadColumn.setCellFactory(param -> new TableCell<AnalysisFile, Object>() {
-//            @Override
-//            public void updateItem(Object item, boolean empty) {
-//                if (item != null) {
-//                    Button button = new Button("Download");
-//                    button.getStyleClass().add("btn_raw_data_download");
-//                    button.setOnAction(event -> download((AnalysisFile) item));
-//                    setGraphic(button);
-//                } else {
-//                    setGraphic(null);
-//                }
-//            }
-//        });
-//        downloadColumn.setSortable(false);
-
         sizeColumn.setComparator((o1, o2) -> {
 
             String[] item1 = o1.replaceAll(",", "").split(" ");
@@ -131,7 +103,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         currentStage.setResizable(false);
         currentStage.initStyle(StageStyle.DECORATED);
         currentStage.initModality(Modality.APPLICATION_MODAL);
-        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Analysis Result Data Download");
+        currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > Data file download");
         // OS가 Window인 경우 아이콘 출력.
         if (System.getProperty("os.name").toLowerCase().contains("window")) {
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -193,24 +165,11 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 super.succeeded();
                 filterTitleArea.setVisible(false);
                 filterTitleArea.setPrefWidth(0);
-                filterList.getChildren().add(new Label("Analysis Result Data Download: Uploaded Fastq files, Mapped bedFile(BAM format), Variant bedFile(VCF format), Data QC Report(PDF) "));
+                filterList.getChildren().add(new Label("Download data files of QC report, uploaded fastq, BED files (BAM or VCF formats), and statistics. "));
                 ObservableList<AnalysisFile> displayList = null;
-                String tag = "ALL";
-                if(StringUtils.isEmpty(tag) || "ALL".equals(tag)) {
-                    if(totalList != null && !totalList.isEmpty()) {
-                        displayList = FXCollections.observableArrayList(totalList);
-                    }
-                } else {
-                    if(totalList != null && !totalList.isEmpty()) {
-                        displayList = FXCollections.observableArrayList();
-                        for (AnalysisFile item : totalList) {
-                            if(tag.equals(item.getFileType())) {
-                                displayList.add(item);
-                            }
-                        }
-                    }
+                if(totalList != null && !totalList.isEmpty()) {
+                    displayList = FXCollections.observableArrayList(totalList);
                 }
-
                 // 목록 초기화
                 if(rawListTableView.getItems() != null && rawListTableView.getItems().size() > 0) {
                     rawListTableView.getItems().clear();
@@ -274,10 +233,9 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 Task<Void> task = new AnalysisResultFileDownloadTask(this, downloadFiles, new File(file.getAbsolutePath()), taskID);
                 final Thread downloadThread = new Thread(task);
                 HBox mainProgressTaskPane = getMainController().getProgressTaskContentArea();
-                String progressBoxId = taskID;
 
                 HBox box = new HBox();
-                box.setId(progressBoxId);
+                box.setId(taskID);
                 box.getStyleClass().add("general_progress");
 
                 if(mainProgressTaskPane.getChildren().size() > 0) {
@@ -295,21 +253,19 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 Button cancelButton = new Button("cancel");
                 cancelButton.getStyleClass().add("btn_cancel_normal");
                 cancelButton.setOnAction(event -> {
-                    if(downloadThread != null) {
-                        try {
-                            logger.error(String.format("download cancel..[%s]", file.getName()));
-                            Thread.sleep(100);
-                            Platform.runLater(() -> {
-                                downloadThread.interrupt();
-                                task.cancel();
-                                getMainController().removeProgressTaskItemById(progressBoxId);
-                            });
-                        } catch (Exception e) {
-                            logger.error("download cancel failed!!");
-                            DialogUtil.error("Failed File Download Cancel.",
-                                    "An error occurred during the canceling bedFile download.",
-                                    getMainController().getPrimaryStage(), false);
-                        }
+                    try {
+                        logger.error(String.format("download cancel..[%s]", file.getName()));
+                        Thread.sleep(100);
+                        Platform.runLater(() -> {
+                            downloadThread.interrupt();
+                            task.cancel();
+                            getMainController().removeProgressTaskItemById(taskID);
+                        });
+                    } catch (Exception e) {
+                        logger.error("download cancel failed!!");
+                        DialogUtil.error("Failed File Download Cancel.",
+                                "An error occurred during the canceling bedFile download.",
+                                getMainController().getPrimaryStage(), false);
                     }
                 });
 
@@ -348,11 +304,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 @Override
                 protected Void call() throws Exception {
                     for(AnalysisFile analysisFile : files) {
-                        try {
-                            apiService.delete("analysisFiles/" + analysisFile.getId());
-                        } catch (WebAPIException wae) {
-                            logger.debug(wae.getMessage());
-                        }
+                        apiService.delete("analysisFiles/" + analysisFile.getId());
                     }
                     return null;
                 }
@@ -366,6 +318,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 @Override
                 protected void failed() {
                     super.failed();
+                    getException().printStackTrace();
                     DialogUtil.showWebApiException(getException(), currentStage);
                 }
             };

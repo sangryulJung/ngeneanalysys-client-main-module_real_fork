@@ -1184,7 +1184,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         column.setGraphic(label);
 
         if(id != null) column.setId(id);
-        column.setMinWidth(50.0);
+        //column.setMinWidth(50.0);
         column.widthProperty().addListener((ob, ov, nv) -> {
             label.setMinWidth(column.getWidth());
         });
@@ -1214,7 +1214,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         column.widthProperty().addListener((ob, ov, nv) -> hBox.setMinWidth(column.getWidth()));
         column.setResizable(false);
 
-        column.setPrefWidth(50d);
+        column.setPrefWidth(30d);
 
         variantListTableView.getColumns().add(column);
     }
@@ -1228,16 +1228,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
-        double predictionColumnSize = 90d;
+        double predictionColumnSize = 30d;
         String columnName = "Pathogenicity";
-        String filterPredictionName = "pathogenicity";
+        //String filterPredictionName = "pathogenicity";
         if(panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
-            predictionColumnSize = 50d;
+            //predictionColumnSize = 30d;
             columnName = "Tier";
-            filterPredictionName = "tier";
+            //filterPredictionName = "tier";
         }
         TableColumn<VariantAndInterpretationEvidence, String> predictionColumn = new TableColumn<>(columnName);
-        createTableHeader(predictionColumn, columnName, filterPredictionName , predictionColumnSize, columnName.toLowerCase());
+        createTableHeader(predictionColumn, columnName, columnName, predictionColumnSize, columnName.toLowerCase());
         if (panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
             predictionColumn.setCellValueFactory(cellData ->
                     new SimpleStringProperty(
@@ -1310,7 +1310,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warning");
-        createTableHeader(warn, "Warning", "" ,55., "warningReason");
+        createTableHeader(warn, "Warning", "Warning" , 30., "warningReason");
         warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1352,7 +1352,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
-        createTableHeader(reportTest, "Report", "" ,55. , "includedInReport");
+        createTableHeader(reportTest, "Report", "Report", 30., "includedInReport");
         reportTest.getStyleClass().add(centerStyleClass);
         reportTest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         reportTest.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
