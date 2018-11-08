@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javafx.scene.image.Image;
+import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.PipelineCode;
+import ngeneanalysys.model.Panel;
 
 public class ResourceUtil {
 	/**
@@ -39,4 +42,19 @@ public class ResourceUtil {
 		return new Image(getResourceAsStream(path), x , y ,true, true);
 	}
 
+	public String getDefaultColumnOrderResourcePath(Panel panel) {
+		String path = null;
+		if(PipelineCode.isHemePipeline(panel.getCode())) {
+			path = CommonConstants.BASE_HEME_COLUMN_ORDER_PATH;
+		} else if(PipelineCode.isSolidPipeline(panel.getCode())) {
+			path = CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH;
+		} else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+			path = CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH;
+		} else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
+			path = CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH;
+		} else if(PipelineCode.isHeredPipeline(panel.getCode())) {
+			path = CommonConstants.BASE_HERED_COLUMN_ORDER_PATH;
+		}
+		return path;
+	}
 }
