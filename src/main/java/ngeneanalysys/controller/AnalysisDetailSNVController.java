@@ -1323,21 +1323,38 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     if (ev.getClickCount() == 1) {
                         Alert alert = DialogUtil.generalShow(Alert.AlertType.CONFIRMATION, "Report", "Change report?", getMainApp().getPrimaryStage(), true);
                         if(alert.getResult() == ButtonType.OK) {
-                            try {
-                                Map<String, Object> params = new HashMap<>();
-                                params.put("sampleId", sample.getId());
-                                params.put("snpInDelIds", variant.getSnpInDel().getId().toString());
-                                params.put("comment", "N/A");
-                                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                                    params.put("includeInReport", "N");
-                                } else {
-                                    params.put("includeInReport", "Y");
+                            Task<Void> task = new Task<Void>() {
+                                @Override
+                                protected Void call() throws Exception {
+                                    Map<String, Object> params = new HashMap<>();
+                                    params.put("sampleId", sample.getId());
+                                    params.put("snpInDelIds", variant.getSnpInDel().getId().toString());
+                                    params.put("comment", "N/A");
+                                    if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                                        params.put("includeInReport", "N");
+                                    } else {
+                                        params.put("includeInReport", "Y");
+                                    }
+                                    apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+                                    return null;
                                 }
-                                apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
-                                refreshTable();
-                            } catch (WebAPIException wae) {
-                                wae.printStackTrace();
-                            }
+
+                                @Override
+                                protected void succeeded() {
+                                    super.succeeded();
+                                    refreshTable();
+                                }
+
+                                @Override
+                                protected void failed() {
+                                    super.failed();
+                                    getMainController().setMainMaskerPane(false);
+                                    DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+                                }
+                            };
+                            getMainController().setMainMaskerPane(true);
+                            Thread thread = new Thread(task);
+                            thread.start();
                         }
                     }
                 });
