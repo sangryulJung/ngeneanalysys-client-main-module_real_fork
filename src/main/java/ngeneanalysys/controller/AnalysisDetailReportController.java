@@ -1,6 +1,5 @@
 package ngeneanalysys.controller;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
@@ -178,128 +177,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 .toString() + "(" + cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum() + "/" + cellData.getValue().getSnpInDel().getReadInfo().getReadDepth() + ")"));
         panel = sample.getPanel();
 
-        setVirtualPanel();
-
-        HttpClientResponse response;
-
-        try {
-            if(panel.getReportTemplateId() != null) {
-                response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
-
-                ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
-
-                ReportTemplate template = reportContents.getReportTemplate();
-                if (template.getContents() != null) {
-                    extraFields.setVisible(true);
-                    Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
-
-                    if (variableList != null && !variableList.isEmpty()) {
-                        this.variableList = variableList;
-                        Set<String> keyList = variableList.keySet();
-
-                        List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
-
-                        if (keyList.contains("conclusions")) {
-                            Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
-                            conclusions.setText(item.get("displayName"));
-                            sortedKeyList.remove("conclusions");
-                            //conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
-                        }
-
-
-                        int gridPaneRowSize = (int) Math.ceil(sortedKeyList.size() / 3.0);
-
-                        for (int i = 0; i < gridPaneRowSize; i++) {
-                            customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
-                            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
-                            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
-                            RowConstraints con = new RowConstraints();
-                            con.setPrefHeight(30);
-                            customFieldGridPane.getRowConstraints().add(con);
-                        }
-
-                        int rowIndex = 0;
-                        int colIndex = 0;
-
-                        for (String key : sortedKeyList) {
-                            Map<String, String> item = (Map<String, String>) variableList.get(key);
-                            if (colIndex == 6) {
-                                colIndex = 0;
-                                rowIndex++;
-                            }
-                            Label label = new Label(item.get("displayName"));
-                            label.setStyle("-fx-text-fill : #595959;");
-                            customFieldGridPane.add(label, colIndex++, rowIndex);
-                            label.setMaxHeight(Double.MAX_VALUE);
-                            label.setMaxWidth(Double.MAX_VALUE);
-                            label.setAlignment(Pos.CENTER);
-
-                            String type = item.get("variableType");
-                            if (type.equalsIgnoreCase("Date")) {
-                                DatePicker datePicker = new DatePicker();
-                                datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
-                                String dateType = "yyyy-MM-dd";
-                                datePicker.setPromptText(dateType);
-                                datePicker.setConverter(DatepickerConverter.getConverter(dateType));
-                                datePicker.setId(key);
-                                customFieldGridPane.add(datePicker, colIndex++, rowIndex);
-                            } else if (type.equalsIgnoreCase("ComboBox")) {
-                                ComboBox<String> comboBox = new ComboBox<>();
-                                comboBox.getStyleClass().add("txt_black");
-                                comboBox.setId(key);
-                                String list = item.get("comboBoxItemList");
-                                String[] comboBoxItem = list.split("&\\^\\|");
-                                comboBox.getItems().addAll(comboBoxItem);
-                                comboBox.getSelectionModel().selectFirst();
-
-                                customFieldGridPane.add(comboBox, colIndex++, rowIndex);
-                            } else {
-                                TextField textField = new TextField();
-                                textField.getStyleClass().add("txt_black");
-                                textField.setId(key);
-                                if (type.equalsIgnoreCase("Integer")) {
-                                    textField.textProperty().addListener((observable, oldValue, newValue) -> {
-                                        if (!newValue.matches("[0-9]*")) textField.setText(oldValue);
-                                    });
-                                }
-
-                                customFieldGridPane.add(textField, colIndex++, rowIndex);
-                            }
-                        }
-
-                    }
-                }
-            } else {
-                excelUploadBtn.setVisible(false);
-                excelTemplateBtn.setVisible(false);
-            }
-            if(sample.getSampleStatus().getReportStartedAt() != null) {
-                response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
-
-                if (response.getStatus() == 200) {
-                    reportData = true;
-                    SampleReport sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
-                    if(sampleReport.getVirtualPanelId() != null) {
-                        Optional<ComboBoxItem> item = virtualPanelComboBox.getItems().stream().filter(
-                                comboBoxItem -> comboBoxItem.getValue().equals(sampleReport.getVirtualPanelId().toString())).findFirst();
-                        item.ifPresent(comboBoxItem -> virtualPanelComboBox.getSelectionModel().select(comboBoxItem));
-                    }
-                    settingReportData(sampleReport.getContents());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
-            if(!t1.equals(t))
-                Platform.runLater(this::setVariantsList);
-            if(!t1.equals(t))
-                Platform.runLater(this::setTargetGenesList);
-        });
-
-        Platform.runLater(this::setTargetGenesList);
-
+        initialize(panel);
     }
 
     @SuppressWarnings("unchecked")
@@ -310,18 +188,36 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             targetGenesFlowPane.getChildren().removeAll(targetGenesFlowPane.getChildren());
             targetGenesFlowPane.setPrefHeight(0);
         }
-        try {
-            HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
-                    null, null, false);
-            if (response != null) {
-                List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
-                        .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
-                                false);
-                if (variantCountByGenes == null) {
-                    variantCountByGenes = new ArrayList<>();
+        String virtualPanelId = virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue();
+        Task<Void> task = new Task<Void>(){
+            List<VariantCountByGene> variantCountByGenes;
+            VirtualPanel virtualPanel;
+            @Override
+            protected Void call() throws Exception {
+                HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticDNA/" + sample.getId(),
+                        null, null, false);
+                if (response != null) {
+                    variantCountByGenes = (List<VariantCountByGene>) response
+                            .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
+                                    false);
+                    if (variantCountByGenes == null) {
+                        variantCountByGenes = new ArrayList<>();
+                    }
+                    variantCountByGenes = filteringGeneList(variantCountByGenes);
                 }
-                variantCountByGenes = filteringGeneList(variantCountByGenes);
+                if(!StringUtils.isEmpty(virtualPanelId)) {
+                    response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                            null, null, false);
 
+                    virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                getMainController().setMainMaskerPane(false);
                 if(variantCountByGenes != null && !variantCountByGenes.isEmpty()) {
                     targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 30);
                     mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
@@ -331,12 +227,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         .collect(Collectors.toList());
                 Set<String> allGeneList = null;
                 Set<String> list = new HashSet<>();
-                if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
-                    response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
-                            null, null, false);
-
-                    VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
-
+                if(virtualPanel != null){
                     allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
                     String essentialGenes = virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "");
@@ -367,9 +258,17 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     }
                 }
             }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getMainController().setMainMaskerPane(false);
+                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+            }
+        };
+        getMainController().setMainMaskerPane(true);
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void tableCellUpdateFix(TableView<VariantAndInterpretationEvidence> tableView) {
@@ -529,32 +428,151 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 gene.getTier2IndelCount() > 0 || gene.getTier2SnpCount() > 0);
     }
 
-    private void setVirtualPanel() {
-
+    private void initialize(Panel panel) {
         virtualPanelComboBox.setConverter(new ComboBoxConverter());
-
         virtualPanelComboBox.getItems().add(new ComboBoxItem());
-
         virtualPanelComboBox.getSelectionModel().selectFirst();
+        Task<Void> task = new Task<Void>() {
+            PagedVirtualPanel pagedVirtualPanel;
+            ReportContents reportContents;
+            ReportTemplate template;
+            SampleReport sampleReport;
+            @Override
+            protected Void call() throws Exception {
+                Map<String, Object> params = new HashMap<>();
+                params.put("panelId", panel.getId());
+                HttpClientResponse response = apiService.get("virtualPanels", params, null, false);
+                pagedVirtualPanel = response.getObjectBeforeConvertResponseToJSON(PagedVirtualPanel.class);
 
-        try {
-
-            Map<String, Object> params = new HashMap<>();
-
-            params.put("panelId", panel.getId());
-
-            HttpClientResponse response = apiService.get("virtualPanels", params, null, false);
-
-            PagedVirtualPanel pagedVirtualPanel = response.getObjectBeforeConvertResponseToJSON(PagedVirtualPanel.class);
-
-            if(pagedVirtualPanel.getCount() > 0) {
-                for(VirtualPanel virtualPanel : pagedVirtualPanel.getResult()) {
-                    virtualPanelComboBox.getItems().add(new ComboBoxItem(virtualPanel.getId().toString(), virtualPanel.getName()));
+                if(panel.getReportTemplateId() != null) {
+                    response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
+                    reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
+                    template = reportContents.getReportTemplate();
                 }
+                if(sample.getSampleStatus().getReportStartedAt() != null) {
+                    response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
+                    if (response.getStatus() == 200) {
+                        reportData = true;
+                        sampleReport = response.getObjectBeforeConvertResponseToJSON(SampleReport.class);
+                    }
+                }
+
+                return null;
             }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                if(pagedVirtualPanel.getCount() > 0) {
+                    for(VirtualPanel virtualPanel : pagedVirtualPanel.getResult()) {
+                        virtualPanelComboBox.getItems().add(new ComboBoxItem(virtualPanel.getId().toString(), virtualPanel.getName()));
+                    }
+                }
+                if(panel.getReportTemplateId() != null) {
+                    if (template.getContents() != null) {
+                        extraFields.setVisible(true);
+                        Map<String, Object> localVariableList = JsonUtil.fromJsonToMap(template.getCustomFields());
+                        if (localVariableList != null && !localVariableList.isEmpty()) {
+                            variableList = localVariableList;
+                            Set<String> keyList = localVariableList.keySet();
+
+                            List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
+
+                            if (keyList.contains("conclusions")) {
+                                Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
+                                conclusions.setText(item.get("displayName"));
+                                sortedKeyList.remove("conclusions");
+                                //conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
+                            }
+
+                            int gridPaneRowSize = (int) Math.ceil(sortedKeyList.size() / 3.0);
+
+                            for (int i = 0; i < gridPaneRowSize; i++) {
+                                customFieldGridPane.setPrefHeight(customFieldGridPane.getPrefHeight() + 30);
+                                mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                                contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
+                                RowConstraints con = new RowConstraints();
+                                con.setPrefHeight(30);
+                                customFieldGridPane.getRowConstraints().add(con);
+                            }
+
+                            int rowIndex = 0;
+                            int colIndex = 0;
+
+                            for (String key : sortedKeyList) {
+                                Map<String, String> item = (Map<String, String>) variableList.get(key);
+                                if (colIndex == 6) {
+                                    colIndex = 0;
+                                    rowIndex++;
+                                }
+                                Label label = new Label(item.get("displayName"));
+                                label.setStyle("-fx-text-fill : #595959;");
+                                customFieldGridPane.add(label, colIndex++, rowIndex);
+                                label.setMaxHeight(Double.MAX_VALUE);
+                                label.setMaxWidth(Double.MAX_VALUE);
+                                label.setAlignment(Pos.CENTER);
+
+                                String type = item.get("variableType");
+                                if (type.equalsIgnoreCase("Date")) {
+                                    DatePicker datePicker = new DatePicker();
+                                    datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
+                                    String dateType = "yyyy-MM-dd";
+                                    datePicker.setPromptText(dateType);
+                                    datePicker.setConverter(DatepickerConverter.getConverter(dateType));
+                                    datePicker.setId(key);
+                                    customFieldGridPane.add(datePicker, colIndex++, rowIndex);
+                                } else if (type.equalsIgnoreCase("ComboBox")) {
+                                    ComboBox<String> comboBox = new ComboBox<>();
+                                    comboBox.getStyleClass().add("txt_black");
+                                    comboBox.setId(key);
+                                    String list = item.get("comboBoxItemList");
+                                    String[] comboBoxItem = list.split("&\\^\\|");
+                                    comboBox.getItems().addAll(comboBoxItem);
+                                    comboBox.getSelectionModel().selectFirst();
+
+                                    customFieldGridPane.add(comboBox, colIndex++, rowIndex);
+                                } else {
+                                    TextField textField = new TextField();
+                                    textField.getStyleClass().add("txt_black");
+                                    textField.setId(key);
+                                    if (type.equalsIgnoreCase("Integer")) {
+                                        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                                            if (!newValue.matches("[0-9]*")) textField.setText(oldValue);
+                                        });
+                                    }
+                                    customFieldGridPane.add(textField, colIndex++, rowIndex);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    excelUploadBtn.setVisible(false);
+                    excelTemplateBtn.setVisible(false);
+                }
+                if(sample.getSampleStatus().getReportStartedAt() != null && sampleReport != null &&
+                        sampleReport.getVirtualPanelId() != null) {
+                    Optional<ComboBoxItem> item = virtualPanelComboBox.getItems().stream().filter(
+                            comboBoxItem -> comboBoxItem.getValue().equals(sampleReport.getVirtualPanelId().toString())).findFirst();
+                    item.ifPresent(comboBoxItem -> virtualPanelComboBox.getSelectionModel().select(comboBoxItem));
+                }
+                settingReportData(sampleReport.getContents());
+                virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+                    if(!t1.equals(t)) setVariantsList();
+                    if(!t1.equals(t)) setTargetGenesList();
+                });
+                setTargetGenesList();
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getMainController().setMainMaskerPane(false);
+                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+            }
+        };
+        getMainController().setMainMaskerPane(true);
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
@@ -598,7 +616,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
      * 입력 정보 저장
      * @return boolean
      */
-    private boolean saveData() {
+    private Thread getSaveDataThread() {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -632,22 +650,34 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             params.put("virtualPanelId", Integer.parseInt(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue()));
         }
-
-        try {
-            if(reportData) {
-                apiService.put("/sampleReport/" + sample.getId(), params, null, true);
-            } else {
-                apiService.post("/sampleReport/" + sample.getId(), params, null, true);
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                if(reportData) {
+                    apiService.put("/sampleReport/" + sample.getId(), params, null, true);
+                } else {
+                    apiService.post("/sampleReport/" + sample.getId(), params, null, true);
+                }
+                return null;
             }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
 
-        return true;
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                getMainController().setMainMaskerPane(false);
+                DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getMainController().setMainMaskerPane(false);
+                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+            }
+        };
+        getMainController().setMainMaskerPane(true);
+        Thread thread = new Thread(task);
+        return thread;
     }
 
     @FXML
@@ -661,10 +691,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
-            boolean dataSave = saveData();
-            if(dataSave) {
-                DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
-            }
+            Thread thread = getSaveDataThread();
+            getMainController().setMainMaskerPane(true);
+            thread.start();
         } else {
             alert.close();
         }
@@ -672,41 +701,32 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     @FXML
     public void createPDFAsDraft() {
-        boolean dataSave = saveData();
-        if(dataSave){
-            if(createPDF(true)) {
-                Platform.runLater(this::setVariantsList);
-            }
-        }
+        createPDF(true);
     }
 
     @FXML
     public void createPDFAsFinal() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        DialogUtil.setIcon(alert);
-        alert.initOwner(getMainController().getPrimaryStage());
-        alert.setTitle(CONFIRMATION_DIALOG);
-        alert.setHeaderText("Test conducting organization information");
-        alert.setContentText(String.format("Test conducting organization information will be filled with current user [ %s ] information for final report generation.\n\nDo you want to proceed?", loginSession.getName()));
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-
-                boolean dataSave = saveData();
-                if (dataSave) {
-                    // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
-                    if (createPDF(false)) {
-                        Platform.runLater(this::setVariantsList);
-                    }
-                }
-
-            } catch (Exception e) {
-                logger.error("Unknown Error", e);
-                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-            }
+        Optional<ButtonType> result;
+        Alert alert = null;
+        if(PipelineCode.isBRCAPipeline(panel.getCode())) {
+            alert = new Alert(Alert.AlertType.CONFIRMATION);
+            DialogUtil.setIcon(alert);
+            alert.initOwner(getMainController().getPrimaryStage());
+            alert.setTitle(CONFIRMATION_DIALOG);
+            alert.setHeaderText("Test conducting organization information");
+            alert.setContentText(String.format("Test conducting organization information will be filled with current user [ %s ] information for final report generation.\n\nDo you want to proceed?", loginSession.getName()));
+            result = alert.showAndWait();
         } else {
-            alert.close();
+            result = Optional.of(ButtonType.OK);
+        }
+
+        if(!PipelineCode.isBRCAPipeline(panel.getCode()) || result.isPresent() && result.get() == ButtonType.OK) {
+            // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
+            createPDF(false);
+        } else {
+            if (alert != null) {
+                alert.close();
+            }
         }
     }
 
