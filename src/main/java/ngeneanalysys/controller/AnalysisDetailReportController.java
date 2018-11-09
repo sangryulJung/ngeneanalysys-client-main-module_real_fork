@@ -992,8 +992,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
     }
 
     private boolean createPDF(boolean isDraft) {
+        // TODO 쓰레드 적용
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
+        Thread saveDataThread = getSaveDataThread();
+        saveDataThread.start();
+        try {
+            saveDataThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         try {
             String outputType = "PDF";
             if(panel.getReportTemplateId() != null) {
