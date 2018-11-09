@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -44,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 /**
@@ -616,7 +618,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
      * 입력 정보 저장
      * @return boolean
      */
-    private Thread getSaveDataThread() {
+    private Task<Boolean> getSaveDataTask(boolean showResultDialog) {
 
         String conclusionsText = conclusionsTextArea.getText();
 
@@ -650,34 +652,37 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             params.put("virtualPanelId", Integer.parseInt(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue()));
         }
-        Task<Void> task = new Task<Void>() {
+        Task<Boolean> task = new Task<Boolean>() {
             @Override
-            protected Void call() throws Exception {
+            protected Boolean call() throws Exception {
                 if(reportData) {
                     apiService.put("/sampleReport/" + sample.getId(), params, null, true);
                 } else {
                     apiService.post("/sampleReport/" + sample.getId(), params, null, true);
                 }
-                return null;
+                return true;
             }
 
             @Override
             protected void succeeded() {
                 super.succeeded();
                 getMainController().setMainMaskerPane(false);
-                DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
+                if(showResultDialog) {
+                    DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
+                }
             }
 
             @Override
             protected void failed() {
                 super.failed();
                 getMainController().setMainMaskerPane(false);
-                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+                if(showResultDialog) {
+                    DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+                }
             }
         };
-        getMainController().setMainMaskerPane(true);
-        Thread thread = new Thread(task);
-        return thread;
+
+        return task;
     }
 
     @FXML
@@ -691,8 +696,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
-            Thread thread = getSaveDataThread();
+            Task<Boolean> task = getSaveDataTask(true);
             getMainController().setMainMaskerPane(true);
+            Thread thread = new Thread(task);
             thread.start();
         } else {
             alert.close();
@@ -701,7 +707,18 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     @FXML
     public void createPDFAsDraft() {
-        createPDF(true);
+        try {
+            Task<Boolean> saveDataTask = getSaveDataTask(false);
+            saveDataTask.run();
+            Thread saveDataThread = new Thread(saveDataTask);
+            saveDataThread.start();
+            saveDataThread.join();
+            if(saveDataTask.get() != null) {
+                createPDF(true);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -721,8 +738,18 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
 
         if(!PipelineCode.isBRCAPipeline(panel.getCode()) || result.isPresent() && result.get() == ButtonType.OK) {
-            // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
-            createPDF(false);
+            try {
+                Task<Boolean> saveDataTask = getSaveDataTask(false);
+                saveDataTask.run();
+                Thread saveDataThread = new Thread(saveDataTask);
+                saveDataThread.start();
+                saveDataThread.join();
+                if(saveDataTask.get() != null) {
+                    createPDF(false);
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         } else {
             if (alert != null) {
                 alert.close();
@@ -995,13 +1022,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         // TODO 쓰레드 적용
         boolean created = true;
         String reportCreationErrorMsg = "An error occurred during the creation of the report document.";
-        Thread saveDataThread = getSaveDataThread();
-        saveDataThread.start();
-        try {
-            saveDataThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         try {
             String outputType = "PDF";
             if(panel.getReportTemplateId() != null) {

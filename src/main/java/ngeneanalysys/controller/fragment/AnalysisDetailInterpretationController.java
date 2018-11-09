@@ -279,7 +279,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             try {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diseaseId", diseases != null ? diseases.getId() : panel.getDefaultDiseaseId());
+                params.put("diseaseId",  diseases != null ? diseases.getId() : panel.getDefaultDiseaseId());
                 params.put("gene", selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene());
                 params.put("keyword", value);
                 params.put("targetEvidence", snpInDelEvidence.getEvidenceType() + "EvidenceLevel" + snpInDelEvidence.getEvidenceLevel());
