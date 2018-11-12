@@ -71,7 +71,7 @@
 		<!-- Contents Area -->
 		<fo:flow flow-name="xsl-region-body">
 			<!-- title -->
-			<fo:block text-align="center" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="16pt">Clinical Report</fo:block>
+			<fo:block text-align="center" margin-top="10mm" font-family="Noto Sans CJK KR Bold" font-weight="bold" font-size="16pt">Clinical Report Test</fo:block>
 			<fo:block text-align="right" margin-top="10mm" font-family="Noto Sans CJK KR Regular" font-size="11pt">${contents.reportingDate}</fo:block>
 			
 			<!-- 검사 정보, 의뢰정보, 환자정보 -->
@@ -225,6 +225,18 @@
 								#else
 									<fo:block padding="2mm">No mutations were identified.</fo:block>
 								#end
+									<fo:block padding="2mm"></fo:block>
+								#if($conents.brcaCnvResults)
+									<fo:block padding="2mm">Possibly cop number variants identified.</fo:block>
+									#foreach($cnv in $contents.brcaCnvResults)
+										<fo:block padding="1mm">
+											<![CDATA[$cnv.gene]]>, <![CDATA[$cnv.cnv]]>, <![CDATA[$cnv.result]]>
+										</fo:block>
+									#end
+								#else
+									<fo:block padding="2mm">No cnv were identified.</fo:block>
+								#end
+
 								</fo:block>
 							</fo:table-cell>
 						</fo:table-row>
@@ -480,7 +492,458 @@
 							</fo:table-cell>												
 						</fo:table-row>
 						<fo:table-row>
-							<fo:table-cell padding="5mm" border-width="0pt" number-columns-spanned="4">
+							<fo:table-cell padding="2mm" border-width="0pt" number-columns-spanned="4">
+								<fo:block> </fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+						<fo:table-row>
+							<fo:table-cell padding="2mm" border-width="0" number-columns-spanned="4">
+								<fo:block font-family="Noto Sans CJK KR Bold" font-size="11pt" font-weight="bold">Details, CNV</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+						<fo:table-row>
+							<fo:table-cell border-width="0pt" number-columns-spanned="4" font-size="9pt">
+								<fo:block>
+									<fo:table display-align="center" width="100%" table-layout="fixed" text-align="center">
+										<fo:table-body>
+											<fo:table-row height="8mm">
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block width="10mm">
+
+													</fo:block>
+												</fo:table-cell>
+
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														UTR
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														2
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														3
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														4
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														5
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														6
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														7
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														8
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														9
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														10
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														11
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														12
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														13
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														14
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														15
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														16
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														17
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														18
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														19
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														20
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														21
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														22
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														23
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														24
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														25
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														26
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														27
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+
+											<fo:table-row height="8mm">
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														BRCA1
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+
+											<fo:table-row height="8mm">
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														BRCA2
+													</fo:block>
+												</fo:table-cell>
+
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+
+										</fo:table-body>
+									</fo:table>
+								</fo:block>
+							</fo:table-cell>
+						</fo:table-row>
+						<fo:table-row>
+							<fo:table-cell padding="2mm" border-width="0pt" number-columns-spanned="4">
 								<fo:block> </fo:block>
 							</fo:table-cell>
 						</fo:table-row>

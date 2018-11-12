@@ -38,17 +38,17 @@
             <TableView fx:id="exonTableView" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
               <columns>
                   <TableColumn fx:id="exonExonTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Exon" />
-                  <TableColumn fx:id="exonCopyNumberTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Copy Number" />
+                  <TableColumn fx:id="exonCopyNumberTableColumn" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" text="CNV" />
                   <TableColumn fx:id="exonWarningTableColumn" prefWidth="75.0" text="Warning" />
                   <TableColumn fx:id="exonDomainTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Domain" />
                   <TableColumn maxWidth="150.0" minWidth="-Infinity" prefWidth="150.0" text="Amplicon">
                      <columns>
-                        <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center_right" text="1" />
-                        <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center_right" text="2" />
-                        <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn" maxWidth="40.0" minWidth="-Infinity" prefWidth="40.0" styleClass="alignment_center_right" text="3" />
+                        <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="1" />
+                        <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="2" />
+                        <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="3" />
                      </columns>
                   </TableColumn>
-                  <TableColumn fx:id="exonSeqTableColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Test" />
+                  <TableColumn fx:id="exonSeqTableColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Flow" />
               </columns>
             </TableView>
             <TableView fx:id="cnvAmpliconTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
@@ -56,15 +56,14 @@
                 <TableColumn fx:id="ampliconNameTableColumn" prefWidth="120.0" styleClass="alignment_center" text="Amplicon" />
                   <TableColumn maxWidth="30.0" prefWidth="120.0" styleClass="alignment_center" text="Reference">
                      <columns>
-                        <TableColumn fx:id="ampliconReferenceRatioTableColumn" prefWidth="130.0" styleClass="alignment_center" text="Range" />
-                        <TableColumn fx:id="ampliconReferenceMeanDepthTableColumn" prefWidth="110.0" styleClass="alignment_center_right" text="Mean Depth" />
-                        <TableColumn fx:id="ampliconReferenceMedianDepthTableColumn" prefWidth="110.0" styleClass="alignment_center_right" text="Median Depth" />
+                        <TableColumn fx:id="ampliconReferenceRatioTableColumn" prefWidth="100.0" styleClass="alignment_center" text="Ratio Range" />
+                        <TableColumn fx:id="ampliconReferenceMedianDepthTableColumn" prefWidth="100.0" styleClass="alignment_center_right" text="Depth" />
                      </columns>
                   </TableColumn>
                   <TableColumn prefWidth="90.0" styleClass="alignment_center" text="Sample Ratio">
                      <columns>
-                        <TableColumn fx:id="ampliconSampleDepthTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center_left" text="Depth" />
                         <TableColumn fx:id="ampliconSampleRatioTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center_left" text="Ratio" />
+                        <TableColumn fx:id="ampliconSampleDepthTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center_left" text="Depth" />
                      </columns>
                   </TableColumn>
                   <TableColumn fx:id="ampliconCopyNumberTableColumn" maxWidth="80.0" minWidth="-Infinity" styleClass="alignment_center" text="Copy Number" />
@@ -108,8 +107,8 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+            <VBox fx:id="br4Line" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="br4Body" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="32.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
                <HBox.margin>
                   <Insets left="-1.0" right="-1.0" />
                </HBox.margin>
@@ -283,7 +282,17 @@
                   <String fx:value="box_border_none_target" />
                </styleClass>
             </HBox>
-            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+            <VBox fx:id="brLastLine" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="1.0" style="-fx-border-color: black;">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <HBox fx:id="brLastBody" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="30.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
+               <HBox.margin>
+                  <Insets left="-1.0" right="-1.0" />
+               </HBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefWidth="158.0" HBox.hgrow="ALWAYS">
                <children>
                   <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="25.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
                   <Label minWidth="20.0" text="3'" />
@@ -568,13 +577,13 @@
                   <ToggleGroup fx:id="brcaToggleGroup" />
                </toggleGroup>
             </RadioButton>
-            <Label styleClass="font_size_11" text="(NM_007294.3)" />
+            <Label fx:id="brca1NMLabel" styleClass="font_size_11" text="(NM_007294.3)" />
          </children>
       </VBox>
       <VBox GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
          <children>
             <RadioButton fx:id="brca2RadioButton" mnemonicParsing="false" text="BRCA2" toggleGroup="$brcaToggleGroup" />
-            <Label styleClass="font_size_11" text="(NM_000059.3)" />
+            <Label fx:id="brca2NMLabel" styleClass="font_size_11" text="(NM_000059.3)" />
          </children>
       </VBox>
       <GridPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
@@ -591,15 +600,15 @@
                <children>
                   <Label fx:id="cnvExonLabel" text="CNV EXON INFORMATION" />
                   <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" onMouseClicked="#doExonDeletion" styleClass="cnv_deletion" text="1">
+                  <Label alignment="CENTER" onMouseClicked="#doExonDeletion" styleClass="cnv_deletion" text="D">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
-                  <Label onMouseClicked="#doCnvReport" styleClass="cnv_normal" text="2">
+                  <Label onMouseClicked="#doCnvReport" styleClass="cnv_normal" text="N">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
-                  <Label alignment="CENTER" onMouseClicked="#doExonDuplication" styleClass="cnv_duplication" text="3">
+                  <Label alignment="CENTER" onMouseClicked="#doExonDuplication" styleClass="cnv_duplication" text="A">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Label>
@@ -618,7 +627,17 @@
          </rowConstraints>
          <children>
             <Label text="Summary" />
-            <Label onMouseClicked="#exportExcel" styleClass="excel_download_image" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+               <children>
+                  <RadioButton fx:id="bicRadio" mnemonicParsing="false" style="-fx-font-size: 10;" text="BIC Nomenclature">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="nomenclature" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="hgvsRadio" mnemonicParsing="false" style="-fx-font-size: 10;" text="HGVS Nomenclature" toggleGroup="$nomenclature" />
+                  <Label onMouseClicked="#exportExcel" styleClass="excel_download_image" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
       <HBox fx:id="brca1ExonBox1" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">

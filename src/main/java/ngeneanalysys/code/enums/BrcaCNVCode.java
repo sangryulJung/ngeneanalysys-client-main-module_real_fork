@@ -7,8 +7,9 @@ import ngeneanalysys.util.StringUtils;
  * @since 2018-10-31
  */
 public enum BrcaCNVCode {
-    DELETION("deletion", "Del"),
-    DUPLICATION("duplication", "Dup");
+    DELETION("deletion", "D"),
+    DUPLICATION("duplication", "A"),
+    NORMAL("normal", "N");
 
     private String code;
     private String initial;
@@ -39,6 +40,8 @@ public enum BrcaCNVCode {
             return DELETION.initial;
         } else if(code.equals(DUPLICATION.code)) {
             return DUPLICATION.initial;
+        } else if(code.equals(NORMAL.code)) {
+            return NORMAL.initial;
         }
         return "";
     }

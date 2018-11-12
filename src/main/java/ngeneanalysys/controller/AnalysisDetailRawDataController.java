@@ -1,10 +1,5 @@
 package ngeneanalysys.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.*;
+import ngeneanalysys.code.enums.PipelineCode;
+import ngeneanalysys.model.Panel;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import ngeneanalysys.code.constants.CommonConstants;
@@ -33,6 +30,12 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * @author Jang
  * @since 2017-08-29
@@ -42,6 +45,8 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /** API 서버 통신 서비스 */
     private APIService apiService;
+
+    private Panel panel;
 
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
@@ -82,6 +87,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         apiService.setStage(getMainController().getPrimaryStage());
 
         sample = (SampleView)paramMap.get("sampleView");
+        panel = (Panel)paramMap.get("panel");
 
         createCheckBox();
         typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFileType()));
@@ -151,10 +157,17 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             protected Void call() throws Exception {
                 Map<String,Object> paramMap = new HashMap<>();
                 paramMap.put("sampleId", sample.getId());
+
                 HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
                 totalList = null;
                 AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
                 totalList = analysisFileList.getResult();
+                if(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode().equals(panel.getCode()) ||
+                        PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode().equals(panel.getCode())) {
+                    List<AnalysisFile> files = totalList.stream().filter(item -> item.getName().contains("cnv") ||
+                            item.getName().contains("BRCA_exon")).collect(Collectors.toList());
+                    totalList.removeAll(files);
+                }
                 totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
 
                 return null;

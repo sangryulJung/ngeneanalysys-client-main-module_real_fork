@@ -13,8 +13,9 @@ public class BrcaCnvExon {
     private String warning;
     private String includedInReport;
     private String domain;
-    private Integer swCopyNumber;
-    private Integer expertCopyNumber;
+    private Integer copyNumber;
+    private String swCnv;
+    private String expertCnv;
     private Double copyNumberOneAmpliconPercentage;
     private Double copyNumberTwoAmpliconPercentage;
     private Double copyNumberThreeAmpliconPercentage;
@@ -83,17 +84,24 @@ public class BrcaCnvExon {
     }
 
     /**
-     * @return swCopyNumber
+     * @return copyNumber
      */
-    public Integer getSwCopyNumber() {
-        return swCopyNumber;
+    public Integer getCopyNumber() {
+        return copyNumber;
     }
 
     /**
-     * @return expertCopyNumber
+     * @return swCnv
      */
-    public Integer getExpertCopyNumber() {
-        return expertCopyNumber;
+    public String getSwCnv() {
+        return swCnv;
+    }
+
+    /**
+     * @return expertCnv
+     */
+    public String getExpertCnv() {
+        return expertCnv;
     }
 
     /**

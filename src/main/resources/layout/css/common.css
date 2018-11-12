@@ -1980,3 +1980,23 @@ Button {
 	-fx-pref-height:14;
 	-fx-max-height:14;
 }
+
+.border_top {
+    -fx-border-color : black;
+    -fx-border-width : 0.5 0 0 0;
+}
+
+.border_bottom {
+    -fx-border-color : black;
+    -fx-border-width : 0 0 0.5 0;
+}
+
+.deletion_paint {
+    -fx-background-color : #F04978;
+    -fx-text-fill : white;
+}
+
+.duplication_paint {
+    -fx-background-color : #2D70E8;
+    -fx-text-fill : white;
+}

@@ -11,6 +11,7 @@ public class BrcaCnvAmplicon {
     private String gene;
     private String exon;
     private String amplicon;
+    private String warning;
     private BigDecimal rawRangeMin;
     private BigDecimal rawRangeMax;
     private BigDecimal distributionRangeMin;
@@ -21,6 +22,14 @@ public class BrcaCnvAmplicon {
     private BigDecimal sampleRatio;
     private Integer distributionPrediction;
     private Integer rawPrediction;
+
+
+    /**
+     * @return warning
+     */
+    public String getWarning() {
+        return warning;
+    }
 
     /**
      * @return rawPrediction

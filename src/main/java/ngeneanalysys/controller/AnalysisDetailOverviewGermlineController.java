@@ -5,9 +5,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -16,8 +18,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.controller.fragment.AnalysisDetailOverviewBrcaCnvController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
@@ -41,6 +45,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
     @FXML
     private GridPane dataQCResultGridPane;
+
+    @FXML
+    private GridPane overviewMainGridPane;
 
     @FXML
     private Label pVariantsCountLabel;
@@ -99,6 +106,8 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
+    private AnalysisDetailOverviewBrcaCnvController analysisDetailOverviewBrcaCnvController;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -117,10 +126,38 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
-        Platform.runLater(this::setDisplayItem);
+        setBrcaCnvOverview();
+
+        //Platform.runLater(this::setDisplayItem);
+    }
+
+    private void setBrcaCnvOverview() {
+        Panel panel = (Panel)paramMap.get("panel");
+        if(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode().equals(panel.getCode()) ||
+                PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode().equals(panel.getCode())) {
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 265);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(265);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(265);
+
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_DETAIL_BRCA_CNV_OVERVIEW);
+                Node node = loader.load();
+                AnalysisDetailOverviewBrcaCnvController controller = loader.getController();
+                analysisDetailOverviewBrcaCnvController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                overviewMainGridPane.add(node, 0, 4);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     void setDisplayItem() {
+        if(analysisDetailOverviewBrcaCnvController != null) analysisDetailOverviewBrcaCnvController.getBrcaCnvList();
+
         SampleView sample = (SampleView) getParamMap().get("sampleView");
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,

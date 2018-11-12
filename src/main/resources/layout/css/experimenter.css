@@ -168,10 +168,18 @@
 
 #pathogenicityTable .table-cell {
     -fx-alignment : center;
+    -fx-text-fill : black;
+    -fx-text-background-color : black;
 }
 
 #tierTable .table-cell {
     -fx-alignment : center;
+}
+
+#cnvSummaryTable .table-cell {
+    -fx-alignment : center;
+    -fx-text-fill : black;
+    -fx-text-background-color : black;
 }
 
 #results_image_icon {
