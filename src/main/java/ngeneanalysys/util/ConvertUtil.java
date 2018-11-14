@@ -185,4 +185,56 @@ public class ConvertUtil {
 
 		return WordUtils.capitalize(value.replaceAll("_", " "));
 	}
+
+	public static String convertBrcaCnvRegion(List<String> list, final String gene) {
+		final StringBuilder sb = new StringBuilder();
+		LinkedList<String> tempList = new LinkedList<>();
+		try {
+			list.forEach(item -> {
+				if (item.contains("UTR")) {
+					tempList.add(item);
+				} else {
+					if (tempList.isEmpty()) {
+						tempList.add(item);
+					} else {
+						String last = tempList.getLast();
+						if (last.contains("UTR") && item.equals("2")) {
+							tempList.add(item);
+						} else if (last.contains("UTR")) {
+							sb.append(last).append(" / ");
+							tempList.clear();
+						} else {
+							int lastInt = Integer.parseInt(last);
+							int currentInt = Integer.parseInt(item);
+							if (lastInt == currentInt - 1 ||
+                                    ("BRCA1".equals(gene) && lastInt == 3 && currentInt == 5)) {
+								tempList.add(item);
+							} else if (tempList.size() > 1) {
+								sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast()).append(" / ");
+								tempList.clear();
+								tempList.add(item);
+							} else {
+								sb.append(last).append(" / ");
+								tempList.clear();
+								tempList.add(item);
+							}
+						}
+					}
+				}
+			});
+
+			if(!tempList.isEmpty()) {
+				if(tempList.size() > 1) {
+					sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast());
+				} else {
+					sb.append(tempList.getLast());
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return sb.toString();
+	}
 }

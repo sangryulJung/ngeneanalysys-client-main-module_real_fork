@@ -349,3 +349,9 @@
     -fx-min-height : 16;
     -fx-cursor:hand;
 }
+
+#brcaCnvResultTable .table-cell {
+    -fx-alignment : center;
+    -fx-text-fill : black;
+    -fx-text-background-color : black;
+}

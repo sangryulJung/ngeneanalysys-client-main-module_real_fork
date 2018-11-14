@@ -18,6 +18,7 @@ import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedBrcaCNV;
 import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -63,7 +64,6 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
 
     @Override
     public void show(Parent root) throws IOException {
-        logger.info("test");
         cnvTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCnv()));
         geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         exonTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getResult()));
@@ -87,16 +87,15 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
             brcaCnvExonList = pagedBrcaCNVExon.getResult().stream().sorted((a, b) ->
             {
-                if(a.getExon().startsWith("exon") && b.getExon().startsWith("exon")) {
-                    int intA = Integer.parseInt(a.getExon().replaceAll("exon", ""));
-                    int intB = Integer.parseInt(b.getExon().replaceAll("exon", ""));
-                    return Integer.compare(intA, intB);
-                } else if(a.getExon().startsWith("UTR")) {
-                    return 1;
-                } else if(b.getExon().startsWith("UTR")) {
+                if(a.getExon().contains("UTR")) {
                     return -1;
+                } else if(b.getExon().contains("UTR")) {
+                    return 1;
+                } else {
+                    int intA = Integer.parseInt(a.getExon());
+                    int intB = Integer.parseInt(b.getExon());
+                    return Integer.compare(intA, intB);
                 }
-                return 1;
             }).collect(Collectors.toList());
 
             paintBrcaCnvTable("BRCA1");
@@ -134,8 +133,7 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
                     setLabelStyleClass(optionalBrcaCnvExon, label);
                 } else {
                     Optional<BrcaCnvExon> optionalBrcaCnvExon = brcaCnvExonList.stream().filter(item ->
-                            item.getExon().replaceAll("(exon)|(EXON)", "")
-                                    .equals(label.getId().replaceAll(text, ""))).findFirst();
+                            item.getExon().equals(label.getId().replaceAll(text, ""))).findFirst();
                     setLabelStyleClass(optionalBrcaCnvExon, label);
                 }
             }
@@ -146,6 +144,7 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
     private void setLabelStyleClass(Optional<BrcaCnvExon> optionalBrcaCnvExon, Node label) {
         if(optionalBrcaCnvExon.isPresent()) {
             BrcaCnvExon brcaCnvExon = optionalBrcaCnvExon.get();
+            label.getStyleClass().removeAll("deletion_paint", "duplication_paint");
             if((brcaCnvExon.getExpertCnv() != null &&
                     BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                     BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getSwCnv())) {
@@ -160,7 +159,6 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
                 ((Label)label).setText(BrcaCNVCode.NORMAL.getInitial());
             }
         } else {
-            label.getStyleClass().removeAll("deletion_paint", "duplication_paint");
             ((Label)label).setText("");
         }
     }
@@ -182,15 +180,15 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
 
         if(!brcaCnvExonDeletionList.isEmpty()) {
             BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, BrcaCNVCode.DELETION.getCode(),
-                brcaCnvExonDeletionList.stream().map(item -> item.getExon().replaceAll("(exon)|(EXON)", ""))
-                    .collect(Collectors.joining(", ")));
+                    ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDeletionList.stream().map(BrcaCnvExon::getExon)
+                            .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
         }
 
         if(!brcaCnvExonDuplicationList.isEmpty()) {
             BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, BrcaCNVCode.DUPLICATION.getCode(),
-                    brcaCnvExonDuplicationList.stream().map(item -> item.getExon().replaceAll("(exon)|(EXON)", ""))
-                            .collect(Collectors.joining(", ")));
+                    ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDuplicationList.stream().map(BrcaCnvExon::getExon)
+                            .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
         }
     }

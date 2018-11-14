@@ -328,6 +328,10 @@
     -fx-background-color : #cccccc;
 }
 
+.box_border_target {
+    -fx-background-color : #ffffff;
+}
+
 .report_check {
 	-fx-background-color:#595959;
 	-fx-background-radius:15;

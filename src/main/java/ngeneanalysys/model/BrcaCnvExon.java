@@ -11,7 +11,6 @@ public class BrcaCnvExon {
     private String gene;
     private String exon;
     private String warning;
-    private String includedInReport;
     private String domain;
     private Integer copyNumber;
     private String swCnv;
@@ -67,13 +66,6 @@ public class BrcaCnvExon {
      */
     public String getWarning() {
         return warning;
-    }
-
-    /**
-     * @return includedInReport
-     */
-    public String getIncludedInReport() {
-        return includedInReport;
     }
 
     /**

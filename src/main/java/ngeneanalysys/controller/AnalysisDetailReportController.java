@@ -557,7 +557,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             comboBoxItem -> comboBoxItem.getValue().equals(sampleReport.getVirtualPanelId().toString())).findFirst();
                     item.ifPresent(comboBoxItem -> virtualPanelComboBox.getSelectionModel().select(comboBoxItem));
                 }
-                settingReportData(sampleReport.getContents());
+                if(sampleReport != null) {
+                    settingReportData(sampleReport.getContents());
+                }
                 virtualPanelComboBox.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
                     if(!t1.equals(t)) setVariantsList();
                     if(!t1.equals(t)) setTargetGenesList();

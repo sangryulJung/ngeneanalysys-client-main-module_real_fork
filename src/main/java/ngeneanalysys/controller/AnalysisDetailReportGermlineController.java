@@ -5,18 +5,23 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedBrcaCNV;
+import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.paged.PagedVirtualPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
@@ -138,6 +143,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private File excelFile = null;
 
     private Map<String, Object> variableList = null;
+
+    private AnalysisDetailGermlineCNVReportController analysisDetailGermlineCNVReportController;
 
     @SuppressWarnings("unchecked")
     private void setTargetGenesList() {
@@ -297,6 +304,25 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         panel = sample.getPanel();
 
         setVirtualPanel();
+
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
+                || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 150);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 150);
+
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_DETAIL_BRCA_CNV_REPORT);
+                Node node = loader.load();
+                AnalysisDetailGermlineCNVReportController controller = loader.getController();
+                analysisDetailGermlineCNVReportController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                contentVBox.getChildren().add(2, node);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         HttpClientResponse response = null;
         try {
@@ -540,27 +566,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     + " )"
             );
 
-            List<VariantAndInterpretationEvidence> tableList;
-
-            /*if(pathogenicList != null && !pathogenicList.isEmpty()) {
-                Collections.sort(pathogenicList,
-                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-                tableList.addAll(pathogenicList);
-            }
-
-            if(likelyPathgenicList != null && !likelyPathgenicList.isEmpty()) {
-                Collections.sort(likelyPathgenicList,
-                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-                tableList.addAll(likelyPathgenicList);
-            }
-
-            if(uncertainSignificanceList != null && !uncertainSignificanceList.isEmpty()) {
-                Collections.sort(uncertainSignificanceList,
-                        (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
-
-                tableList.addAll(uncertainSignificanceList);
-            }*/
-
             Collections.sort(list,
                     (a, b) -> a.getSnpInDel().getGenomicCoordinate().getGene().compareTo(b.getSnpInDel().getGenomicCoordinate().getGene()));
 
@@ -568,10 +573,19 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 variantsTable.getItems().removeAll(variantsTable.getItems());
             }
 
-            tableList = list.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+            List<VariantAndInterpretationEvidence> tableList = list.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
                     .collect(Collectors.toList());
 
             variantsTable.getItems().addAll(tableList);
+
+            if(analysisDetailGermlineCNVReportController != null) {
+                response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null,
+                        null, false);
+
+                PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
+                analysisDetailGermlineCNVReportController.setBrcaCnvExonList(pagedBrcaCNVExon.getResult());
+            }
+
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);
         }
@@ -870,6 +884,19 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 }
                 contentsMap.put("conclusion", conclusionLineList);
 
+                if(analysisDetailGermlineCNVReportController != null) {
+                    List<BrcaCnvExon> brcaCnvExons = analysisDetailGermlineCNVReportController.getBrcaCnvExonList();
+                    contentsMap.put("brcaCnvResults", analysisDetailGermlineCNVReportController.getBrcaCnvResultList());
+                    if(brcaCnvExons != null && !brcaCnvExons.isEmpty()) {
+                        contentsMap.put("brca1CnvList",
+                                getBrcaResult(brcaCnvExons.stream().filter(item ->
+                                        "BRCA1".equals(item.getGene())).collect(Collectors.toList())));
+                        contentsMap.put("brca2CnvList",
+                                getBrcaResult(brcaCnvExons.stream().filter(item ->
+                                        "BRCA2".equals(item.getGene())).collect(Collectors.toList())));
+                    }
+                }
+
                 if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
                         panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
                     Map<String, Object> analysisFileMap = new HashMap<>();
@@ -1138,5 +1165,28 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         excelFile, customFieldGridPane, variableList, mainController.getPrimaryStage());
             }
         }
+    }
+
+    private List<BrcaCnvResult> getBrcaResult(List<BrcaCnvExon> brcaCnvExons) {
+        String[] exons = new String[]{"5'UTR", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
+                , "12", "13", "14", "15", "16", "17", "18", "19", "20", "21"
+                , "22", "23", "24", "25", "26", "27"};
+        List<BrcaCnvResult> results = new ArrayList<>();
+        Arrays.stream(exons).forEach(exon -> {
+            Optional<BrcaCnvExon> optionalBrcaCnvExon = brcaCnvExons.stream().filter(item ->
+                    item.getExon().equals(exon)).findFirst();
+            if(optionalBrcaCnvExon.isPresent()) {
+                BrcaCnvExon brcaCnvExon = optionalBrcaCnvExon.get();
+                String code = StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv())
+                        ? BrcaCNVCode.findInitial(brcaCnvExon.getExpertCnv()) : BrcaCNVCode.findInitial(brcaCnvExon.getSwCnv());
+                BrcaCnvResult brcaCnvResult = new BrcaCnvResult(brcaCnvExon.getGene(), brcaCnvExon.getExon(), code);
+                results.add(brcaCnvResult);
+            } else {
+                BrcaCnvResult brcaCnvResult = new BrcaCnvResult(brcaCnvExons.get(0).getGene(), exon, "");
+                results.add(brcaCnvResult);
+            }
+        });
+
+        return results;
     }
 }
