@@ -123,7 +123,7 @@ public class WorksheetUtil {
 	}
 
 
-	public void exportBrcaCnvData(MainApp mainApp, SampleView sample){
+	public void exportGermlineCnvData(MainApp mainApp, SampleView sample, boolean isBrcaCNV, boolean amcCNV){
 		try {
 			// Show save file dialog
 			FileChooser fileChooser = new FileChooser();
@@ -133,7 +133,7 @@ public class WorksheetUtil {
 			fileChooser.setTitle("export BRCA CNV to EXCEL format file");
 			File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 			if (file != null) {
-				Task<Void> task = new ExportVariantDataTask(mainApp, file, true, sample.getId());
+				Task<Void> task = new ExportVariantDataTask(mainApp, file, isBrcaCNV, amcCNV, sample.getId());
 				Thread exportDataThread = new Thread(task);
 				WorkProgressController<Void> workProgressController = new WorkProgressController<>(mainApp, "Export CNV List", task);
 				FXMLLoader loader = mainApp.load(FXMLConstants.WORK_PROGRESS);

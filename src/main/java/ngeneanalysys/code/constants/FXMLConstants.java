@@ -177,7 +177,11 @@ public class FXMLConstants {
 
 	public static final String WORK_PROGRESS = "/layout/fxml/WorkProgress.fxml";
 
-	public static final String ANALYSIS_DETAIL_DETAIL_BRCA_CNV_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-BRCA-CNV.fxml";
+	public static final String ANALYSIS_DETAIL_BRCA_CNV_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-BRCA-CNV.fxml";
 
-	public static final String ANALYSIS_DETAIL_DETAIL_BRCA_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Germline-CNV-Report.fxml";
+	public static final String ANALYSIS_DETAIL_BRCA_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Germline-CNV-Report.fxml";
+
+	public static final String ANALYSIS_DETAIL_HERED_CNV = "/layout/fxml/AnalysisDetail-HERED-CNV.fxml";
+
+	public static final String ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Germline-CNV-Report.fxml";
 }

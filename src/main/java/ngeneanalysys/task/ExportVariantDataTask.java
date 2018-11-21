@@ -47,6 +47,7 @@ public class ExportVariantDataTask extends Task<Void> {
 	/** API Service */
 	private APIService apiService;
 	private boolean isBrcaCnv = false;
+	private boolean isAmcCnv = false;
 
 	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, List<Object>> filterList,
 								 Map<String, Object> params, int sampleId) {
@@ -71,7 +72,7 @@ public class ExportVariantDataTask extends Task<Void> {
 		apiService.setStage(mainApp.getPrimaryStage());
 	}
 
-	public ExportVariantDataTask(MainApp mainApp, File file, boolean isBrcaCnv, Integer sampleId) {
+	public ExportVariantDataTask(MainApp mainApp, File file, boolean isBrcaCnv, boolean isAmcCnv, Integer sampleId) {
 		this.file = file;
 		this.isBrcaCnv = isBrcaCnv;
 		this.sampleId = sampleId;
@@ -88,7 +89,9 @@ public class ExportVariantDataTask extends Task<Void> {
 		CloseableHttpClient httpclient = null;
 		CloseableHttpResponse response = null;
 		String downloadUrl = "";
-		if(isBrcaCnv) {
+		if(isAmcCnv) {
+			downloadUrl = "/analysisResults/exportHeredCnv/" + sampleId;
+		} else if(isBrcaCnv) {
 			downloadUrl = "/analysisResults/exportBrcaCnv/" + sampleId;
 		} else if(StringUtils.isEmpty(fileType)) {
 			downloadUrl = "/sampleSummaryExcel";

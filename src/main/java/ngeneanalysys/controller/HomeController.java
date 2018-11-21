@@ -23,7 +23,6 @@ import ngeneanalysys.animaition.HddStatusTimer;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.controller.systemMenu.SystemMenuPublicDatabasesController;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNotice;
 import ngeneanalysys.model.paged.PagedRun;
@@ -35,12 +34,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jang
@@ -95,7 +91,6 @@ public class HomeController extends SubPaneController{
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("HomeController show..");
-
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 

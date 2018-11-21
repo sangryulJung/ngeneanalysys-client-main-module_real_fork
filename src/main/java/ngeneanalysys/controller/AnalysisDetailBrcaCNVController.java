@@ -142,7 +142,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             brca2NMLabel.setText("(NM_000059.3)");
             br4Line.setPrefWidth(5);
             br4Body.setPrefWidth(32);
-            brLastLine.setPrefWidth(1);
+            brLastLine.setPrefWidth(0);
             brLastBody.setPrefWidth(2);
             HBox.setHgrow(br4Line, Priority.ALWAYS);
             HBox.setHgrow(brLastLine, Priority.NEVER);
@@ -388,6 +388,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         double xPos = idx * size;
                         double wPos = xPos + size;
                         gc.fillRect(xPos, 0, wPos, maxHeight);
+
+                        if(wPos < maxWidth) {
+                            gc.setFill(Color.WHITE);
+                            gc.fillRect(wPos - 0.4, 0, wPos, maxHeight);
+                        }
                     }
                     this.setAlignment(Pos.CENTER);
                     setGraphic(canvas);
@@ -483,7 +488,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
 
         List<BrcaCnvAmplicon> list = getBrcaCnvAmpliconsByExon(gene, exon);
-        ampliconNameTableColumn.setText("Amplicon\n" + list.size());
+        ampliconNameTableColumn.setText("Amplicon" + System.lineSeparator() + "(" + list.size() + ")");
         if(!list.isEmpty()) cnvAmpliconTableView.getItems().addAll(list);
     }
 
@@ -662,7 +667,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     public void exportExcel() {
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportBrcaCnvData(this.getMainApp(), sample);
+        worksheetUtil.exportGermlineCnvData(this.getMainApp(), sample, true, false);
     }
 
     private void setTableView(final String gene, final String exon) {

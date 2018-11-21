@@ -54,6 +54,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private AnalysisDetailBrcaCNVController brcaCNVController;
 
+    private AnalysisDetailHeredCNVController heredCNVController;
+
     private AnalysisDetailTSTCNVController tstCNVController;
 
     private AnalysisDetailTSTFusionController tstFusionController;
@@ -99,7 +101,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
             } else {
                 snvLabel.setText("SNV/Indel");
             }
-            snvLabel.getStyleClass().add("bold");
+            //snvLabel.getStyleClass().add("bold");
         }
     }
 
@@ -126,6 +128,24 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
             try {
                 HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, null);
+                PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
+                if (pagedCNV.getCount() > 0) {
+                    return true;
+                }
+            } catch (WebAPIException wae) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkHeredAmcCNV() {
+        SampleView sample = (SampleView)paramMap.get("sampleView");
+
+        if(sample.getPanel().getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
+            try {
+                HttpClientResponse response = apiService.get("/analysisResults/normalizedCoverage/" + sample.getId(), null, null, null);
                 PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
                 if (pagedCNV.getCount() > 0) {
                     return true;
@@ -169,6 +189,16 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     menu.setMenuName("CNV");
                     menu.setParamMap(getParamMap());
                     menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV);
+                    menu.setDisplayOrder(1);
+                    menu.setStaticMenu(true);
+                    topMenus[1] = menu;
+                } else if(checkHeredAmcCNV()) {
+                    topMenus = new TopMenu[2];
+                    topMenuContent = new Node[topMenus.length];
+                    menu = new TopMenu();
+                    menu.setMenuName("CNV");
+                    menu.setParamMap(getParamMap());
+                    menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_HERED_CNV);
                     menu.setDisplayOrder(1);
                     menu.setStaticMenu(true);
                     topMenus[1] = menu;
@@ -247,6 +277,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     region.getStyleClass().add("region-small");
                     menuName.getStyleClass().add("label-small");
                 }
+                menuName.getStyleClass().add("bold");
                 menu.getChildren().setAll(region, menuName);
 
                 // 마우스 커서 타입 설정
@@ -339,6 +370,13 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                             brcaCNVController.setVariantsController(this);
                             brcaCNVController.setParamMap(menu.getParamMap());
                             brcaCNVController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_HERED_CNV:
+                            heredCNVController = loader.getController();
+                            heredCNVController.setMainController(this.getMainController());
+                            heredCNVController.setVariantsController(this);
+                            heredCNVController.setParamMap(menu.getParamMap());
+                            heredCNVController.show((Parent) node);
                             break;
                         default:
                             break;

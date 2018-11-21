@@ -505,3 +505,15 @@
 	-fx-text-alignment:center;
     -fx-alignment:center;
 }
+
+.fraction_normal .hbox {
+    -fx-background-color : white;
+}
+
+.fraction_duplication .hbox {
+    -fx-background-color : #F04978;
+}
+
+.fraction_homo .hbox {
+    -fx-background-color : lightgray;
+}

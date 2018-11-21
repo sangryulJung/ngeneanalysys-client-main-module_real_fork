@@ -125,6 +125,7 @@ public class CommonConstants {
 	public static final String TST170_RNA_PIPELINE = "TST170_RNA_Pipeline";
 	public static final String HERED_ACCUTEST_PIPELINE = "HEREDaccuTest_DNA_Pipeline";
 	public static final String HERED_ACCUTEST_CNV_PIPELINE = "HEREDaccuTest_DNA_CNV_Pipeline";
+	public static final String HERED_ACCUTEST_AMC_CNV_PIPELINE = "HEREDaccuTest_DNA_AMC_CNV_Pipeline";
 	public static final String ANALYSIS_TARGET_DNA = "DNA";
 	public static final String ANALYSIS_TARGET_RNA = "RNA";
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+<TableView fx:id="heredAmcCnvResultTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailGermlineAmcCNVReportController">
+  <columns>
+    <TableColumn fx:id="geneTableColumn" prefWidth="75.0" text="Gene" />
+    <TableColumn fx:id="variantTableColumn" prefWidth="100.0" text="Variant" />
+      <TableColumn fx:id="classificationTableColumn" prefWidth="150.0" text="Classification" />
+      <TableColumn fx:id="inheritanceTableColumn" prefWidth="100.0" text="Inheritance" />
+      <TableColumn fx:id="parentalOriginTableColumn" prefWidth="130.0" text="Parental origin" />
+  </columns>
+</TableView>

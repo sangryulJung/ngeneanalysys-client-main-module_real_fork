@@ -1272,13 +1272,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             if(findQC.isPresent()) {
                     SampleQC qcData = findQC.get();
                     String number = findQC.get().getQcValue().toString();
-                    Long value = Math.round(Double.parseDouble(number));
+                    Double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024).stripTrailingZeros());
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_DOWN).stripTrailingZeros());
                 return qcData;
             }
         }

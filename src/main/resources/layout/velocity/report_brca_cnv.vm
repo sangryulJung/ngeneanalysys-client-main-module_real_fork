@@ -657,12 +657,12 @@
 													#if($exonData.result == "D")
 														#set($color = "#F04978")
 														#set($fontColor = "#FFF")
-													#elseif($exonData.result == "N")
-														#set($color = "#FFFFFF")
-														#set($fontColor = "#000")
 													#elseif($exonData.result == "A")
 														#set($color = "#2D70E8")
 														#set($fontColor = "#FFF")
+													#else
+														#set($color = "#FFFFFF")
+														#set($fontColor = "#000")
 													#end
 													<fo:table-cell border-width="0.5pt" border-style="solid" background-color="$color" text-align="center">
 														<fo:block color="$fontColor">
@@ -682,12 +682,12 @@
 													#if($exonData.result == "D")
 														#set($color = "#F04978")
 														#set($fontColor = "#FFF")
-													#elseif($exonData.result == "N")
-														#set($color = "#FFFFFF")
-														#set($fontColor = "#000")
 													#elseif($exonData.result == "A")
 														#set($color = "#2D70E8")
 														#set($fontColor = "#FFF")
+													#else
+														#set($color = "#FFFFFF")
+														#set($fontColor = "#000")
 													#end
 													<fo:table-cell border-width="0.5pt" border-style="solid" background-color="$color" text-align="center">
 														<fo:block color="$fontColor">

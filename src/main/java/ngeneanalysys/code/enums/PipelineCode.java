@@ -19,6 +19,7 @@ public enum PipelineCode {
 	SOLID_ACCUTEST_CNV_DNA(CommonConstants.SOLID_ACCUTEST_DNA_CNV_PIPELINE, "SOLIDaccuTest CNV DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	HERED_ACCUTEST_DNA(CommonConstants.HERED_ACCUTEST_PIPELINE, "HEREDaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	HERED_ACCUTEST_CNV_DNA(CommonConstants.HERED_ACCUTEST_CNV_PIPELINE, "HEREDaccuTest CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
+	HERED_ACCUTEST_AMC_CNV_DNA(CommonConstants.HERED_ACCUTEST_AMC_CNV_PIPELINE, "HEREDaccuTest AMC CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE, "BRCAaccuTest PLUS DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_CMC_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE, "BRCAaccuTest PLUS CMC DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_MLPA_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE, "BRCAaccuTest PLUS MLPA DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
@@ -102,6 +103,7 @@ public enum PipelineCode {
 				break;
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
 			case CommonConstants.HERED_ACCUTEST_CNV_PIPELINE:
+			case CommonConstants.HERED_ACCUTEST_AMC_CNV_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				break;
 			default:
@@ -142,6 +144,9 @@ public enum PipelineCode {
 			case CommonConstants.HERED_ACCUTEST_CNV_PIPELINE:
 				returnPipeline = HERED_ACCUTEST_CNV_DNA;
 				break;
+			case CommonConstants.HERED_ACCUTEST_AMC_CNV_PIPELINE:
+				returnPipeline = HERED_ACCUTEST_AMC_CNV_DNA;
+				break;
 			case CommonConstants.HEME_ACCUTEST_DNA_CNV_PIPELINE:
 				returnPipeline = HEME_ACCUTEST_CNV_DNA;
 				break;
@@ -173,6 +178,7 @@ public enum PipelineCode {
 				break;
 			case CommonConstants.HERED_ACCUTEST_PIPELINE:
 			case CommonConstants.HERED_ACCUTEST_CNV_PIPELINE:
+			case CommonConstants.HERED_ACCUTEST_AMC_CNV_PIPELINE:
 				list.add("homopolymer");
 				list.add("repeat_sequence");
 				list.add("sequencing_error");
@@ -197,7 +203,8 @@ public enum PipelineCode {
 
 	public static boolean isHeredPipeline(String code) {
 		return StringUtils.isNotEmpty(code) && (code.equals(HERED_ACCUTEST_DNA.getCode())
-				|| code.equals(HERED_ACCUTEST_CNV_DNA.getCode()));
+				|| code.equals(HERED_ACCUTEST_CNV_DNA.getCode())
+				|| code.equals(HERED_ACCUTEST_AMC_CNV_DNA.getCode()));
 	}
 
 	public static boolean isHemePipeline(String code) {

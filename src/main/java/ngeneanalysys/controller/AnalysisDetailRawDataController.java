@@ -167,6 +167,10 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                     List<AnalysisFile> files = totalList.stream().filter(item -> item.getName().contains("cnv") ||
                             item.getName().contains("BRCA_exon")).collect(Collectors.toList());
                     totalList.removeAll(files);
+                } else if(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode().equals(panel.getCode())) {
+                    List<AnalysisFile> files = totalList.stream().filter(item -> item.getName().contains("snp_vaf") ||
+                            item.getName().contains("gene_coverage")).collect(Collectors.toList());
+                    totalList.removeAll(files);
                 }
                 totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
 

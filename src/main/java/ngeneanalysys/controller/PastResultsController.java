@@ -32,7 +32,6 @@ import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 
 import ngeneanalysys.code.AnalysisJobStatusCode;
@@ -751,11 +750,11 @@ public class PastResultsController extends SubPaneController {
 			HBox titleBox = new HBox();
 			String styleClass = "sample_list_label";
 			Label name = new Label("Sample");
-			labelSize(name, 180., "sample_list_label_left");
+			labelSize(name, 180., styleClass);
 			Label status = new Label("Status");
 			labelSize(status, 70., styleClass);
 			Label panel = new Label("Panel");
-			labelSize(panel, 170., "sample_list_label_left");
+			labelSize(panel, 170., styleClass);
 			Label variants = new Label("Variant");
 			labelSize(variants, 340., styleClass);
 			Label qc = new Label("QC");

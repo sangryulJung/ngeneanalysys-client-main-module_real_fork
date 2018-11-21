@@ -311,7 +311,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 150);
 
             try {
-                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_DETAIL_BRCA_CNV_REPORT);
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV_REPORT);
                 Node node = loader.load();
                 AnalysisDetailGermlineCNVReportController controller = loader.getController();
                 analysisDetailGermlineCNVReportController = controller;
@@ -602,9 +602,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private List<VariantAndInterpretationEvidence> settingPathogenicityList(List<VariantAndInterpretationEvidence> allTierList,
                                                                            String pathogenicity) {
         if(!StringUtils.isEmpty(pathogenicity)) {
-            return allTierList.stream().filter(item -> ((pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
+            return allTierList.stream().filter(item -> (pathogenicity.equalsIgnoreCase(item.getSnpInDel().getExpertPathogenicity()) ||
                     (StringUtils.isEmpty(item.getSnpInDel().getExpertPathogenicity())
-                            && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity)))))
+                            && item.getSnpInDel().getSwPathogenicity().equalsIgnoreCase(pathogenicity))))
                     .collect(Collectors.toList());
         }
 
