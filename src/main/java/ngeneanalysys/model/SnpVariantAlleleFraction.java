@@ -13,7 +13,7 @@ public class SnpVariantAlleleFraction {
     private String dbSnpId;
     private BigDecimal minReferenceHeteroRange;
     private BigDecimal maxReferenceHeteroRange;
-    private BigDecimal sample;
+    private BigDecimal vaf;
     private BigDecimal depth;
     private String zygosity;
     private String prediction;
@@ -61,10 +61,10 @@ public class SnpVariantAlleleFraction {
     }
 
     /**
-     * @return sample
+     * @return vaf
      */
-    public BigDecimal getSample() {
-        return sample;
+    public BigDecimal getVaf() {
+        return vaf;
     }
 
     /**

@@ -108,7 +108,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                 new SimpleStringProperty(
                         String.format("%.02f", item.getValue().getMinReferenceHeteroRange()) + " - " +
                                 String.format("%.02f", item.getValue().getMaxReferenceHeteroRange())));
-        snpVafSampleColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSample()));
+        snpVafSampleColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getVaf()));
         snpVafDepthColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDepth()));
         snpVafZygosityColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getZygosity()));
         snpVafPredictionColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));
