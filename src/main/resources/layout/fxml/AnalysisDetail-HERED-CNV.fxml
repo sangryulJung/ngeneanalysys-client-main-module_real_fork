@@ -7,18 +7,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailHeredCNVController">
+<GridPane fx:id="heredCnvWrapprer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailHeredCNVController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="535.0" prefWidth="535.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="535.0" prefWidth="535.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
   </columnConstraints>
   <rowConstraints>
@@ -50,70 +51,70 @@
       <HBox fx:id="alleleFractionHBox" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_1" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_1" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="1" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_2" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_2" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="2" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_3" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_3" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="3" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_4" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_4" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="4" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_5" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_5" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="5" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_6" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_6" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="6" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_7" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_7" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="7" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_8" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_8" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="8" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_9" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_9" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="9" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
-            <VBox fx:id="eoxn_10" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
+            <VBox fx:id="exon_10" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
                <children>
                   <HBox maxWidth="35.0" prefHeight="20.0" prefWidth="35.0" style="-fx-border-color: black; -fx-border-width: 0.5;" styleClass="hbox" />
                   <Label styleClass="font_size_10" text="10" />
@@ -122,29 +123,33 @@
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
-      <TableView fx:id="snpVariantAlleleFractionTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
+      <TableView fx:id="snpVariantAlleleFractionTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
         <columns>
-          <TableColumn fx:id="snpVafNumberColumn" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" text="#" />
-          <TableColumn fx:id="snpVafGeneColumn" prefWidth="75.0" text="Gene" />
-            <TableColumn fx:id="snpVafDbSnpIdColumn" prefWidth="75.0" text="dbSNP ID" />
-            <TableColumn fx:id="snpVafReferenceRangeColumn" prefWidth="75.0" text="Reference Hetero Range" />
-            <TableColumn fx:id="snpVafSampleColumn" prefWidth="75.0" text="VAF" />
-            <TableColumn fx:id="snpVafDepthColumn" prefWidth="75.0" text="Depth" />
-            <TableColumn fx:id="snpVafZygosityColumn" prefWidth="75.0" text="Zygosity" />
-            <TableColumn fx:id="snpVafPredictionColumn" prefWidth="75.0" text="Prediction" />
+          <TableColumn fx:id="snpVafNumberColumn" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" styleClass="alignment_center" text="#" />
+          <TableColumn fx:id="snpVafGeneColumn" prefWidth="60.0" styleClass="alignment_center" text="Gene" />
+            <TableColumn fx:id="snpVafDbSnpIdColumn" prefWidth="90.0" styleClass="alignment_center" text="dbSNP ID" />
+            <TableColumn fx:id="snpVafReferenceRangeColumn" prefWidth="100.0" styleClass="alignment_center" text="Reference Hetero Range" />
+            <TableColumn fx:id="snpVafSampleColumn" prefWidth="55.0" styleClass="alignment_center" text="VAF" />
+            <TableColumn fx:id="snpVafDepthColumn" prefWidth="55.0" styleClass="alignment_center" text="Depth" />
+            <TableColumn fx:id="snpVafZygosityColumn" prefWidth="65.0" styleClass="alignment_center" text="Zygosity" />
+            <TableColumn fx:id="snpVafPredictionColumn" prefWidth="75.0" styleClass="alignment_center" text="Prediction" />
         </columns>
       </TableView>
-      <TableView fx:id="normalizedCoverageTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+      <TableView fx:id="normalizedCoverageTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="3" GridPane.rowIndex="5">
         <columns>
-          <TableColumn fx:id="coverageGeneColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Gene" />
-          <TableColumn fx:id="coverageWarningColumn" prefWidth="75.0" text="Warning" />
-            <TableColumn fx:id="coverageReferenceRangeColumn" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" text="Reference Range" />
-            <TableColumn fx:id="coverageRatioColumn" prefWidth="75.0" text="Ratio" />
-            <TableColumn fx:id="coverageDepthColumn" prefWidth="75.0" text="Depth" />
-            <TableColumn fx:id="coveragePredictionColumn" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="Prediction" />
+          <TableColumn fx:id="coverageGeneColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" styleClass="alignment_center" text="Gene" />
+          <TableColumn fx:id="coverageWarningColumn" maxWidth="55.0" minWidth="55.0" prefWidth="55.0" styleClass="alignment_center" text="Warning" />
+            <TableColumn fx:id="coverageReferenceRangeColumn" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" styleClass="alignment_center" text="Reference Range" />
+            <TableColumn fx:id="coverageRatioColumn" prefWidth="75.0" styleClass="alignment_center" text="Ratio" />
+            <TableColumn fx:id="coverageDepthColumn" prefWidth="75.0" styleClass="alignment_center" text="Depth" />
+            <TableColumn fx:id="coveragePredictionColumn" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="alignment_center" text="Prediction" />
         </columns>
       </TableView>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+      <HBox fx:id="imageHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="170.0" minWidth="535.0" prefHeight="170.0" prefWidth="535.0" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
+         <children>
+            <ImageView fx:id="plotImageView" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />

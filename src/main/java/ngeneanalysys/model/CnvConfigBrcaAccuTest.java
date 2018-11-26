@@ -6,7 +6,7 @@ package ngeneanalysys.model;
  */
 public class CnvConfigBrcaAccuTest {
     private String ampliconCopyNumberPredictionAlgorithm;
-    private Double simpleCutoffDulplicationValue;
+    private Double simpleCutoffDuplicationValue;
     private Double simpleCutoffDeletionValue;
     private Integer exonCopyNumberPredictionThreshold;
 
@@ -17,9 +17,40 @@ public class CnvConfigBrcaAccuTest {
         return ampliconCopyNumberPredictionAlgorithm;
     }
 
-    public Double getSimpleCutoffDulplicationValue() { return simpleCutoffDulplicationValue; }
+    /**
+     * @param ampliconCopyNumberPredictionAlgorithm
+     */
+    public void setAmpliconCopyNumberPredictionAlgorithm(String ampliconCopyNumberPredictionAlgorithm) {
+        this.ampliconCopyNumberPredictionAlgorithm = ampliconCopyNumberPredictionAlgorithm;
+    }
 
-    public Double getSimpleCutoffDeletionValue() { return simpleCutoffDeletionValue; }
+    /**
+     * @return simpleCutoffDuplicationValue
+     */
+    public Double getSimpleCutoffDuplicationValue() {
+        return simpleCutoffDuplicationValue;
+    }
+
+    /**
+     * @param simpleCutoffDuplicationValue
+     */
+    public void setSimpleCutoffDuplicationValue(Double simpleCutoffDuplicationValue) {
+        this.simpleCutoffDuplicationValue = simpleCutoffDuplicationValue;
+    }
+
+    /**
+     * @return simpleCutoffDeletionValue
+     */
+    public Double getSimpleCutoffDeletionValue() {
+        return simpleCutoffDeletionValue;
+    }
+
+    /**
+     * @param simpleCutoffDeletionValue
+     */
+    public void setSimpleCutoffDeletionValue(Double simpleCutoffDeletionValue) {
+        this.simpleCutoffDeletionValue = simpleCutoffDeletionValue;
+    }
 
     /**
      * @return exonCopyNumberPredictionThreshold
@@ -28,18 +59,9 @@ public class CnvConfigBrcaAccuTest {
         return exonCopyNumberPredictionThreshold;
     }
 
-    public void setAmpliconCopyNumberPredictionAlgorithm(String ampliconCopyNumberPredictionAlgorithm) {
-        this.ampliconCopyNumberPredictionAlgorithm = ampliconCopyNumberPredictionAlgorithm;
-    }
-
-    public void setSimpleCutoffDulplicationValue(Double simpleCutoffDulplicationValue) {
-        this.simpleCutoffDulplicationValue = simpleCutoffDulplicationValue;
-    }
-
-    public void setSimpleCutoffDeletionValue(Double simpleCutoffDeletionValue) {
-        this.simpleCutoffDeletionValue = simpleCutoffDeletionValue;
-    }
-
+    /**
+     * @param exonCopyNumberPredictionThreshold
+     */
     public void setExonCopyNumberPredictionThreshold(Integer exonCopyNumberPredictionThreshold) {
         this.exonCopyNumberPredictionThreshold = exonCopyNumberPredictionThreshold;
     }

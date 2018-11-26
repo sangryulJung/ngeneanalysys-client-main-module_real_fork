@@ -6,21 +6,21 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.NormalizedCoverage;
-import ngeneanalysys.model.SampleView;
-import ngeneanalysys.model.SnpVariantAlleleFraction;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNormalizedCoverage;
 import ngeneanalysys.model.paged.PagedSnpVariantAlleleFraction;
 import ngeneanalysys.model.render.ComboBoxItem;
+import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.RawDataDownloadService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -28,9 +28,12 @@ import ngeneanalysys.util.WorksheetUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -39,6 +42,14 @@ import java.util.Optional;
  */
 public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
+
+    @FXML
+    private GridPane heredCnvWrapprer;
+
+    @FXML
+    private HBox imageHBox;
+    @FXML
+    private ImageView plotImageView;
 
     @FXML
     private HBox alleleFractionHBox;
@@ -62,7 +73,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     @FXML
     private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafSampleColumn;
     @FXML
-    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafDepthColumn;
+    private TableColumn<SnpVariantAlleleFraction, Integer> snpVafDepthColumn;
     @FXML
     private TableColumn<SnpVariantAlleleFraction, String> snpVafZygosityColumn;
     @FXML
@@ -115,12 +126,21 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
 
         coverageGeneColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         coverageWarningColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getWarning()));
+        coverageWarningColumn.setCellFactory(param -> new TableCell<NormalizedCoverage, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                setGraphic((StringUtils.isNotEmpty(item)) ?
+                        SNPsINDELsList.getWarningReasonPopOver(item, sample.getPanel()) : null);
+            }
+        });
         coverageReferenceRangeColumn.setCellValueFactory(item -> new SimpleStringProperty(
                 String.format("%.02f", item.getValue().getMinReferenceRange()) + " - " +
                 String.format("%.02f", item.getValue().getMaxReferenceRange())));
         coverageRatioColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleRatio()));
         coverageDepthColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleDepth()));
         coveragePredictionColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));
+
+        setList();
 
         variantsController.getDetailContents().setCenter(root);
     }
@@ -177,14 +197,60 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                 }
             }
         };
+        Task<Void> imageTask = new Task<Void>() {
+
+            ByteArrayInputStream inputStream;
+
+            @Override
+            protected Void call() throws Exception {
+                Map<String,Object> paramMap = new HashMap<>();
+                paramMap.put("sampleId", sample.getId());
+                HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
+                AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+                Optional<AnalysisFile> optionalAnalysisFile = analysisFileList.getResult().stream()
+                        .filter(item -> item.getName().contains(".cnv_boxplot.png")).findFirst();
+                if(optionalAnalysisFile.isPresent()) {
+                    inputStream = RawDataDownloadService.getInstance().getImageStream(optionalAnalysisFile.get());
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                if(inputStream != null) {
+                    plotImageView.setImage(new Image(inputStream));
+                    //plotImageView.fitWidthProperty().bind(imageHBox.widthProperty());
+                    plotImageView.setFitWidth(imageHBox.getWidth());
+                    imageHBox.widthProperty().addListener((observable, oldValue, newValue) ->
+                            plotImageView.setFitWidth((Double) newValue));
+                }
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                Exception e = new Exception(getException());
+                if (e instanceof WebAPIException) {
+                    DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
+                            ((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
+                } else {
+                    logger.error("Unknown Error", e);
+                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+                    e.printStackTrace();
+                }
+            }
+        };
         Thread thread = new Thread(task);
         thread.start();
+        Thread imageThread = new Thread(imageTask);
+        imageThread.start();
     }
 
     @FXML
     public void excelDownload() {
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportGermlineCnvData(this.getMainApp(), sample, true, false);
+        worksheetUtil.exportGermlineCnvData(this.getMainApp(), sample, false, true);
     }
 
     @FXML
@@ -195,7 +261,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private void paintAlleleFraction(List<SnpVariantAlleleFraction> list) {
         alleleFractionHBox.getChildren().forEach(item -> {
             if(StringUtils.isNotEmpty(item.getId()) && item.getId().startsWith("exon_")) {
-                Integer number = Integer.parseInt(item.getId());
+                Integer number = Integer.parseInt(item.getId().replaceAll("exon_", ""));
                 Optional<SnpVariantAlleleFraction> optionalSnpVariantAlleleFaction =
                         list.stream().filter(snpVaf -> snpVaf.getNumber() == number).findFirst();
 
@@ -203,7 +269,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                     item.getStyleClass().removeAll("fraction_normal", "fraction_duplication",
                             "fraction_homo");
 
-                    if(StringUtils.isEmpty(snpVariantAlleleFraction.getPrediction())) {
+                    if("-".equals(snpVariantAlleleFraction.getPrediction())) {
                         item.getStyleClass().add("fraction_homo");
                     } else if(snpVariantAlleleFraction.getPrediction().equals(BrcaCNVCode.NORMAL.getCode())) {
                         item.getStyleClass().add("fraction_normal");

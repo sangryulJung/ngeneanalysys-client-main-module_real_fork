@@ -19,6 +19,7 @@ import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
 import ngeneanalysys.model.paged.PagedBrcaCNV;
 import ngeneanalysys.model.paged.PagedCnv;
+import ngeneanalysys.model.paged.PagedNormalizedCoverage;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -146,7 +147,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         if(sample.getPanel().getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
             try {
                 HttpClientResponse response = apiService.get("/analysisResults/normalizedCoverage/" + sample.getId(), null, null, null);
-                PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
+                PagedNormalizedCoverage pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedNormalizedCoverage.class);
                 if (pagedCNV.getCount() > 0) {
                     return true;
                 }

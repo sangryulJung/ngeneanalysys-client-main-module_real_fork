@@ -517,3 +517,17 @@
 .fraction_homo .hbox {
     -fx-background-color : lightgray;
 }
+
+#heredCnvWrapprer .btn_warn {
+	-fx-background-image:url('../images/renewal/icon_warn_small.png');
+	-fx-background-size:16;
+	-fx-background-repeat:no-repeat;
+	-fx-background-color:transparent;
+	-fx-background-insets:0;
+	-fx-border-width:0;
+	-fx-pref-width:16;
+	-fx-min-height:16;
+	-fx-pref-height:16;
+	-fx-max-height:16;
+	-fx-padding:1 0 0 0;
+}

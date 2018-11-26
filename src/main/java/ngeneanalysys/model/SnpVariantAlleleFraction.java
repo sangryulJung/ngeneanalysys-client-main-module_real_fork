@@ -14,7 +14,7 @@ public class SnpVariantAlleleFraction {
     private BigDecimal minReferenceHeteroRange;
     private BigDecimal maxReferenceHeteroRange;
     private BigDecimal vaf;
-    private BigDecimal depth;
+    private Integer depth;
     private String zygosity;
     private String prediction;
 
@@ -70,7 +70,7 @@ public class SnpVariantAlleleFraction {
     /**
      * @return depth
      */
-    public BigDecimal getDepth() {
+    public Integer getDepth() {
         return depth;
     }
 

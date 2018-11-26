@@ -169,6 +169,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         sample = (SampleView)paramMap.get("sampleView");
         panel = sample.getPanel();
 
+        exonTableView.setStyle(exonTableView.getStyle() + "-fx-selection-bar-non-focused : skyblue;");
+        cnvAmpliconTableView.setStyle(exonTableView.getStyle() + "-fx-selection-bar-non-focused : skyblue;");
+
         bicRadio.selectedProperty().addListener((ob, ov, nv) -> {
             if(nv) {
                 setNomenclature("BIC");

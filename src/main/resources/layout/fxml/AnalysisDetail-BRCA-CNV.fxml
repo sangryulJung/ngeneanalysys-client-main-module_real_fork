@@ -41,14 +41,14 @@
                   <TableColumn fx:id="exonCopyNumberTableColumn" maxWidth="35.0" minWidth="-Infinity" prefWidth="35.0" text="CNV" />
                   <TableColumn fx:id="exonWarningTableColumn" prefWidth="55.0" text="Warning" />
                   <TableColumn fx:id="exonDomainTableColumn" maxWidth="80.0" minWidth="-Infinity" text="Domain" />
-                  <TableColumn maxWidth="150.0" minWidth="-Infinity" prefWidth="150.0" text="Amplicon">
+                  <TableColumn maxWidth="150.0" minWidth="-Infinity" prefWidth="150.0" text="Amplicon Ratio">
                      <columns>
-                        <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="1" />
-                        <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="2" />
-                        <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="3" />
+                        <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="D" />
+                        <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="N" />
+                        <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn" maxWidth="55.0" minWidth="-Infinity" prefWidth="55.0" styleClass="alignment_center_right" text="A" />
                      </columns>
                   </TableColumn>
-                  <TableColumn fx:id="exonSeqTableColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Flow" />
+                  <TableColumn fx:id="exonSeqTableColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Amplicon Flow" />
               </columns>
             </TableView>
             <TableView fx:id="cnvAmpliconTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">

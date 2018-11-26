@@ -75,6 +75,7 @@ public class ExportVariantDataTask extends Task<Void> {
 	public ExportVariantDataTask(MainApp mainApp, File file, boolean isBrcaCnv, boolean isAmcCnv, Integer sampleId) {
 		this.file = file;
 		this.isBrcaCnv = isBrcaCnv;
+		this.isAmcCnv = isAmcCnv;
 		this.sampleId = sampleId;
 		this.mainApp = mainApp;
 		// api service init..

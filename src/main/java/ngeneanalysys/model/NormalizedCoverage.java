@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  * @since 2018-11-15
  */
 public class NormalizedCoverage {
-    private Integer smapleId;
+    private Integer sampleId;
     private String gene;
     private String warning;
     private BigDecimal minReferenceRange;
@@ -17,17 +17,17 @@ public class NormalizedCoverage {
     private String prediction;
 
     /**
+     * @return sampleId
+     */
+    public Integer getSampleId() {
+        return sampleId;
+    }
+
+    /**
      * @return gene
      */
     public String getGene() {
         return gene;
-    }
-
-    /**
-     * @return smapleId
-     */
-    public Integer getSmapleId() {
-        return smapleId;
     }
 
     /**

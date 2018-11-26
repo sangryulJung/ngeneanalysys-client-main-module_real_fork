@@ -1093,7 +1093,7 @@ public class SystemManagerPanelController extends SubPaneController {
                             BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode());
                 }
                 if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDuplicationCutoffTextField.getText())) {
-                    cnvConfigBrcaAaccuTest.setSimpleCutoffDulplicationValue(
+                    cnvConfigBrcaAaccuTest.setSimpleCutoffDuplicationValue(
                             Double.valueOf(brcaCnvAmpliconCnDuplicationCutoffTextField.getText()));
                 }
                 if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDeletionCutoffTextField.getText())) {
@@ -1371,9 +1371,9 @@ public class SystemManagerPanelController extends SubPaneController {
                     } else {
                         distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
                     }
-                    if (cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue() != null) {
+                    if (cnvConfigBRCAaccuTest.getSimpleCutoffDuplicationValue() != null) {
                         brcaCnvAmpliconCnDuplicationCutoffTextField.setText(
-                                cnvConfigBRCAaccuTest.getSimpleCutoffDulplicationValue().toString());
+                                cnvConfigBRCAaccuTest.getSimpleCutoffDuplicationValue().toString());
                     } else {
                         brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
                     }
