@@ -223,6 +223,51 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         ampliconReferenceMedianDepthTableColumn.setCellValueFactory(item ->
                 new SimpleObjectProperty<>(item.getValue().getReferenceMedianDepth()));
         ampliconSampleRatioTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleRatio()));
+        ampliconSampleRatioTableColumn.setCellFactory(column ->
+                new TableCell<BrcaCnvAmplicon, BigDecimal>() {
+                    @Override
+                    protected void updateItem(BigDecimal item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setStyle(getStyle() + "; -fx-alignment : baseline-right;");
+                        if(item == null || empty) {
+                            setText(null);
+                        } else {
+                            BrcaCnvAmplicon amplicon = this.getTableView().getItems().get(this.getIndex());
+                            setText(item.toString());
+                            if(amplicon != null) {
+                                if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().
+                                        equalsIgnoreCase(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+                                    if(amplicon.getDistributionPrediction().equals(2)) {
+                                        if(amplicon.getDistributionRangeMax().subtract(amplicon.getSampleRatio())
+                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                            setTextFill(Color.rgb(168, 200, 232));
+                                        } else if(amplicon.getSampleRatio().subtract(amplicon.getDistributionRangeMin())
+                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                            setTextFill(Color.rgb(240, 161, 181));
+                                        } else{
+                                            setTextFill(Color.BLACK);
+                                        }
+                                    }
+                                } else {
+                                    if(amplicon.getRawPrediction().equals(2)) {
+                                        if(amplicon.getRawRangeMax().subtract(amplicon.getSampleRatio())
+                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                            setTextFill(Color.rgb(168, 200, 232));
+                                        } else if(amplicon.getSampleRatio().subtract(amplicon.getRawRangeMin())
+                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                            setTextFill(Color.rgb(240, 161, 181));
+                                        } else{
+                                            setTextFill(Color.BLACK);
+                                        }
+                                    }
+                                }
+                            } else {
+                                setTextFill(Color.BLACK);
+                            }
+                        }
+                    }
+                }
+        );
         ampliconCopyNumberTableColumn.setText("Copy\nNumber");
         if (BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode()
                 .equals(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
@@ -374,15 +419,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             if(amplicon.getDistributionPrediction().equals(1)) {
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getDistributionPrediction().equals(2)) {
-                                if(amplicon.getDistributionRangeMax().subtract(amplicon.getSampleRatio())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
-                                    gc.setFill(Color.rgb(140, 173, 120));
-                                } else if(amplicon.getSampleRatio().subtract(amplicon.getDistributionRangeMin())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
-                                    gc.setFill(Color.rgb(140, 173, 120));
-                                } else{
-                                    gc.setFill(Color.LIGHTGRAY);
-                                }
+                                gc.setFill(Color.LIGHTGRAY);
                             } else {
                                 gc.setFill(Color.rgb(45, 112, 232));
                             }
@@ -390,15 +427,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             if(amplicon.getRawPrediction().equals(1)) {
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getRawPrediction().equals(2)) {
-                                if(amplicon.getRawRangeMax().subtract(amplicon.getSampleRatio())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
-                                    gc.setFill(Color.rgb(140, 173, 120));
-                                } else if(amplicon.getSampleRatio().subtract(amplicon.getRawRangeMin())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
-                                    gc.setFill(Color.rgb(140, 173, 120));
-                                } else{
-                                    gc.setFill(Color.LIGHTGRAY);
-                                }
+                                gc.setFill(Color.LIGHTGRAY);
                             } else {
                                 gc.setFill(Color.rgb(45, 112, 232));
                             }
