@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
@@ -14,21 +8,24 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
+<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -254,9 +251,9 @@
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="snvMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                          <Label text="Homopolymer &amp; Repeat sequence MAF( x )" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                                          <Label text="Homopolymer &amp; Repeat sequence MAF( % )" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
                                              <tooltip>
-                                                <Tooltip text="Default 30x" />
+                                                <Tooltip text="Default 5%" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="lowConfidenceMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="2" GridPane.rowIndex="3" />
