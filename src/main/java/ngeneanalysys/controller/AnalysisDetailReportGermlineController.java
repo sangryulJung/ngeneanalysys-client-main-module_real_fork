@@ -146,6 +146,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     private AnalysisDetailGermlineCNVReportController analysisDetailGermlineCNVReportController;
 
+    private AnalysisDetailGermlineAmcCNVReportController analysisDetailGermlineAmcCNVReportController;
+
     @SuppressWarnings("unchecked")
     private void setTargetGenesList() {
         if(!targetGenesFlowPane.getChildren().isEmpty()) {
@@ -318,6 +320,22 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 controller.setMainController(this.getMainController());
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
+                contentVBox.getChildren().add(2, node);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 70);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 70);
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT);
+                Node node = loader.load();
+                AnalysisDetailGermlineAmcCNVReportController controller = loader.getController();
+                analysisDetailGermlineAmcCNVReportController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                controller.setCompositeCmtCnvResults();
                 contentVBox.getChildren().add(2, node);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -183,5 +183,7 @@ public class FXMLConstants {
 
 	public static final String ANALYSIS_DETAIL_HERED_CNV = "/layout/fxml/AnalysisDetail-HERED-CNV.fxml";
 
-	public static final String ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Germline-CNV-Report.fxml";
+	public static final String ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Germline-AMC-CNV-Report.fxml";
+
+	public static final String ANALYSIS_DETAIL_HERED_AMC_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-Hered-CNV.fxml";
 }

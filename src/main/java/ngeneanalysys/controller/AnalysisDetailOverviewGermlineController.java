@@ -107,6 +107,8 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
     private AnalysisDetailOverviewBrcaCnvController analysisDetailOverviewBrcaCnvController;
 
+    private AnalysisDetailOverviewHeredAmcController analysisDetailOverviewHeredAmcController;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -150,7 +152,24 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode().equals(panel.getCode())) {
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 110);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(110);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(110);
 
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_OVERVIEW);
+                Node node = loader.load();
+                AnalysisDetailOverviewHeredAmcController controller = loader.getController();
+                analysisDetailOverviewHeredAmcController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                controller.setContents();
+                overviewMainGridPane.add(node, 0, 4);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

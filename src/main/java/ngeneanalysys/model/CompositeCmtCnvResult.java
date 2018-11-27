@@ -14,6 +14,55 @@ public class CompositeCmtCnvResult {
     private String parentalOrigin;
 
     /**
+     * @return sampleId
+     */
+    public Integer getSampleId() {
+        return sampleId;
+    }
+
+    /**
+     * @return gene
+     */
+    public String getGene() {
+        return gene;
+    }
+
+    /**
+     * @return prediction
+     */
+    public String getPrediction() {
+        return prediction;
+    }
+
+    /**
+     * @return includedInReport
+     */
+    public String getIncludedInReport() {
+        return includedInReport;
+    }
+
+    /**
+     * @return classification
+     */
+    public String getClassification() {
+        return classification;
+    }
+
+    /**
+     * @return inheritance
+     */
+    public String getInheritance() {
+        return inheritance;
+    }
+
+    /**
+     * @return parentalOrigin
+     */
+    public String getParentalOrigin() {
+        return parentalOrigin;
+    }
+
+    /**
      * @param sampleId
      */
     public void setSampleId(Integer sampleId) {

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<TableView fx:id="heredAmcCnvResultTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailGermlineAmcCNVReportController">
+<TableView fx:id="heredAmcCnvResultTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailGermlineAmcCNVReportController">
   <columns>
     <TableColumn fx:id="geneTableColumn" prefWidth="75.0" text="Gene" />
     <TableColumn fx:id="variantTableColumn" prefWidth="100.0" text="Variant" />
