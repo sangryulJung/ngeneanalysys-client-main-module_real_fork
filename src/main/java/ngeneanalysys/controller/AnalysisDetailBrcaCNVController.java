@@ -419,7 +419,15 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             if(amplicon.getDistributionPrediction().equals(1)) {
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getDistributionPrediction().equals(2)) {
-                                gc.setFill(Color.LIGHTGRAY);
+                                if(amplicon.getDistributionRangeMax().subtract(amplicon.getSampleRatio())
+                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                    gc.setFill(Color.rgb(168, 200, 232));
+                                } else if(amplicon.getSampleRatio().subtract(amplicon.getDistributionRangeMin())
+                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                    gc.setFill(Color.rgb(240, 161, 181));
+                                } else {
+                                    gc.setFill(Color.LIGHTGRAY);
+                                }
                             } else {
                                 gc.setFill(Color.rgb(45, 112, 232));
                             }
@@ -427,7 +435,15 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             if(amplicon.getRawPrediction().equals(1)) {
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getRawPrediction().equals(2)) {
-                                gc.setFill(Color.LIGHTGRAY);
+                                if(amplicon.getRawRangeMax().subtract(amplicon.getSampleRatio())
+                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                    gc.setFill(Color.rgb(168, 200, 232));
+                                } else if(amplicon.getSampleRatio().subtract(amplicon.getRawRangeMin())
+                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                    gc.setFill(Color.rgb(240, 161, 181));
+                                } else {
+                                    gc.setFill(Color.LIGHTGRAY);
+                                }
                             } else {
                                 gc.setFill(Color.rgb(45, 112, 232));
                             }
