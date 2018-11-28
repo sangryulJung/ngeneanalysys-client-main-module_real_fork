@@ -19,23 +19,22 @@
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="535.0" prefWidth="535.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" />
-      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="535.0" prefWidth="535.0" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="515.0" prefWidth="515.0" />
+      <ColumnConstraints maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="130.0" prefHeight="130.0" vgrow="ALWAYS" />
       <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label styleClass="font_size_15" text="SNP VARIANT ALLELE FRACTION" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label styleClass="font_size_15" text="NORMALIZED GENE COVERAGE" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+      <Label styleClass="font_size_15" text="SNP VARIANT ALLELE FRACTION" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="5">
          <children>
             <Label text="PMP22 CNV" />
             <ComboBox fx:id="predictionComboBox" prefWidth="150.0" />
@@ -43,12 +42,7 @@
             <CheckBox fx:id="reportCheckBox" mnemonicParsing="false" text="Add to Report" />
          </children>
       </HBox>
-      <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-         <children>
-            <Label onMouseClicked="#excelDownload" styleClass="excel_download_image" text="Label" />
-         </children>
-      </HBox>
-      <HBox fx:id="alleleFractionHBox" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <HBox fx:id="alleleFractionHBox" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
             <VBox fx:id="exon_1" alignment="TOP_CENTER" maxWidth="35.0" minWidth="35.0" prefHeight="200.0" prefWidth="35.0">
@@ -123,7 +117,7 @@
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="10.0" prefHeight="10.0" prefWidth="10.0" style="-fx-border-color: blue; -fx-border-width: 0 0 0.5 0;" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
-      <TableView fx:id="snpVariantAlleleFractionTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
+      <TableView fx:id="snpVariantAlleleFractionTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2">
         <columns>
           <TableColumn fx:id="snpVafNumberColumn" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" styleClass="alignment_center" text="#" />
           <TableColumn fx:id="snpVafGeneColumn" prefWidth="60.0" styleClass="alignment_center" text="Gene" />
@@ -135,7 +129,7 @@
             <TableColumn fx:id="snpVafPredictionColumn" prefWidth="75.0" styleClass="alignment_center" text="Prediction" />
         </columns>
       </TableView>
-      <TableView fx:id="normalizedCoverageTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="3" GridPane.rowIndex="5">
+      <TableView fx:id="normalizedCoverageTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4">
         <columns>
           <TableColumn fx:id="coverageGeneColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" styleClass="alignment_center" text="Gene" />
           <TableColumn fx:id="coverageWarningColumn" maxWidth="55.0" minWidth="55.0" prefWidth="55.0" styleClass="alignment_center" text="Warning" />
@@ -145,11 +139,13 @@
             <TableColumn fx:id="coveragePredictionColumn" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="alignment_center" text="Prediction" />
         </columns>
       </TableView>
-      <HBox fx:id="imageHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="170.0" minWidth="535.0" prefHeight="170.0" prefWidth="535.0" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
+      <HBox fx:id="imageHBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="170.0" minWidth="535.0" prefHeight="170.0" prefWidth="535.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2">
          <children>
             <ImageView fx:id="plotImageView" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
+      <Label onMouseClicked="#excelDownload" styleClass="excel_download_image" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+      <Label styleClass="font_size_15" text="NORMALIZED GENE COVERAGE" GridPane.columnIndex="3" GridPane.rowIndex="1" />
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />

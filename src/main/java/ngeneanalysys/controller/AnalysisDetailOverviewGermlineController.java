@@ -165,7 +165,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 controller.setMainController(this.getMainController());
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
-                controller.setContents();
                 overviewMainGridPane.add(node, 0, 4);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -174,7 +173,11 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     }
 
     void setDisplayItem() {
-        if(analysisDetailOverviewBrcaCnvController != null) analysisDetailOverviewBrcaCnvController.getBrcaCnvList();
+        if(analysisDetailOverviewBrcaCnvController != null) {
+            analysisDetailOverviewBrcaCnvController.getBrcaCnvList();
+        } else if(analysisDetailOverviewHeredAmcController != null) {
+            analysisDetailOverviewHeredAmcController.setContents();
+        }
 
         SampleView sample = (SampleView) getParamMap().get("sampleView");
         try {

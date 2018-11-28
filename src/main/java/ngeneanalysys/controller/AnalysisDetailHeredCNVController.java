@@ -17,6 +17,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNormalizedCoverage;
 import ngeneanalysys.model.paged.PagedSnpVariantAlleleFraction;
+import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
@@ -107,6 +108,42 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         this.variantsController = variantsController;
     }
 
+    private void cnvTest() {
+        predictionComboBox.setConverter(new ComboBoxConverter());
+        predictionComboBox.getItems().add(new ComboBoxItem(BrcaCNVCode.DUPLICATION.getCode(), "Duplication"));
+        predictionComboBox.getItems().add(new ComboBoxItem(BrcaCNVCode.DELETION.getCode(), "Deletion"));
+
+        predictionComboBox.valueProperty().addListener((ov, ob, lv) -> {
+            if(lv != null) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("value", lv.getValue());
+                try {
+                    apiService.put("/analysisResults/updateCmtCnvPrediction/" + sample.getId(), params, null, true);
+                } catch (WebAPIException wae) {
+                    wae.printStackTrace();
+                }
+            }
+        });
+
+        reportCheckBox.selectedProperty().addListener((ob, ov, lv) -> {
+            if(lv != null) {
+                Map<String, Object> params = new HashMap<>();
+                if(lv) {
+                    params.put("value", "Y");
+                } else {
+                    params.put("value", "N");
+                }
+
+                try {
+                    apiService.put("/analysisResults/updateCmtCnvIncludedInReport/" + sample.getId(), params, null, true);
+                } catch (WebAPIException wae) {
+                    wae.printStackTrace();
+                }
+            }
+        });
+
+    }
+
     @Override
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
@@ -141,7 +178,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         coveragePredictionColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));
 
         setList();
-
+        cnvTest();
         variantsController.getDetailContents().setCenter(root);
     }
 
@@ -151,6 +188,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
 
             List<SnpVariantAlleleFraction> snpVariantAlleleFractionList;
             List<NormalizedCoverage> normalizedCoverageList;
+            CompositeCmtCnvResult compositeCmtCnvResult;
 
             @Override
             protected Void call() throws Exception {
@@ -166,8 +204,12 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                 response = apiService.get("/analysisResults/normalizedCoverage/" + sample.getId(), null, null, null);
                 PagedNormalizedCoverage pagedNormalizedCoverage = response.getObjectBeforeConvertResponseToJSON(PagedNormalizedCoverage.class);
 
+                response = apiService.get("/analysisResults/compositeCmtCnvResult/" + sample.getId(), null, null, null);
+                CompositeCmtCnvResult compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
+
                 snpVariantAlleleFractionList = pagedSnpVariantAlleleFraction.getResult();
                 normalizedCoverageList = pagedNormalizedCoverage.getResult();
+                this.compositeCmtCnvResult = compositeCmtCnvResult;
 
                 return null;
             }

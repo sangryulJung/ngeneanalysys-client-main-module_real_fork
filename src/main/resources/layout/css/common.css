@@ -2000,3 +2000,15 @@ Button {
     -fx-background-color : #2D70E8;
     -fx-text-fill : white;
 }
+
+#cnvSummaryTable .table-cell {
+    -fx-alignment : center;
+    -fx-text-fill : black;
+    -fx-text-background-color : black;
+}
+
+#heredAmcCnvResultTable .table-cell {
+    -fx-alignment : center;
+    -fx-text-fill : black;
+    -fx-text-background-color : black;
+}

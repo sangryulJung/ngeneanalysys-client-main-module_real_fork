@@ -335,7 +335,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 controller.setMainController(this.getMainController());
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
-                controller.setCompositeCmtCnvResults();
                 contentVBox.getChildren().add(2, node);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -552,6 +551,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     }
 
     void setVariantsList() {
+        if(analysisDetailGermlineAmcCNVReportController != null) {
+            analysisDetailGermlineAmcCNVReportController.setCompositeCmtCnvResults();
+        }
+
         HttpClientResponse response = null;
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -913,6 +916,38 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                                 getBrcaResult(brcaCnvExons.stream().filter(item ->
                                         "BRCA2".equals(item.getGene())).collect(Collectors.toList())));
                     }
+                } else if(analysisDetailGermlineAmcCNVReportController != null) {
+                    Map<String, Object> analysisFileMap = new HashMap<>();
+                    analysisFileMap.put("sampleId", sample.getId());
+                    HttpClientResponse response = apiService.get("/analysisFiles", analysisFileMap, null, false);
+                    AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+
+                    List<AnalysisFile> analysisFiles = analysisFileList.getResult();
+
+                    Optional<AnalysisFile> optionalAnalysisFile = analysisFiles.stream()
+                            .filter(item -> item.getName().contains("boxplot.png")).findFirst();
+
+                     if(optionalAnalysisFile.isPresent()) {
+                        contentsMap.put("cnvPlotImagePath", optionalAnalysisFile.get().getName());
+                        FileUtil.downloadCNVImage(optionalAnalysisFile.get());
+                    }
+
+                    Optional<AnalysisFile> optionalVafFiles = analysisFiles.stream()
+                            .filter(item -> item.getName().contains("vafplot.png")).findFirst();
+
+                    if(optionalVafFiles.isPresent()) {
+                        contentsMap.put("cnvVafImagePath", optionalVafFiles.get().getName());
+                        FileUtil.downloadCNVImage(optionalVafFiles.get());
+                    }
+
+                    try {
+                        response = apiService.get("/analysisResults/compositeCmtCnvResult/" + sample.getId(), null, null, null);
+                        CompositeCmtCnvResult compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
+                        contentsMap.put("compositeCmtCnvResult", compositeCmtCnvResult);
+
+                    } catch (WebAPIException wae) {
+                        logger.debug(wae.getMessage());
+                    }
                 }
 
                 if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
@@ -1138,13 +1173,13 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             if(findQC.isPresent()) {
                 SampleQC qcData = findQC.get();
                 String number = findQC.get().getQcValue().toString();
-                Long value = Math.round(Double.parseDouble(number));
+                Double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024).stripTrailingZeros());
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_DOWN).stripTrailingZeros());
                 return qcData;
             }
         }
