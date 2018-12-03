@@ -692,7 +692,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 sampleSourceComboBoxList.get(index).getItems().add(sampleSourceCode.getDescription());
             }
 
-            if(panelDetail.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode())) {
+            if(panelDetail.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode()) ||
+                    panelDetail.getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
                 sampleIsControlList.get(index).setVisible(true);
             } else {
                 sampleIsControlList.get(index).setVisible(false);
