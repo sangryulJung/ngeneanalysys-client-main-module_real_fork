@@ -9,6 +9,7 @@ import ngeneanalysys.util.StringUtils;
 public enum BrcaCNVCode {
     DELETION("deletion", "D"),
     DUPLICATION("duplication", "A"),
+    AMPLIFICATION("amplification", "A"),
     NORMAL("normal", "N");
 
     private String code;
@@ -42,6 +43,8 @@ public enum BrcaCNVCode {
             return DUPLICATION.initial;
         } else if(code.equals(NORMAL.code)) {
             return NORMAL.initial;
+        } else if(code.equals(AMPLIFICATION.code)) {
+            return AMPLIFICATION.initial;
         }
         return "";
     }

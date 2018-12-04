@@ -135,12 +135,12 @@ Button {
 
 .alignment_top_left {-fx-alignment:top-left;}
 .alignment_top_center {-fx-alignment:top-center;}
-.alignment_top_rightr {-fx-alignment:top-right;}
+.alignment_top_right {-fx-alignment:top-right;}
 .alignment_center_left {-fx-alignment:center-left;}
 .alignment_center {-fx-alignment:center;}
 .alignment_center_right {-fx-alignment:center-right;}
 .alignment_bottom_center {-fx-alignment:bottom-center;}
-.alignment_bottom_rightr {-fx-alignment:bottom-right;}
+.alignment_bottom_right {-fx-alignment:bottom-right;}
 
 .weight_bold {-fx-font-weight:bold;}
 

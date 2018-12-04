@@ -325,8 +325,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 e.printStackTrace();
             }
         } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
-            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 70);
-            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 70);
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 73);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 73);
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT);
                 Node node = loader.load();
@@ -564,6 +564,31 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
+            PagedBrcaCNVExon pagedBrcaCNVExon = null;
+
+            if(analysisDetailGermlineCNVReportController != null) {
+                response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null,
+                        null, false);
+
+                pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
+                analysisDetailGermlineCNVReportController.setBrcaCnvExonList(pagedBrcaCNVExon.getResult());
+            }
+
+            long deletionCount = 0;
+            long amplificationCount = 0;
+
+            if(pagedBrcaCNVExon != null) {
+                deletionCount = pagedBrcaCNVExon.getResult().stream().filter(item ->
+                        (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.DELETION.getCode()))
+                                || item.getSwCnv().equals(BrcaCNVCode.DELETION.getCode())
+                ).count();
+
+                amplificationCount = pagedBrcaCNVExon.getResult().stream().filter(item ->
+                        (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode()))
+                                || item.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())
+                ).count();
+            }
+
             pathogenicList = settingPathogenicityList(list, "P");
 
             likelyPathgenicList = settingPathogenicityList(list, "LP");
@@ -584,6 +609,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     + (usCount > 0  ? ", US: " + usCount : "")
                     + (lbCount > 0  ? ", LB: " + lbCount : "")
                     + (bCount > 0  ? ", B: " + bCount : "")
+                    + (pagedBrcaCNVExon != null ? " / CNV Total: " + (deletionCount + amplificationCount) : "")
+                    + (deletionCount > 0 ? ", Deletion: " + deletionCount : "")
+                    + (amplificationCount > 0 ? ", Amplification: " + amplificationCount : "")
                     + " )"
             );
 
@@ -598,14 +626,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     .collect(Collectors.toList());
 
             variantsTable.getItems().addAll(tableList);
-
-            if(analysisDetailGermlineCNVReportController != null) {
-                response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null,
-                        null, false);
-
-                PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
-                analysisDetailGermlineCNVReportController.setBrcaCnvExonList(pagedBrcaCNVExon.getResult());
-            }
 
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), this.getMainApp().getPrimaryStage(), true);

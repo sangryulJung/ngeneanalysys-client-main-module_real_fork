@@ -238,8 +238,9 @@ public class SystemManagerPanelController extends SubPaneController {
     private File bedFile = null;
 
     private int panelId = 0;
-    private final double simpleCutoffDuplicationDefault = 0.2d;
-    private final double simpleCutoffDeletionDefault = 0.25d;
+    private final double simpleCutoffDuplicationDefault = 0.25d;
+    private final double simpleCutoffDeletionDefault = 0.2d;
+    private final int exonCpnThresholdDefault = 60;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -547,7 +548,7 @@ public class SystemManagerPanelController extends SubPaneController {
         distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
         brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
         brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
-        exonCnpThresholdTextField.setText("80");
+        exonCnpThresholdTextField.setText(String.valueOf(exonCpnThresholdDefault));
 
         warningReadDepthTextField.setText("");
         warningReadDepthTextField.setDisable(true);
@@ -1382,6 +1383,9 @@ public class SystemManagerPanelController extends SubPaneController {
                                 cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue().toString());
                     } else {
                         brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+                    }
+                    if(cnvConfigBRCAaccuTest.getExonCopyNumberPredictionThreshold() != null) {
+                        exonCnpThresholdTextField.setText(cnvConfigBRCAaccuTest.getExonCopyNumberPredictionThreshold().toString());
                     }
                 }
                 VariantFilter variantFilter = panel.getVariantFilter();

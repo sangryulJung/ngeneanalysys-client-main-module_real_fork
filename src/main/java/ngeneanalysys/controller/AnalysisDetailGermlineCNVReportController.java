@@ -10,6 +10,7 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.BrcaCnvExon;
 import ngeneanalysys.model.BrcaCnvResult;
 import ngeneanalysys.util.ConvertUtil;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,19 +96,19 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
                 .collect(Collectors.toList());
         List<BrcaCnvExon> brcaCnvExonDuplicationList = brcaCnvExons.stream().filter(brcaCnvExon ->
                 (brcaCnvExon.getExpertCnv() != null &&
-                        BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                        BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getSwCnv()))
+                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
+                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv()))
                 .collect(Collectors.toList());
 
         if(!brcaCnvExonDeletionList.isEmpty()) {
-            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, BrcaCNVCode.DELETION.getCode(),
+            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.DELETION.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDeletionList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
         }
 
         if(!brcaCnvExonDuplicationList.isEmpty()) {
-            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, BrcaCNVCode.DUPLICATION.getCode(),
+            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.AMPLIFICATION.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDuplicationList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);

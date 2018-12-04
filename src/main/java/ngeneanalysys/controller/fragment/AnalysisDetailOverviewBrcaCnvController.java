@@ -23,6 +23,7 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -146,10 +147,10 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
             BrcaCnvExon brcaCnvExon = optionalBrcaCnvExon.get();
             label.getStyleClass().removeAll("deletion_paint", "duplication_paint");
             if((brcaCnvExon.getExpertCnv() != null &&
-                    BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                    BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getSwCnv())) {
+                    BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
+                    BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv())) {
                 label.getStyleClass().add("duplication_paint");
-                ((Label)label).setText(BrcaCNVCode.DUPLICATION.getInitial());
+                ((Label)label).setText(BrcaCNVCode.AMPLIFICATION.getInitial());
             } else if((brcaCnvExon.getExpertCnv() != null &&
                     BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                     BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv())) {
@@ -174,19 +175,19 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
                 .collect(Collectors.toList());
         List<BrcaCnvExon> brcaCnvExonDuplicationList = brcaCnvExons.stream().filter(brcaCnvExon ->
                 (brcaCnvExon.getExpertCnv() != null &&
-                        BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                        BrcaCNVCode.DUPLICATION.getCode().equals(brcaCnvExon.getSwCnv()))
+                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
+                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv()))
                 .collect(Collectors.toList());
 
         if(!brcaCnvExonDeletionList.isEmpty()) {
-            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, BrcaCNVCode.DELETION.getCode(),
+            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.DELETION.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDeletionList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
         }
 
         if(!brcaCnvExonDuplicationList.isEmpty()) {
-            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, BrcaCNVCode.DUPLICATION.getCode(),
+            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.AMPLIFICATION.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDuplicationList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);

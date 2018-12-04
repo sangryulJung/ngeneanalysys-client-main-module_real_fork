@@ -287,7 +287,7 @@
 											<fo:table-row>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">NT Change</fo:block>
-													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">(BRCA Format<fo:inline vertical-align="super" font-size="5pt">1</fo:inline>)</fo:block>
+													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">(BIC Format<fo:inline vertical-align="super" font-size="5pt">1</fo:inline>)</fo:block>
 												</fo:table-cell>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">NT Change</fo:block>
@@ -372,7 +372,7 @@
 						</fo:table-row>
 						<fo:table-row text-align="left" font-family="Noto Sans CJK KR Regular" font-size="6pt">
 							<fo:table-cell padding="2mm" padding-left="5mm" border-width="0pt" number-columns-spanned="4">
-								<fo:block padding="0.2mm">1. BRCA Format (A of start codon ATG is #120): BRCA1(U14680)</fo:block>
+								<fo:block padding="0.2mm">1. BIC Format (A of start codon ATG is #120): BRCA1(U14680)</fo:block>
 								<fo:block padding="0.2mm">2. HGVS Format (A of start codon ATG is #1): BRCA1(NM_007294.3)</fo:block>
 								<fo:block padding="0.2mm">3. Amino acid number (from aa #1 to #1863)</fo:block>
 							</fo:table-cell>												
@@ -401,7 +401,7 @@
 											<fo:table-row>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">NT Change</fo:block>
-													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">(BRCA Format<fo:inline vertical-align="super" font-size="5pt">1</fo:inline>)</fo:block>
+													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">(BIC Format<fo:inline vertical-align="super" font-size="5pt">1</fo:inline>)</fo:block>
 												</fo:table-cell>
 												<fo:table-cell text-align="center" padding="2mm" border-width="0.5pt" border-style="solid">
 													<fo:block font-family="Noto Sans CJK KR Regular" font-size="10pt">NT Change</fo:block>
@@ -486,7 +486,7 @@
 						</fo:table-row>
 						<fo:table-row text-align="left" font-family="Noto Sans CJK KR Regular" font-size="6pt">
 							<fo:table-cell padding="2mm" padding-left="5mm" border-width="0pt" number-columns-spanned="4">
-								<fo:block padding="0.2mm">1. BRCA Format (A of start codon ATG is #229): BRCA2(U43746)</fo:block>
+								<fo:block padding="0.2mm">1. BIC Format (A of start codon ATG is #229): BRCA2(U43746)</fo:block>
 								<fo:block padding="0.2mm">2. HGVS Format (A of start codon ATG is #1): BRCA2(NM_000059.3)</fo:block>
 								<fo:block padding="0.2mm">3. Amino acid number (from aa #1 to #3419)</fo:block>
 							</fo:table-cell>												
@@ -506,7 +506,7 @@
 								<fo:block>
 									<fo:table display-align="center" width="100%" table-layout="fixed" text-align="center">
 										<fo:table-body>
-											<fo:table-row height="8mm">
+											<fo:table-row height="8mm" font-size="8pt">
 												<fo:table-cell border-width="0.5pt" border-style="solid" width="10mm">
 													<fo:block>	</fo:block>
 												</fo:table-cell>
@@ -648,7 +648,7 @@
 											</fo:table-row>
 
 											<fo:table-row height="8mm">
-												<fo:table-cell border-width="0.5pt" border-style="solid">
+												<fo:table-cell border-width="0.5pt" border-style="solid" font-size="8pt">
 													<fo:block>
 														BRCA1
 													</fo:block>
@@ -673,7 +673,7 @@
 											</fo:table-row>
 
 											<fo:table-row height="8mm">
-												<fo:table-cell border-width="0.5pt" border-style="solid">
+												<fo:table-cell border-width="0.5pt" border-style="solid" font-size="8pt">
 													<fo:block>
 														BRCA2
 													</fo:block>

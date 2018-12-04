@@ -169,6 +169,16 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         sample = (SampleView)paramMap.get("sampleView");
         panel = sample.getPanel();
 
+        exonTableView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            final TableHeaderRow header = (TableHeaderRow) exonTableView.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((o, oldVal, newVal) -> header.setReordering(false));
+        });
+
+        cnvAmpliconTableView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            final TableHeaderRow header = (TableHeaderRow) cnvAmpliconTableView.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((o, oldVal, newVal) -> header.setReordering(false));
+        });
+
         exonTableView.setStyle(exonTableView.getStyle() + "-fx-selection-bar-non-focused : skyblue;");
         cnvAmpliconTableView.setStyle(exonTableView.getStyle() + "-fx-selection-bar-non-focused : skyblue;");
 
@@ -228,21 +238,22 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     @Override
                     protected void updateItem(BigDecimal item, boolean empty) {
                         super.updateItem(item, empty);
-                        setStyle(getStyle() + "; -fx-alignment : baseline-right;");
+                        setStyle(getStyle() + "; -fx-alignment : baseline-center;");
                         if(item == null || empty) {
                             setText(null);
                         } else {
                             BrcaCnvAmplicon amplicon = this.getTableView().getItems().get(this.getIndex());
-                            setText(item.toString());
+                            setText(String.format("%.03f", item));
                             if(amplicon != null) {
+                                String gap = "0.05";
                                 if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().
                                         equalsIgnoreCase(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
                                     if(amplicon.getDistributionPrediction().equals(2)) {
                                         if(amplicon.getDistributionRangeMax().subtract(amplicon.getSampleRatio())
-                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                                .compareTo(new BigDecimal(gap)) == -1) {
                                             setTextFill(Color.rgb(168, 200, 232));
                                         } else if(amplicon.getSampleRatio().subtract(amplicon.getDistributionRangeMin())
-                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                                .compareTo(new BigDecimal(gap)) == -1) {
                                             setTextFill(Color.rgb(240, 161, 181));
                                         } else{
                                             setTextFill(Color.BLACK);
@@ -251,10 +262,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                 } else {
                                     if(amplicon.getRawPrediction().equals(2)) {
                                         if(amplicon.getRawRangeMax().subtract(amplicon.getSampleRatio())
-                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                                .compareTo(new BigDecimal(gap)) == -1) {
                                             setTextFill(Color.rgb(168, 200, 232));
                                         } else if(amplicon.getSampleRatio().subtract(amplicon.getRawRangeMin())
-                                                .compareTo(new BigDecimal("0.005")) == -1) {
+                                                .compareTo(new BigDecimal(gap)) == -1) {
                                             setTextFill(Color.rgb(240, 161, 181));
                                         } else{
                                             setTextFill(Color.BLACK);
@@ -268,7 +279,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     }
                 }
         );
-        ampliconCopyNumberTableColumn.setText("Copy\nNumber");
+        //ampliconCopyNumberTableColumn.setText("Copy\nNumber");
         if (BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode()
                 .equals(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
             ampliconCopyNumberTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDistributionPrediction()));
@@ -317,7 +328,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 if(brcaCnvExon.getExpertCnv() != null) {
                     if (item.equalsIgnoreCase(BrcaCNVCode.NORMAL.getCode())) {
                         label.getStyleClass().add("expert_cnv_normal");
-                    } else if (item.equalsIgnoreCase(BrcaCNVCode.DUPLICATION.getCode())) {
+                    } else if (item.equalsIgnoreCase(BrcaCNVCode.AMPLIFICATION.getCode())) {
                         label.getStyleClass().add("expert_cnv_duplication");
                     } else if (item.equalsIgnoreCase(BrcaCNVCode.DELETION.getCode())) {
                         label.getStyleClass().add("expert_cnv_deletion");
@@ -329,7 +340,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
                     if (item.equalsIgnoreCase(BrcaCNVCode.NORMAL.getCode())) {
                         label.getStyleClass().add("cnv_normal");
-                    } else if (item.equalsIgnoreCase(BrcaCNVCode.DUPLICATION.getCode())) {
+                    } else if (item.equalsIgnoreCase(BrcaCNVCode.AMPLIFICATION.getCode())) {
                         label.getStyleClass().add("cnv_duplication");
                     } else if (item.equalsIgnoreCase(BrcaCNVCode.DELETION.getCode())) {
                         label.getStyleClass().add("cnv_deletion");
@@ -420,10 +431,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getDistributionPrediction().equals(2)) {
                                 if(amplicon.getDistributionRangeMax().subtract(amplicon.getSampleRatio())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                        .compareTo(new BigDecimal("0.05")) == -1) {
                                     gc.setFill(Color.rgb(168, 200, 232));
                                 } else if(amplicon.getSampleRatio().subtract(amplicon.getDistributionRangeMin())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                        .compareTo(new BigDecimal("0.05")) == -1) {
                                     gc.setFill(Color.rgb(240, 161, 181));
                                 } else {
                                     gc.setFill(Color.LIGHTGRAY);
@@ -436,10 +447,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getRawPrediction().equals(2)) {
                                 if(amplicon.getRawRangeMax().subtract(amplicon.getSampleRatio())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                        .compareTo(new BigDecimal("0.05")) == -1) {
                                     gc.setFill(Color.rgb(168, 200, 232));
                                 } else if(amplicon.getSampleRatio().subtract(amplicon.getRawRangeMin())
-                                        .compareTo(new BigDecimal("0.005")) == -1) {
+                                        .compareTo(new BigDecimal("0.05")) == -1) {
                                     gc.setFill(Color.rgb(240, 161, 181));
                                 } else {
                                     gc.setFill(Color.LIGHTGRAY);
@@ -516,8 +527,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 || item.getSwCnv().equals(BrcaCNVCode.DELETION.getCode())).count();
 
         long dupCount = list.stream().filter(item -> (item.getExpertCnv() != null
-                && item.getExpertCnv().equals(BrcaCNVCode.DUPLICATION.getCode()))
-                || item.getSwCnv().equals(BrcaCNVCode.DUPLICATION.getCode())).count();
+                && item.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode()))
+                || item.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())).count();
 
         cnvExonLabel.setText("CNV EXON INFORMATION (" + gene.toUpperCase() + " - Del: " + delCount + ", Dup: " + dupCount + ")");
         if(exonTableView.getItems() != null) {
@@ -552,7 +563,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
 
         List<BrcaCnvAmplicon> list = getBrcaCnvAmpliconsByExon(gene, exon);
-        ampliconNameTableColumn.setText("Amplicon" + System.lineSeparator() + "(" + list.size() + ")");
+        ampliconNameTableColumn.setText("Amplicon (" + list.size() + ")");
         if(!list.isEmpty()) cnvAmpliconTableView.getItems().addAll(list);
     }
 
@@ -611,8 +622,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
                         node.getStyleClass().add("brca_cnv_1");
                     } else if((exon.getExpertCnv() != null &&
-                            BrcaCNVCode.DUPLICATION.getCode().equalsIgnoreCase(exon.getExpertCnv())) ||
-                            BrcaCNVCode.DUPLICATION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
+                            BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getExpertCnv())) ||
+                            BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
                         node.getStyleClass().add("brca_cnv_3");
                     }
                     for(Node tempNode : ((HBox)node).getChildren()) {
@@ -648,7 +659,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         column.widthProperty().addListener((ob, ov, nv) -> hBox.setMinWidth(column.getWidth()));
         column.setResizable(false);
 
-        column.setPrefWidth(40d);
+        column.setPrefWidth(30d);
 
         exonTableView.getColumns().add(0, column);
     }
@@ -720,7 +731,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     @FXML
     public void doExonDuplication() {
-        changeCopyNumber(BrcaCNVCode.DUPLICATION.getCode());
+        changeCopyNumber(BrcaCNVCode.AMPLIFICATION.getCode());
     }
 
     @FXML

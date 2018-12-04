@@ -153,9 +153,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 e.printStackTrace();
             }
         } else if(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode().equals(panel.getCode())) {
-            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 110);
-            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(110);
-            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(110);
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 113);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(113);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(113);
 
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_OVERVIEW);

@@ -25,7 +25,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
+<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -110,7 +110,7 @@
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <children>
                                                 <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
-                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Duplication Cut-off Level:" />
+                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Amplification Cut-off Level:" />
                                                 <TextField fx:id="brcaCnvAmpliconCnDuplicationCutoffTextField" prefWidth="60.0" text="0.2" />
                                              </children>
                                           </HBox>

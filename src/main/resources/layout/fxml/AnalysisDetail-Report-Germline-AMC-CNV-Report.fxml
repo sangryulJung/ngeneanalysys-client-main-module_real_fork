@@ -3,12 +3,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<TableView fx:id="heredAmcCnvResultTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailGermlineAmcCNVReportController">
+<TableView fx:id="heredAmcCnvResultTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailGermlineAmcCNVReportController">
   <columns>
-    <TableColumn fx:id="geneTableColumn" prefWidth="75.0" text="Gene" />
-    <TableColumn fx:id="variantTableColumn" prefWidth="100.0" text="Variant" />
-      <TableColumn fx:id="classificationTableColumn" prefWidth="150.0" text="Classification" />
-      <TableColumn fx:id="inheritanceTableColumn" prefWidth="100.0" text="Inheritance" />
-      <TableColumn fx:id="parentalOriginTableColumn" prefWidth="130.0" text="Parental origin" />
+    <TableColumn fx:id="geneTableColumn" minWidth="140.0" prefWidth="140.0" text="Gene" />
+    <TableColumn fx:id="variantTableColumn" minWidth="160.0" prefWidth="160.0" text="Variant" />
+      <TableColumn fx:id="classificationTableColumn" minWidth="200.0" prefWidth="200.0" text="Classification" />
+      <TableColumn fx:id="inheritanceTableColumn" minWidth="200.0" prefWidth="200.0" text="Inheritance" />
+      <TableColumn fx:id="parentalOriginTableColumn" minWidth="200.0" prefWidth="200.0" text="Parental origin" />
   </columns>
 </TableView>

@@ -1,14 +1,17 @@
 package ngeneanalysys.controller;
 
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import ngeneanalysys.code.enums.BrcaCNVCode;
@@ -45,7 +48,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
-    private GridPane heredCnvWrapprer;
+    private GridPane heredCnvWrapper;
 
     @FXML
     private HBox imageHBox;
@@ -74,7 +77,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     @FXML
     private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafSampleColumn;
     @FXML
-    private TableColumn<SnpVariantAlleleFraction, Integer> snpVafDepthColumn;
+    private TableColumn<SnpVariantAlleleFraction, String> snpVafDepthColumn;
     @FXML
     private TableColumn<SnpVariantAlleleFraction, String> snpVafZygosityColumn;
     @FXML
@@ -113,35 +116,19 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         predictionComboBox.getItems().add(new ComboBoxItem(BrcaCNVCode.DUPLICATION.getCode(), "Duplication"));
         predictionComboBox.getItems().add(new ComboBoxItem(BrcaCNVCode.DELETION.getCode(), "Deletion"));
 
-        predictionComboBox.valueProperty().addListener((ov, ob, lv) -> {
-            if(lv != null) {
-                Map<String, Object> params = new HashMap<>();
-                params.put("value", lv.getValue());
-                try {
-                    apiService.put("/analysisResults/updateCmtCnvPrediction/" + sample.getId(), params, null, true);
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
-                }
+        reportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+            Map<String, Object> params = new HashMap<>();
+            if(reportCheckBox.isSelected()) {
+                params.put("value", "Y");
+            } else {
+                params.put("value", "N");
+            }
+            try {
+                apiService.put("/analysisResults/updateCmtCnvIncludedInReport/" + sample.getId(), params, null, true);
+            } catch (WebAPIException wae) {
+                wae.printStackTrace();
             }
         });
-
-        reportCheckBox.selectedProperty().addListener((ob, ov, lv) -> {
-            if(lv != null) {
-                Map<String, Object> params = new HashMap<>();
-                if(lv) {
-                    params.put("value", "Y");
-                } else {
-                    params.put("value", "N");
-                }
-
-                try {
-                    apiService.put("/analysisResults/updateCmtCnvIncludedInReport/" + sample.getId(), params, null, true);
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
-                }
-            }
-        });
-
     }
 
     @Override
@@ -149,15 +136,25 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         apiService = APIService.getInstance();
         sample = (SampleView)paramMap.get("sampleView");
 
+        snpVariantAlleleFractionTable.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            final TableHeaderRow header = (TableHeaderRow) snpVariantAlleleFractionTable.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((o, oldVal, newVal) -> header.setReordering(false));
+        });
+
+        normalizedCoverageTable.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            final TableHeaderRow header = (TableHeaderRow) normalizedCoverageTable.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((o, oldVal, newVal) -> header.setReordering(false));
+        });
+
         snpVafNumberColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getNumber()));
         snpVafGeneColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         snpVafDbSnpIdColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDbSnpId()));
         snpVafReferenceRangeColumn.setCellValueFactory(item ->
                 new SimpleStringProperty(
-                        String.format("%.02f", item.getValue().getMinReferenceHeteroRange()) + " - " +
-                                String.format("%.02f", item.getValue().getMaxReferenceHeteroRange())));
+                        String.format("%.03f", item.getValue().getMinReferenceHeteroRange()) + " - " +
+                                String.format("%.03f", item.getValue().getMaxReferenceHeteroRange())));
         snpVafSampleColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getVaf()));
-        snpVafDepthColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDepth()));
+        snpVafDepthColumn.setCellValueFactory(item -> new SimpleStringProperty(String.format("%,d", item.getValue().getDepth())));
         snpVafZygosityColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getZygosity()));
         snpVafPredictionColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));
 
@@ -221,6 +218,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                     snpVariantAlleleFractionTable.getItems().addAll(snpVariantAlleleFractionList);
                     normalizedCoverageTable.getItems().addAll(normalizedCoverageList);
                     paintAlleleFraction(snpVariantAlleleFractionList);
+                    setPredictionArea(compositeCmtCnvResult);
                 });
             }
 
@@ -297,7 +295,29 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
 
     @FXML
     public void savePrediction() {
+        ComboBoxItem item = predictionComboBox.getSelectionModel().getSelectedItem();
+        if(item != null) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("value", item.getValue());
+            try {
+                apiService.put("/analysisResults/updateCmtCnvPrediction/" + sample.getId(), params, null, true);
+            } catch (WebAPIException wae) {
+                wae.printStackTrace();
+            }
+            reportCheckBox.setSelected(true);
+        }
+    }
 
+    @FXML
+    private void autoTableSelectEvent(MouseEvent mouseEvent) {
+        String id = ((Node)mouseEvent.getSource()).getParent().getId();
+        if(StringUtils.isNotEmpty(id)) {
+            Integer number = Integer.parseInt(id.replaceAll("exon_", ""));
+            if(snpVariantAlleleFractionTable.getItems() != null) {
+                snpVariantAlleleFractionTable.getSelectionModel().select(number - 1);
+                snpVariantAlleleFractionTable.scrollTo(number - 1);
+            }
+        }
     }
 
     private void paintAlleleFraction(List<SnpVariantAlleleFraction> list) {
@@ -321,5 +341,18 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                 });
             }
         });
+    }
+
+    private void setPredictionArea(CompositeCmtCnvResult compositeCmtCnvResult) {
+        if(compositeCmtCnvResult != null) {
+            if(compositeCmtCnvResult.getIncludedInReport().equals("Y")) {
+                reportCheckBox.setSelected(true);
+            } else {
+                reportCheckBox.setSelected(false);
+            }
+            Optional<ComboBoxItem> optionalComboBoxItem = predictionComboBox.getItems().stream()
+                    .filter(item -> item.getValue().equals(compositeCmtCnvResult.getPrediction())).findFirst();
+            optionalComboBoxItem.ifPresent(item -> predictionComboBox.getSelectionModel().select(item));
+        }
     }
 }
