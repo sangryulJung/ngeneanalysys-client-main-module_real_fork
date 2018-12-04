@@ -87,24 +87,24 @@ public class CommonConstants {
 	public static final int HTTP_PROXY_SERVER_PORT = 19799;
 	
 	/** IGV File name */
-	public static final String IGV_FILE_NAME = "IGV_2.4.1.zip";
+	public static final String IGV_FILE_NAME = "IGV_2.4.16.zip";
 
-	public static final String IGV_PATH = "IGV_2.4.1";
+	public static final String IGV_PATH = "IGV_2.4.16";
 	
 	/** [Windows] JRE Package File name */
-	public static final String JRE_FILE_NAME_FOR_WIN = "jre-8u144-windows-i586.tar.gz";
+	public static final String JRE_FILE_NAME_FOR_WIN = "jre-8u192-windows-i586.tar.gz";
 	
 	/** [Windows] JRE Package Path */
-	public static final String JRE_PATH_FOR_WIN = "jre1.8.0_144";
+	public static final String JRE_PATH_FOR_WIN = "jre1.8.0_192";
 	
 	/** [Windows] JRE Package Path */
 	public static final String JRE_BIN_PATH_FOR_WIN = JRE_PATH_FOR_WIN + "/bin";
 	
 	/** [MAC OS] JRE Package File name */
-	public static final String JRE_FILE_NAME_FOR_MAC = "jre-8u144-macosx-x64.tar.gz";
+	public static final String JRE_FILE_NAME_FOR_MAC = "jre-8u192-macosx-x64.tar.gz";
 	
 	/** [MAC OS] JRE Package Path */
-	public static final String JRE_PATH_FOR_MAC = "jre1.8.0_144.jre";
+	public static final String JRE_PATH_FOR_MAC = "jre1.8.0_192.jre";
 	
 	/** [MAC OS] JRE Package Path */
 	public static final String JRE_BIN_PATH_FOR_MAC = JRE_PATH_FOR_MAC + "/Contents/Home/bin";
