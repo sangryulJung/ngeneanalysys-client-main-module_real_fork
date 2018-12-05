@@ -240,11 +240,16 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
     public void download(List<AnalysisFile> downloadFiles) {
         // Show save bedFile dialog
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        if(mainController.getBasicInformationMap().containsKey("path")) {
+            directoryChooser.setInitialDirectory(new File((String) mainController.getBasicInformationMap().get("path")));
+        } else {
+            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        }
         File file = directoryChooser.showDialog(this.getMainApp().getPrimaryStage());
 
         try {
             if(file != null) {
+                mainController.getBasicInformationMap().put("path", file.getAbsolutePath());
                 logger.debug(String.format("start download..[%s]", file.getName()));
                 String taskID = "DOWN_" + new Random().nextInt();
                 Task<Void> task = new AnalysisResultFileDownloadTask(this, downloadFiles, new File(file.getAbsolutePath()), taskID);

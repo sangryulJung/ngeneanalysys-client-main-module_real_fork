@@ -107,6 +107,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     private TableColumn<BrcaCnvAmplicon, String> ampliconNameTableColumn;
     @FXML
+    private TableColumn<BrcaCnvAmplicon, String> ampliconWarningTableColumn;
+    @FXML
     private TableColumn<BrcaCnvAmplicon, String> ampliconReferenceRatioTableColumn;
     @FXML
     private TableColumn<BrcaCnvAmplicon, Integer> ampliconReferenceMedianDepthTableColumn;
@@ -125,7 +127,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private List<BrcaCnvExon> brcaCnvExonList;
 
-    private DecimalFormat decimalFormat = new DecimalFormat("0.###");
     private SampleView sample = null;
     private Panel panel = null;
     /**
@@ -230,6 +231,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                 String.format("%.03f", item.getValue().getRawRangeMax()));
             }
         });
+        ampliconWarningTableColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getWarning()));
+        ampliconWarningTableColumn.setCellFactory(param -> new TableCell<BrcaCnvAmplicon, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                setGraphic((StringUtils.isNotEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
+            }
+        });
         ampliconReferenceMedianDepthTableColumn.setCellValueFactory(item ->
                 new SimpleObjectProperty<>(item.getValue().getReferenceMedianDepth()));
         ampliconSampleRatioTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleRatio()));
@@ -244,36 +253,36 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         } else {
                             BrcaCnvAmplicon amplicon = this.getTableView().getItems().get(this.getIndex());
                             setText(String.format("%.03f", item));
+                            setTextFill(Color.BLACK);
                             if(amplicon != null) {
-                                String gap = "0.05";
+                                Double deletionGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDeletion();
+                                Double duplicationGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDuplication();
                                 if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().
                                         equalsIgnoreCase(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
                                     if(amplicon.getDistributionPrediction().equals(2)) {
-                                        if(amplicon.getDistributionRangeMax().subtract(amplicon.getSampleRatio())
-                                                .compareTo(new BigDecimal(gap)) == -1) {
+                                        if(duplicationGap != null && amplicon.getDistributionRangeMax()
+                                                .subtract(amplicon.getSampleRatio())
+                                                .compareTo(new BigDecimal(duplicationGap.toString())) < 0) {
                                             setTextFill(Color.rgb(168, 200, 232));
-                                        } else if(amplicon.getSampleRatio().subtract(amplicon.getDistributionRangeMin())
-                                                .compareTo(new BigDecimal(gap)) == -1) {
+                                        } else if(deletionGap != null && amplicon.getSampleRatio()
+                                                .subtract(amplicon.getDistributionRangeMin())
+                                                .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
                                             setTextFill(Color.rgb(240, 161, 181));
-                                        } else{
-                                            setTextFill(Color.BLACK);
                                         }
                                     }
                                 } else {
                                     if(amplicon.getRawPrediction().equals(2)) {
-                                        if(amplicon.getRawRangeMax().subtract(amplicon.getSampleRatio())
-                                                .compareTo(new BigDecimal(gap)) == -1) {
+                                        if(duplicationGap != null && amplicon.getRawRangeMax()
+                                                .subtract(amplicon.getSampleRatio())
+                                                .compareTo(new BigDecimal(duplicationGap.toString())) < 0) {
                                             setTextFill(Color.rgb(168, 200, 232));
-                                        } else if(amplicon.getSampleRatio().subtract(amplicon.getRawRangeMin())
-                                                .compareTo(new BigDecimal(gap)) == -1) {
+                                        } else if(deletionGap != null && amplicon.getSampleRatio()
+                                                .subtract(amplicon.getRawRangeMin())
+                                                .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
                                             setTextFill(Color.rgb(240, 161, 181));
-                                        } else{
-                                            setTextFill(Color.BLACK);
                                         }
                                     }
                                 }
-                            } else {
-                                setTextFill(Color.BLACK);
                             }
                         }
                     }
@@ -425,16 +434,20 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     double size = (double)maxWidth / brcaCnvAmplicons.size();
                     for(int idx = 0; idx < brcaCnvAmplicons.size(); idx++) {
                         BrcaCnvAmplicon amplicon = brcaCnvAmplicons.get(idx);
+                        Double deletionGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDeletion();
+                        Double duplicationGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDuplication();
                         if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().
                                 equalsIgnoreCase(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
                             if(amplicon.getDistributionPrediction().equals(1)) {
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getDistributionPrediction().equals(2)) {
-                                if(amplicon.getDistributionRangeMax().subtract(amplicon.getSampleRatio())
-                                        .compareTo(new BigDecimal("0.05")) == -1) {
+                                if(duplicationGap != null && amplicon.getDistributionRangeMax()
+                                        .subtract(amplicon.getSampleRatio())
+                                        .compareTo(new BigDecimal(duplicationGap.toString())) < 0) {
                                     gc.setFill(Color.rgb(168, 200, 232));
-                                } else if(amplicon.getSampleRatio().subtract(amplicon.getDistributionRangeMin())
-                                        .compareTo(new BigDecimal("0.05")) == -1) {
+                                } else if(deletionGap != null && amplicon.getSampleRatio()
+                                        .subtract(amplicon.getDistributionRangeMin())
+                                        .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
                                     gc.setFill(Color.rgb(240, 161, 181));
                                 } else {
                                     gc.setFill(Color.LIGHTGRAY);
@@ -446,11 +459,13 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             if(amplicon.getRawPrediction().equals(1)) {
                                 gc.setFill(Color.rgb(240, 73, 120));
                             } else if(amplicon.getRawPrediction().equals(2)) {
-                                if(amplicon.getRawRangeMax().subtract(amplicon.getSampleRatio())
-                                        .compareTo(new BigDecimal("0.05")) == -1) {
+                                if(duplicationGap != null && amplicon.getRawRangeMax()
+                                        .subtract(amplicon.getSampleRatio())
+                                        .compareTo(new BigDecimal(duplicationGap.toString())) < 0) {
                                     gc.setFill(Color.rgb(168, 200, 232));
-                                } else if(amplicon.getSampleRatio().subtract(amplicon.getRawRangeMin())
-                                        .compareTo(new BigDecimal("0.05")) == -1) {
+                                } else if(deletionGap != null && amplicon.getSampleRatio()
+                                        .subtract(amplicon.getRawRangeMin())
+                                        .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
                                     gc.setFill(Color.rgb(240, 161, 181));
                                 } else {
                                     gc.setFill(Color.LIGHTGRAY);
@@ -616,14 +631,17 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         .filter(obj -> obj.getId() != null && obj.getId().equals(exonObjId)).findFirst();
 
                 optionalNode.ifPresent(node -> {
-                    node.getStyleClass().removeAll("brca_cnv_3", "brca_cnv_1");
-                    if((exon.getExpertCnv() != null &&
-                            BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getExpertCnv())) ||
-                            BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
+                    node.getStyleClass().removeAll("brca_cnv_3", "brca_cnv_1",
+                            "brca_cnv_3_expert", "brca_cnv_1_expert");
+                    if(exon.getExpertCnv() != null &&
+                            BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getExpertCnv())) {
+                        node.getStyleClass().add("brca_cnv_1_expert");
+                    } else if(BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
                         node.getStyleClass().add("brca_cnv_1");
-                    } else if((exon.getExpertCnv() != null &&
-                            BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getExpertCnv())) ||
-                            BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
+                    } else if(exon.getExpertCnv() != null &&
+                            BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getExpertCnv())) {
+                        node.getStyleClass().add("brca_cnv_3_expert");
+                    } else if(BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
                         node.getStyleClass().add("brca_cnv_3");
                     }
                     for(Node tempNode : ((HBox)node).getChildren()) {

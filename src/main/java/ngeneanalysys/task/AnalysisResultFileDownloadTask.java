@@ -19,11 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * @author Jang
@@ -92,7 +90,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
                         InputStream content = entity.getContent();
                         double fileLength = (double)(entity.getContentLength());
 
-                        os = Files.newOutputStream(Paths.get(downloadDirectory.getAbsolutePath() + analysisResultFile.getName()));
+                        os = Files.newOutputStream(Paths.get(downloadDirectory.getAbsolutePath(), analysisResultFile.getName()));
 
                         double nread = 0L;
                         byte[] buf = new byte[8192];

@@ -168,8 +168,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
             }
         });
         coverageReferenceRangeColumn.setCellValueFactory(item -> new SimpleStringProperty(
-                String.format("%.02f", item.getValue().getMinReferenceRange()) + " - " +
-                String.format("%.02f", item.getValue().getMaxReferenceRange())));
+                String.format("%.03f", item.getValue().getMinReferenceRange()) + " - " +
+                String.format("%.03f", item.getValue().getMaxReferenceRange())));
         coverageRatioColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleRatio()));
         coverageDepthColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleDepth()));
         coveragePredictionColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));

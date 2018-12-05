@@ -9,6 +9,36 @@ public class CnvConfigBrcaAccuTest {
     private Double simpleCutoffDuplicationValue;
     private Double simpleCutoffDeletionValue;
     private Integer exonCopyNumberPredictionThreshold;
+    private Double lowConfidenceCnvDeletion;
+    private Double lowConfidenceCnvDuplication;
+
+    /**
+     * @return lowConfidenceCnvDeletion
+     */
+    public Double getLowConfidenceCnvDeletion() {
+        return lowConfidenceCnvDeletion;
+    }
+
+    /**
+     * @param lowConfidenceCnvDeletion
+     */
+    public void setLowConfidenceCnvDeletion(Double lowConfidenceCnvDeletion) {
+        this.lowConfidenceCnvDeletion = lowConfidenceCnvDeletion;
+    }
+
+    /**
+     * @return lowConfidenceCnvDuplication
+     */
+    public Double getLowConfidenceCnvDuplication() {
+        return lowConfidenceCnvDuplication;
+    }
+
+    /**
+     * @param lowConfidenceCnvDuplication
+     */
+    public void setLowConfidenceCnvDuplication(Double lowConfidenceCnvDuplication) {
+        this.lowConfidenceCnvDuplication = lowConfidenceCnvDuplication;
+    }
 
     /**
      * @return ampliconCopyNumberPredictionAlgorithm

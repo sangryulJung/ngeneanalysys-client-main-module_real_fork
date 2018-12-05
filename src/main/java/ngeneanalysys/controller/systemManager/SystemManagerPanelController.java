@@ -186,6 +186,11 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private TextField brcaCnvAmpliconCnDeletionCutoffTextField;
     @FXML
+    private TextField lowConfidenceCnvDeletionTextField;
+    @FXML
+    private TextField lowConfidenceCnvDuplicationTextField;
+
+    @FXML
     private TextField exonCnpThresholdTextField;
     @FXML
     private TextField essentialGenesTextField;
@@ -275,6 +280,12 @@ public class SystemManagerPanelController extends SubPaneController {
         });
         brcaCnvAmpliconCnDeletionCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDeletionCutoffTextField.setText(oldValue);
+        });
+        lowConfidenceCnvDeletionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDeletionTextField.setText(oldValue);
+        });
+        lowConfidenceCnvDuplicationTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDuplicationTextField.setText(oldValue);
         });
         distributionAmpliconCnpAlgorithmRadioButton.setOnMouseClicked(e -> {
             brcaCnvAmpliconCnDuplicationCutoffTextField.setDisable(true);
@@ -1105,6 +1116,14 @@ public class SystemManagerPanelController extends SubPaneController {
                     cnvConfigBrcaAaccuTest.setExonCopyNumberPredictionThreshold(
                             Integer.valueOf(exonCnpThresholdTextField.getText()));
                 }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDeletionTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDeletion(
+                            Double.valueOf(lowConfidenceCnvDeletionTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDuplicationTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDuplication(
+                            Double.valueOf(lowConfidenceCnvDuplicationTextField.getText()));
+                }
             }
             params.put("cnvConfigBrcaAccuTest", cnvConfigBrcaAaccuTest);
             if(StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
@@ -1198,6 +1217,7 @@ public class SystemManagerPanelController extends SubPaneController {
                             setPanelList(1);
                             setDisabledItem(true);
                             panelSaveButton.setDisable(true);
+                            basicInformationTitlePane.setExpanded(true);
                         } catch (Exception e) {
                             logger.error("panel list refresh fail.", e);
                         }
@@ -1207,8 +1227,8 @@ public class SystemManagerPanelController extends SubPaneController {
                     setPanelList(1);
                     setDisabledItem(true);
                     panelSaveButton.setDisable(true);
+                    basicInformationTitlePane.setExpanded(true);
                 }
-
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
@@ -1261,6 +1281,13 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setText("");
         mappingQuality60PercentageTextField.setText("");
         uniformity02PercentageTextField.setText("");
+        lowConfidenceCnvDeletionTextField.setText("");
+        lowConfidenceCnvDuplicationTextField.setText("");
+        brcaCnvAmpliconCnDuplicationCutoffTextField.setText("");
+        brcaCnvAmpliconCnDeletionCutoffTextField.setText("");
+        exonCnpThresholdTextField.setText("");
+        distributionAmpliconCnpAlgorithmRadioButton.setSelected(false);
+        simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(false);
     }
 
     void setDisabledItem(boolean condition) {
@@ -1301,6 +1328,8 @@ public class SystemManagerPanelController extends SubPaneController {
         mappingQuality60PercentageTextField.setDisable(condition);
         uniformity02PercentageTextField.setDisable(condition);
         clinVarDrugResponseCheckBox.setDisable(condition);
+        lowConfidenceCnvDeletionTextField.setDisable(condition);
+        lowConfidenceCnvDuplicationTextField.setDisable(condition);
     }
 
     @FXML
@@ -1386,6 +1415,12 @@ public class SystemManagerPanelController extends SubPaneController {
                     }
                     if(cnvConfigBRCAaccuTest.getExonCopyNumberPredictionThreshold() != null) {
                         exonCnpThresholdTextField.setText(cnvConfigBRCAaccuTest.getExonCopyNumberPredictionThreshold().toString());
+                    }
+                    if(cnvConfigBRCAaccuTest.getLowConfidenceCnvDeletion() != null) {
+                        lowConfidenceCnvDeletionTextField.setText(cnvConfigBRCAaccuTest.getLowConfidenceCnvDeletion().toString());
+                    }
+                    if(cnvConfigBRCAaccuTest.getLowConfidenceCnvDuplication() != null) {
+                        lowConfidenceCnvDuplicationTextField.setText(cnvConfigBRCAaccuTest.getLowConfidenceCnvDuplication().toString());
                     }
                 }
                 VariantFilter variantFilter = panel.getVariantFilter();

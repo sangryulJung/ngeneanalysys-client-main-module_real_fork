@@ -39,7 +39,7 @@
               <columns>
                   <TableColumn fx:id="exonExonTableColumn" minWidth="50.0" prefWidth="50.0" text="Exon" />
                   <TableColumn fx:id="exonCopyNumberTableColumn" minWidth="40.0" prefWidth="40.0" text="CNV" />
-                  <TableColumn fx:id="exonWarningTableColumn" minWidth="55.0" prefWidth="55.0" text="Warning" />
+                  <TableColumn fx:id="exonWarningTableColumn" minWidth="55.0" prefWidth="55.0" styleClass="alignment_center" text="Warning" />
                   <TableColumn fx:id="exonDomainTableColumn" minWidth="60.0" prefWidth="60.0" text="Domain" />
                   <TableColumn maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="150.0" text="Amplicon Ratio">
                      <columns>
@@ -54,16 +54,17 @@
             <TableView fx:id="cnvAmpliconTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="ampliconNameTableColumn" prefWidth="70.0" styleClass="alignment_center" text="Amplicon (1)" />
+                  <TableColumn fx:id="ampliconWarningTableColumn" minWidth="55.0" prefWidth="55.0" styleClass="alignment_center" text="Warning" />
                   <TableColumn prefWidth="120.0" styleClass="alignment_center" text="Reference">
                      <columns>
                         <TableColumn fx:id="ampliconReferenceRatioTableColumn" minWidth="120.0" prefWidth="120.0" styleClass="alignment_center" text="Ratio Range" />
-                        <TableColumn fx:id="ampliconReferenceMedianDepthTableColumn" prefWidth="100.0" styleClass="alignment_center_right" text="Depth" />
+                        <TableColumn fx:id="ampliconReferenceMedianDepthTableColumn" styleClass="alignment_center_right" text="Depth" />
                      </columns>
                   </TableColumn>
                   <TableColumn prefWidth="90.0" styleClass="alignment_center" text="Sample Ratio">
                      <columns>
-                        <TableColumn fx:id="ampliconSampleRatioTableColumn" maxWidth="-1.0" minWidth="90.0" prefWidth="90.0" styleClass="alignment_center" text="Ratio" />
-                        <TableColumn fx:id="ampliconSampleDepthTableColumn" maxWidth="-1.0" minWidth="90.0" prefWidth="90.0" styleClass="alignment_center_right" text="Depth" />
+                        <TableColumn fx:id="ampliconSampleRatioTableColumn" maxWidth="-1.0" minWidth="80.0" styleClass="alignment_center" text="Ratio" />
+                        <TableColumn fx:id="ampliconSampleDepthTableColumn" maxWidth="-1.0" minWidth="80.0" styleClass="alignment_center_right" text="Depth" />
                      </columns>
                   </TableColumn>
                   <TableColumn fx:id="ampliconCopyNumberTableColumn" maxWidth="80.0" minWidth="80.0" styleClass="alignment_center" text="Copy Number" />

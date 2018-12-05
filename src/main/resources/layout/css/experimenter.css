@@ -273,7 +273,16 @@
     -fx-background-color: transparent;
     -fx-background-image : url("../images/renewal/brca_sw_deletion.png");
     -fx-background-repeat:no-repeat;
-    -fx-background-size : 28 14;
+    -fx-background-size : 28 15;
+    -fx-background-position : 1 4;
+}
+
+.brca_cnv_1_expert {
+    //-fx-background-color : #F04978;
+    -fx-background-color: transparent;
+    -fx-background-image : url("../images/renewal/brca_expert_deletion.png");
+    -fx-background-repeat:no-repeat;
+    -fx-background-size : 28 15;
     -fx-background-position : 1 4;
 }
 
@@ -286,25 +295,20 @@
     -fx-background-color: transparent;
     -fx-background-image : url("../images/renewal/brca_sw_duplication.png");
     -fx-background-repeat:no-repeat;
-    -fx-background-size : 28 14;
-    -fx-background-position : 0 1;
+    -fx-background-size : 28 15;
+    -fx-background-position : 0.5 1;
+}
+
+.brca_cnv_3_expert {
+    -fx-background-color: transparent;
+    -fx-background-image : url("../images/renewal/brca_expert_duplication.png");
+    -fx-background-repeat:no-repeat;
+    -fx-background-size : 28 15;
+    -fx-background-position : 1.5 1;
 }
 
 .brca_cnv_3 .label{
     -fx-text-fill : #FFFFFF;
-}
-
-.down_button {
-    -fx-background-color: transparent;
-    -fx-background-image : url("../images/btn_move_down_on.png");
-    -fx-background-repeat:no-repeat;
-    -fx-background-position : center;
-    -fx-pref-width : 28;
-    -fx-pref-height : 8;
-    -fx-min-width : 28;
-    -fx-min-height : 8;
-    -fx-max-width : 28;
-    -fx-max-height : 8;
 }
 
 .box_border_style_dotted {
@@ -526,7 +530,27 @@
 	-fx-padding:1 0 0 0;
 }
 
+#brcaCNVView .btn_warn {
+    -fx-background-image:url('../images/renewal/icon_warn_small.png');
+    -fx-background-size:16;
+    -fx-background-repeat:no-repeat;
+    -fx-background-color:transparent;
+    -fx-background-insets:0;
+    -fx-border-width:0;
+    -fx-pref-width:16;
+    -fx-min-height:16;
+    -fx-pref-height:16;
+    -fx-max-height:16;
+    -fx-padding:1 0 0 0;
+}
+
 #cnvAmpliconTableView .column-header .label {
     -fx-wrap-text : true;
     -fx-text-alignment: center;
+}
+
+#panelEditAccordion .titled-pane > .title {
+    -fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; /* 2 10 3 10 */
 }
