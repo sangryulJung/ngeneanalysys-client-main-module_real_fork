@@ -28,7 +28,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
-import javafx.stage.Window;
 import org.slf4j.Logger;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
@@ -1510,24 +1509,24 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(cosmicIds, "COSMIC ID", null ,null, "cosmicIds");
         cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Accession");
-        createTableHeader(clinVarAcc, "ClinVar Accession", null ,150d, "clinVarAcc");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Submitted Accession");
+        createTableHeader(clinVarAcc, "ClinVar Submitted Accession", null ,150d, "clinVarSubmittedAcc");
         clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarAcc()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Class");
-        createTableHeader(clinVarClass, "ClinVar Class", null ,150d, "clinVarClass");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Submitted Class");
+        createTableHeader(clinVarClass, "ClinVar Submitted Class", null ,150d, "clinVarSubmittedClass");
         clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarClass()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>("ClinVar Review Status");
         createTableHeader(clinVarReviewStatus, "ClinVar Review Status", null ,150d, "clinVarReviewStatus");
         clinVarReviewStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarReviewStatus()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Disease");
-        createTableHeader(clinVarDisease, "ClinVar Disease", null ,150d, "clinVarDisease");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Submitted Disease");
+        createTableHeader(clinVarDisease, "ClinVar Submitted Disease", null ,150d, "clinVarSubmittedDisease");
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar Trait OMIM");
-        createTableHeader(clinVarTraitOMIM, "ClinVar Trait OMIM", null, null, "clinVarTraitOMIM");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar Submitted OMIM");
+        createTableHeader(clinVarTraitOMIM, "ClinVar Submitted OMIM", null, null, "clinVarSubmittedOMIM");
         clinVarTraitOMIM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarTraitOMIM()));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000All = new TableColumn<>("1KGP All");
@@ -1789,6 +1788,26 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> enigma = new TableColumn<>("ENIGMA");
         createTableHeader(enigma, "ENIGMA", null ,null, "enigma");
         enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
+
+        TableColumn<VariantAndInterpretationEvidence, Integer> clinVarVariationId = new TableColumn<>("ClinVar Variation ID");
+        createTableHeader(clinVarVariationId, "ClinVar Variation ID", null ,null, "clinVarVariationId");
+        clinVarVariationId.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarVariationId()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarInterpretation = new TableColumn<>("ClinVar Interpretation");
+        createTableHeader(clinVarInterpretation, "ClinVar Interpretation", null ,null, "enigma");
+        clinVarInterpretation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarInterpretation()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> metaSvmPrediction = new TableColumn<>("metaSVM Prediction");
+        createTableHeader(metaSvmPrediction, "metaSVM Prediction", null ,null, "metaSvmPrediction");
+        metaSvmPrediction.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMetaSvmPrediction()));
+
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvAdaScore = new TableColumn<>("dbscSNV ADA Score");
+        createTableHeader(dbscSnvAdaScore, "dbscSNV ADA Score", null ,null, "dbscSnvAdaScore");
+        dbscSnvAdaScore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getDbscSnvAdaScore()));
+
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvRfScore = new TableColumn<>("dbscSNV RF Score");
+        createTableHeader(dbscSnvRfScore, "dbscSNV RF Score", null ,null, "dbscSnvRfScore");
+        dbscSnvRfScore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getDbscSnvRfScore()));
 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");

@@ -36,7 +36,6 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -269,6 +268,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                                 .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
                                             setTextFill(Color.rgb(240, 161, 181));
                                         }
+                                    } else if(amplicon.getDistributionPrediction().equals(1)) {
+                                        setTextFill(Color.rgb(240, 73, 120));
+                                    } else if(amplicon.getDistributionPrediction().equals(3)) {
+                                        setTextFill(Color.rgb(45, 112, 232));
                                     }
                                 } else {
                                     if(amplicon.getRawPrediction().equals(2)) {
@@ -281,6 +284,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                                 .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
                                             setTextFill(Color.rgb(240, 161, 181));
                                         }
+                                    } else if(amplicon.getRawPrediction().equals(1)) {
+                                        setTextFill(Color.rgb(240, 73, 120));
+                                    } else if(amplicon.getRawPrediction().equals(3)) {
+                                        setTextFill(Color.rgb(45, 112, 232));
                                     }
                                 }
                             }

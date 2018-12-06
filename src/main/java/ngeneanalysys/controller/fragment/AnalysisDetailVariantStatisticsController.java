@@ -17,7 +17,6 @@ import ngeneanalysys.model.VariantStatistics;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.controlsfx.control.PopOver;

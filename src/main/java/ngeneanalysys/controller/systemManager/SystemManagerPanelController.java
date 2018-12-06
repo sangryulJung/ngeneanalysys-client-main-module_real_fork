@@ -276,16 +276,20 @@ public class SystemManagerPanelController extends SubPaneController {
             if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
         });
         brcaCnvAmpliconCnDuplicationCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDuplicationCutoffTextField.setText(oldValue);
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDuplicationCutoffTextField.setText(oldValue);
         });
         brcaCnvAmpliconCnDeletionCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDeletionCutoffTextField.setText(oldValue);
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDeletionCutoffTextField.setText(oldValue);
         });
         lowConfidenceCnvDeletionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDeletionTextField.setText(oldValue);
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDeletionTextField.setText(oldValue);
         });
         lowConfidenceCnvDuplicationTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDuplicationTextField.setText(oldValue);
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDuplicationTextField.setText(oldValue);
         });
         distributionAmpliconCnpAlgorithmRadioButton.setOnMouseClicked(e -> {
             brcaCnvAmpliconCnDuplicationCutoffTextField.setDisable(true);

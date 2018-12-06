@@ -10,6 +10,22 @@ public class ClinVar {
     private String clinVarClass;
     private String clinVarTraitOMIM;
     private String clinVarReviewStatus;
+    private Integer clinVarVariationId;
+    private String clinVarInterpretation;
+
+    /**
+     * @return clinVarVariationId
+     */
+    public Integer getClinVarVariationId() {
+        return clinVarVariationId;
+    }
+
+    /**
+     * @return clinVarInterpretation
+     */
+    public String getClinVarInterpretation() {
+        return clinVarInterpretation;
+    }
 
     /**
      * @return clinVarAcc
@@ -63,5 +79,18 @@ public class ClinVar {
 
     public String getClinVarReviewStatus() {
         return clinVarReviewStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "ClinVar{" +
+                "clinVarAcc='" + clinVarAcc + '\'' +
+                ", clinVarDisease='" + clinVarDisease + '\'' +
+                ", clinVarClass='" + clinVarClass + '\'' +
+                ", clinVarTraitOMIM='" + clinVarTraitOMIM + '\'' +
+                ", clinVarReviewStatus='" + clinVarReviewStatus + '\'' +
+                ", clinVarVariationId=" + clinVarVariationId +
+                ", clinVarInterpretation='" + clinVarInterpretation + '\'' +
+                '}';
     }
 }
