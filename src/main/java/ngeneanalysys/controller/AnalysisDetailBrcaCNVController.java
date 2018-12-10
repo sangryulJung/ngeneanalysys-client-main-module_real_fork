@@ -269,9 +269,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                             setTextFill(Color.rgb(240, 161, 181));
                                         }
                                     } else if(amplicon.getDistributionPrediction().equals(1)) {
-                                        setTextFill(Color.rgb(240, 73, 120));
+                                        setTextFill(Color.RED);
                                     } else if(amplicon.getDistributionPrediction().equals(3)) {
-                                        setTextFill(Color.rgb(45, 112, 232));
+                                        setTextFill(Color.BLUE);
                                     }
                                 } else {
                                     if(amplicon.getRawPrediction().equals(2)) {
@@ -285,9 +285,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                             setTextFill(Color.rgb(240, 161, 181));
                                         }
                                     } else if(amplicon.getRawPrediction().equals(1)) {
-                                        setTextFill(Color.rgb(240, 73, 120));
+                                        setTextFill(Color.RED);
                                     } else if(amplicon.getRawPrediction().equals(3)) {
-                                        setTextFill(Color.rgb(45, 112, 232));
+                                        setTextFill(Color.BLUE);
                                     }
                                 }
                             }
@@ -620,6 +620,93 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         return new ArrayList<>();
     }
 
+
+
+    private String getAmbiguousValue(final String gene, final String exon) {
+        List<BrcaCnvAmplicon> ampliconList = brcaCnvAmpliconList.stream()
+                .filter(item -> gene.equals(item.getGene()) && exon.equals(item.getExon()))
+                .collect(Collectors.toList());
+        long totalSize = ampliconList.size();
+        long distributionDeletionCount = ampliconList.stream().filter(amplicon -> {
+            if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().equals(
+                    panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+                Double deletionGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDeletion();
+                if(amplicon.getDistributionPrediction().equals(1) ||
+                        (deletionGap != null && amplicon.getSampleRatio()
+                        .subtract(amplicon.getDistributionRangeMin())
+                        .compareTo(new BigDecimal(deletionGap.toString())) < 0)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }).count();
+        long distributionDuplicationCount = ampliconList.stream().filter(amplicon -> {
+            if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().equals(
+                    panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+                Double duplicationGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDuplication();
+                if(amplicon.getDistributionPrediction().equals(3) ||
+                        (duplicationGap != null && amplicon.getDistributionRangeMax()
+                                .subtract(amplicon.getSampleRatio())
+                                .compareTo(new BigDecimal(duplicationGap.toString())) < 0)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }).count();
+        long rawDeletionCount = ampliconList.stream().filter(amplicon -> {
+            if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
+                    panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+                Double deletionGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDeletion();
+                if(amplicon.getRawPrediction().equals(1) ||
+                        (deletionGap != null && amplicon.getSampleRatio()
+                                .subtract(amplicon.getRawRangeMin())
+                                .compareTo(new BigDecimal(deletionGap.toString())) < 0)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }).count();
+        long rawDuplicationCount = ampliconList.stream().filter(amplicon -> {
+            if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
+                    panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+                Double duplicationGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDuplication();
+                if(amplicon.getDistributionPrediction().equals(3) ||
+                        (duplicationGap != null && amplicon.getRawRangeMax()
+                                .subtract(amplicon.getSampleRatio())
+                                .compareTo(new BigDecimal(duplicationGap.toString())) < 0)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }).count();
+
+        if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
+                panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+            if((double)rawDuplicationCount / totalSize > 0.6) {
+                return "brca_cnv_normal_duplication";
+            } else if((double)rawDeletionCount / totalSize > 0.6) {
+                return "brca_cnv_normal_deletion";
+            }
+        } else if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().equals(
+                panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
+            if((double)distributionDuplicationCount / totalSize > 0.6) {
+                return "brca_cnv_normal_duplication";
+            } else if((double)distributionDeletionCount / totalSize > 0.6) {
+                return "brca_cnv_normal_deletion";
+            }
+        }
+
+        return null;
+    }
+
     private void setBrcaCnvPlot(String gene) {
         List<BrcaCnvExon> brcaCnvExonList = getBrcaCnvExons(gene);
         if(!brcaCnvExonList.isEmpty()) {
@@ -639,7 +726,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
                 optionalNode.ifPresent(node -> {
                     node.getStyleClass().removeAll("brca_cnv_3", "brca_cnv_1",
-                            "brca_cnv_3_expert", "brca_cnv_1_expert");
+                            "brca_cnv_3_expert", "brca_cnv_1_expert", "brca_cnv_normal_duplication",
+                            "brca_cnv_normal_deletion");
                     if(exon.getExpertCnv() != null &&
                             BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getExpertCnv())) {
                         node.getStyleClass().add("brca_cnv_1_expert");
@@ -650,6 +738,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         node.getStyleClass().add("brca_cnv_3_expert");
                     } else if(BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
                         node.getStyleClass().add("brca_cnv_3");
+                    } else {
+                        String style = getAmbiguousValue(gene, exon.getExon());
+                        if(StringUtils.isNotEmpty(style)) {
+                            node.getStyleClass().add(style);
+                        }
                     }
                     for(Node tempNode : ((HBox)node).getChildren()) {
                         if(tempNode instanceof Label) {

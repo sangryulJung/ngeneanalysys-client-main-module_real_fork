@@ -307,6 +307,26 @@
     -fx-background-position : 1.5 1;
 }
 
+.brca_cnv_normal_duplication {
+    -fx-opacity: 0.5;
+    -fx-background-image : url("../images/renewal/ambiguousDuplication.png");
+    -fx-background-repeat:no-repeat;
+}
+
+.brca_cnv_normal_duplication .label {
+    -fx-text-fill : #ffffff;
+}
+
+.brca_cnv_normal_deletion {
+    -fx-opacity: 0.5;
+    -fx-background-image : url("../images/renewal/ambiguousDeletion.png");
+    -fx-background-repeat:no-repeat;
+}
+
+.brca_cnv_normal_deletion .label {
+    -fx-text-fill : #ffffff;
+}
+
 .brca_cnv_3 .label{
     -fx-text-fill : #FFFFFF;
 }

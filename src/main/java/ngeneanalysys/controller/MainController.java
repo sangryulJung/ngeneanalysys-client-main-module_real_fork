@@ -26,7 +26,6 @@ import ngeneanalysys.controller.systemMenu.SystemMenuEditController;
 import ngeneanalysys.controller.systemMenu.SystemMenuLicenseController;
 import ngeneanalysys.controller.systemMenu.SystemMenuSettingController;
 import ngeneanalysys.controller.systemMenu.SystemMenuSupportController;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;

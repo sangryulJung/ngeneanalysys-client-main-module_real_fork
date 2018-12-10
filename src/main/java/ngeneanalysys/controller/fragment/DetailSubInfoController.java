@@ -138,6 +138,7 @@ public class DetailSubInfoController extends SubPaneController {
         Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
 
         String rsId = selectedAnalysisResultVariant.getSnpInDel().getDbSNP().getDbSnpRsId(); // (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+        Integer variationId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getClinVar().getClinVarVariationId();
         String exacFormat = (variantInformationMap.containsKey("exac_format")) ? (String) variantInformationMap.get("exac_format") : null;
         String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
         Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
@@ -146,6 +147,14 @@ public class DetailSubInfoController extends SubPaneController {
                 ? (String) genomicCoordinateMap.get("chromosome") : null;
         Integer gPos = (genomicCoordinateMap != null && genomicCoordinateMap.containsKey("g.pos"))
                 ? (Integer) genomicCoordinateMap.get("g.pos") : null;
+
+        if (variationId != null) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("ClinVar(" + variationId + ")", "ClinVar");
+            dbContentLabel.getStyleClass().add("title2");
+            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
 
         if (!StringUtils.isEmpty(rsId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
@@ -247,9 +256,9 @@ public class DetailSubInfoController extends SubPaneController {
             String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
             openBrowser(fullUrlDBsnp);
         } else if("ClinVar".equalsIgnoreCase(item)) {
-            String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
-            String fullUrlClinvar = "http://www.ncbi.nlm.nih.gov/clinvar?term=" + rsId;
-            openBrowser(fullUrlClinvar);
+            String variationId = (variantInformationMap.containsKey("variation_id")) ? (String) variantInformationMap.get("variation_id") : null;
+            String fullUrlClinVar = "https://www.ncbi.nlm.nih.gov/clinvar/variation/" + variationId + "/";
+            openBrowser(fullUrlClinVar);
         } else if("1000G".equalsIgnoreCase(item)) {
             String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
             String fullUrl1000G = "http://grch37.ensembl.org/Homo_sapiens/Variation/Population?db=core;v="
