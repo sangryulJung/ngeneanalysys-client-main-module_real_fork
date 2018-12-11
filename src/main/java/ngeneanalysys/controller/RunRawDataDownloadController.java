@@ -74,7 +74,7 @@ public class RunRawDataDownloadController extends SubPaneController {
         checkBoxes.add(new CheckBox("bai"));
         checkBoxes.add(new CheckBox("bam"));
         checkBoxes.add(new CheckBox("vcf"));
-        checkBoxes.add(new CheckBox("fastq,gz"));
+        checkBoxes.add(new CheckBox("fastq.gz"));
         GridPane grid = new GridPane();
         grid.setVgap(10.0);
         grid.setHgap(10.0);

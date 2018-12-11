@@ -690,16 +690,20 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
         if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
                 panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
-            if((double)rawDuplicationCount / totalSize > 0.6) {
+            if(((double)rawDuplicationCount / totalSize) * 100 > panel.getCnvConfigBRCAaccuTest()
+                    .getExonCopyNumberPredictionThreshold()) {
                 return "brca_cnv_normal_duplication";
-            } else if((double)rawDeletionCount / totalSize > 0.6) {
+            } else if(((double)rawDeletionCount / totalSize) * 100 > panel.getCnvConfigBRCAaccuTest()
+                    .getExonCopyNumberPredictionThreshold()) {
                 return "brca_cnv_normal_deletion";
             }
         } else if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().equals(
                 panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
-            if((double)distributionDuplicationCount / totalSize > 0.6) {
+            if(((double)distributionDuplicationCount / totalSize) * 100 > panel.getCnvConfigBRCAaccuTest()
+                    .getExonCopyNumberPredictionThreshold()) {
                 return "brca_cnv_normal_duplication";
-            } else if((double)distributionDeletionCount / totalSize > 0.6) {
+            } else if(((double)distributionDeletionCount / totalSize) * 100 > panel.getCnvConfigBRCAaccuTest()
+                    .getExonCopyNumberPredictionThreshold()) {
                 return "brca_cnv_normal_deletion";
             }
         }

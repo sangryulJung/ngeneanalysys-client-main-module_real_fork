@@ -431,7 +431,7 @@ public class SystemManagerPanelController extends SubPaneController {
         defaultSampleSourceComboBox.setDisable(false);
         mappingQuality60PercentageTextField.setDisable(false);
         uniformity02PercentageTextField.setDisable(false);
-
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
     private void setHeredDefault() {
@@ -558,6 +558,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private void setBRCADefault() {
         canonicalTranscriptTextArea.setText("BRCA1\tNM_007294\nBRCA2\tNM_000059");
+        panelSaveButton.setDisable(false);
         canonicalTranscriptTextArea.setDisable(true);
         cnvForBrcaAaccuTestTitledPane.setDisable(false);
         distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
