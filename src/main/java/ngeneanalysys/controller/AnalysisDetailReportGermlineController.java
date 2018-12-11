@@ -1015,6 +1015,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     contentsMap.put("onTargetCoverage", findQCResult(qcList, "on_target_coverage"));
                     contentsMap.put("duplicatedReads", findQCResult(qcList, "duplicated_reads"));
                     contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+                    contentsMap.put("onTargetRead", findQCResult(qcList, "on_target_read"));
+                    contentsMap.put("targetCoverageAt30x", findQCResult(qcList, "target_coverage_at_30x"));
                 }
 
 

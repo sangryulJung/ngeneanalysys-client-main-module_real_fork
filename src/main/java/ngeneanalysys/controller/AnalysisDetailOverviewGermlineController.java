@@ -335,7 +335,8 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                     null, false);
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
-
+            qcList = qcList.stream().filter(item -> !("target_coverage_at_30x".equals(item.getQcType()) ||
+                    "on_target_read".equals(item.getQcType()))).collect(Collectors.toList());
             qcList.sort(Comparator.comparing(SampleQC::getQcType));
             int i = 0;
             for(SampleQC sampleQC : qcList) {

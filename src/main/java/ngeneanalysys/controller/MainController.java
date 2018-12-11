@@ -98,7 +98,7 @@ public class MainController extends BaseStageController {
     @FXML
     private BorderPane mainFrame;
 
-    /** progress task contenst area */
+    /** progress task contents area */
     @FXML
     private HBox progressTaskContentArea;
 
@@ -307,11 +307,16 @@ public class MainController extends BaseStageController {
 
                     label.setOnMouseClicked(event -> {
                         if(itemProperty() == null) return;
-                        Optional<TopMenu> optionalTopMenu = Arrays.stream(sampleMenu).filter(menu ->
-                                menu.getId().equalsIgnoreCase(itemProperty().getValue().getValue())).findFirst();
-                        optionalTopMenu.ifPresent(topMenu -> showSampleDetail(topMenu));
-                        clearComboBox();
-                        sampleList.hide();
+                        String name = itemProperty().getValue().getValue();
+                        if(name.equals("clear")) {
+                            logger.info("test");
+                        } else {
+                            Optional<TopMenu> optionalTopMenu = Arrays.stream(sampleMenu).filter(menu ->
+                                    menu.getId().equalsIgnoreCase(itemProperty().getValue().getValue())).findFirst();
+                            optionalTopMenu.ifPresent(topMenu -> showSampleDetail(topMenu));
+                            clearComboBox();
+                            sampleList.hide();
+                        }
                     });
 
                     Button btn = new Button("X");
@@ -347,9 +352,9 @@ public class MainController extends BaseStageController {
 
             });
 
-        //settingPanelAndDiseases();
+        sampleList.getItems().add(new ComboBoxItem("clear", "clear"));
+
         createFilter();
-        //primaryStage.setResizable(false);
     }
 
     private void getSoftwareVersionInfo() {
