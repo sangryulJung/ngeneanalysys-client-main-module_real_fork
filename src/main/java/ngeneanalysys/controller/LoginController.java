@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import java.awt.Toolkit;
 import javafx.scene.Parent;
@@ -11,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ngeneanalysys.model.NGeneAnalySysVersion;
+import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpStatus;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
@@ -42,6 +45,9 @@ public class LoginController extends BaseStageController {
 	}
 
 	private static final Logger logger = LoggerUtil.getLogger();
+
+	@FXML
+	private Label versionLabel;
 
 	@FXML
 	private Label capsLock;
@@ -230,6 +236,8 @@ public class LoginController extends BaseStageController {
 		primaryStage.show();
 		logger.debug(String.format("start %s", primaryStage.getTitle()));
 
+		getSoftwareVersionInfo();
+
 		// 창 닫기 이벤트 바인딩
 		primaryStage.setOnCloseRequest(event -> {
 			//프록시 서버가 기동중인 경우 중지 처리
@@ -239,6 +247,35 @@ public class LoginController extends BaseStageController {
 			primaryStage.close();
 		});
 
+	}
+
+	private void getSoftwareVersionInfo() {
+		Task task = new Task() {
+			NGeneAnalySysVersion nGeneAnalySysVersion;
+
+			@Override
+			protected Object call() throws Exception {
+				APIService apiService = APIService.getInstance();
+				HttpClientResponse response = HttpClientUtil
+						.get(apiService.getConvertConnectURL(""), null, null, false);
+				nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
+				return null;
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				versionLabel.setText("System version : " + nGeneAnalySysVersion.getSystem());
+			}
+
+			@Override
+			protected void failed() {
+				super.failed();
+				getException().printStackTrace();
+			}
+		};
+		Thread thread = new Thread(task);
+		thread.start();
 	}
 
 	private boolean validateLoginID() {

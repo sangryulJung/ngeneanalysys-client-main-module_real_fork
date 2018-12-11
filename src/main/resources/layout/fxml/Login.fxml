@@ -104,6 +104,7 @@
                </children>
             </HBox>
             <Label style="-fx-text-fill: #FFFFFF;" styleClass="font_size_10" text="All content ⓒ 2018 NGeneBio, Inc." />
+            <Label fx:id="versionLabel" style="-fx-text-fill: #ffffff;" styleClass="font_size_10" text="v. 1.4.0.0" />
          </children>
          <GridPane.margin>
             <Insets />
