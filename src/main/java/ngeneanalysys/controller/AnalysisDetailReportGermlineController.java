@@ -1139,12 +1139,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         return created;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "UnnecessarySemicolon"})
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
 
-            Thread.currentThread().setContextClassLoader(classLoader);
-            @SuppressWarnings("unchecked")
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
             Method setParams = classToLoad.getMethod("setParams", Map.class);
@@ -1152,10 +1150,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
             Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
             Object application = classToLoad.newInstance();
-            Object result = setParams.invoke(application, contentsMap);
-            result = setWriteFilePath.invoke(application, file.getPath());
-            result = updateEmbeddedDoc.invoke(application);
-            result = updateWordFile.invoke(application);
+            setParams.invoke(application, contentsMap);
+            setWriteFilePath.invoke(application, file.getPath());
+            updateEmbeddedDoc.invoke(application);
+            updateWordFile.invoke(application);
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
