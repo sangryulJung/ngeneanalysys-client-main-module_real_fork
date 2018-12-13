@@ -1809,6 +1809,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(dbscSnvRfScore, "dbscSNV RF Score", null ,null, "dbscSnvRfScore");
         dbscSnvRfScore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getDbscSnvRfScore()));
 
+        TableColumn<VariantAndInterpretationEvidence, String> inheritance = new TableColumn<>("Inheritance");
+        createTableHeader(inheritance, "Inheritance", null ,null, "inheritance");
+        inheritance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getInheritance()));
+
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
 
