@@ -92,7 +92,6 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     /**
      * Variant Nomenclature 값 설정 및 화면 출력
      */
-    @SuppressWarnings("unchecked")
     private void showVariantIdentification() {
         List<SnpInDelTranscript> transcriptDataList = getTranscript();
 

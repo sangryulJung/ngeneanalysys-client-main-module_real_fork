@@ -306,16 +306,6 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         }
     }
 
-    private void restartRun(Integer id) {
-        try {
-            apiService.get("admin/restartRun/" + id, null ,null, false);
-        } catch(WebAPIException wae) {
-            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
-        }
-
-    }
-
-
     /** 삭제 버튼 생성 */
     private class DeleteButtonCreate extends TableCell<Run, Boolean> {
         HBox box = null;
@@ -364,6 +354,15 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
     private class UpdateButtonCreate extends TableCell<Run, Boolean> {
         HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/refresh.png", 18, 18));
+
+        private void restartRun(Integer id) {
+            try {
+                apiService.get("admin/restartRun/" + id, null ,null, false);
+            } catch(WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+            }
+
+        }
 
         UpdateButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {

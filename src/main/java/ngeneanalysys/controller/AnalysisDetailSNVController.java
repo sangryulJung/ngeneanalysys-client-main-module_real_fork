@@ -391,8 +391,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             filterComboBox.valueProperty().addListener(filterComboBoxValuePropertyChangeListener);
         });
 
-        //setFilterList();
-
         rightSizeButton.setOnMouseClicked(event -> {
             if(rightSizeButton.getStyleClass().contains("right_btn_fold")){
                 foldRight();
@@ -430,8 +428,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         setTableViewColumn();
         //runColumnAction();
         setCheckBoxFilter();
-        //foldLeft();
-        //foldRight();
 
         variantsController.getDetailContents().setCenter(root);
 
@@ -653,7 +649,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterList = filter;
     }
 
-   @SuppressWarnings("unchecked")
     private void setFilterList() {
         filterComboBox.hide();
         String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();

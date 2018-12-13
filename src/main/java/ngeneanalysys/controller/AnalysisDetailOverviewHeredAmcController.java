@@ -30,8 +30,7 @@ public class AnalysisDetailOverviewHeredAmcController extends AnalysisDetailComm
         try {
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT);
             Node node = loader.load();
-            AnalysisDetailGermlineAmcCNVReportController controller = loader.getController();
-            this.controller = controller;
+            this.controller = loader.getController();
             controller.setMainController(this.getMainController());
             controller.setParamMap(paramMap);
             controller.show((Parent) node);

@@ -1139,7 +1139,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         return created;
     }
 
-    @SuppressWarnings({"unchecked", "UnnecessarySemicolon"})
+    @SuppressWarnings("unchecked")
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
 
         try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {

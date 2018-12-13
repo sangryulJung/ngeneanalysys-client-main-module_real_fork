@@ -138,7 +138,7 @@ public class SampleUploadController extends BaseStageController{
     }
 
     /**
-     * @param homeController
+     * @param homeController HomeController
      */
     void setHomeController(HomeController homeController) {
         this.homeController = homeController;

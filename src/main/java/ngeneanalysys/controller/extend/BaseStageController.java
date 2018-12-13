@@ -67,10 +67,10 @@ public abstract class BaseStageController {
         Platform.runLater(() -> this.maskerPane.setVisible(visable));
     }
 
-    public void setMaskerPanePrefWidth(double width) {
+    protected void setMaskerPanePrefWidth(double width) {
         Platform.runLater(() -> this.maskerPane.setPrefWidth(width));
     }
-    public void setMaskerPanePrefHeight(double height) {
+    protected void setMaskerPanePrefHeight(double height) {
         Platform.runLater(() -> this.maskerPane.setPrefHeight(height));
     }
 }

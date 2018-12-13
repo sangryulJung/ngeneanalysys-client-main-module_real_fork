@@ -249,7 +249,6 @@ public class UserAccountController extends SubPaneController {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private void groupNameComboBoxCreate() {
         selectUserGroup.setConverter(new ComboBoxConverter());
         selectUserGroup.getItems().add(new ComboBoxItem());

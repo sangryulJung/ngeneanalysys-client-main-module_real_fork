@@ -105,7 +105,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private SampleView sample = null;
 
     /**
-     * @param variantsController
+     * @param variantsController AnalysisDetailVariantsController
      */
     public void setVariantsController(AnalysisDetailVariantsController variantsController) {
         this.variantsController = variantsController;

@@ -153,7 +153,6 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
         hBox.getChildren().add(label);
     }
 
-
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
             return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||

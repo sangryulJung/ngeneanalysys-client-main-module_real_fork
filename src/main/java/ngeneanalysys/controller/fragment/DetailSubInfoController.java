@@ -81,24 +81,7 @@ public class DetailSubInfoController extends SubPaneController {
 
         showDbLinkLisk();
         showPopulationFrequency();
-//        if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.GERMLINE.getDescription())) {
-//            showInSilicoPredictions();
-//        }
     }
-
-//    private void showInSilicoPredictions() {
-//        try {
-//            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS);
-//            Node node = loader.load();
-//            InSilicoPredictionsController controller = loader.getController();
-//            controller.setMainController(this.getMainController());
-//            controller.setParamMap(paramMap);
-//            controller.show((Parent) node);
-//            mainVBox.getChildren().add(0, node);
-//        } catch (Exception e) {
-//            logger.debug(e.getMessage());
-//        }
-//    }
 
     @SuppressWarnings("unchecked")
     @FXML
@@ -132,8 +115,6 @@ public class DetailSubInfoController extends SubPaneController {
             }
         }
         double rowHeight = 20.0;
-        // String[] germlineLink = {"exAC", "brcaExchange", "ncbi", "ucsc", "alamut"};
-        // String[] somaticLink = {"dbSNP", "clinvar", "cosmic", "ncbi", "gnomes", "exAC", "gnomAD", "koEXID", "oncoKB", "ucsc"};
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
 
@@ -250,11 +231,13 @@ public class DetailSubInfoController extends SubPaneController {
     private void showBrowser(String item) {
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
-
+        if(variantInformationMap == null || genomicCoordinateMap == null) return;
         if("dbSNP".equalsIgnoreCase(item)) {
             String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
-            String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
-            openBrowser(fullUrlDBsnp);
+            if(StringUtils.isNotEmpty(rsId)) {
+                String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
+                openBrowser(fullUrlDBsnp);
+            }
         } else if("ClinVar".equalsIgnoreCase(item)) {
             String variationId = (variantInformationMap.containsKey("variation_id")) ? (String) variantInformationMap.get("variation_id") : null;
             String fullUrlClinVar = "https://www.ncbi.nlm.nih.gov/clinvar/variation/" + variationId + "/";
@@ -334,9 +317,9 @@ public class DetailSubInfoController extends SubPaneController {
             }
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             if("BRCA Exchange".equalsIgnoreCase(item)) {
-                String chromosome = (genomicCoordinateMap != null && genomicCoordinateMap.containsKey("chromosome"))
+                String chromosome = (genomicCoordinateMap.containsKey("chromosome"))
                         ? (String) genomicCoordinateMap.get("chromosome") : null;
-                Integer gPos = (genomicCoordinateMap != null && genomicCoordinateMap.containsKey("g.pos"))
+                Integer gPos = (genomicCoordinateMap.containsKey("g.pos"))
                         ? (Integer) genomicCoordinateMap.get("g.pos") : null;
 
                 String urlBRCAExchange = "http://brcaexchange.org/variants?search=" + chromosome + ":g." + gPos;

@@ -193,7 +193,7 @@ public class MainApp extends Application {
 		
 		this.primaryStage = primaryStage;
 		this.primaryStage.initStyle(StageStyle.DECORATED);
-		
+
 		boolean isContainsServerURL = containsServerURL();
 		logger.debug(String.format("server url is contains : %s", isContainsServerURL));
 		

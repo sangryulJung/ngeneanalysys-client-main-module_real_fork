@@ -103,11 +103,7 @@ public class ExcludeReportDialogController extends SubPaneController {
 
     @FXML
     public void cancel() {
-        if(checkBox.isSelected()) {
-            checkBox.setSelected(false);
-        } else {
-            checkBox.setSelected(true);
-        }
+        checkBox.setSelected(!checkBox.isSelected());
         dialogStage.close();
     }
 }

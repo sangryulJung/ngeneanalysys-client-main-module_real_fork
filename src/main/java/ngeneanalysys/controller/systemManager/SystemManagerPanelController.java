@@ -285,11 +285,11 @@ public class SystemManagerPanelController extends SubPaneController {
         });
         lowConfidenceCnvDeletionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(StringUtils.isNotEmpty(newValue) &&
-                    !newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDeletionTextField.setText(oldValue);
+                    !newValue.matches("\\d*|\\d+\\.\\d*")) lowConfidenceCnvDeletionTextField.setText(oldValue);
         });
         lowConfidenceCnvDuplicationTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(StringUtils.isNotEmpty(newValue) &&
-                    !newValue.matches("[0-9]*\\.?[0-9]+")) lowConfidenceCnvDuplicationTextField.setText(oldValue);
+                    !newValue.matches("\\d*|\\d+\\.\\d*")) lowConfidenceCnvDuplicationTextField.setText(oldValue);
         });
         distributionAmpliconCnpAlgorithmRadioButton.setOnMouseClicked(e -> {
             brcaCnvAmpliconCnDuplicationCutoffTextField.setDisable(true);

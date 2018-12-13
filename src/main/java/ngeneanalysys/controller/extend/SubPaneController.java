@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import ngeneanalysys.controller.MainController;
-import ngeneanalysys.controller.LoginController;
 import ngeneanalysys.model.LoginSession;
 
 import java.util.Map;
@@ -16,12 +15,8 @@ import java.util.Map;
  */
 public abstract class SubPaneController extends BaseStageController {
 
-
     /** 메인화면 컨트롤러 객체 */
     protected MainController mainController;
-    
-    /** 로그인화면 컨트롤러 객체 */
-    protected LoginController loginController;
     
     /** 화면 컨트롤 관련 부모 화면에서 전달된 파라미터 정보 */
     protected Map<String,Object> paramMap;
@@ -44,14 +39,6 @@ public abstract class SubPaneController extends BaseStageController {
      */
     public MainController getMainController() {
         return mainController;
-    }
-    
-    /**
-     * @return the LoginController
-     */
-    
-    public LoginController getLoginController() {
-        return loginController;
     }
 
     /**

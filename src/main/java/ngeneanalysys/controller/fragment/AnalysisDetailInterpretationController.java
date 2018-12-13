@@ -524,7 +524,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
             if(list != null && !list.isEmpty()) {
-                //list.sort(Comparator.comparing(SnpInDelEvidence::getId));
+
                 Collections.sort(list, Collections.reverseOrder(Comparator.comparing(SnpInDelEvidence::getId)));
 
                 List<SnpInDelEvidence> interpretationList = new ArrayList<>();

@@ -118,7 +118,6 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
     /**
      * Fracion 그래프 값 입력 및 화면 출력
      */
-    @SuppressWarnings("unchecked")
     private void showFraction() {
         String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
         String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();

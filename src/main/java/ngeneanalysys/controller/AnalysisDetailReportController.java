@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -145,7 +144,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private Map<String, Object> variableList = null;
 
-    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -654,7 +652,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
             params.put("virtualPanelId", Integer.parseInt(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue()));
         }
-        Task<Boolean> task = new Task<Boolean>() {
+        return new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
                 if(reportData) {
@@ -683,8 +681,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 }
             }
         };
-
-        return task;
     }
 
     @FXML
@@ -1218,7 +1214,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return created;
     }
 
-    @SuppressWarnings({"unchecked", "UnnecessarySemicolon"})
+    @SuppressWarnings("unchecked")
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
 
         try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {

@@ -584,16 +584,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void addClickEvent(String text, Node node) {
-        if("PREDICTION".equals(text)) {
-            Map<String, Object> acmg = returnResultsAfterSearch("acmg");
-            if(acmg == null) return;
-            node.setStyle("-fx-cursor:hand;");
-            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> PopOverUtil.openACMGPopOver((Label) node, acmg));
-        }
-    }
-
     @FXML
     public void setGermlineFlag(ActionEvent event) {
         Button actionButton = (Button) event.getSource();

@@ -37,9 +37,9 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
     private TableColumn<BrcaCnvResult, String> exonTableColumn;
 
     /**
-     * @param brcaCnvExonList
+     * @param brcaCnvExonList List<BrcaCnvExon>
      */
-    public void setBrcaCnvExonList(List<BrcaCnvExon> brcaCnvExonList) {
+    void setBrcaCnvExonList(List<BrcaCnvExon> brcaCnvExonList) {
         if(!brcaCnvResultTable.getItems().isEmpty()) {
             brcaCnvResultTable.getItems().removeAll(brcaCnvResultTable.getItems());
         }
@@ -67,14 +67,14 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
     /**
      * @return brcaCnvExonList
      */
-    public List<BrcaCnvExon> getBrcaCnvExonList() {
+    List<BrcaCnvExon> getBrcaCnvExonList() {
         return brcaCnvExonList;
     }
 
     /**
      * @return brcaCnvResultList
      */
-    public List<BrcaCnvResult> getBrcaCnvResultList() {
+    List<BrcaCnvResult> getBrcaCnvResultList() {
         return brcaCnvResultList;
     }
 

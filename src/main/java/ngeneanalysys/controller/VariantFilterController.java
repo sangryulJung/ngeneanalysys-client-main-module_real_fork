@@ -361,9 +361,6 @@ public class VariantFilterController extends SubPaneController {
 
     private Panel panel;
 
-    /*private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};*/
-
     private AnalysisDetailSNVController snvController;
 
     private CheckComboBox<String> warningCheckComboBox;
