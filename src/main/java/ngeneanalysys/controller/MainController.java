@@ -277,7 +277,7 @@ public class MainController extends BaseStageController {
                 };
             }
         };
-
+        sampleList.setMaxWidth(100.0);
         this.sampleList = sampleList;
         sampleList.getStyleClass().add("combo-box");
         sampleList.setDisable(true);
@@ -294,8 +294,11 @@ public class MainController extends BaseStageController {
         sampleList.setCellFactory(lv ->
             new ListCell<ComboBoxItem>() {
                 private HBox graphic;
+                private HBox clearBox;
 
                 {
+                    clearBox = createClearLabel();
+
                     Label label = new Label();
                     label.getStyleClass().removeAll(label.getStyleClass());
 
@@ -335,18 +338,45 @@ public class MainController extends BaseStageController {
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 }
 
+                private HBox createClearLabel() {
+                    HBox box = new HBox();
+                    Label label = new Label();
+                    label.textProperty().bind(Bindings.convert(itemProperty()));
+                    label.getStyleClass().removeAll(label.getStyleClass());
+                    box.getChildren().add(label);
+                    box.setAlignment(Pos.CENTER);
+                    box.setStyle("-fx-border-color : #000000; -fx-border-width : 0 0 0.5 0;");
+                    box.setOnMouseClicked(event -> {
+                        if(itemProperty() == null) return;
+                        while(sampleList.getItems().size() > 1) {
+                            ComboBoxItem comboBoxItem = sampleList.getItems().get(1);
+                            removeTopMenu(comboBoxItem.getValue());
+                            sampleList.getItems().remove(comboBoxItem);
+                        }
+                        clearComboBox();
+                        sampleList.hide();
+                    });
+                    box.setCursor(Cursor.HAND);
+                    return box;
+                }
+
                 @Override
                 protected void updateItem(ComboBoxItem item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(graphic);
+                        if(item.getValue().equals("clear")) {
+                            //setGraphic(clearLabel);
+                            setGraphic(clearBox);
+                        } else {
+                            setGraphic(graphic);
+                        }
                     }
                 }
 
             });
-
+        sampleList.getItems().add(new ComboBoxItem("clear", "Close all samples"));
         createFilter();
     }
 
