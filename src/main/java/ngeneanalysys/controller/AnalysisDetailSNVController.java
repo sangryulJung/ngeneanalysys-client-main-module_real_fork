@@ -1315,7 +1315,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 label.setCursor(Cursor.HAND);
                 label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                     if (ev.getClickCount() == 1) {
-                        Alert alert = DialogUtil.generalShow(Alert.AlertType.CONFIRMATION, "Report", "Change report?", getMainApp().getPrimaryStage(), true);
+                        String changeReportText = "Y".equals(item)
+                                ? "Do you want to exclude the selected variant from the report?"
+                                : "Do you want to include the selected variant in your report?";
+                        Alert alert = DialogUtil.generalShow(Alert.AlertType.CONFIRMATION, "Report", changeReportText, getMainApp().getPrimaryStage(), true);
                         if(alert.getResult() == ButtonType.OK) {
                             Task<Void> task = new Task<Void>() {
                                 @Override
