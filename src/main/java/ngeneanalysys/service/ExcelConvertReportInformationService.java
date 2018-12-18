@@ -328,26 +328,30 @@ public class ExcelConvertReportInformationService {
     }
 
     private static String getXssfString(XSSFCell valueCell) {
-        switch (valueCell.getCellTypeEnum()) {
-            case BOOLEAN :
-                return valueCell.getBooleanCellValue() ? "true" : "false";
-            case STRING :
-                return valueCell.getStringCellValue();
-            case NUMERIC :
-                if(DateUtil.isCellDateFormatted(valueCell)) {
-                    Date date = valueCell.getDateCellValue();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    return sdf.format(date);
-                } else {
-                    return String.valueOf((int)valueCell.getNumericCellValue());
-                }
-            case FORMULA :
-                return valueCell.getCellFormula();
-            case BLANK :
-                return "";
-            default:
-                return "";
+        if (valueCell != null) {
+            switch (valueCell.getCellTypeEnum()) {
+                case BOOLEAN:
+                    return valueCell.getBooleanCellValue() ? "true" : "false";
+                case STRING:
+                    return valueCell.getStringCellValue();
+                case NUMERIC:
+                    if (DateUtil.isCellDateFormatted(valueCell)) {
+                        Date date = valueCell.getDateCellValue();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        return sdf.format(date);
+                    } else {
+                        return String.valueOf((int) valueCell.getNumericCellValue());
+                    }
+                case FORMULA:
+                    return valueCell.getCellFormula();
+                case BLANK:
+                    return "";
+                default:
+                    return "";
 
+            }
+        } else {
+            return "";
         }
     }
 }

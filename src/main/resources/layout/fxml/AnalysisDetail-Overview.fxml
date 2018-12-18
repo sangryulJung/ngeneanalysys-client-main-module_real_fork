@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="1140.0" />
    </columnConstraints>
@@ -32,7 +39,6 @@
                      <styleClass>
                         <String fx:value="font_size_15" />
                         <String fx:value="font_gray" />
-                        <String fx:value="bold" />
                      </styleClass>
                   </Label>
                </children>
@@ -74,7 +80,6 @@
          <styleClass>
             <String fx:value="font_size_15" />
             <String fx:value="font_gray" />
-            <String fx:value="bold" />
          </styleClass>
          <GridPane.margin>
             <Insets />

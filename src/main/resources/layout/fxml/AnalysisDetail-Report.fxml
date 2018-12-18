@@ -123,7 +123,7 @@
                               </HBox>
                               <HBox prefHeight="28.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" style="-fx-font-family: Noto Sans KR Bold;" text="TARGET GENES">
+                                    <Label fx:id="conclusions11" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" minWidth="-Infinity" text="TARGET GENES">
                                        <styleClass>
                                           <String fx:value="font_size_15" />
                                           <String fx:value="font_gray" />

@@ -131,7 +131,7 @@
                                                 </RadioButton>
                                                 <Label styleClass="help_tooltip">
                                                    <tooltip>
-                                                      <Tooltip text="fdsafjdsaklfjdksal" />
+                                                      <Tooltip text="If you choose “Distribution”, the BRCA CNV analysis will use an algorithm with a normal distribution. This algorithm analyzes the CNV by calculating the normal distribution of the data of the samples analyzed in the run." />
                                                    </tooltip>
                                                 </Label>
                                              </children>
@@ -139,13 +139,19 @@
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <children>
                                                 <RadioButton fx:id="simpleCutoffAmpliconCnpAlgorithmRadioButton" mnemonicParsing="false" text="Simple Cut-off" toggleGroup="$ampliconCopyNumberPredictionAlgorihtmToggleGroup" />
-                                                <Label styleClass="help_tooltip" />
+                                                <Label styleClass="help_tooltip">
+                                                   <tooltip>
+                                                      <Tooltip text="If you choose “Simple Cut-off”, the BRCA CNV analysis will use the algorithm applying the cut-off criteria you set. This algorithm analyzes the CNV by applying the corresponding criteria to the data of the samples analyzed in one run." />
+                                                   </tooltip></Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="5">
                                              <children>
                                                 <Label text="Exon Copy Number Prediction Threshold" />
-                                                <Label styleClass="help_tooltip" />
+                                                <Label styleClass="help_tooltip">
+                                                   <tooltip>
+                                                      <Tooltip text="The BRCAaccuTest Series determines the CNV of the corresponding exon compared to the criterion set by the copy number ratio of multiple amplicons in an exon. (Default = 60%)" />
+                                                   </tooltip></Label>
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -156,13 +162,13 @@
                                              </children>
                                           </HBox>
                                           <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="7">
+                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                              <children>
                                                 <Label text="Low Confidence CNV Deletion: " />
                                                 <TextField fx:id="lowConfidenceCnvDeletionTextField" prefWidth="60.0" />
                                              </children>
                                           </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="7">
                                              <children>
                                                 <Label text="Low Confidence CNV Duplication: " />
                                                 <TextField fx:id="lowConfidenceCnvDuplicationTextField" prefWidth="60.0" />
