@@ -35,6 +35,7 @@ import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -574,6 +575,12 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 analysisDetailGermlineCNVReportController.setBrcaCnvExonList(pagedBrcaCNVExon.getResult());
             }
 
+            CompositeCmtCnvResult compositeCmtCnvResult = null;
+            if(analysisDetailGermlineAmcCNVReportController != null) {
+                response = apiService.get("/analysisResults/compositeCmtCnvResult/" + sample.getId(), null, null, null);
+                compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
+            }
+
             long deletionCount = 0;
             long amplificationCount = 0;
 
@@ -612,6 +619,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     + (pagedBrcaCNVExon != null ? " / CNV Total: " + (deletionCount + amplificationCount) : "")
                     + (deletionCount > 0 ? ", Deletion: " + deletionCount : "")
                     + (amplificationCount > 0 ? ", Amplification: " + amplificationCount : "")
+                    + (compositeCmtCnvResult != null && compositeCmtCnvResult.getIncludedInReport().equals("Y") ?
+                        " / " + compositeCmtCnvResult.getGene() + " : " + WordUtils.capitalize(compositeCmtCnvResult.getPrediction()) : "")
                     + " )"
             );
 

@@ -172,6 +172,9 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                             item.getName().contains("gene_coverage")).collect(Collectors.toList());
                     totalList.removeAll(files);
                 }
+                List<AnalysisFile> files = totalList.stream().filter(item -> item.getName().contains("png") ||
+                        item.getName().contains("txt") || item.getName().contains("json")).collect(Collectors.toList());
+                totalList.removeAll(files);
                 totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
 
                 return null;

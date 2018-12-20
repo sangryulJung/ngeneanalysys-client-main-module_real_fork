@@ -91,11 +91,11 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     if (fileData.getName().equals(file.getName())) {
                         try {
                             analysisRequestService.uploadFile(fileData.getId(), file, this);
-                            completeFile.add(fileData);
-                            setCompleteWorkCount(completeFile.size());
-
                         } catch (WebAPIException e) {
                             e.printStackTrace();
+                        } finally {
+                            completeFile.add(fileData);
+                            setCompleteWorkCount(completeFile.size());
                         }
                     }
 

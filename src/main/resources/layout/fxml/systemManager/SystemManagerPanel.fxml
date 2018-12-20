@@ -377,7 +377,7 @@
                                           <TextField fx:id="roiCoveragePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
                                           <TextField fx:id="uniformity02PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                                           <TextField fx:id="mappingQuality60PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label text="Uniformity( %, &lt;= )" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                          <Label text="Uniformity 0.2( %, &lt;= )" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                           <Label text="Mapping Quality( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                                        </children>
                                        <padding>

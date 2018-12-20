@@ -60,6 +60,26 @@ public enum PredictionTypeCode {
 		return aliasValue;
 	}
 
+	public static String getNameFromAlias(String alias) {
+		String aliasValue = null;
+		if (alias == null) {
+			aliasValue = "NONE";
+		} else if (alias.equals(PREDICTION_A.getAlias())) {
+			aliasValue = PREDICTION_A.getDescription();
+		} else if (alias.equals(PREDICTION_B.getAlias())) {
+			aliasValue = PREDICTION_B.getDescription();
+		} else if (alias.equals(PREDICTION_C.getAlias())) {
+			aliasValue = PREDICTION_C.getDescription();
+		} else if (alias.equals(PREDICTION_D.getAlias())) {
+			aliasValue = PREDICTION_D.getDescription();
+		} else if (alias.equals(PREDICTION_E.getAlias())) {
+			aliasValue = PREDICTION_E.getDescription();
+		} else {
+			aliasValue = "NONE";
+		}
+		return aliasValue;
+	}
+
 	public static String getCodeFromAlias(String alias) {
 		String codeValue = null;
 		if (alias == null) {

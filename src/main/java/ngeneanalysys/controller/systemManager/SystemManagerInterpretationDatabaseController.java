@@ -278,7 +278,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
 
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
-
+        deletedTableColumn.setVisible(false);
         interpretationPagination.setPageFactory(pageIndex -> {
             if(currentPageIndex != pageIndex) {
                 setInterpretationList(pageIndex + 1);

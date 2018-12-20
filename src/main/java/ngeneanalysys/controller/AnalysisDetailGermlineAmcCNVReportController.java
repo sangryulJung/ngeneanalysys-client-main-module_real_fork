@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.CompositeCmtCnvResult;
@@ -92,11 +93,20 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
         thread.start();
     }
 
+    public CompositeCmtCnvResult getCompositeCmtCnvResult() {
+        if(heredAmcCnvResultTable.getItems() != null && heredAmcCnvResultTable.getItems().size() > 0) {
+            return heredAmcCnvResultTable.getItems().get(0);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void show(Parent root) throws IOException {
         geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         variantTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));
-        classificationTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getClassification()));
+        classificationTableColumn.setCellValueFactory(item -> new SimpleStringProperty(
+                PredictionTypeCode.getNameFromAlias(item.getValue().getClassification())));
         inheritanceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getInheritance()));
         parentalOriginTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getParentalOrigin()));
     }

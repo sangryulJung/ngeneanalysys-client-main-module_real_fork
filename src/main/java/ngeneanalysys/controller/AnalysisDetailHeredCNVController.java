@@ -126,7 +126,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
             try {
                 apiService.put("/analysisResults/updateCmtCnvIncludedInReport/" + sample.getId(), params, null, true);
             } catch (WebAPIException wae) {
-                wae.printStackTrace();
+                reportCheckBox.setSelected(!reportCheckBox.isSelected());
             }
         });
     }
