@@ -415,6 +415,10 @@
  	-fx-border-width:1 1 0 0;
 }
 
+#normalizedCoverageTable .table-row-cell {
+    -fx-cell-size: 22px;
+}
+
 .cnv_duplication {
 	-fx-background-color:#2D70E8;
 	-fx-border-width:0;
@@ -529,7 +533,7 @@
 }
 
 .fraction_duplication .hbox {
-    -fx-background-color : #F04978;
+    -fx-background-color : #2D70E8;
 }
 
 .fraction_homo .hbox {
