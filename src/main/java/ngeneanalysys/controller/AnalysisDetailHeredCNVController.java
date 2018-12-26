@@ -56,7 +56,10 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private ImageView plotImageView;
 
     @FXML
-    private HBox alleleFractionHBox;
+    private HBox pmpHBox;
+
+    @FXML
+    private HBox kektHBox;
 
     @FXML
     private CheckBox reportCheckBox;
@@ -321,26 +324,29 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     }
 
     private void paintAlleleFraction(List<SnpVariantAlleleFraction> list) {
-        alleleFractionHBox.getChildren().forEach(item -> {
-            if(StringUtils.isNotEmpty(item.getId()) && item.getId().startsWith("exon_")) {
-                Integer number = Integer.parseInt(item.getId().replaceAll("exon_", ""));
-                Optional<SnpVariantAlleleFraction> optionalSnpVariantAlleleFaction =
-                        list.stream().filter(snpVaf -> snpVaf.getNumber() == number).findFirst();
+        pmpHBox.getChildren().forEach(item -> setHBoxColor(item, list));
+        kektHBox.getChildren().forEach(item -> setHBoxColor(item, list));
+    }
 
-                optionalSnpVariantAlleleFaction.ifPresent(snpVariantAlleleFraction -> {
-                    item.getStyleClass().removeAll("fraction_normal", "fraction_duplication",
-                            "fraction_homo");
+    private void setHBoxColor(Node item, List<SnpVariantAlleleFraction> list) {
+        if(StringUtils.isNotEmpty(item.getId()) && item.getId().startsWith("exon_")) {
+            Integer number = Integer.parseInt(item.getId().replaceAll("exon_", ""));
+            Optional<SnpVariantAlleleFraction> optionalSnpVariantAlleleFaction =
+                    list.stream().filter(snpVaf -> snpVaf.getNumber() == number).findFirst();
 
-                    if("-".equals(snpVariantAlleleFraction.getPrediction())) {
-                        item.getStyleClass().add("fraction_homo");
-                    } else if(snpVariantAlleleFraction.getPrediction().equals(BrcaCNVCode.NORMAL.getCode())) {
-                        item.getStyleClass().add("fraction_normal");
-                    } else {
-                        item.getStyleClass().add("fraction_duplication");
-                    }
-                });
-            }
-        });
+            optionalSnpVariantAlleleFaction.ifPresent(snpVariantAlleleFraction -> {
+                item.getStyleClass().removeAll("fraction_normal", "fraction_duplication",
+                        "fraction_homo");
+
+                if("-".equals(snpVariantAlleleFraction.getPrediction())) {
+                    item.getStyleClass().add("fraction_homo");
+                } else if(snpVariantAlleleFraction.getPrediction().equals(BrcaCNVCode.NORMAL.getCode())) {
+                    item.getStyleClass().add("fraction_normal");
+                } else {
+                    item.getStyleClass().add("fraction_duplication");
+                }
+            });
+        }
     }
 
     private void setPredictionArea(CompositeCmtCnvResult compositeCmtCnvResult) {

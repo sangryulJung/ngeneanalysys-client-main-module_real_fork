@@ -578,3 +578,9 @@
     -fx-background-insets: 0, 1, 2;
     -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; /* 2 10 3 10 */
 }
+
+.hered_cnv_plot_box .hbox {
+    -fx-border-color : black;
+    -fx-border-radius : 15 15;
+    -fx-background-radius : 15 15;
+}
