@@ -35,7 +35,7 @@
     <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label styleClass="font_size_15" text="SNP VARIANT ALLELE FRACTION" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label styleClass="font_size_15" text="SNP-Level CNV" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="5">
          <children>
             <Label text="PMP22 CNV" />
@@ -220,7 +220,7 @@
          </children>
       </HBox>
       <Label onMouseClicked="#excelDownload" styleClass="excel_download_image" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-      <Label styleClass="font_size_15" text="NORMALIZED GENE COVERAGE" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+      <Label styleClass="font_size_15" text="Gene-Level CNV" GridPane.columnIndex="3" GridPane.rowIndex="1" />
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />
