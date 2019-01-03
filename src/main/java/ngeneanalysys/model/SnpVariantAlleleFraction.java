@@ -14,9 +14,14 @@ public class SnpVariantAlleleFraction {
     private BigDecimal minReferenceHeteroRange;
     private BigDecimal maxReferenceHeteroRange;
     private BigDecimal vaf;
-    private Integer depth;
+    private BigDecimal sampleRatio;
+    private BigDecimal controlRatio;
     private String zygosity;
     private String prediction;
+    private BigDecimal g1000EastAsian;
+    private BigDecimal gnomADeastAsian;
+    private BigDecimal koreanExomInformationDatabase;
+    private BigDecimal koreanReferenceGenomeDatabase;
 
     /**
      * @return sampleId
@@ -68,10 +73,17 @@ public class SnpVariantAlleleFraction {
     }
 
     /**
-     * @return depth
+     * @return sampleRatio
      */
-    public Integer getDepth() {
-        return depth;
+    public BigDecimal getSampleRatio() {
+        return sampleRatio;
+    }
+
+    /**
+     * @return controlRatio
+     */
+    public BigDecimal getControlRatio() {
+        return controlRatio;
     }
 
     /**
@@ -86,5 +98,33 @@ public class SnpVariantAlleleFraction {
      */
     public String getPrediction() {
         return prediction;
+    }
+
+    /**
+     * @return g1000EastAsian
+     */
+    public BigDecimal getG1000EastAsian() {
+        return g1000EastAsian;
+    }
+
+    /**
+     * @return gnomADeastAsian
+     */
+    public BigDecimal getGnomADeastAsian() {
+        return gnomADeastAsian;
+    }
+
+    /**
+     * @return koreanExomInformationDatabase
+     */
+    public BigDecimal getKoreanExomInformationDatabase() {
+        return koreanExomInformationDatabase;
+    }
+
+    /**
+     * @return koreanReferenceGenomeDatabase
+     */
+    public BigDecimal getKoreanReferenceGenomeDatabase() {
+        return koreanReferenceGenomeDatabase;
     }
 }

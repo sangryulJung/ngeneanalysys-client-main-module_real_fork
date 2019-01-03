@@ -80,11 +80,21 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     @FXML
     private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafSampleColumn;
     @FXML
-    private TableColumn<SnpVariantAlleleFraction, String> snpVafDepthColumn;
+    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafSampleRatioColumn;
+    @FXML
+    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafControlRatioColumn;
     @FXML
     private TableColumn<SnpVariantAlleleFraction, String> snpVafZygosityColumn;
     @FXML
     private TableColumn<SnpVariantAlleleFraction, String> snpVafPredictionColumn;
+    @FXML
+    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVaf1kpgEasColumn;
+    @FXML
+    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafgnomadEasColumn;
+    @FXML
+    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafkrgdbColumn;
+    @FXML
+    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafkoexidColumn;
 
     @FXML
     private TableView<NormalizedCoverage> normalizedCoverageTable;
@@ -157,9 +167,14 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                         String.format("%.03f", item.getValue().getMinReferenceHeteroRange()) + " - " +
                                 String.format("%.03f", item.getValue().getMaxReferenceHeteroRange())));
         snpVafSampleColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getVaf()));
-        snpVafDepthColumn.setCellValueFactory(item -> new SimpleStringProperty(String.format("%,d", item.getValue().getDepth())));
+        snpVafSampleRatioColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getSampleRatio()));
+        snpVafControlRatioColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getControlRatio()));
         snpVafZygosityColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getZygosity()));
         snpVafPredictionColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));
+        snpVaf1kpgEasColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getG1000EastAsian()));
+        snpVafgnomadEasColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getGnomADeastAsian()));
+        snpVafkrgdbColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getKoreanReferenceGenomeDatabase()));
+        snpVafkoexidColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getKoreanExomInformationDatabase()));
 
         coverageGeneColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         coverageWarningColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getWarning()));

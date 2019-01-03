@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.code.enums.BrcaCNVCode;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -34,6 +35,7 @@ import ngeneanalysys.util.WorksheetUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
@@ -47,6 +49,12 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private static Logger logger = LoggerUtil.getLogger();
 
     private CheckBox tableCheckBox;
+
+    private final String[] brcaCmcNoneTargetArea = new String[]{"brca1_exon24", "brca2_pro", "brca2_exon1", "brca2_exon2",
+                                                    "brca2_exon27"};
+
+    private final String[] brcaMlpaNoneTargetArea = new String[]{"brca1_exon24", "brca2_pro", "brca2_exon1", "brca2_exon2",
+            "brca2_exon27"};
 
     @FXML
     private Label brca1NMLabel;
@@ -162,12 +170,54 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         setBrcaTableView(brcaCnvExon.getGene(), brcaCnvExon.getExon(), brcaCnvExon.getCopyNumber());
     }
 
+    private void initNoneTargetArea() {
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
+            paintNoneTargetArea(brcaCmcNoneTargetArea);
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+            paintNoneTargetArea(brcaMlpaNoneTargetArea);
+        }
+    }
+
+    private void paintNoneTargetArea(String[] area) {
+        Arrays.stream(area).forEach(item -> {
+            if(item.startsWith("brca1")) {
+                Optional<Node> optionalNode = brca1ExonBox.getChildren().stream().filter(node ->
+                        StringUtils.isNotEmpty(node.getId()) && node.getId().equals(item)).findFirst();
+                optionalNode.ifPresent(node -> {
+                    if(((HBox)node).getChildren().size() > 1) {
+                        Optional<Node> optionalChildNode =((HBox)node).getChildren().stream()
+                                .filter(childNode -> childNode instanceof HBox).findFirst();
+                        optionalChildNode.ifPresent(childNode -> childNode.getStyleClass().add("box_border_none_target"));
+                    } else {
+                        node.getStyleClass().remove("box_border_target");
+                        node.getStyleClass().add("box_border_none_target");
+                    }
+                });
+            } else {
+                Optional<Node> optionalNode = brca2ExonBox.getChildren().stream().filter(node ->
+                        StringUtils.isNotEmpty(node.getId()) && node.getId().equals(item)).findFirst();
+                optionalNode.ifPresent(node -> {
+                    if(((HBox)node).getChildren().size() > 1) {
+                        Optional<Node> optionalChildNode =((HBox)node).getChildren().stream()
+                                .filter(childNode -> childNode instanceof HBox).findFirst();
+                        optionalChildNode.ifPresent(childNode -> childNode.getStyleClass().add("box_border_none_target"));
+                    } else {
+                        node.getStyleClass().remove("box_border_target");
+                        node.getStyleClass().add("box_border_none_target");
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("BRCA cnv view...");
         apiService = APIService.getInstance();
         sample = (SampleView)paramMap.get("sampleView");
         panel = sample.getPanel();
+
+        initNoneTargetArea();
 
         exonTableView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
             final TableHeaderRow header = (TableHeaderRow) exonTableView.lookup("TableHeaderRow");
@@ -510,6 +560,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             });
         });
     }
+
     public void setList() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
 
@@ -619,8 +670,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
         return new ArrayList<>();
     }
-
-
 
     private String getAmbiguousValue(final String gene, final String exon) {
         List<BrcaCnvAmplicon> ampliconList = brcaCnvAmpliconList.stream()
@@ -815,18 +864,20 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void changeCopyNumber(String value) {
-        try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("sampleId", sample.getId());
-            params.put("brcaCnvExonIds", getExportFields());
-            params.put("comment", "N/A");
-            params.put("cnv", value);
-            apiService.put("analysisResults/brcaCnvExon/updateCnv", params, null, true);
-            setList();
-            String gene = exonTableView.getItems().get(0).getGene();
-            setBrcaExonTableView(gene);
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
+        if(!getSelectedItemList().isEmpty()) {
+            try {
+                Map<String, Object> params = new HashMap<>();
+                params.put("sampleId", sample.getId());
+                params.put("brcaCnvExonIds", getExportFields());
+                params.put("comment", "N/A");
+                params.put("cnv", value);
+                apiService.put("analysisResults/brcaCnvExon/updateCnv", params, null, true);
+                setList();
+                String gene = exonTableView.getItems().get(0).getGene();
+                setBrcaExonTableView(gene);
+            } catch (WebAPIException wae) {
+                wae.printStackTrace();
+            }
         }
     }
 

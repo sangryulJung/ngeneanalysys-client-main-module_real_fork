@@ -237,7 +237,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
 
     /**
      * 파일 다운로드
-     * @param downloadFiles List<AnalysisFile></AnalysisFile>
+     * @param downloadFiles List<AnalysisFile>
      */
     @SuppressWarnings("static-access")
     public void download(List<AnalysisFile> downloadFiles) {
