@@ -528,18 +528,6 @@
     -fx-alignment:center;
 }
 
-.fraction_normal .hbox {
-    -fx-background-color : white;
-}
-
-.fraction_duplication .hbox {
-    -fx-background-color : #2D70E8;
-}
-
-.fraction_homo .hbox {
-    -fx-background-color : lightgray;
-}
-
 #heredCnvWrapper .btn_warn {
 	-fx-background-image:url('../images/renewal/icon_warn_small.png');
 	-fx-background-size:16;

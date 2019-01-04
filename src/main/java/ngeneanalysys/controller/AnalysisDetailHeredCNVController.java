@@ -5,15 +5,23 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -30,6 +38,7 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.WorksheetUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import java.io.ByteArrayInputStream;
@@ -350,16 +359,26 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                     list.stream().filter(snpVaf -> snpVaf.getNumber() == number).findFirst();
 
             optionalSnpVariantAlleleFaction.ifPresent(snpVariantAlleleFraction -> {
-                item.getStyleClass().removeAll("fraction_normal", "fraction_duplication",
-                        "fraction_homo");
-
-                if("-".equals(snpVariantAlleleFraction.getPrediction())) {
-                    item.getStyleClass().add("fraction_homo");
-                } else if(snpVariantAlleleFraction.getPrediction().equals(BrcaCNVCode.NORMAL.getCode())) {
-                    item.getStyleClass().add("fraction_normal");
-                } else {
-                    item.getStyleClass().add("fraction_duplication");
+                HBox hBox = (HBox)((VBox)item).getChildren().get(1);
+                if(!hBox.getChildren().isEmpty()) {
+                    hBox.getChildren().removeAll(hBox.getChildren());
                 }
+                Canvas canvas = new Canvas(18, 18);
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                gc.setFill(Color.rgb(45, 112, 232));
+                if(snpVariantAlleleFraction.getVaf().compareTo(new BigDecimal("0.9")) == 1) {
+                    gc.fillArc(0, 0, 18, 18, 45, 360, ArcType.CHORD);
+                } else if(snpVariantAlleleFraction.getVaf().compareTo(new BigDecimal("0.1")) == -1) {
+                    gc.fillArc(0, 0, 18, 18, 0, 0, ArcType.CHORD);
+                } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMaxReferenceHeteroRange()) == 1) {
+                    gc.fillArc(0, 0, 18, 18, 225, 270, ArcType.CHORD);
+                } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMinReferenceHeteroRange()) == -1) {
+                    gc.fillArc(0, 0, 18, 18, 315, 90, ArcType.CHORD);
+                } else {
+                    gc.fillArc(0, 0, 18, 18, 270, 180, ArcType.CHORD);
+
+                }
+                hBox.getChildren().add(canvas);
             });
         }
     }
@@ -375,5 +394,78 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                     .filter(item -> item.getValue().equals(compositeCmtCnvResult.getPrediction())).findFirst();
             optionalComboBoxItem.ifPresent(item -> predictionComboBox.getSelectionModel().select(item));
         }
+    }
+
+    @FXML
+    private void showHelpScreen(Event event) {
+        PopOver popOver = new PopOver();
+        popOver.setWidth(420);
+        popOver.setHeight(300);
+        popOver.setMaxHeight(140);
+        VBox mainVBox = new VBox();
+        mainVBox.setPrefWidth(400);
+        mainVBox.setPrefHeight(140);
+        HBox titleBox = createTitleBox("icon", "explain");
+        HBox homoRefBox = createContentsBox(0, 0, "Homozygous Reference");
+        HBox homoVaBox = createContentsBox(45, 360, "Homozygous Variant");
+        HBox heteroVaBox = createContentsBox(270, 180, "Heterozygous Variant");
+        HBox heteroIncRefBox = createContentsBox(225, 270, "Heterozygous Variant (increased reference fraction)");
+        HBox heteroIncVarBox = createContentsBox(315, 90, "Heterozygous Variant (increased variant fraction)");
+        mainVBox.getChildren().addAll(titleBox, homoRefBox, homoVaBox, heteroVaBox, heteroIncRefBox, heteroIncVarBox);
+        popOver.getRoot().setAlignment(Pos.CENTER);
+        popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setAutoHide(true);
+        popOver.setAutoFix(true);
+        popOver.setDetachable(true);
+        popOver.setArrowSize(15);
+        popOver.setArrowIndent(30);
+        popOver.setContentNode(mainVBox);
+        popOver.setTitle("genotype");
+        popOver.show((Node)event.getSource());
+    }
+
+    private HBox createTitleBox(String title, String contents) {
+        HBox box = new HBox();
+        box.setPrefWidth(400);
+        Label titleLabel = new Label(title);
+        titleLabel.setAlignment(Pos.CENTER);
+        titleLabel.setPrefWidth(60);
+        titleLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
+        Label contentsLabel = new Label(contents);
+        contentsLabel.setPrefWidth(340);
+        contentsLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
+
+        box.getChildren().addAll(titleLabel, contentsLabel);
+
+        return box;
+    }
+
+    private HBox createContentsBox(double startAngle, double arcExtent, String contents) {
+        HBox box = new HBox();
+        box.setPrefWidth(400);
+        VBox titleBox = new VBox();
+        titleBox.setPrefWidth(60);
+        titleBox.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
+        titleBox.setAlignment(Pos.CENTER);
+        HBox imageBox = new HBox();
+        imageBox.setAlignment(Pos.TOP_LEFT);
+        imageBox.setMinSize(18, 18);
+        imageBox.setPrefSize(18, 18);
+        imageBox.setMaxSize(18, 18);
+        Canvas canvas = new Canvas(18, 18);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.rgb(45, 112, 232));
+        gc.fillArc(0, 0, 16, 16, startAngle, arcExtent, ArcType.CHORD);
+        imageBox.getChildren().add(canvas);
+        imageBox.setStyle("-fx-border-color : black; -fx-border-width : 1; -fx-border-radius : 15 15;");
+        titleBox.getChildren().add(imageBox);
+        Label contentsLabel = new Label(contents);
+        contentsLabel.setPrefWidth(340);
+        contentsLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
+
+        box.getChildren().addAll(titleBox, contentsLabel);
+
+        return box;
     }
 }
