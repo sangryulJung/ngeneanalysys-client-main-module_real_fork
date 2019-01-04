@@ -430,7 +430,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         } else {
                             BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
                             if(hgvsRadio.isSelected() && brcaCnvExon.getGene().equals("BRCA1")) {
-                                if(brcaCnvExon.getExon().contains("UTR")) {
+                                if(brcaCnvExon.getExon().equals("Promoter")) {
                                     setText(item);
                                 } else {
                                     int a = Integer.parseInt(item);
@@ -448,9 +448,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 }
         );
         exonExonTableColumn.setComparator((a,  b) -> {
-            if(a.contains("UTR")) {
+            if(a.equals("Promoter")) {
                 return -1;
-            } else if(b.contains("UTR")) {
+            } else if(b.equals("Promoter")) {
                 return 1;
             }else {
                 int intA = Integer.parseInt(a);
@@ -573,9 +573,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
             brcaCnvExonList = pagedBrcaCNVExon.getResult().stream().sorted((a, b) ->
             {
-                if(a.getExon().contains("UTR")) {
+                if(a.getExon().equals("Promoter")) {
                     return -1;
-                } else if(b.getExon().contains("UTR")) {
+                } else if(b.getExon().equals("Promoter")) {
                     return 1;
                 }else {
                     int intA = Integer.parseInt(a.getExon());
@@ -617,7 +617,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private void setBrcaTableView(final String gene, final String exon, int copyNumber) {
         String exonName;
-        if(exon.contains("UTR")) {
+        if(exon.equals("Promoter")) {
             exonName = exon;
         } else if(gene.equals("BRCA2") || bicRadio.isSelected()){
             exonName = "EXON " + exon;
@@ -773,7 +773,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             }
 
             for (BrcaCnvExon exon : brcaCnvExonList) {
-                String exonObjId = "5'UTR".equals(exon.getExon()) ? boxId + "utr5" : boxId + "exon" + exon.getExon();
+                String exonObjId = "Promoter".equals(exon.getExon()) ? boxId + "pro" : boxId + "exon" + exon.getExon();
                 Optional<Node> optionalNode = box.getChildren().stream()
                         .filter(obj -> obj.getId() != null && obj.getId().equals(exonObjId)).findFirst();
 
@@ -937,15 +937,17 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     public void exon_plot_click(Event e) {
         Node obj = (Node)e.getSource();
-        String gene = obj.getId().split("_")[0].toUpperCase();
-        String exon = getExonName(obj.getId().split("_")[1].replaceAll("exon", ""));
-        setTableView(gene, exon);
+        if(!obj.getStyleClass().contains("box_border_none_target")) {
+            String gene = obj.getId().split("_")[0].toUpperCase();
+            String exon = getExonName(obj.getId().split("_")[1].replaceAll("exon", ""));
+            setTableView(gene, exon);
+        }
     }
 
     private String getExonName(String split) {
         if(StringUtils.isEmpty(split)) {
             return "";
         }
-        return split.contains("utr") ? "5'UTR" : split.toUpperCase();
+        return split.contains("pro") ? "Promoter" : split.toUpperCase();
     }
 }

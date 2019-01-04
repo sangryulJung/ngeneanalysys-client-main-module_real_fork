@@ -88,9 +88,9 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
             brcaCnvExonList = pagedBrcaCNVExon.getResult().stream().sorted((a, b) ->
             {
-                if(a.getExon().contains("UTR")) {
+                if(a.getExon().equals("Promoter")) {
                     return -1;
-                } else if(b.getExon().contains("UTR")) {
+                } else if(b.getExon().equals("Promoter")) {
                     return 1;
                 } else {
                     int intA = Integer.parseInt(a.getExon());
@@ -128,9 +128,9 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
 
         hBox.getChildren().forEach(label -> {
             if(StringUtils.isNotEmpty(label.getId())) {
-                if(label.getId().contains("utr")) {
+                if(label.getId().contains("pro")) {
                     Optional<BrcaCnvExon> optionalBrcaCnvExon = brcaCnvExonList.stream().filter(item ->
-                            item.getExon().contains("UTR")).findFirst();
+                            item.getExon().equals("Promoter")).findFirst();
                     setLabelStyleClass(optionalBrcaCnvExon, label);
                 } else {
                     Optional<BrcaCnvExon> optionalBrcaCnvExon = brcaCnvExonList.stream().filter(item ->

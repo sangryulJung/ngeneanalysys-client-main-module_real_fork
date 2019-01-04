@@ -191,16 +191,16 @@ public class ConvertUtil {
 		LinkedList<String> tempList = new LinkedList<>();
 		try {
 			list.forEach(item -> {
-				if (item.contains("UTR")) {
+				if (item.equals("Promoter")) {
 					tempList.add(item);
 				} else {
 					if (tempList.isEmpty()) {
 						tempList.add(item);
 					} else {
 						String last = tempList.getLast();
-						if (last.contains("UTR") && item.equals("2")) {
+						if (last.equals("Promoter") && item.equals("1")) {
 							tempList.add(item);
-						} else if (last.contains("UTR")) {
+						} else if (last.equals("Promoter")) {
 							sb.append(last).append(" / ");
 							tempList.clear();
 						} else {

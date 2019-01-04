@@ -512,7 +512,12 @@
 												</fo:table-cell>
 												<fo:table-cell border-width="0.5pt" border-style="solid">
 													<fo:block>
-														UTR
+														Pro
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell border-width="0.5pt" border-style="solid">
+													<fo:block>
+														1
 													</fo:block>
 												</fo:table-cell>
 												<fo:table-cell border-width="0.5pt" border-style="solid">

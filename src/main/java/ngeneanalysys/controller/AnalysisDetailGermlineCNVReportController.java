@@ -45,9 +45,9 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
         }
         this.brcaCnvExonList = brcaCnvExonList.stream().sorted((a, b) ->
         {
-            if(a.getExon().contains("UTR")) {
+            if(a.getExon().equals("Promoter")) {
                 return -1;
-            } else if(b.getExon().contains("UTR")) {
+            } else if(b.getExon().equals("Promoter")) {
                 return 1;
             } else {
                 int intA = Integer.parseInt(a.getExon());

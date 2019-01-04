@@ -36,10 +36,11 @@
       </TableView>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
          <children>
-            <HBox maxWidth="870.0" minWidth="870.0" prefHeight="30.0" prefWidth="870.0" styleClass="border_top">
+            <HBox maxWidth="900.0" minWidth="900.0" prefHeight="30.0" prefWidth="900.0" styleClass="border_top">
                <children>
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="60.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="60.0" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="UTR" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="Pro." />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="1" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="2" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="3" />
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="4" />
@@ -68,10 +69,11 @@
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="27" />
                </children>
             </HBox>
-            <HBox fx:id="brca1Plot" maxWidth="870.0" minWidth="870.0" prefHeight="30.0" prefWidth="870.0" styleClass="border_top">
+            <HBox fx:id="brca1Plot" maxWidth="900.0" minWidth="900.0" prefHeight="30.0" prefWidth="900.0" styleClass="border_top">
                <children>
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="60.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="60.0" text="BRCA1" />
-                  <Label fx:id="brca1_utr" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="UTR" />
+                  <Label fx:id="brca1_pro" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="Pro." />
+                  <Label fx:id="brca1_1" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="1" />
                   <Label fx:id="brca1_2" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="2" />
                   <Label fx:id="brca1_3" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="3" />
                   <Label fx:id="brca1_4" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="4" />
@@ -100,10 +102,11 @@
                   <Label fx:id="brca1_27" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="27" />
                </children>
             </HBox>
-            <HBox fx:id="brca2Plot" maxWidth="870.0" minWidth="870.0" prefHeight="30.0" prefWidth="870.0" styleClass="border_bottom">
+            <HBox fx:id="brca2Plot" maxWidth="900.0" minWidth="900.0" prefHeight="30.0" prefWidth="900.0" styleClass="border_bottom">
                <children>
                   <Label alignment="CENTER" maxHeight="30.0" maxWidth="60.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="60.0" text="BRCA2" />
-                  <Label fx:id="brca2_utr" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="UTR" />
+                  <Label fx:id="brca2_pro" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="Pro." />
+                  <Label fx:id="brca2_28" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="1" />
                   <Label fx:id="brca2_2" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="2" />
                   <Label fx:id="brca2_3" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="3" />
                   <Label fx:id="brca2_4" alignment="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="30.0" text="4" />
