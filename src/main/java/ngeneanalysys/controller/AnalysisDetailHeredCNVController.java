@@ -319,10 +319,10 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
             params.put("value", item.getValue());
             try {
                 apiService.put("/analysisResults/updateCmtCnvPrediction/" + sample.getId(), params, null, true);
+                reportCheckBox.setSelected(true);
             } catch (WebAPIException wae) {
-                wae.printStackTrace();
+                reportCheckBox.setSelected(false);
             }
-            reportCheckBox.setSelected(true);
         }
     }
 

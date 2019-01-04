@@ -15,6 +15,7 @@ import ngeneanalysys.model.SampleView;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -40,7 +41,7 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
     @FXML
     private TableColumn<CompositeCmtCnvResult, String> parentalOriginTableColumn;
 
-    public void setCompositeCmtCnvResults() {
+    void setCompositeCmtCnvResults(String type) {
         if(heredAmcCnvResultTable.getItems() != null) {
             heredAmcCnvResultTable.getItems().removeAll(heredAmcCnvResultTable.getItems());
             heredAmcCnvResultTable.refresh();
@@ -69,7 +70,8 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
             @Override
             protected void succeeded() {
                 Platform.runLater(() -> {
-                    if("Y".equals(compositeCmtCnvResult.getIncludedInReport())) {
+                    if((type.equals("OVERVIEW") && StringUtils.isNotEmpty(compositeCmtCnvResult.getPrediction()))
+                            || "Y".equals(compositeCmtCnvResult.getIncludedInReport())) {
                         heredAmcCnvResultTable.getItems().add(compositeCmtCnvResult);
                     }
                 });

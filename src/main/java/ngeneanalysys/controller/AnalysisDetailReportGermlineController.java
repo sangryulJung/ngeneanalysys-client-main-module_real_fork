@@ -553,7 +553,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     void setVariantsList() {
         if(analysisDetailGermlineAmcCNVReportController != null) {
-            analysisDetailGermlineAmcCNVReportController.setCompositeCmtCnvResults();
+            analysisDetailGermlineAmcCNVReportController.setCompositeCmtCnvResults("REPORT");
         }
 
         HttpClientResponse response = null;

@@ -175,7 +175,7 @@
                         <VBox minWidth="15.0" prefHeight="200.0" prefWidth="15.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="220.0" prefWidth="220.0" style="-fx-background-color: #8F9FB9;" text="KEKT3" textFill="WHITE" />
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="220.0" prefWidth="220.0" style="-fx-background-color: #8F9FB9;" text="TEKT3" textFill="WHITE" />
                </children>
             </VBox>
             <HBox maxHeight="10.0" maxWidth="1.7976931348623157E308" minHeight="10.0" minWidth="31.0" prefHeight="10.0" prefWidth="31.0" style="-fx-border-color: black; -fx-border-width: 0.5 0 0 0;" HBox.hgrow="ALWAYS" />

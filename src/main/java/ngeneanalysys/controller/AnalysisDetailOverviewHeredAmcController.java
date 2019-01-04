@@ -22,7 +22,7 @@ public class AnalysisDetailOverviewHeredAmcController extends AnalysisDetailComm
     private AnalysisDetailGermlineAmcCNVReportController controller;
 
     void setContents() {
-        controller.setCompositeCmtCnvResults();
+        controller.setCompositeCmtCnvResults("OVERVIEW");
     }
 
     @Override
