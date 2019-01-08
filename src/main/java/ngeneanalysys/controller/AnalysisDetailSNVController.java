@@ -1985,7 +1985,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 .map(item -> columnMap.get(item.getColumnName()))
                 .collect(Collectors.toCollection(ArrayList::new));
         //컬럼 리셋을 했을 때 Visible 이 false인 컬럼을 뒤쪽으로 이동
-        ArrayList invisibleTableColumns = cols.stream().filter(tableColumnInfo -> !tableColumnInfo.isVisible())
+        ArrayList invisibleTableColumns = cols.stream().filter(tableColumnInfo -> !tableColumnInfo.isVisible()
+                && !tableColumnInfo.getColumnName().equals("False"))
                 .map(item -> columnMap.get(item.getColumnName()))
                 .collect(Collectors.toCollection(ArrayList::new));
         variantListTableView.getColumns().addAll(visibleTableColumns);

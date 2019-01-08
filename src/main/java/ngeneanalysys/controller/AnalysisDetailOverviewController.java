@@ -254,7 +254,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         columnConstraints.setHgrow(Priority.ALWAYS);
         dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
         HBox hBox = new HBox();
-        hBox.setSpacing(10);
+        hBox.setSpacing(2);
         hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
         hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
@@ -265,8 +265,14 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
         descriptionLabel.getStyleClass().add("help_tooltip_white");
         descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
-        String value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
-                + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
+        String value;
+            if("uniformity_0.5".equals(sampleQC.getQcType())) {
+                value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
+                        + "Value : " + sampleQC.getQcUnit() + " (" + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + ")";
+            } else {
+                value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
+                        + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
+            }
         descriptionLabel.setOnMouseClicked(ev ->
             PopOverUtil.openQCPopOver(descriptionLabel, value));
 
