@@ -24,11 +24,11 @@
                   <Canvas fx:id="canvasVariantStatisticsRun" height="125.0" width="120.0" />
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Label fx:id="runSamplePercentageLabel" maxWidth="1.7976931348623157E308" styleClass="font_size_11" text="runPercentageCount" />
+                        <Label fx:id="runSamplePercentageLabel" maxWidth="1.7976931348623157E308" styleClass="font_size_11" />
                         <Label fx:id="runSampleHelpLabel" styleClass="help_tooltip" text="?" />
                      </children>
                   </HBox>
-                  <Label fx:id="runSampleCountLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="font_size_11" text="runSampeCount" />
+                  <Label fx:id="runSampleCountLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="font_size_11" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -36,11 +36,11 @@
                   <Canvas fx:id="canvasVariantStatisticsPanel" height="125.0" width="120.0" />
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Label fx:id="panelSamplePercentageLabel" maxWidth="1.7976931348623157E308" styleClass="font_size_11" text="panelPercentageCount" />
+                        <Label fx:id="panelSamplePercentageLabel" maxWidth="1.7976931348623157E308" styleClass="font_size_11" />
                         <Label fx:id="panelSampleHelpLabel" styleClass="help_tooltip" text="?" />
                      </children>
                   </HBox>
-                  <Label fx:id="panelSampleCountLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="font_size_11" text="panelSamplecount" />
+                  <Label fx:id="panelSampleCountLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="font_size_11" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -48,11 +48,11 @@
                   <Canvas fx:id="canvasVariantStatisticsGroup" height="125.0" width="120.0" />
                   <HBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Label fx:id="groupSamplePercentageLabel" maxWidth="1.7976931348623157E308" styleClass="font_size_11" text="groupPercentageCount" />
+                        <Label fx:id="groupSamplePercentageLabel" maxWidth="1.7976931348623157E308" styleClass="font_size_11" />
                         <Label fx:id="groupSampleHelpLabel" styleClass="help_tooltip" text="?" />
                      </children>
                   </HBox>
-                  <Label fx:id="groupSampleCountLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="font_size_11" text="groupSampleCount" />
+                  <Label fx:id="groupSampleCountLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="font_size_11" />
                </children>
             </VBox>
             <GridPane>
