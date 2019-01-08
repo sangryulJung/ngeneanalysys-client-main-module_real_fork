@@ -945,6 +945,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             } else {
                 contentsMap.put("mappingQuality", findQCResult(qcList, "mapping_quality_60"));
                 contentsMap.put("uniformity", findQCResult(qcList, "uniformity_0.2"));
+                contentsMap.put("uniformity05", findQCResult(qcList, "uniformity_0.5"));
                 contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
                 contentsMap.put("q30", findQCResult(qcList, "q30_trimmed_base"));
                 contentsMap.put("mappedBase", findQCResult(qcList, "mapped_base"));

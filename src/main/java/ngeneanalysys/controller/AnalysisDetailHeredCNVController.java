@@ -376,8 +376,9 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                     gc.fillArc(0, 0, 18, 18, 315, 90, ArcType.CHORD);
                 } else {
                     gc.fillArc(0, 0, 18, 18, 270, 180, ArcType.CHORD);
-
                 }
+                gc.setFill(Color.rgb(0, 0 ,0));
+                gc.fillRect(9, 0, 1, 18);
                 hBox.getChildren().add(canvas);
             });
         }
@@ -434,6 +435,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         titleLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
         Label contentsLabel = new Label(contents);
         contentsLabel.setPrefWidth(340);
+        contentsLabel.setAlignment(Pos.CENTER);
         contentsLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
 
         box.getChildren().addAll(titleLabel, contentsLabel);

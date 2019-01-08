@@ -288,7 +288,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         columnConstraints.setHgrow(Priority.ALWAYS);
         dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
         HBox hBox = new HBox();
-        hBox.setSpacing(10);
+        hBox.setSpacing(2);
         hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
         hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
