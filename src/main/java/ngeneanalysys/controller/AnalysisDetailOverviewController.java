@@ -268,7 +268,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         String value;
             if("uniformity_0.5".equals(sampleQC.getQcType())) {
                 value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
-                        + "Value : " + sampleQC.getQcUnit() + " (" + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + ")";
+                        + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + " (" + sampleQC.getQcUnit() + ")";
             } else {
                 value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
                         + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();

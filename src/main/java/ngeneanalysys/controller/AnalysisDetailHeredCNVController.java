@@ -459,6 +459,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.rgb(45, 112, 232));
         gc.fillArc(0, 0, 16, 16, startAngle, arcExtent, ArcType.CHORD);
+        gc.setFill(Color.rgb(0, 0 ,0));
+        gc.fillRect(7.5, 0, 1, 17);
         imageBox.getChildren().add(canvas);
         imageBox.setStyle("-fx-border-color : black; -fx-border-width : 1; -fx-border-radius : 15 15;");
         titleBox.getChildren().add(imageBox);

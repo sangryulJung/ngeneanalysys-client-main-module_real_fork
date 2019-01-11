@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
+<GridPane fx:id="snvWrapper" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSNVController">
    <columnConstraints>
       <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" prefWidth="0.0" />
@@ -190,7 +190,7 @@
                                  </styleClass></CheckBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="135.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="135.0">
                            <children>
                               <Button fx:id="changeTierButton" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="135.0" text="Tier">
                                  <HBox.margin>
@@ -250,7 +250,7 @@
                               <Insets bottom="2.0" top="2.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox prefHeight="26.0" prefWidth="135.0">
+                        <HBox prefHeight="25.0" prefWidth="135.0">
                            <children>
                               <Button fx:id="falsePositiveButton" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="135.0" text="False">
                                  <HBox.margin>
@@ -270,7 +270,7 @@
                               <Insets bottom="2.0" top="2.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefHeight="16.0" prefWidth="200.0">
                            <children>
                               <Label prefWidth="80.0" text="Download a file">
                                  <font>

@@ -12,8 +12,8 @@
 
 <GridPane fx:id="cnvGridPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" styleClass="custom-table" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailCNVController">
    <columnConstraints>
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="440.0" />
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="700.0" />
+      <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="740.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="380.0" vgrow="ALWAYS" />

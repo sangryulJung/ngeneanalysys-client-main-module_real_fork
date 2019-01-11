@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.VariantLevelCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -202,9 +201,9 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                 if(inputStream != null) {
                     cnvPlotImageView.setImage(new Image(inputStream));
                     //plotImageView.fitWidthProperty().bind(imageHBox.widthProperty());
-                    cnvPlotImageView.setFitHeight(imageScrollPane.getHeight());
+                    cnvPlotImageView.setFitHeight(imageScrollPane.getHeight() - 10);
                     imageScrollPane.heightProperty().addListener((observable, oldValue, newValue) ->
-                            cnvPlotImageView.setFitHeight((Double) newValue));
+                            cnvPlotImageView.setFitHeight((Double) newValue - 10));
                 }
             }
 
