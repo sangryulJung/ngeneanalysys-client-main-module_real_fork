@@ -5,15 +5,19 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -36,6 +40,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     @FXML
     private GridPane dataQCResultGridPane;
+
+    @FXML
+    private GridPane overviewMainGridPane;
 
     @FXML
     private Label tierOneVariantsCountLabel;
@@ -94,6 +101,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
+    private AnalysisDetailOverviewSolidCNVController analysisDetailOverviewSolidCNVController;
+
     @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
@@ -136,6 +145,30 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             }
         });
         Platform.runLater(this::setDisplayItem);
+
+        setSolidCnvOverview();
+    }
+
+    private void setSolidCnvOverview() {
+        Panel panel = (Panel)paramMap.get("panel");
+         if(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode().equals(panel.getCode())) {
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 113);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(113);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(113);
+
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SOLID_CNV_OVERVIEW);
+                Node node = loader.load();
+                AnalysisDetailOverviewSolidCNVController controller = loader.getController();
+                analysisDetailOverviewSolidCNVController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                overviewMainGridPane.add(node, 0, 4);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
@@ -165,6 +198,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     }
 
     void setDisplayItem() {
+        if(analysisDetailOverviewSolidCNVController != null) {
+            analysisDetailOverviewSolidCNVController.setContents();
+        }
         SampleView sample = (SampleView) getParamMap().get("sampleView");
 
         //기본 초기화
