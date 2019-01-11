@@ -344,7 +344,11 @@ public class ExcelConvertReportInformationService {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         return sdf.format(date);
                     } else {
-                        return String.valueOf((int) valueCell.getNumericCellValue());
+                        if(valueCell.getNumericCellValue() == (int)valueCell.getNumericCellValue()) {
+                            return String.valueOf((int)valueCell.getNumericCellValue());
+                        } else {
+                            return String.valueOf(valueCell.getNumericCellValue());
+                        }
                     }
                 case FORMULA:
                     return valueCell.getCellFormula();

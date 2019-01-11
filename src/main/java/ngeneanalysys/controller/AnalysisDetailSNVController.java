@@ -340,6 +340,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("tstDNAFilter");
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
+            falsePositiveButton.setDisable(true);
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
@@ -1811,6 +1812,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(inheritance, "Inheritance", null ,null, "inheritance");
         inheritance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getInheritance()));
 
+        TableColumn<VariantAndInterpretationEvidence, String> commonVariants = new TableColumn<>("Common Variants");
+        createTableHeader(commonVariants, "Common Variants", null ,null, "commonVariants");
+        commonVariants.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getCommonVariants()));
+
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
 
@@ -1981,7 +1986,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 //                columnMap.get(info.getColumnName()).visibleProperty()
 //                        .addListener(tableColumnVisibilityChangeListener);
 //        }
-        ArrayList visibleTableColumns = cols.stream().filter(TableColumnInfo::isVisible)
+        ArrayList visibleTableColumns = cols.stream().filter(tableColumnInfo -> tableColumnInfo.isVisible() ||
+                tableColumnInfo.getColumnName().equals("False"))
                 .map(item -> columnMap.get(item.getColumnName()))
                 .collect(Collectors.toCollection(ArrayList::new));
         //컬럼 리셋을 했을 때 Visible 이 false인 컬럼을 뒤쪽으로 이동

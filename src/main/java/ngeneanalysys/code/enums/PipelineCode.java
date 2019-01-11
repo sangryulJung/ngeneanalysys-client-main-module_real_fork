@@ -183,11 +183,6 @@ public enum PipelineCode {
 				list.add("repeat_sequence");
 				list.add("sequencing_error");
 				list.add("mapping_error");
-				list.add("snp_candidate");
-				list.add("common_snv_in_population");
-				list.add("common_indel_in_population");
-				list.add("common_snv_in_house");
-				list.add("common_indel_in_house");
 				break;
 			default:
 		}

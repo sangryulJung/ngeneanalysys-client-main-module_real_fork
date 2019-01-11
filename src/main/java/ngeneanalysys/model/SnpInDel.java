@@ -27,6 +27,7 @@ public class SnpInDel {
 	private String includedInReport;
 	private String hasWarning;
 	private String warningReason;
+	private String commonVariants;
 	private Integer variantNum;
 	private String comment;
 	private String isFalse;
@@ -44,6 +45,13 @@ public class SnpInDel {
 
 	//private Integer interpretationEvidenceId;
 	private String ntChangeBRCA;
+
+	/**
+	 * @return commonVariants
+	 */
+	public String getCommonVariants() {
+		return commonVariants;
+	}
 
 	/**
 	 * @return isFalse

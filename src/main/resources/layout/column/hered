@@ -60,5 +60,6 @@
     {"order":59,"columnName":"gnomAD OTH","visible":false},
     {"order":60,"columnName":"gnomAD SAS","visible":false},
     {"order":61,"columnName":"KRGDB","visible":true},
-    {"order":62,"columnName":"KoEXID","visible":true}
+    {"order":62,"columnName":"KoEXID","visible":true},
+    {"order":63,"columnName":"Common Variants","visible":true}
 ]

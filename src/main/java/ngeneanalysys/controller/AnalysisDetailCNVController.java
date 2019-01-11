@@ -2,29 +2,34 @@ package ngeneanalysys.controller;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.VariantLevelCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.Cnv;
-import ngeneanalysys.model.Panel;
-import ngeneanalysys.model.SampleView;
+import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.RawDataDownloadService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Jang
@@ -36,7 +41,13 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
     private APIService apiService;
 
     @FXML
+    private ImageView cnvPlotImageView;
+
+    @FXML
     private TableView<Cnv> cnvTableView;
+
+    @FXML
+    private ScrollPane imageScrollPane;
 
     @FXML
     private TableColumn<Cnv, String> geneTableColumn;
@@ -165,5 +176,53 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
         } catch (WebAPIException wae) {
             logger.debug(wae.getMessage());
         }
+
+
+        Task<Void> imageTask = new Task<Void>() {
+
+            ByteArrayInputStream inputStream;
+
+            @Override
+            protected Void call() throws Exception {
+                Map<String,Object> paramMap = new HashMap<>();
+                paramMap.put("sampleId", sample.getId());
+                HttpClientResponse response = apiService.get("/analysisFiles", paramMap, null, false);
+                AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
+                Optional<AnalysisFile> optionalAnalysisFile = analysisFileList.getResult().stream()
+                        .filter(item -> item.getName().contains("_cnv_plot.png")).findFirst();
+                if(optionalAnalysisFile.isPresent()) {
+                    inputStream = RawDataDownloadService.getInstance().getImageStream(optionalAnalysisFile.get());
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                if(inputStream != null) {
+                    cnvPlotImageView.setImage(new Image(inputStream));
+                    //plotImageView.fitWidthProperty().bind(imageHBox.widthProperty());
+                    cnvPlotImageView.setFitHeight(imageScrollPane.getHeight());
+                    imageScrollPane.heightProperty().addListener((observable, oldValue, newValue) ->
+                            cnvPlotImageView.setFitHeight((Double) newValue));
+                }
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                Exception e = new Exception(getException());
+                if (e instanceof WebAPIException) {
+                    DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
+                            ((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
+                } else {
+                    logger.error("Unknown Error", e);
+                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread imageThread = new Thread(imageTask);
+        imageThread.start();
     }
 }
