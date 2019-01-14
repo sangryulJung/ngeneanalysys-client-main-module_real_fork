@@ -1022,6 +1022,37 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("analysisType", pipelineCode.getAnalysisType());
                 params.put("libraryType", pipelineCode.getLibraryType());
             }
+            CnvConfigBrcaAccuTest cnvConfigBrcaAaccuTest = new CnvConfigBrcaAccuTest();
+            if(!cnvForBrcaAaccuTestTitledPane.isDisable()) {
+                if(distributionAmpliconCnpAlgorithmRadioButton.isSelected()) {
+                    cnvConfigBrcaAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode());
+                } else {
+                    cnvConfigBrcaAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode());
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDuplicationCutoffTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setSimpleCutoffDuplicationValue(
+                            Double.valueOf(brcaCnvAmpliconCnDuplicationCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDeletionCutoffTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setSimpleCutoffDeletionValue(
+                            Double.valueOf(brcaCnvAmpliconCnDeletionCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(exonCnpThresholdTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setExonCopyNumberPredictionThreshold(
+                            Integer.valueOf(exonCnpThresholdTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDeletionTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDeletion(
+                            Double.valueOf(lowConfidenceCnvDeletionTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDuplicationTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDuplication(
+                            Double.valueOf(lowConfidenceCnvDuplicationTextField.getText()));
+                }
+            }
+            params.put("cnvConfigBrcaAccuTest", cnvConfigBrcaAaccuTest);
 
             if(StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
@@ -1411,7 +1442,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
                 if(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode().equals(panel.getCode()) ||
-                        PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode().equals(panel.getCode())) {
+                        PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode().equals(panel.getCode())) {
                     CnvConfigBrcaAccuTest cnvConfigBRCAaccuTest = panel.getCnvConfigBRCAaccuTest();
                     if (cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm() != null &&
                             BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
@@ -1549,7 +1580,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 alert.setContentText(alertContentText);
                 logger.debug(panel.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deletePanel(panel.getId());
                 } else {
                     logger.debug(result.get() + " : button select");
@@ -1855,6 +1886,22 @@ public class SystemManagerPanelController extends SubPaneController {
                                 uniformity02PercentageTextField.setText(strs[1]);
                             } else if(strs[0].equals("Mapping Quality")) {
                                 mappingQuality60PercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Amplicon Copy Number Prediction Algorithm")) {
+                                if(strs[1].equals("Simple Cut-off")) {
+                                    simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                                } else {
+                                    distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                                }
+                            } else if(strs[0].equals("Amplification Cut-off Level")) {
+                                brcaCnvAmpliconCnDuplicationCutoffTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Deletion Cut-off Level")) {
+                                brcaCnvAmpliconCnDeletionCutoffTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Exon Copy Number Prediction Threshold")) {
+                                exonCnpThresholdTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Low Confidence CNV Duplication")) {
+                                lowConfidenceCnvDuplicationTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Low Confidence CNV Deletion")) {
+                                lowConfidenceCnvDeletionTextField.setText(strs[1]);
                             }
                         }
                     } else {

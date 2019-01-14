@@ -135,7 +135,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     private void setBrcaCnvOverview() {
         Panel panel = (Panel)paramMap.get("panel");
         if(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode().equals(panel.getCode()) ||
-                PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode().equals(panel.getCode())) {
+                PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode().equals(panel.getCode())) {
             overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 265);
             overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(265);
             overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(265);

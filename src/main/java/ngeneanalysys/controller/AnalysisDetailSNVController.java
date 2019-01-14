@@ -222,7 +222,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             checkBoxCheck(levelDCheckBox, filterList, "tier T4");
         }
         checkBoxCheck(reportCheckBox, filterList, "includedInReport Y");
-        checkBoxCheck(commonVariantsCheckBox, filterList, "commonVariants Y");
     }
 
     private void setStatisticsContents() {
@@ -926,6 +925,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         if(!showFalseVariantsCheckBox.isSelected()) {
             setIsFalseItemToN(list);
         }
+        if(!commonVariantsCheckBox.isSelected()) {
+            setCommonVariantsItemToN(list);
+        }
     }
 
     private void setIsFalseItemToN(Map<String, List<Object>> list) {
@@ -934,6 +936,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else {
             List<Object> searchList = new ArrayList<>();
             searchList.add("isFalse " + "N");
+            list.put("search", searchList);
+        }
+    }
+
+    private void setCommonVariantsItemToN(Map<String, List<Object>> list) {
+        if(list.containsKey("search")) {
+            list.get("search").add("commonVariants N");
+        } else {
+            List<Object> searchList = new ArrayList<>();
+            searchList.add("commonVariants N");
             list.put("search", searchList);
         }
     }

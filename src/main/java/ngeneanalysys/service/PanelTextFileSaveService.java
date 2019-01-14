@@ -1,5 +1,7 @@
 package ngeneanalysys.service;
 
+import ngeneanalysys.code.enums.PipelineCode;
+import ngeneanalysys.model.CnvConfigBrcaAccuTest;
 import ngeneanalysys.model.QCPassConfig;
 import ngeneanalysys.model.VariantFilter;
 import ngeneanalysys.util.LoggerUtil;
@@ -20,7 +22,7 @@ public class PanelTextFileSaveService {
 
     private String[] viewList = new String[]{"name", "code", "target", "analysisType", "libraryType", "memberGroupIds",
             "diseaseIds", "defaultDiseaseId", "defaultSampleSource", "reportTemplate", "canonicalTranscripts",
-            "warningReadDepth", "warningMAF", "variantFilter", "qcPassConfig"};
+            "warningReadDepth", "warningMAF", "variantFilter", "qcPassConfig" , "cnvConfigBrcaAccuTest"};
 
     private String[] saveList = new String[]{"Panel name", "pipeline", "Target", "Analysis Type", "Library Type", "Groups",
             "Diseases", "Default Disease", "Default Sample Source", "Report Template", "Canonical Transcripts",
@@ -95,6 +97,24 @@ public class PanelTextFileSaveService {
                     out.newLine();
                     out.write("Mapping Quality : " + returnStringText(qcPassConfig.getMappingQuality60Percentage()));
                     out.newLine();
+                } else if(viewList[i].equals("cnvConfigBrcaAccuTest")) {
+                    String code = (String)panelMap.get("code");
+                    if(code.equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode()) ||
+                            code.equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
+                        CnvConfigBrcaAccuTest cnvConfigBrcaAccuTest = (CnvConfigBrcaAccuTest) panelMap.get(viewList[i]);
+                        out.write("Amplicon Copy Number Prediction Algorithm : " + cnvConfigBrcaAccuTest.getAmpliconCopyNumberPredictionAlgorithm());
+                        out.newLine();
+                        out.write("Amplification Cut-off Level : " + returnStringText(cnvConfigBrcaAccuTest.getSimpleCutoffDuplicationValue()));
+                        out.newLine();
+                        out.write("Deletion Cut-off Level : " + returnStringText(cnvConfigBrcaAccuTest.getSimpleCutoffDeletionValue()));
+                        out.newLine();
+                        out.write("Exon Copy Number Prediction Threshold : " + returnStringText(cnvConfigBrcaAccuTest.getSimpleCutoffDeletionValue()));
+                        out.newLine();
+                        out.write("Low Confidence CNV Duplication : " + returnStringText(cnvConfigBrcaAccuTest.getLowConfidenceCnvDuplication()));
+                        out.newLine();
+                        out.write("Low Confidence CNV Deletion : " + returnStringText(cnvConfigBrcaAccuTest.getLowConfidenceCnvDeletion()));
+                        out.newLine();
+                    }
                 } else {
                     out.write(saveList[i] + " : " + ((panelMap.get(viewList[i]) != null) ? panelMap.get(viewList[i]) : ""));
                     out.newLine();

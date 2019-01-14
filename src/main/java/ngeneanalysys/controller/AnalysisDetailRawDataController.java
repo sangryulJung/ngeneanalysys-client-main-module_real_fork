@@ -163,7 +163,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 AnalysisFileList analysisFileList = response.getObjectBeforeConvertResponseToJSON(AnalysisFileList.class);
                 totalList = analysisFileList.getResult();
                 if(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode().equals(panel.getCode()) ||
-                        PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode().equals(panel.getCode())) {
+                        PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode().equals(panel.getCode())) {
                     List<AnalysisFile> files = totalList.stream().filter(item -> item.getName().contains("cnv") ||
                             item.getName().contains("BRCA_exon")).collect(Collectors.toList());
                     totalList.removeAll(files);

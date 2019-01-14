@@ -840,18 +840,18 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         boolean isBrcaCMCInclude = sampleArrayList.stream().anyMatch(sample -> sample.getPanel().getCode()
                 .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()));
 
-        boolean isBrcaMLPAInclude = sampleArrayList.stream().anyMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode()));
+        boolean isBrcaV2Include = sampleArrayList.stream().anyMatch(sample -> sample.getPanel().getCode()
+                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode()));
 
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
-        if((isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaMLPAInclude)
+        if((isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaV2Include)
                 && size > 1) {
             DialogUtil.warning("check panel setting", "check panel setting",
                     sampleUploadController.getCurrentStage(), true);
             return;
         }
 
-        if((isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaMLPAInclude)
+        if((isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaV2Include)
                 && size == 1 && sampleArrayList.size() == 1) {
             DialogUtil.warning("Warning", "CNV panels require two or more samples.",
                     sampleUploadController.getCurrentStage(), true);

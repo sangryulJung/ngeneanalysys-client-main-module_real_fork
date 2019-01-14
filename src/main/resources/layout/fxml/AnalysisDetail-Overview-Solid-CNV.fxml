@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="mainGridPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="113.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewSolidCNVController">
+<GridPane fx:id="mainGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="113.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewSolidCNVController">
   <columnConstraints>
-    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="1120.0" prefWidth="1120.0" />
+    <ColumnConstraints hgrow="ALWAYS" minWidth="1120.0" prefWidth="1120.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -32,6 +32,9 @@
           <TableColumn fx:id="valueTableColumn" prefWidth="75.0" style="-fx-text-fill: black;" text="Vaue" />
             <TableColumn fx:id="tierTableColumn" prefWidth="75.0" text="Tier" />
         </columns>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
       </TableView>
    </children>
 </GridPane>

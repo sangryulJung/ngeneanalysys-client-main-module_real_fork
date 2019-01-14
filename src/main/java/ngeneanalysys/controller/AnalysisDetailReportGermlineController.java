@@ -309,7 +309,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         setVirtualPanel();
 
         if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
-                || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+                || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode())) {
             mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 150);
             contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 150);
 
@@ -980,7 +980,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 }
 
                 if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
-                        panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+                        panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode())) {
                     Map<String, Object> analysisFileMap = new HashMap<>();
                     analysisFileMap.put("sampleId", sample.getId());
                     HttpClientResponse response = apiService.get("/analysisFiles", analysisFileMap, null, false);
@@ -1033,7 +1033,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 String contents = null;
                 if(panel.getReportTemplateId() == null) {
                     if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
-                            panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+                            panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode())) {
                         contents = velocityUtil.getContents("/layout/velocity/report_brca_cnv.vm", "UTF-8", model);
                     } else {
                         contents = velocityUtil.getContents("/layout/velocity/report_brca.vm", "UTF-8", model);
