@@ -57,6 +57,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private List<AnalysisFile> failedAnalysisFileList = new ArrayList<>();
 
     @FXML
+    private Label uploadToolTip;
+
+    @FXML
     private Label controlLabel;
 
     @FXML
@@ -255,6 +258,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         uploadFileData= sampleUploadController.getUploadFileData();
 
         settingPanelAndDiseases();
+
+        PopOverUtil.openToolTipPopOver(uploadToolTip,
+                "Choose FASTQ sequencing data file");
 
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();

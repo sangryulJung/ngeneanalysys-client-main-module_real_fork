@@ -71,11 +71,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private CheckBox levelDCheckBox;
     @FXML
     private CheckBox levelECheckBox;
-    @FXML
-    private CheckBox reportCheckBox;
 
     @FXML
+    private CheckBox reportCheckBox;
+    @FXML
     private CheckBox showFalseVariantsCheckBox;
+    @FXML
+    private CheckBox commonVariantsCheckBox;
 
     @FXML
     private GridPane snvWrapper;
@@ -220,6 +222,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             checkBoxCheck(levelDCheckBox, filterList, "tier T4");
         }
         checkBoxCheck(reportCheckBox, filterList, "includedInReport Y");
+        checkBoxCheck(commonVariantsCheckBox, filterList, "commonVariants Y");
     }
 
     private void setStatisticsContents() {
@@ -312,6 +315,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         reportCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
             if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
+        commonVariantsCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -344,6 +350,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
+
+        if(!PipelineCode.isHeredPipeline(panel.getCode())) {
+            commonVariantsCheckBox.setDisable(true);
+            commonVariantsCheckBox.setVisible(false);
+        }
+
         if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             levelACheckBox.setText("T1");
             levelBCheckBox.setText("T2");
@@ -1288,6 +1300,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
                 Platform.runLater(() -> showVariantList(0));
             });
+
+            falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
         } else {
             showFalseVariantsCheckBox.setVisible(false);
             //falsePositiveButton.setVisible(false);

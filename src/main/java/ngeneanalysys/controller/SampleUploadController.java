@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -25,6 +26,7 @@ import ngeneanalysys.model.Run;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -54,6 +56,11 @@ public class SampleUploadController extends BaseStageController{
     private Stage currentStage;
 
     private List<SampleView> samples = new ArrayList<>(23);
+
+    @FXML
+    private Label runNameToolTip;
+    @FXML
+    private Label sequencerToolTip;
 
     @FXML
     private TextField textFieldRunName;
@@ -182,6 +189,13 @@ public class SampleUploadController extends BaseStageController{
         }
     }
 
+    private void initTooltip() {
+        PopOverUtil.openToolTipPopOver(runNameToolTip,
+                "Enter Run Name (default: present date and time)");
+        PopOverUtil.openToolTipPopOver(sequencerToolTip,
+                "Choose sequencing instrument platform");
+    }
+
 
     @Override
     public void show(Parent root) throws IOException {
@@ -231,6 +245,7 @@ public class SampleUploadController extends BaseStageController{
         if (root != null) {
             scene = new Scene(root);
         }
+        initTooltip();
         currentStage.setScene(scene);
         currentStage.showAndWait();
     }

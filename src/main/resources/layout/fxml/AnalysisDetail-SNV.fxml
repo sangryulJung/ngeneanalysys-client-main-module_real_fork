@@ -94,7 +94,7 @@
                         </HBox>
                         <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="143.0" text="Filter selection">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets top="8.0" />
                            </VBox.margin>
                            <opaqueInsets>
                               <Insets />
@@ -119,7 +119,7 @@
                         </Button>
                         <Label fx:id="viewAppliedFiltersLabel" alignment="TOP_CENTER" onMouseClicked="#viewAppliedFilters" opacity="0.0" prefHeight="7.0" prefWidth="135.0" style="-fx-cursor: hand;" styleClass="font_size_9" text="View filter options">
                            <VBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
+                              <Insets bottom="3.0" top="5.0" />
                            </VBox.margin>
                         </Label>
                      </children>
@@ -148,7 +148,7 @@
                                  </styleClass></CheckBox>
                            </children>
                            <VBox.margin>
-                              <Insets bottom="2.0" />
+                              <Insets />
                            </VBox.margin>
                         </HBox>
                         <HBox prefHeight="38.0" prefWidth="135.0">
@@ -173,7 +173,7 @@
                                  </styleClass></CheckBox>
                            </children>
                            <VBox.margin>
-                              <Insets bottom="2.0" />
+                              <Insets />
                            </VBox.margin>
                         </HBox>
                         <HBox>
@@ -188,6 +188,16 @@
                                     <String fx:value="font_size_9" />
                                     <String fx:value="light" />
                                  </styleClass></CheckBox>
+                           </children>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <CheckBox fx:id="commonVariantsCheckBox" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="130.0" text="Common Variants">
+                                 <styleClass>
+                                    <String fx:value="font_size_9" />
+                                    <String fx:value="light" />
+                                 </styleClass>
+                              </CheckBox>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="135.0">
@@ -207,7 +217,7 @@
                               </Button>
                            </children>
                            <VBox.margin>
-                              <Insets bottom="2.0" top="7.0" />
+                              <Insets bottom="2.0" top="5.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0">
@@ -296,7 +306,7 @@
                               </Label>
                            </children>
                            <VBox.margin>
-                              <Insets top="3.0" />
+                              <Insets top="2.0" />
                            </VBox.margin>
                         </HBox>
                      </children>

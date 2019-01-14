@@ -38,10 +38,7 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PanelTextFileSaveService;
 import ngeneanalysys.task.BedFileUploadTask;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.FXMLLoadUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.controlsfx.control.CheckComboBox;
@@ -66,6 +63,13 @@ public class SystemManagerPanelController extends SubPaneController {
     private APIService apiService;
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    @FXML
+    private Label distributionToolTip;
+    @FXML
+    private Label cutOffToolTip;
+    @FXML
+    private Label predictionThresholdToolTip;
 
     @FXML
     private Button loadSettingFileBtn;
@@ -372,6 +376,16 @@ public class SystemManagerPanelController extends SubPaneController {
         });
 
         setDisabledItem(true);
+        initToolTip();
+    }
+
+    private void initToolTip() {
+        PopOverUtil.openToolTipPopOver(distributionToolTip,
+                "If you choose “Distribution”, the BRCA CNV analysis will use an algorithm with a normal distribution.\n This algorithm analyzes the CNV by calculating the normal distribution of the data of the samples analyzed in the run.");
+        PopOverUtil.openToolTipPopOver(cutOffToolTip,
+                "If you choose “Simple Cut-off”, the BRCA CNV analysis will use the algorithm applying the cut-off criteria you set.\n This algorithm analyzes the CNV by applying the corresponding criteria to the data of the samples analyzed in one run.");
+        PopOverUtil.openToolTipPopOver(predictionThresholdToolTip,
+                "The BRCAaccuTest Series determines the CNV of the corresponding exon compared to the criterion set by\n the copy number ratio of multiple amplicons in an exon. (Default = 60%)");
     }
 
     private void setTST170Default() {

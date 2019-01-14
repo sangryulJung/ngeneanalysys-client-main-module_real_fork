@@ -62,6 +62,28 @@ public class PopOverUtil {
         });
     }
 
+    public static void openToolTipPopOver(Label label, String text) {
+
+        VBox box = new VBox();
+        box.setStyle("-fx-padding:10;");
+        box.setAlignment(Pos.CENTER);
+        Label emptyLabel = new Label(text);
+        box.getChildren().add(emptyLabel);
+
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            PopOver popOver = new PopOver();
+            popOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+            popOver.setHeaderAlwaysVisible(true);
+            popOver.setAutoHide(true);
+            popOver.setAutoFix(true);
+            popOver.setDetachable(true);
+            popOver.setArrowSize(15);
+            popOver.setArrowIndent(30);
+            popOver.setContentNode(box);
+            popOver.show(label);
+        });
+    }
+
     @SuppressWarnings("unchecked")
     public static void openACMGPopOver(Label label, Map<String, Object> acmg) {
 
