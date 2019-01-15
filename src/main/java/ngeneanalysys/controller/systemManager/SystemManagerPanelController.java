@@ -326,7 +326,7 @@ public class SystemManagerPanelController extends SubPaneController {
                             + pipelineCode.getLibraryType() + ", Analysis Target : " + pipelineCode.getAnalysisTarget());
 
                     if(PipelineCode.isBRCAPipeline(pipelineCode.getCode())) {
-                        setBRCADefault();
+                        setBRCADefault(pipelineCode.getCode());
                     } else if(PipelineCode.isHeredPipeline(pipelineCode.getCode())) {
                         setHeredDefault();
                     } else if(PipelineCode.isHemePipeline(pipelineCode.getCode())) {
@@ -570,11 +570,15 @@ public class SystemManagerPanelController extends SubPaneController {
         if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
-    private void setBRCADefault() {
+    private void setBRCADefault(String code) {
         canonicalTranscriptTextArea.setText("BRCA1\tNM_007294\nBRCA2\tNM_000059");
         panelSaveButton.setDisable(false);
         canonicalTranscriptTextArea.setDisable(true);
-        cnvForBrcaAaccuTestTitledPane.setDisable(false);
+        if(PipelineCode.isBRCACNVPipeline(code)) {
+            cnvForBrcaAaccuTestTitledPane.setDisable(false);
+        } else {
+            cnvForBrcaAaccuTestTitledPane.setDisable(true);
+        }
         distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
         brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
         brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));

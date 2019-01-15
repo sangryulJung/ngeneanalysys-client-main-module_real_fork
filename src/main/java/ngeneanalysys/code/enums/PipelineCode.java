@@ -25,7 +25,7 @@ public enum PipelineCode {
 	//BRCA_ACCUTEST_PLUS_MLPA_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE, "BRCAaccuTest PLUS MLPA DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_DNA_V2(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE, "BRCAaccuTest PLUS DNA V2", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_CNV_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE, "BRCAaccuTest PLUS CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
-	BRCA_ACCUTEST_CNV_DNA(CommonConstants.BRCA_ACCUTEST_DNA_CNV_PIPELINE, "BRCAaccuTest PLUS CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_CNV_DNA(CommonConstants.BRCA_ACCUTEST_DNA_CNV_PIPELINE, "BRCAaccuTest CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_DNA(CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE, "BRCAaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_DNA(CommonConstants.TST170_DNA_PIPELINE, "TruSight Tumor 170 DNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_DNA),
 	TST170_RNA(CommonConstants.TST170_RNA_PIPELINE, "TruSight Tumor 170 RNA", AnalysisTypeCode.SOMATIC, LibraryTypeCode.HYBRIDIZATION_CAPTURE, CommonConstants.ANALYSIS_TARGET_RNA);
@@ -206,6 +206,8 @@ public enum PipelineCode {
 
 	public static boolean isBRCAPipeline(String code) {
 		return StringUtils.isNotEmpty(code) && (code.equals(BRCA_ACCUTEST_DNA.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_CNV_DNA.getCode())
+				|| code.equals(BRCA_ACCUTEST_CNV_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
 				/*|| code.equals(BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())*/
