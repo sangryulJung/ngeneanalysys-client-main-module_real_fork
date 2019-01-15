@@ -474,12 +474,13 @@
 
 .expert_cnv_duplication {
 	-fx-background-color:#fff;
-	-fx-border-width:0.5;
+	-fx-border-width: 1;
 	-fx-border-color : #2D70E8;
+	-fx-border-radius : 2;
 	-fx-background-radius:2;
 	-fx-background-insets:0;
-	-fx-font-size:10;
-	-fx-text-fill:#000;
+	-fx-font-size:13;
+	-fx-text-fill: #2D70E8;
 	-fx-padding:0;
 	-fx-min-width:20;
 	-fx-pref-width:20;
@@ -493,12 +494,13 @@
 
 .expert_cnv_normal {
 	-fx-background-color: #fff;
-	-fx-border-width:0.5;
+	-fx-border-width: 1;
 	-fx-border-color : lightgray;
+	-fx-border-radius : 2;
 	-fx-background-radius:2;
 	-fx-background-insets:0;
-	-fx-font-size:10;
-	-fx-text-fill:#000;
+	-fx-font-size:13;
+	-fx-text-fill:lightgray;
 	-fx-padding:0;
 	-fx-min-width:20;
 	-fx-pref-width:20;
@@ -511,12 +513,13 @@
 }
 .expert_cnv_deletion {
 	-fx-background-color:#fff;
-	-fx-border-width:0.5;
+	-fx-border-width: 1;
 	-fx-border-color : #F04978;
+	-fx-border-radius : 2;
 	-fx-background-radius:2;
 	-fx-background-insets:0;
-	-fx-font-size:10;
-	-fx-text-fill:#000;
+	-fx-font-size:13;
+	-fx-text-fill:#F04978;
 	-fx-padding:0;
 	-fx-min-width:20;
 	-fx-pref-width:20;

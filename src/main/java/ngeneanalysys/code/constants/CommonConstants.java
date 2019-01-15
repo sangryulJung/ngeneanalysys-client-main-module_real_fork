@@ -114,7 +114,9 @@ public class CommonConstants {
 	public static final String EHCACHE_PATH =  "/config/ehcache.xml";
 
 	public static final String BRCA_ACCUTEST_DNA_PIPELINE = "BRCAaccuTest_DNA_Pipeline";
+	public static final String BRCA_ACCUTEST_DNA_CNV_PIPELINE = "BRCAaccuTest_DNA_CNV_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE = "BRCAaccuTest_PLUS_DNA_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE = "BRCAaccuTest_PLUS_DNA_CNV_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE = "BRCAaccuTest_PLUS_DNA_V2_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE = "BRCAaccuTest_PLUS_DNA_CMC_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE = "BRCAaccuTest_PLUS_DNA_MLPA_Pipeline";

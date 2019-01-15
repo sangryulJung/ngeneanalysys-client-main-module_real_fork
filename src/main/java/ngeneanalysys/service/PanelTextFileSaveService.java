@@ -99,8 +99,7 @@ public class PanelTextFileSaveService {
                     out.newLine();
                 } else if(viewList[i].equals("cnvConfigBrcaAccuTest")) {
                     String code = (String)panelMap.get("code");
-                    if(code.equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode()) ||
-                            code.equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
+                    if(PipelineCode.isBRCACNVPipeline(code)) {
                         CnvConfigBrcaAccuTest cnvConfigBrcaAccuTest = (CnvConfigBrcaAccuTest) panelMap.get(viewList[i]);
                         out.write("Amplicon Copy Number Prediction Algorithm : " + cnvConfigBrcaAccuTest.getAmpliconCopyNumberPredictionAlgorithm());
                         out.newLine();

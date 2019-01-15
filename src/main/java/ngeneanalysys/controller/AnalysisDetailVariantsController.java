@@ -125,8 +125,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
     private boolean checkBrcaCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
 
-        if(sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()) ||
-                sample.getPanel().getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode())) {
+        if(PipelineCode.isBRCACNVPipeline(sample.getPanel().getCode())) {
             try {
                 HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, null);
                 PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);

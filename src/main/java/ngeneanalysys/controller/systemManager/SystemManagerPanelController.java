@@ -1441,8 +1441,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
-                if(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode().equals(panel.getCode()) ||
-                        PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode().equals(panel.getCode())) {
+                if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
                     CnvConfigBrcaAccuTest cnvConfigBRCAaccuTest = panel.getCnvConfigBRCAaccuTest();
                     if (cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm() != null &&
                             BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(

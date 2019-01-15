@@ -58,6 +58,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private final String[] brcaV2NoneTargetArea = new String[]{"brca1_exon24", "brca2_pro", "brca2_exon1", "brca2_exon2",
             "brca2_exon27"};
 
+    private final String[] brcaAndPlusNoneTargetArea = new String[]{"brca1_exon24", "brca2_pro", "brca2_exon1",
+            "brca1_pro", "brca1_exon1", "brca2_exon2", "brca2_exon27"};
+
     @FXML
     private Label brca1NMLabel;
     @FXML
@@ -179,6 +182,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             paintNoneTargetArea(brcaMlpaNoneTargetArea);
         } */else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode())) {
             paintNoneTargetArea(brcaV2NoneTargetArea);
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_CNV_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA.getCode())) {
+            paintNoneTargetArea(brcaAndPlusNoneTargetArea);
         }
     }
 
