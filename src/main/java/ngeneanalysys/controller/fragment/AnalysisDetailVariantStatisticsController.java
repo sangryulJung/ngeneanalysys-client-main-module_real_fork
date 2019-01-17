@@ -126,7 +126,7 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
                             variantStatisticsRunTimer.start();
                             variantStatisticsPanelTimer.start();
                             variantStatisticsGroupTimer.start();
-                            variantStatistics = null;
+                            //variantStatistics = null;
                         });
                     }
                 }

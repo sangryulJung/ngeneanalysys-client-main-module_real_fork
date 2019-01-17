@@ -1901,7 +1901,7 @@ public class SystemManagerPanelController extends SubPaneController {
                                 brcaCnvAmpliconCnDeletionCutoffTextField.setText(strs[1]);
                             } else if(strs[0].equals("Exon Copy Number Prediction Threshold")) {
                                 exonCnpThresholdTextField.setText(strs[1]);
-                            } else if(strs[0].equals("Low Confidence CNV Duplication")) {
+                            } else if(strs[0].equals("Low Confidence CNV Amplification")) {
                                 lowConfidenceCnvDuplicationTextField.setText(strs[1]);
                             } else if(strs[0].equals("Low Confidence CNV Deletion")) {
                                 lowConfidenceCnvDeletionTextField.setText(strs[1]);

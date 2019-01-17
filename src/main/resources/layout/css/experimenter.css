@@ -268,74 +268,105 @@
     -fx-padding: 0 10 0 10;
 }
 
-.brca_cnv_1 {
-    //-fx-background-color : #F04978;
-    -fx-background-color: transparent;
-    -fx-background-image : url("../images/renewal/brca_sw_deletion.png");
-    -fx-background-repeat:no-repeat;
-    -fx-background-size : 28 15;
-    -fx-background-position : 1 4;
+.brca_cnv_2 .label{
+    -fx-background-color : lightgray;
+    -fx-text-fill : white;
 }
 
-.brca_cnv_1_expert {
-    //-fx-background-color : #F04978;
-    -fx-background-color: transparent;
-    -fx-background-image : url("../images/renewal/brca_expert_deletion.png");
-    -fx-background-repeat:no-repeat;
-    -fx-background-size : 28 15;
-    -fx-background-position : 1 4;
+.brca_cnv_2_expert .label{
+    -fx-background-color : white;
+    -fx-border-width : 0.5;
+    -fx-border-color : lightgray;
+    -fx-text-fill : lightgray;
 }
 
 .brca_cnv_1 .label{
-    -fx-text-fill : #FFFFFF;
+    -fx-background-color : #F04978;
+    -fx-text-fill : white;
 }
 
-.brca_cnv_3 {
-    //-fx-background-color : #2D70E8;
-    -fx-background-color: transparent;
-    -fx-background-image : url("../images/renewal/brca_sw_duplication.png");
-    -fx-background-repeat:no-repeat;
-    -fx-background-size : 28 15;
-    -fx-background-position : 0.5 1;
+.brca_cnv_1_expert .label{
+    -fx-background-color : white;
+    -fx-border-width : 0.5;
+    -fx-border-color : #F04978;
+    -fx-text-fill : #F04978;
 }
 
-.brca_cnv_3_expert {
-    -fx-background-color: transparent;
-    -fx-background-image : url("../images/renewal/brca_expert_duplication.png");
-    -fx-background-repeat:no-repeat;
-    -fx-background-size : 28 15;
-    -fx-background-position : 1.5 1;
+.brca_cnv_3 .label{
+    -fx-background-color : #2D70E8;
+    -fx-text-fill : white;
 }
 
-.brca_cnv_normal_duplication {
-    -fx-opacity: 0.5;
-    -fx-background-image : url("../images/renewal/ambiguousDuplication.png");
-    -fx-background-repeat:no-repeat;
+.brca_cnv_3_expert .label{
+    -fx-background-color : white;
+    -fx-border-width : 0.5;
+    -fx-border-color : #2D70E8;
+    -fx-text-fill : #2D70E8;
 }
 
 .brca_cnv_normal_duplication .label {
     -fx-text-fill : #ffffff;
-}
-
-.brca_cnv_normal_deletion {
-    -fx-opacity: 0.5;
-    -fx-background-image : url("../images/renewal/ambiguousDeletion.png");
-    -fx-background-repeat:no-repeat;
+    -fx-background-color : #A8C8E8;
+    -fx-border-width : 0;
 }
 
 .brca_cnv_normal_deletion .label {
     -fx-text-fill : #ffffff;
+    -fx-background-color : #F0A1B5;
+    -fx-border-width : 0;
 }
 
-.brca_cnv_3 .label{
-    -fx-text-fill : #FFFFFF;
+/*****************/
+
+.utr_brca_cnv_2 {
+    -fx-background-color : lightgray;
+    -fx-text-fill : white;
 }
 
-.box_border_style_dotted {
+.utr_brca_cnv_2_expert {
+    -fx-background-color : white;
     -fx-border-width : 0.5;
-    -fx-border-color : black;
-    -fx-border-style : segments(2, 2, 2, 2)  line-cap round;
+    -fx-border-color : lightgray;
+    -fx-text-fill : lightgray;
 }
+
+.utr_brca_cnv_1 {
+    -fx-background-color : #F04978;
+    -fx-text-fill : white;
+}
+
+.utr_brca_cnv_1_expert {
+    -fx-background-color : white;
+    -fx-border-width : 0.5;
+    -fx-border-color : #F04978;
+    -fx-text-fill : #F04978;
+}
+
+.utr_brca_cnv_3 {
+    -fx-background-color : #2D70E8;
+    -fx-text-fill : white;
+}
+
+.utr_brca_cnv_3_expert {
+    -fx-background-color : white;
+    -fx-border-width : 0.5;
+    -fx-border-color : #2D70E8;
+    -fx-text-fill : #2D70E8;
+}
+
+.utr_brca_cnv_normal_duplication {
+    -fx-text-fill : #ffffff;
+    -fx-background-color : #A8C8E8;
+    -fx-border-width : 0;
+}
+
+.utr_brca_cnv_normal_deletion {
+    -fx-text-fill : #ffffff;
+    -fx-background-color : #F0A1B5;
+    -fx-border-width : 0;
+}
+
+/****************/
 
 .box_border_style {
     -fx-border-width : 0.5;
@@ -343,7 +374,9 @@
 }
 
 .box_border_none_target {
-    -fx-background-color : #cccccc;
+    -fx-background-color : transparent;
+    -fx-border-width : 0.5;
+    -fx-border-color : black;
 }
 
 .box_border_target {

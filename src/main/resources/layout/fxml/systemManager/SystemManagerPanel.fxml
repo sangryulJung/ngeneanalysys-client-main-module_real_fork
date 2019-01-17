@@ -171,7 +171,7 @@
                                           </HBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="7">
                                              <children>
-                                                <Label text="Low Confidence CNV Duplication: " />
+                                                <Label text="Low Confidence CNV Amplification: " />
                                                 <TextField fx:id="lowConfidenceCnvDuplicationTextField" prefWidth="60.0" />
                                              </children>
                                           </HBox>

@@ -102,8 +102,6 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafgnomadEasColumn;
     @FXML
     private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafkrgdbColumn;
-    @FXML
-    private TableColumn<SnpVariantAlleleFraction, BigDecimal> snpVafkoexidColumn;
 
     @FXML
     private TableView<NormalizedCoverage> normalizedCoverageTable;
@@ -183,7 +181,6 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         snpVaf1kpgEasColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getG1000EastAsian()));
         snpVafgnomadEasColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getGnomADeastAsian()));
         snpVafkrgdbColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getKoreanReferenceGenomeDatabase()));
-        snpVafkoexidColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getKoreanExomInformationDatabase()));
 
         coverageGeneColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         coverageWarningColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getWarning()));
@@ -406,13 +403,13 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         VBox mainVBox = new VBox();
         mainVBox.setPrefWidth(400);
         mainVBox.setPrefHeight(140);
-        HBox titleBox = createTitleBox("icon", "explain");
+        //HBox titleBox = createTitleBox("icon", "explain");
         HBox homoRefBox = createContentsBox(0, 0, "Homozygous Reference");
         HBox homoVaBox = createContentsBox(45, 360, "Homozygous Variant");
         HBox heteroVaBox = createContentsBox(270, 180, "Heterozygous Variant");
         HBox heteroIncRefBox = createContentsBox(225, 270, "Heterozygous Variant (increased reference fraction)");
         HBox heteroIncVarBox = createContentsBox(315, 90, "Heterozygous Variant (increased variant fraction)");
-        mainVBox.getChildren().addAll(titleBox, homoRefBox, homoVaBox, heteroVaBox, heteroIncRefBox, heteroIncVarBox);
+        mainVBox.getChildren().addAll(homoRefBox, homoVaBox, heteroVaBox, heteroIncRefBox, heteroIncVarBox);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
         popOver.setHeaderAlwaysVisible(true);
@@ -448,7 +445,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         box.setPrefWidth(400);
         VBox titleBox = new VBox();
         titleBox.setPrefWidth(60);
-        titleBox.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
+        titleBox.setStyle("-fx-border-color : black; -fx-border-width : 0;");
         titleBox.setAlignment(Pos.CENTER);
         HBox imageBox = new HBox();
         imageBox.setAlignment(Pos.TOP_LEFT);
@@ -466,7 +463,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         titleBox.getChildren().add(imageBox);
         Label contentsLabel = new Label(contents);
         contentsLabel.setPrefWidth(340);
-        contentsLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
+        contentsLabel.setStyle("-fx-border-color : black; -fx-border-width : 0;");
 
         box.getChildren().addAll(titleBox, contentsLabel);
 

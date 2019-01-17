@@ -207,7 +207,6 @@
             <TableColumn fx:id="snpVaf1kpgEasColumn" prefWidth="75.0" text="1KPG EAS" />
             <TableColumn fx:id="snpVafgnomadEasColumn" prefWidth="75.0" text="gnomAD EAS" />
             <TableColumn fx:id="snpVafkrgdbColumn" prefWidth="75.0" text="KRGDB" />
-            <TableColumn fx:id="snpVafkoexidColumn" prefWidth="75.0" text="KOEXID" />
         </columns>
       </TableView>
       <TableView fx:id="normalizedCoverageTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4">

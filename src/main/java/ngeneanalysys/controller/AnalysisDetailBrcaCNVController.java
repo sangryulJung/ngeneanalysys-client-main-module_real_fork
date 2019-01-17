@@ -8,16 +8,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.code.enums.PipelineCode;
@@ -28,11 +34,9 @@ import ngeneanalysys.model.paged.PagedBrcaCNV;
 import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
-import ngeneanalysys.util.WorksheetUtil;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.controlsfx.control.PopOver;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -56,7 +60,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             "brca2_exon27"};
 
     private final String[] brcaV2NoneTargetArea = new String[]{"brca1_exon24", "brca2_pro", "brca2_exon1", "brca2_exon2",
-            "brca2_exon27"};
+            "brca1_pro", "brca1_exon1", "brca2_exon27"};
 
     private final String[] brcaAndPlusNoneTargetArea = new String[]{"brca1_exon24", "brca2_pro", "brca2_exon1",
             "brca1_pro", "brca1_exon1", "brca2_exon2", "brca2_exon27"};
@@ -199,7 +203,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                 .filter(childNode -> childNode instanceof HBox).findFirst();
                         optionalChildNode.ifPresent(childNode -> childNode.getStyleClass().add("box_border_none_target"));
                     } else {
-                        node.getStyleClass().remove("box_border_target");
                         node.getStyleClass().add("box_border_none_target");
                     }
                 });
@@ -212,7 +215,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                                 .filter(childNode -> childNode instanceof HBox).findFirst();
                         optionalChildNode.ifPresent(childNode -> childNode.getStyleClass().add("box_border_none_target"));
                     } else {
-                        node.getStyleClass().remove("box_border_target");
                         node.getStyleClass().add("box_border_none_target");
                     }
                 });
@@ -380,6 +382,22 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         variantsController.getDetailContents().setCenter(root);
     }
 
+    private void popUp(List<BrcaCnvExon> changeList) {
+        if(changeList != null && !changeList.isEmpty()) {
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_BRCA_CNV);
+                Node node = loader.load();
+                BatchChangeBrcaCnvDialogController controller = loader.getController();
+                controller.settingItem(sample.getId(), changeList, this);
+                controller.setParamMap(getParamMap());
+                controller.setMainController(mainController);
+                controller.show((Parent) node);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void brcaExonTableInit() {
         TableColumn<BrcaCnvExon, Boolean> checkBoxColumn = new TableColumn<>("");
         createCheckBoxTableHeader(checkBoxColumn);
@@ -400,6 +418,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 }
                 BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
                 Label label = new Label(BrcaCNVCode.findInitial(item));
+                Tooltip toolTip = new Tooltip(item);
+                label.setTooltip(toolTip);
                 label.getStyleClass().remove("label");
                 if(brcaCnvExon.getExpertCnv() != null) {
                     if (item.equalsIgnoreCase(BrcaCNVCode.NORMAL.getCode())) {
@@ -413,7 +433,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         return;
                     }
                 } else {
-
                     if (item.equalsIgnoreCase(BrcaCNVCode.NORMAL.getCode())) {
                         label.getStyleClass().add("cnv_normal");
                     } else if (item.equalsIgnoreCase(BrcaCNVCode.AMPLIFICATION.getCode())) {
@@ -425,6 +444,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         return;
                     }
                 }
+
+                label.setCursor(Cursor.HAND);
+                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> popUp(Arrays.asList(brcaCnvExon)));
+
                 setGraphic(label);
             }
         });
@@ -601,7 +624,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
     }
 
-    private void setBrcaExonTableView(final String gene) {
+    void setBrcaExonTableView(final String gene) {
         tableCheckBox.setSelected(false);
         List<BrcaCnvExon> list = getBrcaCNVExon(gene);
 
@@ -613,7 +636,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 && item.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode()))
                 || item.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())).count();
 
-        cnvExonLabel.setText("CNV EXON INFORMATION (" + gene.toUpperCase() + " - Del: " + delCount + ", Dup: " + dupCount + ")");
+        cnvExonLabel.setText("Region-Level CNV (" + gene.toUpperCase() + " - Del: " + delCount + ", Amp: " + dupCount + ")");
         if(exonTableView.getItems() != null) {
             exonTableView.getItems().removeAll(exonTableView.getItems());
         }
@@ -790,21 +813,26 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 optionalNode.ifPresent(node -> {
                     node.getStyleClass().removeAll("brca_cnv_3", "brca_cnv_1",
                             "brca_cnv_3_expert", "brca_cnv_1_expert", "brca_cnv_normal_duplication",
-                            "brca_cnv_normal_deletion");
+                            "brca_cnv_normal_deletion", "brca_cnv_2_expert", "brca_cnv_2");
                     if(exon.getExpertCnv() != null &&
                             BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getExpertCnv())) {
-                        node.getStyleClass().add("brca_cnv_1_expert");
+                        paintBoxPlot(node,"brca_cnv_1_expert");
                     } else if(BrcaCNVCode.DELETION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
-                        node.getStyleClass().add("brca_cnv_1");
+                        paintBoxPlot(node,"brca_cnv_1");
                     } else if(exon.getExpertCnv() != null &&
                             BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getExpertCnv())) {
-                        node.getStyleClass().add("brca_cnv_3_expert");
+                        paintBoxPlot(node,"brca_cnv_3_expert");
                     } else if(BrcaCNVCode.AMPLIFICATION.getCode().equalsIgnoreCase(exon.getSwCnv())) {
-                        node.getStyleClass().add("brca_cnv_3");
+                        paintBoxPlot(node,"brca_cnv_3");
                     } else {
                         String style = getAmbiguousValue(gene, exon.getExon());
                         if(StringUtils.isNotEmpty(style)) {
-                            node.getStyleClass().add(style);
+                            paintBoxPlot(node, style);
+                        } else if(StringUtils.isNotEmpty(exon.getExpertCnv()) &&
+                                BrcaCNVCode.NORMAL.getCode().equalsIgnoreCase(exon.getExpertCnv())) {
+                            paintBoxPlot(node,"brca_cnv_2_expert");
+                        } else {
+                            paintBoxPlot(node,"brca_cnv_2");
                         }
                     }
                     for(Node tempNode : ((HBox)node).getChildren()) {
@@ -812,10 +840,29 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             ((Label)tempNode).setText(exon.getExpertCnv() != null ?
                                     BrcaCNVCode.findInitial(exon.getExpertCnv()) :
                                     BrcaCNVCode.findInitial(exon.getSwCnv()));
+                            ((Label)tempNode).setTooltip(new Tooltip(exon.getExpertCnv() != null ?
+                                    exon.getExpertCnv() :
+                                    exon.getSwCnv()));
                         }
                     }
                 });
             }
+        }
+    }
+
+    private void paintBoxPlot(Node node, String style) {
+        if(node instanceof HBox) {
+            node.getStyleClass().add(style);
+            ((HBox)node).getChildren().stream().forEach(item -> {
+                if(item instanceof HBox) {
+                    item.getStyleClass().removeAll("utr_brca_cnv_2", "utr_brca_cnv_2_expert",
+                            "utr_brca_cnv_1", "utr_brca_cnv_1_expert", "utr_brca_cnv_3", "utr_brca_cnv_3_expert",
+                            "utr_brca_cnv_normal_deletion", "utr_brca_cnv_normal_duplication");
+                    if(!item.getStyleClass().contains("box_border_none_target")) {
+                        item.getStyleClass().add("utr_" + style);
+                    }
+                }
+            });
         }
     }
 
@@ -908,18 +955,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     @FXML
-    public void doExonDeletion() {
-        changeCopyNumber(BrcaCNVCode.DELETION.getCode());
-    }
-
-    @FXML
-    public void doExonDuplication() {
-        changeCopyNumber(BrcaCNVCode.AMPLIFICATION.getCode());
-    }
-
-    @FXML
-    public void doCnvReport() {
-        changeCopyNumber(BrcaCNVCode.NORMAL.getCode());
+    public void doExonCnvChange() {
+        //changeCopyNumber(BrcaCNVCode.NORMAL.getCode());
+        popUp(getSelectedItemList());
     }
 
     @FXML
@@ -959,5 +997,88 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             return "";
         }
         return split.contains("pro") ? "Promoter" : split.toUpperCase();
+    }
+
+    @FXML
+    private void showLegendTooltip(Event event) {
+        PopOver popOver = new PopOver();
+        popOver.setWidth(420);
+        popOver.setHeight(300);
+        popOver.setMaxHeight(300);
+        VBox mainVBox = new VBox();
+        mainVBox.setPrefWidth(400);
+        mainVBox.setPrefHeight(300);
+        //HBox titleBox = createTitleBox("icon", "explain");
+        HBox cds = createContentsBox("CDS", "-fx-border-width : 0.5; -fx-border-color : black;",
+                "","CDS Region", 30, 20);
+        HBox nonCds = createContentsBox("Non-CDS", "-fx-border-width : 0.5; -fx-border-color : black;",
+                "","Intergenic or UTR Region", 30, 15);
+        HBox offTarget = createContentsBox("Off Target", "-fx-border-width : 0.5; -fx-border-color : black; -fx-background-color : #f2f5fa;",
+                "","Panel Off Target Region", 30, 20);
+        HBox deletion = createContentsBox("Deletion", "-fx-background-color : #F04978; -fx-text-fill : white;",
+                "D","Deletion predicted by NGeneAnalySys", 30, 20);
+        HBox likelyDeletion = createContentsBox("Likely Deletion", "-fx-background-color : #F0A1B5; -fx-text-fill : white;",
+                "N","Suspected Deletion", 30, 20);
+        HBox normal = createContentsBox("Normal", "-fx-background-color : lightgray; -fx-text-fill : white;",
+                "N","Normal predicted by NGeneAnalySys", 30, 20);
+        HBox likelyAmplification = createContentsBox("Likely Amplification", "-fx-background-color : #A8C8E8; -fx-text-fill : white;",
+                "N","Suspected Amplification", 30, 20);
+        HBox amplification = createContentsBox("Amplification", "-fx-background-color : #2D70E8; -fx-text-fill : white;",
+                "A","Amplification predicted by NGeneAnalySys", 30, 20);
+        HBox deletionExpert = createContentsBox("Deletion\n" +
+                        "(사용자변경)", "fx-border-width : 0.5; -fx-border-color : #F04978; -fx-background-color : white; -fx-text-fill : #F04978;",
+                "D","Deletion status predicted by User", 30, 20);
+        HBox normalExpert = createContentsBox("Normal\n" +
+                        "(사용자변경)", "fx-border-width : 0.5; -fx-border-color : lightgray; -fx-background-color : white; -fx-text-fill : lightgray;",
+                "N","Normal status predicted by User", 30, 20);
+        HBox amplificationExpert = createContentsBox("Amplification\n" +
+                        "(사용자변경)", "-fx-border-width : 0.5; -fx-border-color : #2D70E8; -fx-background-color : white; -fx-text-fill : #2D70E8;",
+                "A","Amplification status predicted by User", 30, 20);
+
+        mainVBox.getChildren().addAll(cds, nonCds, offTarget, deletion, likelyDeletion, normal, likelyAmplification,
+                amplification, deletionExpert, normalExpert, amplificationExpert);
+        popOver.getRoot().setAlignment(Pos.CENTER);
+        popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setAutoHide(true);
+        popOver.setAutoFix(true);
+        popOver.setDetachable(true);
+        popOver.setArrowSize(15);
+        popOver.setArrowIndent(30);
+        popOver.setContentNode(mainVBox);
+        popOver.setTitle("CNV Summary Legend");
+        popOver.show((Node)event.getSource());
+    }
+
+    private HBox createContentsBox(String name, String style, String symbol, String contents, double width, double height) {
+        HBox box = new HBox();
+        box.setAlignment(Pos.CENTER_LEFT);
+        box.setPrefHeight(25);
+        box.setPrefWidth(420);
+        Label nameLabel = new Label(name);
+        nameLabel.setPrefWidth(110);
+        nameLabel.setAlignment(Pos.CENTER);
+        nameLabel.setFont(Font.font(10));
+
+        HBox iconBox = new HBox();
+        box.setPrefWidth(45);
+        iconBox.setAlignment(Pos.CENTER);
+        Label icon = new Label(symbol);
+        icon.setStyle(style);
+        icon.setPrefWidth(width);
+        icon.setMinHeight(height);
+        icon.setPrefHeight(height);
+        icon.setMaxHeight(height);
+        icon.setAlignment(Pos.CENTER);
+        iconBox.getChildren().add(icon);
+
+        Label contentsLabel = new Label(contents);
+        contentsLabel.setPrefWidth(265);
+        contentsLabel.setAlignment(Pos.CENTER);
+        contentsLabel.setFont(Font.font(10));
+
+        box.getChildren().addAll(nameLabel, iconBox, contentsLabel);
+
+        return box;
     }
 }

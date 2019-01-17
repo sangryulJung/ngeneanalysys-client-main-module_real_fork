@@ -1112,7 +1112,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantFilterController.setSnvController(this);
             variantFilterController.setPanel(panel);
             variantFilterController.show((Parent) node);
-            statisticsTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1309,11 +1308,23 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             });
             //falsePositive.setVisible(false);
             showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-                falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+                //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+                if(showFalseVariantsCheckBox.isSelected()) {
+                    falsePositive.setMinWidth(40);
+                    falsePositive.setMaxWidth(40);
+                    falsePositive.setPrefWidth(40);
+                } else {
+                    falsePositive.setMinWidth(0);
+                    falsePositive.setMaxWidth(0);
+                    falsePositive.setPrefWidth(0);
+                }
                 Platform.runLater(() -> showVariantList(0));
             });
 
-            falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+            falsePositive.setPrefWidth(0);
+            falsePositive.setMinWidth(0);
+            falsePositive.setMaxWidth(0);
         } else {
             showFalseVariantsCheckBox.setVisible(false);
             //falsePositiveButton.setVisible(false);

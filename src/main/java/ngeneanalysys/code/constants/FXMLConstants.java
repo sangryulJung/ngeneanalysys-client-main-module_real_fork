@@ -188,4 +188,6 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_HERED_AMC_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-Hered-CNV.fxml";
 
 	public static final String ANALYSIS_DETAIL_SOLID_CNV_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-Solid-CNV.fxml";
+
+	public static final String BATCH_BRCA_CNV = "/layout/fxml/BatchChangeBrcaCnvDialog.fxml";
 }
