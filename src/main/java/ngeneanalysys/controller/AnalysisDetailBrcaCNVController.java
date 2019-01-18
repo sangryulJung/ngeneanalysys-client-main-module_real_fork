@@ -1056,8 +1056,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         box.setPrefHeight(25);
         box.setPrefWidth(420);
         Label nameLabel = new Label(name);
-        nameLabel.setPrefWidth(110);
-        nameLabel.setAlignment(Pos.CENTER);
+        nameLabel.setPrefWidth(120);
+        nameLabel.setAlignment(Pos.CENTER_LEFT);
+        nameLabel.setPadding(new Insets(0, 0, 0, 10));
         nameLabel.setFont(Font.font(10));
 
         HBox iconBox = new HBox();
@@ -1073,8 +1074,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         iconBox.getChildren().add(icon);
 
         Label contentsLabel = new Label(contents);
-        contentsLabel.setPrefWidth(265);
-        contentsLabel.setAlignment(Pos.CENTER);
+        contentsLabel.setPrefWidth(255);
+        contentsLabel.setPadding(new Insets(0, 0, 0, 10));
+        contentsLabel.setAlignment(Pos.CENTER_LEFT);
         contentsLabel.setFont(Font.font(10));
 
         box.getChildren().addAll(nameLabel, iconBox, contentsLabel);
