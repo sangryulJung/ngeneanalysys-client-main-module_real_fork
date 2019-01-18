@@ -1026,13 +1026,13 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         HBox amplification = createContentsBox("Amplification", "-fx-background-color : #2D70E8; -fx-text-fill : white;",
                 "A","Amplification predicted by NGeneAnalySys", 30, 20);
         HBox deletionExpert = createContentsBox("Deletion\n" +
-                        "(사용자변경)", "fx-border-width : 0.5; -fx-border-color : #F04978; -fx-background-color : white; -fx-text-fill : #F04978;",
+                        "(user)", "fx-border-width : 0.5; -fx-border-color : #F04978; -fx-background-color : white; -fx-text-fill : #F04978;",
                 "D","Deletion status predicted by User", 30, 20);
         HBox normalExpert = createContentsBox("Normal\n" +
-                        "(사용자변경)", "fx-border-width : 0.5; -fx-border-color : lightgray; -fx-background-color : white; -fx-text-fill : lightgray;",
+                        "(user)", "fx-border-width : 0.5; -fx-border-color : lightgray; -fx-background-color : white; -fx-text-fill : lightgray;",
                 "N","Normal status predicted by User", 30, 20);
         HBox amplificationExpert = createContentsBox("Amplification\n" +
-                        "(사용자변경)", "-fx-border-width : 0.5; -fx-border-color : #2D70E8; -fx-background-color : white; -fx-text-fill : #2D70E8;",
+                        "(user)", "-fx-border-width : 0.5; -fx-border-color : #2D70E8; -fx-background-color : white; -fx-text-fill : #2D70E8;",
                 "A","Amplification status predicted by User", 30, 20);
 
         mainVBox.getChildren().addAll(cds, nonCds, offTarget, deletion, likelyDeletion, normal, likelyAmplification,

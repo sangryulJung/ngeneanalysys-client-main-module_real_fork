@@ -105,7 +105,7 @@
             <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca1_exon2" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="30.0">
                <children>
-                  <HBox maxHeight="-Infinity" minHeight="15.0" minWidth="-Infinity" prefHeight="15.0" prefWidth="3.0">
+                  <HBox maxHeight="-Infinity" minHeight="15.0" minWidth="-Infinity" prefHeight="15.0" prefWidth="3.0" style="-fx-border-width: 0.5 0 0.5 0.5;">
                      <HBox.margin>
                         <Insets bottom="-1.0" left="-1.0" right="-0.5" top="-1.0" />
                      </HBox.margin>
@@ -291,7 +291,7 @@
             <HBox fx:id="brca1_exon24" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="38.0">
                <children>
                   <Label alignment="CENTER" prefWidth="29.0" />
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="10.0">
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="10.0" style="-fx-border-width: 0.5 0.5 0.5 0;">
                      <HBox.margin>
                         <Insets bottom="-1.0" left="-0.5" right="-1.0" top="-1.0" />
                      </HBox.margin>
@@ -369,7 +369,7 @@
             <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
             <HBox fx:id="brca2_exon2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="30.0">
                <children>
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="3.0">
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="3.0" style="-fx-border-width: 0.5 0 0.5 0.5;">
                      <HBox.margin>
                         <Insets bottom="-1.0" left="-1.0" right="-0.5" top="-1.0" />
                      </HBox.margin>
@@ -600,7 +600,7 @@
             <HBox fx:id="brca2_exon27" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="38.0">
                <children>
                   <Label alignment="CENTER" prefWidth="29.0" />
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="10.0">
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="10.0" style="-fx-border-width: 0.5 0.5 0.5 0;">
                      <HBox.margin>
                         <Insets bottom="-1.0" left="-0.5" right="-1.0" top="-1.0" />
                      </HBox.margin>

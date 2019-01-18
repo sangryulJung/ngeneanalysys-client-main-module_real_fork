@@ -346,6 +346,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
             falsePositiveButton.setDisable(true);
+            falsePositiveButton.setVisible(false);
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }

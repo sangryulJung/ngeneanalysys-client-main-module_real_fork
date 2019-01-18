@@ -325,7 +325,6 @@
 
 .utr_brca_cnv_2_expert {
     -fx-background-color : white;
-    -fx-border-width : 0.5;
     -fx-border-color : lightgray;
     -fx-text-fill : lightgray;
 }
@@ -337,7 +336,6 @@
 
 .utr_brca_cnv_1_expert {
     -fx-background-color : white;
-    -fx-border-width : 0.5;
     -fx-border-color : #F04978;
     -fx-text-fill : #F04978;
 }
@@ -349,7 +347,6 @@
 
 .utr_brca_cnv_3_expert {
     -fx-background-color : white;
-    -fx-border-width : 0.5;
     -fx-border-color : #2D70E8;
     -fx-text-fill : #2D70E8;
 }
@@ -357,13 +354,13 @@
 .utr_brca_cnv_normal_duplication {
     -fx-text-fill : #ffffff;
     -fx-background-color : #A8C8E8;
-    -fx-border-width : 0;
+    -fx-border-color : #A8C8E8;
 }
 
 .utr_brca_cnv_normal_deletion {
     -fx-text-fill : #ffffff;
     -fx-background-color : #F0A1B5;
-    -fx-border-width : 0;
+    -fx-border-color : #F0A1B5;
 }
 
 /****************/
