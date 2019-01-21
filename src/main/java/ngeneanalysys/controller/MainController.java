@@ -225,7 +225,7 @@ public class MainController extends BaseStageController {
             if(!progressTaskContentArea.getChildren().isEmpty()) {
                 String alertContentText = "The job is running. Are you sure you want to quit?";
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.initOwner(this.primaryStage);
                 alert.setTitle("Warning Dialog");
                 alert.setContentText(alertContentText);
