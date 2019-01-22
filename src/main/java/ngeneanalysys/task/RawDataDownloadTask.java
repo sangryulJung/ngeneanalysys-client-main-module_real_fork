@@ -210,7 +210,7 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
                 if(this.taskStatus) {
                     // 완료 메시지 출력
-                    DialogUtil.alert("Raw Data Download Finished", "Raw Data download is complete.", this.controller.getMainController().getPrimaryStage(), false);
+                    DialogUtil.alert(null, "Raw Data Download Finished", this.controller.getMainController().getPrimaryStage(), false);
                 } else {
                     // 오류 발생시 실패 메시지 출력
                     DialogUtil.error("Download Failed", String.format("[%s] %s", this.msgDialogHeader, this.msgDialogContent), controller.getMainController().getPrimaryStage(), false);

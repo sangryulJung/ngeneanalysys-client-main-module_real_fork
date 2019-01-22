@@ -241,7 +241,7 @@ public enum PipelineCode {
 	public static boolean isNotCnvPanel(String code) {
 		return StringUtils.isNotEmpty(code) && (code.equals(SOLID_ACCUTEST_DNA.getCode())
 				|| code.equals(HEME_ACCUTEST_DNA.getCode())
-				|| code.equals(HERED_ACCUTEST_AMC_CNV_DNA.getCode())
+				|| code.equals(HERED_ACCUTEST_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_DNA.getCode())
 				|| code.equals(TST170_DNA.getCode())

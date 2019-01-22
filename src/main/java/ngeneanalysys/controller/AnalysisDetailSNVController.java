@@ -314,9 +314,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         reportCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
             if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
-        commonVariantsCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) Platform.runLater(() -> showVariantList(0));
-        });
     }
 
     @SuppressWarnings("unchecked")
@@ -1097,7 +1094,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private String getExportFields() {
-        return variantListTableView.getColumns().stream().filter(TableColumn::isVisible).filter(c -> c.getId() != null)
+        return variantListTableView.getColumns().stream().filter(TableColumn::isVisible)
+                .filter(c -> c.getId() != null && c.getWidth() > 0)
                 .map(TableColumn::getId).collect(Collectors.joining(","));
     }
 
@@ -1791,7 +1789,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarOrigin()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beClinVarPathogenicity = new TableColumn<>("Be ClinVar Pathogenicity");
-        createTableHeader(beClinVarPathogenicity, "Be ClinVar Pathogenicity", null ,null, "beEnigmaPathogenicity");
+        createTableHeader(beClinVarPathogenicity, "Be ClinVar Pathogenicity", null ,null, "beClinVarPathogenicity");
         beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarPathogenicity()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beClinVarUpdate = new TableColumn<>("Be ClinVar Update");
@@ -1831,7 +1829,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         clinVarVariationId.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarVariationId()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarInterpretation = new TableColumn<>("ClinVar Interpretation");
-        createTableHeader(clinVarInterpretation, "ClinVar Interpretation", null ,null, "enigma");
+        createTableHeader(clinVarInterpretation, "ClinVar Interpretation", null ,null, "clinVarInterpretation");
         clinVarInterpretation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarInterpretation()));
 
         TableColumn<VariantAndInterpretationEvidence, String> metaSvmPrediction = new TableColumn<>("metaSVM Prediction");
@@ -1853,6 +1851,23 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> commonVariants = new TableColumn<>("Common Variants");
         createTableHeader(commonVariants, "Common Variants", null ,null, "commonVariants");
         commonVariants.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getCommonVariants()));
+        commonVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
+            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+            if(commonVariantsCheckBox.isSelected()) {
+                commonVariants.setMinWidth(80);
+                commonVariants.setMaxWidth(300);
+                commonVariants.setPrefWidth(80);
+            } else {
+                commonVariants.setMinWidth(0);
+                commonVariants.setMaxWidth(0);
+                commonVariants.setPrefWidth(0);
+            }
+            Platform.runLater(() -> showVariantList(0));
+        });
+
+        commonVariants.setMinWidth(0);
+        commonVariants.setMaxWidth(0);
+        commonVariants.setPrefWidth(0);
 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");

@@ -4,13 +4,17 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SequencerCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -144,6 +148,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private Map<String, Object> variableList = null;
 
+    private AnalysisDetailSolidCNVReportController analysisDetailSolidCNVReportController;
+
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
@@ -178,6 +184,25 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         panel = sample.getPanel();
 
         initialize(panel);
+
+        if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode()) ||
+                panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 73);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 73);
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SOLID_AMC_CNV_REPORT);
+                Node node = loader.load();
+                AnalysisDetailSolidCNVReportController controller = loader.getController();
+                analysisDetailSolidCNVReportController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                contentVBox.getChildren().add(3, node);
+                VBox.setMargin(node, new Insets(10, 0, 0 ,0));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

@@ -236,6 +236,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         public void startEdit() {
             if(!isEmpty()) {
                 super.startEdit();
+                textField.setText(getString());
                 setGraphic(textField);
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 textField.selectAll();

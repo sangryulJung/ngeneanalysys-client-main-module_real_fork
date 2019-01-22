@@ -821,11 +821,12 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
 
         // 선택 된 패널의 개수 => 만약 heme, hered, solid 중 하나가 선택된 상태라면 선택된 패널의 개수는 1이여야함
-        //long size = sampleArrayList.stream().map(sample -> sample.getPanel().getId()).distinct().count();
+        long size = sampleArrayList.stream().map(sample -> sample.getPanel().getId()).distinct().count();
+
         boolean isNotCnvPanel = sampleArrayList.stream().allMatch(sample ->
                 PipelineCode.isNotCnvPanel(sample.getPanel().getCode()));
 
-        boolean isHemeInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
+        /*boolean isHemeInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
                 .equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode()));
 
         boolean isHeredInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
@@ -847,20 +848,16 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 .equals(PipelineCode.BRCA_ACCUTEST_CNV_DNA.getCode()));
 
         boolean isBrcaPlusCnvInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA.getCode()));
+                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA.getCode()));*/
 
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
-        if(!(isNotCnvPanel || (isHemeInclude || isHeredInclude || isHeredAmcInclude
-                || isSolidInclude || isBrcaCMCInclude || isBrcaV2Include
-                || isBrcaCnvInclude || isBrcaPlusCnvInclude))) {
+        if(!(isNotCnvPanel || size == 1)) {
             DialogUtil.warning("check panel setting", "check panel setting",
                     sampleUploadController.getCurrentStage(), true);
             return;
         }
 
-        if((isHemeInclude || isHeredInclude || isHeredAmcInclude || isSolidInclude || isBrcaCMCInclude
-                || isBrcaV2Include || isBrcaCnvInclude || isBrcaPlusCnvInclude)
-                && sampleArrayList.size() == 1) {
+        if(!isNotCnvPanel && sampleArrayList.size() == 1) {
             DialogUtil.warning("Warning", "CNV panels require two or more samples.",
                     sampleUploadController.getCurrentStage(), true);
             return;

@@ -9,17 +9,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.enums.VariantLevelCode;
-import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Cnv;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.DialogUtil;
+import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -28,22 +29,19 @@ import java.util.stream.Collectors;
 
 /**
  * @author Jang
- * @since 2018-11-27
+ * @since 2018-11-13
  */
-public class AnalysisDetailOverviewSolidCNVController extends AnalysisDetailCommonController {
+public class AnalysisDetailSolidCNVReportController extends SubPaneController {
+    private static Logger logger = LoggerUtil.getLogger();
 
     @FXML
-    private GridPane mainGridPane;
-
-    @FXML
-    private TableView<Cnv> cnvTableView;
-
+    private TableView<Cnv> solidCnvResultTable;
     @FXML
     private TableColumn<Cnv, String> geneTableColumn;
     @FXML
-    private TableColumn<Cnv, BigDecimal> valueTableColumn;
-    @FXML
     private TableColumn<Cnv, String> tierTableColumn;
+    @FXML
+    private TableColumn<Cnv, BigDecimal> valueTableColumn;
 
     void setContents() {
         Task<Void> task = new Task<Void>() {
@@ -64,12 +62,12 @@ public class AnalysisDetailOverviewSolidCNVController extends AnalysisDetailComm
             @Override
             protected void succeeded() {
                 if(list != null && !list.isEmpty()) {
-                    if(!cnvTableView.getItems().isEmpty()) {
-                        cnvTableView.getItems().removeAll(cnvTableView.getItems());
+                    if(!solidCnvResultTable.getItems().isEmpty()) {
+                        solidCnvResultTable.getItems().removeAll(solidCnvResultTable.getItems());
                     }
                     list = list.stream().filter(item -> item.getCnvValue().compareTo(new BigDecimal("4.0")) > 0)
                             .collect(Collectors.toList());
-                    cnvTableView.getItems().addAll(list);
+                    solidCnvResultTable.getItems().addAll(list);
                 }
             }
 
