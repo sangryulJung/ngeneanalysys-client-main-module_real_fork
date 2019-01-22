@@ -815,11 +815,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         List<RadioButton> isControlVisibleList = sampleIsControlList.stream().filter(RadioButton::isVisible)
                 .collect(Collectors.toList());
 
-        if(!isControlVisibleList.isEmpty() && isControlVisibleList.stream().noneMatch(RadioButton::isSelected)) {
-            DialogUtil.alert("check control", "check control", sampleUploadController.getCurrentStage(), true);
-            return;
-        }
-
         if(!saveSampleData()) {
             DialogUtil.alert("check item", "check item", sampleUploadController.getCurrentStage(), true);
             return;
@@ -835,6 +830,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         boolean isHeredInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
                 .equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode()));
+
+        boolean isHeredAmcInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
+                .equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode()));
 
         boolean isSolidInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
                 .equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode()));
@@ -852,17 +850,24 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA.getCode()));
 
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
-        if(!(isNotCnvPanel || (isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaV2Include
+        if(!(isNotCnvPanel || (isHemeInclude || isHeredInclude || isHeredAmcInclude
+                || isSolidInclude || isBrcaCMCInclude || isBrcaV2Include
                 || isBrcaCnvInclude || isBrcaPlusCnvInclude))) {
             DialogUtil.warning("check panel setting", "check panel setting",
                     sampleUploadController.getCurrentStage(), true);
             return;
         }
 
-        if((isHemeInclude || isHeredInclude || isSolidInclude || isBrcaCMCInclude || isBrcaV2Include
-                || isBrcaCnvInclude || isBrcaPlusCnvInclude) && sampleArrayList.size() == 1) {
+        if((isHemeInclude || isHeredInclude || isHeredAmcInclude || isSolidInclude || isBrcaCMCInclude
+                || isBrcaV2Include || isBrcaCnvInclude || isBrcaPlusCnvInclude)
+                && sampleArrayList.size() == 1) {
             DialogUtil.warning("Warning", "CNV panels require two or more samples.",
                     sampleUploadController.getCurrentStage(), true);
+            return;
+        }
+
+        if(!isControlVisibleList.isEmpty() && isControlVisibleList.stream().noneMatch(RadioButton::isSelected)) {
+            DialogUtil.alert("check control", "check control", sampleUploadController.getCurrentStage(), true);
             return;
         }
 
