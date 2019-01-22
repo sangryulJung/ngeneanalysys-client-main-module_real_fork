@@ -112,7 +112,7 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
             params.put("comment", comment.isEmpty() ? "N/A" : comment);
             apiService.put("analysisResults/brcaCnvExon/updateCnv", params, null, true);
             cnvController.setList();
-            cnvController.setBrcaExonTableView("BRCA1");
+            cnvController.setBrca1RadioButtonSelect();
             dialogStage.close();
         } catch (WebAPIException wae) {
             wae.printStackTrace();
