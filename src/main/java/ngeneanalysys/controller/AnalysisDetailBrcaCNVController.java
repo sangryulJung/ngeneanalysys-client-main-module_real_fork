@@ -152,6 +152,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         this.variantsController = variantsController;
     }
 
+    public void setBrca1RadioButtonSelect() { brca1RadioButton.setSelected(true);}
+
     private void setNomenclature(String nomenclature) {
 
         if(nomenclature.equals("BIC")) {
@@ -280,6 +282,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         });
 
         ampliconNameTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAmplicon()));
+        ampliconNameTableColumn.setComparator((a, b) -> {
+            int amp1 = Integer.parseInt(a);
+            int amp2 = Integer.parseInt(b);
+            return amp1 - amp2;
+        });
         ampliconReferenceRatioTableColumn.setCellValueFactory(item -> {
             if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode()
                     .equals(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm())) {
@@ -516,6 +523,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     List<BrcaCnvAmplicon> brcaCnvAmplicons = brcaCnvAmpliconList.stream().filter(brcaCnvAmplicon ->
                             brcaCnvExon.getGene().equalsIgnoreCase(brcaCnvAmplicon.getGene())
                                     && brcaCnvExon.getExon().equalsIgnoreCase(brcaCnvAmplicon.getExon()))
+                            .sorted((a, b) -> {
+                                int amp1 = Integer.parseInt(a.getAmplicon());
+                                int amp2 = Integer.parseInt(b.getAmplicon());
+                                return amp1 - amp2;
+                            })
                             .collect(Collectors.toList());
                     int maxWidth = 110;
                     int maxHeight = 12;

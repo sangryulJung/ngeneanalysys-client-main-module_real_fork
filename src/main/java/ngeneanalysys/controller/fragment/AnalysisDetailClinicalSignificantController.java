@@ -370,11 +370,11 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     try {
                         siftValue = 1.0 - Double.valueOf(siftScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("sift score value is invalid " + siftScore);
+                        logger.debug("sift score value is invalid " + siftScore);
                         siftValue = -1.0;
                     }
                 } else {
-                    logger.warn("sift score value is null");
+                    logger.debug("sift score value is null");
                     siftValue = -1.0;
                 }
             } else if (siftMap.containsKey("radar")) {
@@ -382,7 +382,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("sift score or radar value was not found.");
+                logger.debug("sift score or radar value was not found.");
                 siftValue = -1.0;
             }
             if (siftMap.containsKey("text") && siftMap.get("text") != null) {
@@ -398,11 +398,11 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     try {
                         polyphenValue = Double.valueOf(polyphenScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("metaSVM score value is invalid " + polyphenScore);
+                        logger.debug("metaSVM score value is invalid " + polyphenScore);
                         polyphenValue = -1.0;
                     }
                 } else {
-                    logger.warn("metaSVM value is null");
+                    logger.debug("metaSVM value is null");
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
@@ -410,7 +410,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("metaSVM score or radar value was not found.");
+                logger.debug("metaSVM score or radar value was not found.");
                 polyphenValue = -1.0;
             }
             if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {
@@ -424,7 +424,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("mt score or radar value was not found.");
+                logger.debug("mt score or radar value was not found.");
                 // mtValue = -1.0;
             }
             if (mtMap.containsKey("text") && mtMap.get("text") != null) {
