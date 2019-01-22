@@ -67,9 +67,6 @@ public class HomeController extends SubPaneController{
     private HBox toggleGroupHBox;
 
     @FXML
-    private Label dateLabel;
-
-    @FXML
     private Label noticeTitleLabel;
 
     @FXML
@@ -290,7 +287,6 @@ public class HomeController extends SubPaneController{
                     }
                     //noticeTitleLabel.setText(noticeView.getTitle());
 
-                    dateLabel.setText(DateFormatUtils.format(noticeList.get(index).getCreatedAt().toDate(), "yyyy-MM-dd"));
                     noticeTitleLabel.setText(noticeList.get(index).getTitle());
                     noticeContentsTextArea.setText(noticeList.get(index).getContents());
 
