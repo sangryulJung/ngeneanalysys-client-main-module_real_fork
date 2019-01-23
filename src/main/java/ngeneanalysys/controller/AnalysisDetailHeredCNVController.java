@@ -403,12 +403,13 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         VBox mainVBox = new VBox();
         mainVBox.setPrefWidth(400);
         mainVBox.setPrefHeight(140);
+        mainVBox.setPadding(new Insets(10, 0, 0, 0));
         //HBox titleBox = createTitleBox("icon", "explain");
         HBox homoRefBox = createContentsBox(0, 0, "Homozygous Reference");
         HBox homoVaBox = createContentsBox(45, 360, "Homozygous Variant");
         HBox heteroVaBox = createContentsBox(270, 180, "Heterozygous Variant");
-        HBox heteroIncRefBox = createContentsBox(225, 270, "Heterozygous Variant (increased reference fraction)");
-        HBox heteroIncVarBox = createContentsBox(315, 90, "Heterozygous Variant (increased variant fraction)");
+        HBox heteroIncRefBox = createContentsBox(225, 270, "Heterozygous Variant (Increased reference fraction)");
+        HBox heteroIncVarBox = createContentsBox(315, 90, "Heterozygous Variant (Increased variant fraction)");
         mainVBox.getChildren().addAll(homoRefBox, homoVaBox, heteroVaBox, heteroIncRefBox, heteroIncVarBox);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
@@ -419,7 +420,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         popOver.setArrowSize(15);
         popOver.setArrowIndent(30);
         popOver.setContentNode(mainVBox);
-        popOver.setTitle("genotype");
+        popOver.setTitle("Genotype");
         popOver.show((Node)event.getSource());
     }
 

@@ -609,13 +609,13 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             long usCount = uncertainSignificanceList != null ? uncertainSignificanceList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long lbCount = likelyBenignList != null ? likelyBenignList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long bCount = benignList != null ? benignList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
-            pathogenicityCountLabel.setText("( Total: " + (pCount + lpCount + usCount + lbCount + bCount)
+            pathogenicityCountLabel.setText("( SNV : " + (pCount + lpCount + usCount + lbCount + bCount)
                     + (pCount > 0  ? ", P: " + pCount : "")
                     + (lpCount > 0  ? ", LP: " + lpCount : "")
                     + (usCount > 0  ? ", US: " + usCount : "")
                     + (lbCount > 0  ? ", LB: " + lbCount : "")
                     + (bCount > 0  ? ", B: " + bCount : "")
-                    + (pagedBrcaCNVExon != null ? " / CNV Total: " + (deletionCount + amplificationCount) : "")
+                    + (pagedBrcaCNVExon != null ? " / CNV : " + (deletionCount + amplificationCount) : "")
                     + (deletionCount > 0 ? ", Deletion: " + deletionCount : "")
                     + (amplificationCount > 0 ? ", Amplification: " + amplificationCount : "")
                     + (compositeCmtCnvResult != null && compositeCmtCnvResult.getIncludedInReport().equals("Y") ?

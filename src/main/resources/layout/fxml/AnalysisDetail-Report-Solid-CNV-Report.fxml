@@ -5,8 +5,8 @@
 
 <TableView fx:id="solidCnvResultTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailSolidCNVReportController">
   <columns>
-    <TableColumn fx:id="geneTableColumn" minWidth="80.0" text="Gene" />
+    <TableColumn fx:id="geneTableColumn" minWidth="80.0" style="-fx-text-fill: black;" text="Gene" />
       <TableColumn fx:id="tierTableColumn" minWidth="65.0" prefWidth="65.0" text="Tier" />
-      <TableColumn fx:id="valueTableColumn" minWidth="70.0" prefWidth="70.0" text="Value" />
+      <TableColumn fx:id="valueTableColumn" minWidth="70.0" prefWidth="70.0" style="-fx-text-fill: black;" text="Value" />
   </columns>
 </TableView>

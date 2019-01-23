@@ -378,6 +378,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     void setVariantsList() {
         HttpClientResponse response = null;
+        if(analysisDetailSolidCNVReportController != null) analysisDetailSolidCNVReportController.setContents();
         try {
             response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
                     null, false);
@@ -387,6 +388,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
             list = filteringVariant(list);
+
+            response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+            PagedCnv pagedCnv = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
+            List<Cnv> cnvList = pagedCnv.getResult().stream().filter(cnv -> cnv.getCnvValue().doubleValue() > 4.0)
+                    .collect(Collectors.toList());
 
             negativeList = list.stream().filter(item -> (
                     StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getSwTier())) ||
@@ -403,11 +409,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             long tier2Count = tierTwo != null ? tierTwo.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long tier3Count = tierThree != null ? tierThree.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long tier4Count = tierFour != null ? tierFour.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
-            tierCountLabel.setText("( Total: " + (tier1Count + tier2Count + tier3Count + tier4Count)
+            tierCountLabel.setText("( SNV : " + (tier1Count + tier2Count + tier3Count + tier4Count)
                     + (tier1Count > 0 ? ", T1: " + tier1Count : "")
                     + (tier2Count > 0 ? ", T2: " + tier2Count : "")
                     + (tier3Count > 0 ? ", T3: " + tier3Count : "")
                     + (tier4Count > 0 ? ", T4: " + tier4Count : "")
+                    + (cnvList != null && !cnvList.isEmpty() ?
+                    " / CNV : " + cnvList.size() : "")
                     + " )"
             );
 
