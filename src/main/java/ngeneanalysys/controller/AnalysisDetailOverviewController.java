@@ -152,9 +152,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     private void setSolidCnvOverview() {
         Panel panel = (Panel)paramMap.get("panel");
          if(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode().equals(panel.getCode())) {
-            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 113);
-            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(113);
-            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(113);
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 173);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(173);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(173);
 
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SOLID_CNV_OVERVIEW);
