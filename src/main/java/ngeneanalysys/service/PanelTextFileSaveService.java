@@ -107,7 +107,7 @@ public class PanelTextFileSaveService {
                         out.newLine();
                         out.write("Deletion Cut-off Level : " + returnStringText(cnvConfigBrcaAccuTest.getSimpleCutoffDeletionValue()));
                         out.newLine();
-                        out.write("Exon Copy Number Prediction Threshold : " + returnStringText(cnvConfigBrcaAccuTest.getSimpleCutoffDeletionValue()));
+                        out.write("Exon Copy Number Prediction Threshold : " + returnStringText(cnvConfigBrcaAccuTest.getExonCopyNumberPredictionThreshold()));
                         out.newLine();
                         out.write("Low Confidence CNV Amplification : " + returnStringText(cnvConfigBrcaAccuTest.getLowConfidenceCnvDuplication()));
                         out.newLine();

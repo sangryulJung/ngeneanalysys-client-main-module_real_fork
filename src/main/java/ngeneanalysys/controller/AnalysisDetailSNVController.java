@@ -413,9 +413,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.setRowFactory(tv -> {
             TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
-                if(e.getClickCount() == 1) {
+                /*if(e.getClickCount() == 1) {
                     setSNVTabName();
-                } else if (e.getClickCount() <= 2) {
+                } else */if (e.getClickCount() <= 2) {
                     logger.debug(e.getClickCount() + " Click count");
                    if(e.getClickCount() == 2) {
                        expandRight();
@@ -429,9 +429,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode().equals(KeyCode.ENTER)) {
                 expandRight();
-            } else if(keyEvent.getCode().equals(KeyCode.UP) || keyEvent.getCode().equals(KeyCode.DOWN)) {
+            }/* else if(keyEvent.getCode().equals(KeyCode.UP) || keyEvent.getCode().equals(KeyCode.DOWN)) {
                 setSNVTabName();
-            }
+            }*/
         });
 
 
@@ -586,7 +586,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Platform.runLater(() -> showVariantList(0));
     }
 
-    void setSNVTabName() {
+    /*void setSNVTabName() {
         if(variantListTableView.getItems() != null) {
             VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
                     .getSelectedItem();
@@ -617,7 +617,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantsController.setSNVTabName(null);
         }
     }
-
+*/
     private void setDefaultFilter() {
         totalLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
         filterComboBox.setConverter(new ComboBoxConverter());
@@ -1001,7 +1001,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     if (displayList != null && displayList.size() > 0) {
                         variantListTableView.getSelectionModel().select(selectedIdx);
                     }
-                    setSNVTabName();
+                    //setSNVTabName();
                 });
             }
 
