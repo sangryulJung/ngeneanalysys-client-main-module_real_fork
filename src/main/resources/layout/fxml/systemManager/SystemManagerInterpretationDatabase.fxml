@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerInterpretationDatabaseController">
+<AnchorPane prefHeight="500.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerInterpretationDatabaseController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
@@ -31,16 +31,16 @@
                      <content>
                         <VBox maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="470.0" prefWidth="1180.0">
                            <children>
-                              <HBox alignment="CENTER_RIGHT" maxHeight="70.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1180.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                              <HBox alignment="CENTER_LEFT" maxHeight="70.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1180.0" spacing="5.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <GridPane alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="80.0" HBox.hgrow="ALWAYS">
+                                    <GridPane alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="930.0" HBox.hgrow="ALWAYS">
                                       <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -49,107 +49,107 @@
                                        <children>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="HGVS.p">
+                                                <Label prefHeight="20.0" prefWidth="50.0" styleClass="font_size_10" text="HGVS.p">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="hgvspTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="hgvspTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Tier">
+                                                <Label prefHeight="20.0" prefWidth="50.0" styleClass="font_size_10" text="Tier">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="tierTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="tierTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Start Pos">
+                                                <Label prefHeight="20.0" prefWidth="50.0" styleClass="font_size_10" text="Start Pos">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="startPosTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="startPosTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Chr">
+                                                <Label prefHeight="20.0" prefWidth="50.0" styleClass="font_size_10" text="Chr">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="chrTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="chrTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="End Pos">
+                                                <Label prefHeight="20.0" prefWidth="50.0" styleClass="font_size_10" text="End Pos">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="endPosTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="endPosTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Gene">
+                                                <Label prefHeight="20.0" prefWidth="70.0" styleClass="font_size_10" text="Gene">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="geneTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="geneTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Transcript">
+                                                <Label prefHeight="20.0" prefWidth="60.0" styleClass="font_size_10" text="Transcript">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="transcriptTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="transcriptTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="HGVS.c">
+                                                <Label prefHeight="20.0" prefWidth="40.0" styleClass="font_size_10" text="HGVS.c">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="hgvscTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="hgvscTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Disease">
+                                                <Label prefHeight="20.0" prefWidth="50.0" styleClass="font_size_10" text="Disease">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="diseaseTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="diseaseTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Coding Cons">
+                                                <Label prefHeight="20.0" prefWidth="70.0" styleClass="font_size_10" text="Coding Cons">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="condingConsTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="condingConsTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                              <children>
-                                                <Label alignment="CENTER_RIGHT" prefWidth="80.0" text="Type">
+                                                <Label prefHeight="20.0" prefWidth="60.0" styleClass="font_size_10" text="Type">
                                                    <HBox.margin>
-                                                      <Insets right="10.0" />
+                                                      <Insets right="3.0" />
                                                    </HBox.margin></Label>
-                                                <TextField fx:id="variantTypeTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+                                                <TextField fx:id="variantTypeTextField" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" styleClass="font_size_10" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                              <children>
+                                                 <Button mnemonicParsing="false" onMouseClicked="#search" prefWidth="70.0" styleClass="submitBtn" text="SEARCH" />
                                                 <Button mnemonicParsing="false" onMouseClicked="#searchAreaReset" prefWidth="70.0" styleClass="submitBtn" text="RESET" />
-                                                <Button mnemonicParsing="false" onMouseClicked="#search" prefWidth="70.0" styleClass="submitBtn" text="SEARCH" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -158,8 +158,11 @@
                                        <children>
                                           <Label onMouseClicked="#excelDownload" styleClass="excel_download_image" text="Label" />
                                           <Label onMouseClicked="#tsvDownload" styleClass="csv_download_image" text="Label" />
-                                          <Button mnemonicParsing="false" onAction="#addDataFromFile" styleClass="submitBtn" text="File Upload" />
+                                          <Button maxHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addDataFromFile" prefWidth="100.0" styleClass="submitBtn" text="File Upload" />
                                        </children>
+                                       <HBox.margin>
+                                          <Insets left="30.0" />
+                                       </HBox.margin>
                                     </HBox>
                                  </children>
                                  <padding>

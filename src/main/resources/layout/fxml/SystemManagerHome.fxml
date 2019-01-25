@@ -7,17 +7,18 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="analysisDetailWrapper" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerHomeController">
+<GridPane fx:id="analysisDetailWrapper" minWidth="1200.0" prefHeight="555.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerHomeController">
    <children>
-      <TabPane fx:id="topTabPane" focusTraversable="false" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="550.0" prefWidth="1200.0" scaleZ="2.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+      <TabPane fx:id="topTabPaneManager" focusTraversable="false" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="550.0" prefWidth="1200.0" scaleZ="2.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
-            <Insets top="5.0" />
+            <Insets left="5.0" top="5.0" />
          </GridPane.margin>
       </TabPane>
    </children>
    <stylesheets>
       <URL value="@../css/common.css" />
       <URL value="@../css/analysisDetail.css" />
+      <URL value="@../css/system_manager.css" />
    </stylesheets>
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" />
