@@ -184,7 +184,7 @@ public class MainApp extends Application {
 	public void start(Stage primaryStage) throws Exception{
 		if(isAlreadyRunning) {
 			logger.warn("Requested applications are currently running and newly requested one will be shut down.");
-			DialogUtil.warning("Requested application is running already.", "Requested applications are currently running and newly requested one will be shut down.", null, true);
+			DialogUtil.warning("", "Requested applications are currently running and newly requested one will be shut down.", null, true);
 			throw new RuntimeException();
 		} else {
 			// proxy 서버 기동

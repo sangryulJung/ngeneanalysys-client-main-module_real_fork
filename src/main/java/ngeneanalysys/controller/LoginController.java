@@ -169,7 +169,7 @@ public class LoginController extends BaseStageController {
 			}
 		} catch (Exception e) {
 			logger.error("Unknown Error", e);
-			DialogUtil.error(null, "error!!!", mainApp.getPrimaryStage(), true);
+			DialogUtil.error("Unknown Error", e.getMessage(), mainApp.getPrimaryStage(), true);
 			logger.error(e.getMessage(), e);
 		}
 

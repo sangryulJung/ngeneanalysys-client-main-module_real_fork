@@ -744,14 +744,14 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
-        alert.setHeaderText("Save Report Information");
+        alert.setHeaderText("");
         alert.setContentText("Do you want to save?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
             boolean dataSave = saveData();
             if(dataSave) {
-                DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
+                DialogUtil.alert("", "Data saving is completed.", getMainController().getPrimaryStage(), false);
             }
         } else {
             alert.close();
@@ -774,8 +774,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
-        alert.setHeaderText("Test conducting organization information");
-        alert.setContentText(String.format("Test conducting organization information will be filled with current user [ %s ] information for final report generation.\n\nDo you want to proceed?", loginSession.getName()));
+        alert.setHeaderText("");
+        alert.setContentText("Do you want to proceed?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
@@ -1174,8 +1174,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
-                alert.setHeaderText("Creating the report document was completed.");
-                alert.setContentText("Do you want to check the report document?");
+                alert.setHeaderText("");
+                alert.setContentText("Creating the report document was completed. Do you want to check the report document?");
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {

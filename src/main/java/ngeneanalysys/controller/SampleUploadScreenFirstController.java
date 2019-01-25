@@ -219,7 +219,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             tableEdit();
 
         } catch (IOException e) {
-            DialogUtil.alert("not found", "file not found", this.getMainApp().getPrimaryStage(), true);
+            DialogUtil.alert("The sample sheet file could not be read.", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
 
     }
@@ -337,7 +337,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 File[] fileArray = selectedFiles.toArray(new File[0]);
                 List<File> fileList = new ArrayList<>(Arrays.asList(fileArray));
 
-                if(fileList.isEmpty()) DialogUtil.alert("not found", "not found fastq file", sampleUploadController.getCurrentStage(), true);
+                if(fileList.isEmpty()) DialogUtil.alert("", "Can not find fastq file.", sampleUploadController.getCurrentStage(), true);
                 List<File> undeterminedFile = new ArrayList<>();
                 fileList.forEach(file -> {
                     if(file.getName().toUpperCase().startsWith("UNDETERMINED_"))
@@ -404,7 +404,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 }
                 tableEdit();
             } else {
-                DialogUtil.warning("Invalid Fastq Files Pairs", "Please select valid fastq file pairs.",
+                DialogUtil.warning("", "Please select valid fastq file pairs.",
                         sampleUploadController.getCurrentStage(), true);
             }
         }
@@ -624,7 +624,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         DialogUtil.setIcon(alert);
                         alert.setTitle("Panel Setting");
-                        alert.setHeaderText("Panel Setting");
+                        alert.setHeaderText("");
                         alert.setContentText("Do you want to apply them all at once?");
                         Optional<ButtonType> result = alert.showAndWait();
 
@@ -816,7 +816,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 .collect(Collectors.toList());
 
         if(!saveSampleData()) {
-            DialogUtil.alert("check item", "check item", sampleUploadController.getCurrentStage(), true);
+            DialogUtil.alert("", "Check the analysis settings of the samples.", sampleUploadController.getCurrentStage(), true);
             return;
         }
 
@@ -852,7 +852,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
         if(!(isNotCnvPanel || size == 1)) {
-            DialogUtil.warning("check panel setting", "check panel setting",
+            DialogUtil.warning("", "CNV analysis must select all samples in the same panel.",
                     sampleUploadController.getCurrentStage(), true);
             return;
         }
@@ -864,7 +864,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
 
         if(!isControlVisibleList.isEmpty() && isControlVisibleList.stream().noneMatch(RadioButton::isSelected)) {
-            DialogUtil.alert("check control", "check control", sampleUploadController.getCurrentStage(), true);
+            DialogUtil.alert("", "The control sample must be selected.", sampleUploadController.getCurrentStage(), true);
             return;
         }
 

@@ -204,7 +204,7 @@ public class ExportVariantDataTask extends Task<Void> {
 			DialogUtil.setIcon(alert);
 			alert.initOwner(this.mainApp.getPrimaryStage());
 			alert.setTitle("Confirmation Dialog");
-			alert.setHeaderText("Creating the " + fileType + " document was completed.");
+			alert.setHeaderText("");
 			alert.setContentText("Do you want to check the " + fileType + " document?");
 
 			Optional<ButtonType> result = alert.showAndWait();
@@ -215,8 +215,7 @@ public class ExportVariantDataTask extends Task<Void> {
 			}
 		} catch (Exception e){
 			e.printStackTrace();
-			DialogUtil.error("Save Fail.",
-					"An error occurred during the creation of the " + fileType + " document.\n" + e.getMessage(),
+			DialogUtil.error("", "Could not open document file.\n" + e.getMessage(),
 					this.mainApp.getPrimaryStage(), false);
 		}
 	}

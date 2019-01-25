@@ -348,7 +348,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             }
 
         } catch(WebAPIException e) {
-            DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
+            DialogUtil.alert("QC Metrics data can not be loaded.", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
 

@@ -223,11 +223,11 @@ public class MainController extends BaseStageController {
 
         primaryStage.setOnCloseRequest(event -> {
             if(!progressTaskContentArea.getChildren().isEmpty()) {
-                String alertContentText = "The job is running. Are you sure you want to quit?";
+                String alertContentText = "A file upload or download operation is in progress. Do you want to cancel?";
 
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.initOwner(this.primaryStage);
-                alert.setTitle("Warning Dialog");
+                alert.setTitle("");
                 alert.setContentText(alertContentText);
 
                 Optional<ButtonType> result = alert.showAndWait();
@@ -414,7 +414,7 @@ public class MainController extends BaseStageController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         DialogUtil.setIcon(alert);
         alert.initOwner(this.primaryStage);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("");
         alert.setContentText(alertContentText);
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -569,7 +569,7 @@ public class MainController extends BaseStageController {
         }
 
         if(sampleMenu.length == 8) {
-            DialogUtil.warning("", "The maximum number of tabs is eight.", this.getPrimaryStage(), true);
+            DialogUtil.warning("", "Only 8 samples can be opened at the same time.", this.getPrimaryStage(), true);
             return;
         }
 
@@ -835,7 +835,7 @@ public class MainController extends BaseStageController {
 
         // 진행중인 분석 요청건이 있는지 확인
         if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0) {
-            alertHeaderText = "There is a work of analysis request in progress.";
+            alertHeaderText = "A file upload or download operation is in progress. Do you want to logout?";
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

@@ -148,7 +148,7 @@ public class SystemMenuSettingController extends SubPaneController {
     @FXML
     public void confirmServerURL() {
         if(StringUtils.isEmpty(serverURLTextField.getText())) {
-            DialogUtil.warning("Empty server URL", "Please enter a valid server URL", this.mainApp.getPrimaryStage(), true);
+            DialogUtil.warning("", "Please enter a valid server URL", this.mainApp.getPrimaryStage(), true);
         } else {
             int status = serverURLManageService.isValidURL(serverURLTextField.getText());
             if(status >= 200 && status < 300) {
@@ -199,7 +199,7 @@ public class SystemMenuSettingController extends SubPaneController {
             DialogUtil.setIcon(alert);
             alert.initOwner(this.dialogStage);
             alert.setTitle("Save Settings");
-			alert.setHeaderText("Save Settings");
+			alert.setHeaderText("");
 			alert.setContentText("Do you want to save your changes?");
 
             Optional<ButtonType> result = alert.showAndWait();

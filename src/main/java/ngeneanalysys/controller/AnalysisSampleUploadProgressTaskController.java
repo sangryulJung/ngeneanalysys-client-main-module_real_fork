@@ -191,8 +191,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 		DialogUtil.setIcon(alert);
 		alert.initOwner(getMainController().getPrimaryStage());
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Analysis Cancel Request");
-		alert.setContentText("Do you want to cancel analysis request?");
+		alert.setHeaderText("");
+		alert.setContentText("File upload is in progress. Do you want to cancel?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK){
@@ -211,7 +211,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 * 취소 완료 Alert창 출력
 	 */
 	public void showCancelCompleteDialog() {
-		DialogUtil.alert("Cancel incomplete analysis request", "It has been canceled.", getMainController().getPrimaryStage(), true);
+		DialogUtil.alert("", "File upload canceled.", getMainController().getPrimaryStage(), true);
 	}
 
 	/**

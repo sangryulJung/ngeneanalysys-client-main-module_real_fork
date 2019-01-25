@@ -287,8 +287,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                         });
                     } catch (Exception e) {
                         logger.error("download cancel failed!!");
-                        DialogUtil.error("Failed File Download Cancel.",
-                                "An error occurred during the canceling bedFile download.",
+                        DialogUtil.error("", "An error occurred during the canceling bedFile download.",
                                 getMainController().getPrimaryStage(), false);
                     }
                 });
@@ -311,7 +310,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 currentStage.close();
             }
         } catch (Exception e) {
-            DialogUtil.error("Save Fail.", "An error occurred during the download.",
+            DialogUtil.error("", "An error occurred during the download.",
                     getMainController().getPrimaryStage(), false);
             e.printStackTrace();
         }
@@ -349,7 +348,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
             Thread thread = new Thread(task);
             thread.start();
         } else {
-            DialogUtil.alert("Selected Files Deletion", "Please select the files to delete.",
+            DialogUtil.alert("", "Please select the files to delete.",
                     getMainController().getPrimaryStage(), false);
         }
     }
@@ -362,7 +361,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         if(!files.isEmpty()) {
             download(files);
         } else {
-            DialogUtil.alert("Selected Files Download", "Please select the files to download.",
+            DialogUtil.alert("", "Please select the files to download.",
                     getMainController().getPrimaryStage(), false);
         }
 

@@ -1681,8 +1681,8 @@ public class SystemManagerPanelController extends SubPaneController {
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("virtual panel setting");
-                    alert.setHeaderText("What would you like to do?");
-                    alert.setContentText("choose an action");
+                    alert.setHeaderText("");
+                    alert.setContentText("What would you like to do? Choose an action");
 
                     ButtonType buttonTypeEdit = new ButtonType("Edit");
                     ButtonType buttonTypeRemove = new ButtonType("Remove");
@@ -1768,8 +1768,8 @@ public class SystemManagerPanelController extends SubPaneController {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             DialogUtil.setIcon(alert);
             alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("Look, a Confirmation Dialog");
-            alert.setContentText("Are you ok with this?");
+            alert.setHeaderText("");
+            alert.setContentText("The virtual panel settings will be deleted. Do you want to proceed?");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK){

@@ -52,7 +52,7 @@ public class ClinicalFileUploadTask extends Task {
     @Override
     protected void failed() {
         logger.error(String.format("bed bedFile upload task fail!!"));
-        DialogUtil.error("bed bedFile upload fail", "bed bedFile upload fail.", controller.getMainApp().getPrimaryStage(), true);
+        DialogUtil.error("", "bed bedFile upload fail.", controller.getMainApp().getPrimaryStage(), true);
         controller.removeProgressTaskItemById(progressBoxId);
     }
 

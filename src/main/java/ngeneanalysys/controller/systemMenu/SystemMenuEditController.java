@@ -148,7 +148,7 @@ public class SystemMenuEditController extends SubPaneController {
      */
     private boolean validConfirmPwdInput() {
         if(!newPasswordField.getText().equals(confirmPasswordField.getText())) {
-            DialogUtil.warning("Mismatch Confirm Password", "The new password does not match the new confirm password.", dialogStage, true);
+            DialogUtil.warning("", "The new password does not match the new confirm password.", dialogStage, true);
             // 입력 내용 삭제
             confirmPasswordField.setText(null);
             // 포커스 이동
@@ -210,7 +210,7 @@ public class SystemMenuEditController extends SubPaneController {
                 }
 
             } else {
-                DialogUtil.alert("Input Error", "Please enter the current password",
+                DialogUtil.alert("", "Please enter the current password",
                         dialogStage, true);
                 currentPasswordField.requestFocus();
             }

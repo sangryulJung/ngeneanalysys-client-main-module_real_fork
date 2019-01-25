@@ -680,10 +680,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
                 } catch (Exception e) {
-                    DialogUtil.warning("Evidence Save Warning", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    DialogUtil.warning("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
             } else {
-                DialogUtil.warning("Primary check error", "Check primary radio button", getMainApp().getPrimaryStage(), true);
+                DialogUtil.warning("", "Make sure you have selected primary evidence.", getMainApp().getPrimaryStage(), true);
             }
         }
     }

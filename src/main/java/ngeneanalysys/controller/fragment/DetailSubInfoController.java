@@ -374,7 +374,7 @@ public class DetailSubInfoController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            DialogUtil.generalShow(Alert.AlertType.ERROR, "IGV launch fail", "IGV software doesn't launch.",
+            DialogUtil.generalShow(Alert.AlertType.ERROR, "IGV software doesn't launch.", e.getMessage(),
                     getMainApp().getPrimaryStage(), true);
         }
 

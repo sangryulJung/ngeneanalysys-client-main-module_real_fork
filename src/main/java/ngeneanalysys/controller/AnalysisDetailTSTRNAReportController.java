@@ -661,7 +661,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
-        alert.setHeaderText("Save Report Information");
+        alert.setHeaderText("");
         alert.setContentText("Do you want to save?");
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -1138,8 +1138,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                 DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
-                alert.setHeaderText("Creating the report document was completed.");
-                alert.setContentText("Do you want to check the report document?");
+                alert.setHeaderText("");
+                alert.setContentText("Creating the report document was completed. Do you want to check the report document?");
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {

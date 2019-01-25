@@ -701,7 +701,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 super.succeeded();
                 getMainController().setMainMaskerPane(false);
                 if(showResultDialog) {
-                    DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
+                    DialogUtil.alert("", "Data saving is completed.", getMainController().getPrimaryStage(), false);
                 }
             }
 
@@ -761,8 +761,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             DialogUtil.setIcon(alert);
             alert.initOwner(getMainController().getPrimaryStage());
             alert.setTitle(CONFIRMATION_DIALOG);
-            alert.setHeaderText("Test conducting organization information");
-            alert.setContentText(String.format("Test conducting organization information will be filled with current user [ %s ] information for final report generation.\n\nDo you want to proceed?", loginSession.getName()));
+            alert.setHeaderText("");
+            alert.setContentText("Do you want to proceed?");
             result = alert.showAndWait();
         } else {
             result = Optional.of(ButtonType.OK);
@@ -1277,8 +1277,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
-                alert.setHeaderText("Creating the report document was completed.");
-                alert.setContentText("Do you want to check the report document?");
+                alert.setHeaderText("");
+                alert.setContentText("Creating the report document was completed. Do you want to check the report document?");
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
