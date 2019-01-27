@@ -542,9 +542,9 @@ public class SystemManagerPanelController extends SubPaneController {
         essentialGenesTextField.setDisable(false);
 
         indelMinAlleleFractionTextField.setText("");
-        indelMinAlleleFractionTextField.setDisable(true);
+        indelMinAlleleFractionTextField.setDisable(false);
         indelMinReadDepthTextField.setText("");
-        indelMinReadDepthTextField.setDisable(true);
+        indelMinReadDepthTextField.setDisable(false);
         indelMinAlternateCountTextField.setText("6");
         indelMinAlternateCountTextField.setDisable(false);
 
