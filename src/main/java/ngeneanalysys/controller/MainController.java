@@ -226,6 +226,7 @@ public class MainController extends BaseStageController {
                 String alertContentText = "A file upload or download operation is in progress. Do you want to cancel?";
 
                 Alert alert = new Alert(Alert.AlertType.WARNING);
+                DialogUtil.setIcon(alert);
                 alert.initOwner(this.primaryStage);
                 alert.setTitle("");
                 alert.setContentText(alertContentText);

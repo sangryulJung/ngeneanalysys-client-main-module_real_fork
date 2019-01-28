@@ -368,9 +368,9 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                 } else if(snpVariantAlleleFraction.getVaf().compareTo(new BigDecimal("0.1")) == -1) {
                     gc.fillArc(0, 0, 18, 18, 0, 0, ArcType.CHORD);
                 } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMaxReferenceHeteroRange()) == 1) {
-                    gc.fillArc(0, 0, 18, 18, 225, 270, ArcType.CHORD);
+                    gc.fillArc(0, 0, 18, 18, 240, 240, ArcType.CHORD);
                 } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMinReferenceHeteroRange()) == -1) {
-                    gc.fillArc(0, 0, 18, 18, 315, 90, ArcType.CHORD);
+                    gc.fillArc(0, 0, 18, 18, 305, 110, ArcType.CHORD);
                 } else {
                     gc.fillArc(0, 0, 18, 18, 270, 180, ArcType.CHORD);
                 }
@@ -408,8 +408,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         HBox homoRefBox = createContentsBox(0, 0, "Homozygous Reference");
         HBox homoVaBox = createContentsBox(45, 360, "Homozygous Variant");
         HBox heteroVaBox = createContentsBox(270, 180, "Heterozygous Variant");
-        HBox heteroIncRefBox = createContentsBox(225, 270, "Heterozygous Variant (Increased reference fraction)");
-        HBox heteroIncVarBox = createContentsBox(315, 90, "Heterozygous Variant (Increased variant fraction)");
+        HBox heteroIncRefBox = createContentsBox(240, 240, "Heterozygous Variant (Increased reference fraction)");
+        HBox heteroIncVarBox = createContentsBox(305, 110, "Heterozygous Variant (Increased variant fraction)");
         mainVBox.getChildren().addAll(homoRefBox, homoVaBox, heteroVaBox, heteroIncRefBox, heteroIncVarBox);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
@@ -444,6 +444,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private HBox createContentsBox(double startAngle, double arcExtent, String contents) {
         HBox box = new HBox();
         box.setPrefWidth(400);
+        box.setPrefHeight(30);
         VBox titleBox = new VBox();
         titleBox.setPrefWidth(60);
         titleBox.setStyle("-fx-border-color : black; -fx-border-width : 0;");

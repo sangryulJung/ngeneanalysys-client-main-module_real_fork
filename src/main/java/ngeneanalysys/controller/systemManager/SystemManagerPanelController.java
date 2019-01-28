@@ -541,9 +541,9 @@ public class SystemManagerPanelController extends SubPaneController {
         essentialGenesTextField.setText("");
         essentialGenesTextField.setDisable(false);
 
-        indelMinAlleleFractionTextField.setText("");
+        indelMinAlleleFractionTextField.setText("5.0");
         indelMinAlleleFractionTextField.setDisable(false);
-        indelMinReadDepthTextField.setText("");
+        indelMinReadDepthTextField.setText("30");
         indelMinReadDepthTextField.setDisable(false);
         indelMinAlternateCountTextField.setText("6");
         indelMinAlternateCountTextField.setDisable(false);
@@ -1477,20 +1477,41 @@ public class SystemManagerPanelController extends SubPaneController {
                     }
                 }
                 VariantFilter variantFilter = panel.getVariantFilter();
-                if(variantFilter.getInDelMinAlleleFraction() != null)
+                if(variantFilter.getInDelMinAlleleFraction() != null) {
                     indelMinAlleleFractionTextField.setText(variantFilter.getInDelMinAlleleFraction().toString());
-                if(variantFilter.getSnvMinAlleleFraction() != null)
+                } else {
+                    indelMinAlleleFractionTextField.setText("");
+                }
+                if(variantFilter.getSnvMinAlleleFraction() != null) {
                     snvMinAlleleFractionTextField.setText(variantFilter.getSnvMinAlleleFraction().toString());
-                if(variantFilter.getInDelMinAlternateCount() != null)
+                } else {
+                    snvMinAlleleFractionTextField.setText("");
+                }
+                if(variantFilter.getInDelMinAlternateCount() != null) {
                     indelMinAlternateCountTextField.setText(variantFilter.getInDelMinAlternateCount().toString());
-                if(variantFilter.getSnvMinAlternateCount() != null)
+                } else {
+                    indelMinAlternateCountTextField.setText("");
+                }
+                if(variantFilter.getSnvMinAlternateCount() != null) {
                     snvMinAlternateCountTextField.setText(variantFilter.getSnvMinAlternateCount().toString());
-                if(variantFilter.getInDelMinReadDepth() != null)
+                } else {
+                    snvMinAlternateCountTextField.setText("");
+                }
+                if(variantFilter.getInDelMinReadDepth() != null) {
                     indelMinReadDepthTextField.setText(variantFilter.getInDelMinReadDepth().toString());
-                if(variantFilter.getSnvMinReadDepth() != null)
+                } else {
+                    indelMinReadDepthTextField.setText("");
+                }
+                if(variantFilter.getSnvMinReadDepth() != null) {
                     snvMinReadDepthTextField.setText(variantFilter.getSnvMinReadDepth().toString());
-                if(variantFilter.getLowConfidenceMinAlleleFraction() != null)
+                } else {
+                    snvMinReadDepthTextField.setText("");
+                }
+                if(variantFilter.getLowConfidenceMinAlleleFraction() != null) {
                     lowConfidenceMinAlleleFractionTextField.setText(variantFilter.getLowConfidenceMinAlleleFraction().toString());
+                } else {
+                    lowConfidenceMinAlleleFractionTextField.setText("");
+                }
                 if(variantFilter.getPopulationFrequencyDBs() != null) {
                     String[] freqDBs = panel.getVariantFilter().getPopulationFrequencyDBs().split(",");
                     for(String freqDB : freqDBs) {
@@ -1680,6 +1701,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     Integer virtualPanelId = Integer.parseInt(t1.getValue());
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    DialogUtil.setIcon(alert);
                     alert.setTitle("virtual panel setting");
                     alert.setHeaderText("");
                     alert.setContentText("What would you like to do? Choose an action");

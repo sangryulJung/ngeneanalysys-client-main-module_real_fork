@@ -17,6 +17,7 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -106,7 +107,7 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
     @Override
     public void show(Parent root) throws IOException {
         geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
-        variantTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getPrediction()));
+        variantTableColumn.setCellValueFactory(item -> new SimpleStringProperty(WordUtils.capitalize(item.getValue().getPrediction())));
         classificationTableColumn.setCellValueFactory(item -> new SimpleStringProperty(
                 PredictionTypeCode.getNameFromAlias(item.getValue().getClassification())));
         inheritanceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getInheritance()));
