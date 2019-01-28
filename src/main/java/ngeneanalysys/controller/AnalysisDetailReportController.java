@@ -187,8 +187,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
-            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 133);
-            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 133);
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 153);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 153);
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SOLID_AMC_CNV_REPORT);
                 Node node = loader.load();
