@@ -148,7 +148,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     private Map<String, Object> variableList = null;
 
-    private AnalysisDetailSolidCNVReportController analysisDetailSolidCNVReportController;
+    private AnalysisDetailSolidCNVReportController analysisDetailSolidCNVReportController = null;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -388,11 +388,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
 
             list = filteringVariant(list);
-
-            response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
-            PagedCnv pagedCnv = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
-            List<Cnv> cnvList = pagedCnv.getResult().stream().filter(cnv -> cnv.getCnvValue().doubleValue() > 4.0)
-                    .collect(Collectors.toList());
+            List<Cnv> cnvList = null;
+            if(analysisDetailSolidCNVReportController != null) {
+                response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+                PagedCnv pagedCnv = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
+                cnvList = pagedCnv.getResult().stream().filter(cnv -> cnv.getCnvValue().doubleValue() > 4.0)
+                        .collect(Collectors.toList());
+            }
 
             negativeList = list.stream().filter(item -> (
                     StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getSwTier())) ||
@@ -1020,14 +1022,15 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
                 FileUtil.downloadCNVImage(optionalAnalysisFile.get());
             }
+            if(analysisDetailSolidCNVReportController != null) {
+                try {
+                    response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
+                    PagedCnv pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
+                    contentsMap.put("cnvList", pagedCNV.getResult());
 
-            try {
-                response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
-                PagedCnv pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
-                contentsMap.put("cnvList", pagedCNV.getResult());
-
-            } catch (WebAPIException wae) {
-                logger.debug(wae.getMessage());
+                } catch (WebAPIException wae) {
+                    logger.debug(wae.getMessage());
+                }
             }
         }
 
