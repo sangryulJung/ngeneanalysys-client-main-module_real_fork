@@ -408,8 +408,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         HBox homoRefBox = createContentsBox(0, 0, "Homozygous Reference");
         HBox homoVaBox = createContentsBox(45, 360, "Homozygous Variant");
         HBox heteroVaBox = createContentsBox(270, 180, "Heterozygous Variant");
-        HBox heteroIncRefBox = createContentsBox(240, 240, "Heterozygous Variant (Increased reference fraction)");
-        HBox heteroIncVarBox = createContentsBox(305, 110, "Heterozygous Variant (Increased variant fraction)");
+        HBox heteroIncRefBox = createContentsBox(240, 240, "Heterozygous Variant (Increased Reference Fraction)");
+        HBox heteroIncVarBox = createContentsBox(305, 110, "Heterozygous Variant (Increased Alteration Fraction)");
         mainVBox.getChildren().addAll(homoRefBox, homoVaBox, heteroVaBox, heteroIncRefBox, heteroIncVarBox);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
@@ -420,7 +420,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         popOver.setArrowSize(15);
         popOver.setArrowIndent(30);
         popOver.setContentNode(mainVBox);
-        popOver.setTitle("Genotype");
+        popOver.setTitle("SNP-Level CNV Legend");
         popOver.show((Node)event.getSource());
     }
 
