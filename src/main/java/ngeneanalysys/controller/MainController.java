@@ -278,12 +278,13 @@ public class MainController extends BaseStageController {
                 };
             }
         };
-        sampleList.setMaxWidth(100.0);
         this.sampleList = sampleList;
-        sampleList.getStyleClass().add("combo-box");
         sampleList.setDisable(true);
         sampleListLabel.setDisable(true);
         sampleList.getStyleClass().addAll("combo-box", "combo-box-base");
+        sampleList.setMinWidth(100.0);
+        sampleList.setPrefWidth(100.0);
+        sampleList.setMaxWidth(100.0);
         sampleListStackPane.getChildren().add(0, sampleList);
 
         sampleListStackPane.setOnMouseClicked(ev -> {

@@ -52,6 +52,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -1839,9 +1840,8 @@ public class SystemManagerPanelController extends SubPaneController {
                             } else if(strs[0].equals("Canonical Transcripts")) {
                                 sb.append(strs[1]);
                             } else if(strs[0].equals("Diseases")) {
-                                List<String> diseasesList = new ArrayList<>(Arrays
-                                        .asList("Colon Cancer", "Lung Cancer", "Breast Cancer", "Ovarian Cancer",
-                                        "Solid Cancer", "Hematologic malignancy", "HBOC"));
+                                List<String> diseasesList = diseaseCheckComboBox.getItems().stream()
+                                                .map(ComboBoxItem::getText).collect(Collectors.toList());
 
                                 for(final String disease : diseasesList) {
                                     if(strs[1].contains(disease)) {

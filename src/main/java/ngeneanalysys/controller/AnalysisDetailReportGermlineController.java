@@ -837,7 +837,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 SecureRandom random = new SecureRandom();
                 Map<String,Object> contentsMap = new HashMap<>();
                 contentsMap.put("isDraft", isDraft);
-
+                contentsMap.put("sampleName", sample.getName());
                 contentsMap.put("panelName", panel.getName());
                 contentsMap.put("panelCode", panel.getCode());
                 contentsMap.put("sampleSource", sample.getSampleSource());
@@ -1006,12 +1006,12 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 model.put("ngenebioLogo", ngenebioLogo);
                 model.put("contents", contentsMap);
 
+                HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
+                        null, false);
+
+                List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
                 if(PipelineCode.isHeredPipeline(panel.getCode())) {
-
-                    HttpClientResponse response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
-                            null, false);
-
-                    List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
                     contentsMap.put("mappingQuality", findQCResult(qcList, "mapping_quality_60"));
                     contentsMap.put("uniformity", findQCResult(qcList, "uniformity_0.2"));
@@ -1024,6 +1024,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
                     contentsMap.put("onTargetRead", findQCResult(qcList, "on_target_read"));
                     contentsMap.put("targetCoverageAt30x", findQCResult(qcList, "target_coverage_at_30x"));
+                } else if(PipelineCode.isBRCAPipeline(panel.getCode())){
+                    contentsMap.put("uniformity", findQCResult(qcList, "coverage_uniformity"));
+                    contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
                 }
 
 
@@ -1038,7 +1041,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                 } else {
-                    HttpClientResponse response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
+                    response = apiService.get("reportTemplate/" + panel.getReportTemplateId(), null, null, false);
 
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
@@ -1202,10 +1205,10 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 Double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_CEILING));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_HALF_UP));
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_CEILING));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_HALF_UP));
                 return qcData;
             }
         }

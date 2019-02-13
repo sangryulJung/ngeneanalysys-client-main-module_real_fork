@@ -1308,10 +1308,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     Double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_CEILING));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_HALF_UP));
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_CEILING));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_HALF_UP));
                 return qcData;
             }
         }

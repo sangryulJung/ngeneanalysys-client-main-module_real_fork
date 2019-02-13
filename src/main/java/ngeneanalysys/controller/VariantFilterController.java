@@ -601,13 +601,13 @@ public class VariantFilterController extends SubPaneController {
 
     private void setOperator(String value, ComboBox<ComboBoxItem> comboBox) {
         if(value.contains("gte:")) {
-            comboBox.getSelectionModel().select(2);
-        } else if(value.contains("lte:")) {
             comboBox.getSelectionModel().select(3);
+        } else if(value.contains("lte:")) {
+            comboBox.getSelectionModel().select(2);
         } else if(value.contains("gt:")) {
-            comboBox.getSelectionModel().select(0);
-        } else if(value.contains("lt:")) {
             comboBox.getSelectionModel().select(1);
+        } else if(value.contains("lt:")) {
+            comboBox.getSelectionModel().select(0);
         }
     }
 
