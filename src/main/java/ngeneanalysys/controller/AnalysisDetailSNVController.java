@@ -500,7 +500,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_TIER);
                         Node node = loader.load();
                         BatchChangeTierDialogController controller = loader.getController();
-                        controller.settingItem(sample.getId(), selectList, this);
+                        controller.settingItem(sample.getId(), selectList, this,
+                                "Modify Tier in multi-selection");
                         controller.setMainController(this.getMainController());
                         controller.setParamMap(getParamMap());
                         controller.show((Parent) node);
@@ -521,7 +522,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_PATHOGENICITY);
                         Node node = loader.load();
                         BatchChangePathogenicityDialogController controller = loader.getController();
-                        controller.settingItem(sample.getId(), selectList, this);
+                        controller.settingItem(sample.getId(), selectList, this,
+                                "Modify Pathogenicity in multi-selection");
                         controller.setMainController(this.getMainController());
                         controller.setParamMap(getParamMap());
                         controller.show((Parent) node);

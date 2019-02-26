@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import ngeneanalysys.code.enums.PredictionTypeCode;
@@ -42,7 +43,7 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
     @FXML
     private TableColumn<CompositeCmtCnvResult, String> parentalOriginTableColumn;
 
-    void setCompositeCmtCnvResults(String type) {
+    void setCompositeCmtCnvResults(String type, Label titleLabel) {
         if(heredAmcCnvResultTable.getItems() != null) {
             heredAmcCnvResultTable.getItems().removeAll(heredAmcCnvResultTable.getItems());
             heredAmcCnvResultTable.refresh();
@@ -74,6 +75,10 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
                     if((type.equals("OVERVIEW") && StringUtils.isNotEmpty(compositeCmtCnvResult.getPrediction()))
                             || "Y".equals(compositeCmtCnvResult.getIncludedInReport())) {
                         heredAmcCnvResultTable.getItems().add(compositeCmtCnvResult);
+                        titleLabel.setText("DETECTED CNV SUMMARY");
+                    } else {
+                        titleLabel.setText("REPORTED CNV VARIANT" + (compositeCmtCnvResult != null && compositeCmtCnvResult.getIncludedInReport().equals("Y") ?
+                                "(" + compositeCmtCnvResult.getGene() + " : " + WordUtils.capitalize(compositeCmtCnvResult.getPrediction()) + ")" : ""));
                     }
                 });
             }

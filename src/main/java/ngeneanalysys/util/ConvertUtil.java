@@ -206,8 +206,8 @@ public class ConvertUtil {
 						} else {
 							int lastInt = Integer.parseInt(last);
 							int currentInt = Integer.parseInt(item);
-							if (lastInt == currentInt - 1 ||
-                                    ("BRCA1".equals(gene) && lastInt == 3 && currentInt == 5)) {
+							if (lastInt == currentInt - 1/* ||
+                                    ("BRCA1".equals(gene) && lastInt == 3 && currentInt == 5)*/) {
 								tempList.add(item);
 							} else if (tempList.size() > 1) {
 								sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast()).append(" / ");

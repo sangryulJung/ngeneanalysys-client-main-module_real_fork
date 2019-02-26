@@ -70,6 +70,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
+    private Label geneCategoryLabel;
+
+    @FXML
     private Label pathogenicityCountLabel;
 
     @FXML
@@ -147,7 +150,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
     private AnalysisDetailGermlineCNVReportController analysisDetailGermlineCNVReportController;
 
-    private AnalysisDetailGermlineAmcCNVReportController analysisDetailGermlineAmcCNVReportController;
+    private AnalysisDetailOverviewHeredAmcController analysisDetailOverviewHeredAmcController;
 
     @SuppressWarnings("unchecked")
     private void setTargetGenesList() {
@@ -306,11 +309,16 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         panel = sample.getPanel();
 
-        setVirtualPanel();
+        if(PipelineCode.isBRCAPipeline(panel.getCode())) {
+            geneCategoryLabel.setVisible(false);
+            virtualPanelComboBox.setVisible(false);
+        } else {
+            setVirtualPanel();
+        }
 
         if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
-            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 150);
-            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 150);
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 160);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 160);
 
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV_REPORT);
@@ -325,13 +333,13 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 e.printStackTrace();
             }
         } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
-            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 73);
-            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 73);
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 113);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 113);
             try {
-                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT);
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_OVERVIEW);
                 Node node = loader.load();
-                AnalysisDetailGermlineAmcCNVReportController controller = loader.getController();
-                analysisDetailGermlineAmcCNVReportController = controller;
+                AnalysisDetailOverviewHeredAmcController controller = loader.getController();
+                analysisDetailOverviewHeredAmcController = controller;
                 controller.setMainController(this.getMainController());
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
@@ -551,8 +559,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
     }
 
     void setVariantsList() {
-        if(analysisDetailGermlineAmcCNVReportController != null) {
-            analysisDetailGermlineAmcCNVReportController.setCompositeCmtCnvResults("REPORT");
+        if(analysisDetailOverviewHeredAmcController != null) {
+            analysisDetailOverviewHeredAmcController.setContents("REPORT");
         }
 
         HttpClientResponse response = null;
@@ -574,27 +582,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 analysisDetailGermlineCNVReportController.setBrcaCnvExonList(pagedBrcaCNVExon.getResult());
             }
 
-            CompositeCmtCnvResult compositeCmtCnvResult = null;
-            if(analysisDetailGermlineAmcCNVReportController != null) {
-                response = apiService.get("/analysisResults/compositeCmtCnvResult/" + sample.getId(), null, null, null);
-                compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
-            }
-
-            long deletionCount = 0;
-            long amplificationCount = 0;
-
-            if(pagedBrcaCNVExon != null) {
-                deletionCount = pagedBrcaCNVExon.getResult().stream().filter(item ->
-                        (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.DELETION.getCode()))
-                                || item.getSwCnv().equals(BrcaCNVCode.DELETION.getCode())
-                ).count();
-
-                amplificationCount = pagedBrcaCNVExon.getResult().stream().filter(item ->
-                        (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode()))
-                                || item.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())
-                ).count();
-            }
-
             pathogenicList = settingPathogenicityList(list, "P");
 
             likelyPathgenicList = settingPathogenicityList(list, "LP");
@@ -604,23 +591,29 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             likelyBenignList = settingPathogenicityList(list, "LB");
 
             benignList = settingPathogenicityList(list, "B");
+
+            long snvCount = list.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport()) &&
+                    variant.getSnpInDel().getSnpInDelExpression().getVariantType().matches("SNV|SNP|snv|snp")).count();
+            long indelCount = list.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport()) &&
+                    variant.getSnpInDel().getSnpInDelExpression().getVariantType().matches("Ins|Del")).count();
             long pCount = pathogenicList != null ? pathogenicList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long lpCount = likelyPathgenicList != null ? likelyPathgenicList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long usCount = uncertainSignificanceList != null ? uncertainSignificanceList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long lbCount = likelyBenignList != null ? likelyBenignList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long bCount = benignList != null ? benignList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
-            pathogenicityCountLabel.setText("( SNV : " + (pCount + lpCount + usCount + lbCount + bCount)
-                    + (pCount > 0  ? ", P: " + pCount : "")
-                    + (lpCount > 0  ? ", LP: " + lpCount : "")
-                    + (usCount > 0  ? ", US: " + usCount : "")
-                    + (lbCount > 0  ? ", LB: " + lbCount : "")
-                    + (bCount > 0  ? ", B: " + bCount : "")
-                    + (pagedBrcaCNVExon != null ? " / CNV : " + (deletionCount + amplificationCount) : "")
-                    + (deletionCount > 0 ? ", Deletion: " + deletionCount : "")
-                    + (amplificationCount > 0 ? ", Amplification: " + amplificationCount : "")
-                    + (compositeCmtCnvResult != null && compositeCmtCnvResult.getIncludedInReport().equals("Y") ?
-                        " / " + compositeCmtCnvResult.getGene() + " : " + WordUtils.capitalize(compositeCmtCnvResult.getPrediction()) : "")
-                    + " )"
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("(Total : ").append((pCount + lpCount + usCount + lbCount + bCount));
+            if(snvCount > 0) stringBuilder.append(", SNV: ").append(snvCount);
+            if(indelCount > 0) stringBuilder.append(", Indel: ").append(indelCount);
+            if((pCount + lpCount + usCount + lbCount + bCount) > 0) stringBuilder.append(" / ");
+            if(pCount > 0) stringBuilder.append("P: ").append(pCount).append(", ");
+            if(lpCount > 0) stringBuilder.append("LP: ").append(lpCount).append(", ");
+            if(usCount > 0) stringBuilder.append("US: ").append(usCount).append(", ");
+            if(lbCount > 0) stringBuilder.append("LB: ").append(lbCount).append(", ");
+            if(bCount > 0) stringBuilder.append("B: ").append(bCount).append(", ");
+            if((pCount + lpCount + usCount + lbCount + bCount) > 0) stringBuilder
+                    .delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
+            pathogenicityCountLabel.setText(stringBuilder.toString() + ")"
             );
 
             Collections.sort(list,
@@ -944,7 +937,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                                 getBrcaResult(brcaCnvExons.stream().filter(item ->
                                         "BRCA2".equals(item.getGene())).collect(Collectors.toList())));
                     }
-                } else if(analysisDetailGermlineAmcCNVReportController != null) {
+                } else if(analysisDetailOverviewHeredAmcController != null) {
                     Map<String, Object> analysisFileMap = new HashMap<>();
                     analysisFileMap.put("sampleId", sample.getId());
                     HttpClientResponse response = apiService.get("/analysisFiles", analysisFileMap, null, false);

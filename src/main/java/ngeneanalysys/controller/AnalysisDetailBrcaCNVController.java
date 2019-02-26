@@ -215,7 +215,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         list = list.stream().filter(brcaCnvExon -> !brcaCnvExon.getExon().equalsIgnoreCase("Promoter"))
                 .collect(Collectors.toList());
         int idx = 0;
-        if(nomenclature.equals("BIC")) {
+        if(nomenclature.equals("HGVS")) {
             if(!brca1ExonNumberHBox.getChildren().isEmpty()) {
                 for(Node node : brca1ExonNumberHBox.getChildren()) {
                     if(node instanceof Label) {
@@ -228,8 +228,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 for(Node node : brca1ExonNumberHBox.getChildren()) {
                     if(node instanceof Label) {
                         String exon = list.get(idx++).getExon();
-                        if(Integer.parseInt(exon) > 4) {
-                            exon = String.valueOf((Integer.parseInt(exon) - 1));
+                        if(Integer.parseInt(exon) >= 4) {
+                            exon = String.valueOf((Integer.parseInt(exon) + 1));
                         }
                         ((Label) node).setText(exon);
                     }
@@ -356,7 +356,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 }
 
                 label.setCursor(Cursor.HAND);
-                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> popUp(Arrays.asList(brcaCnvExon)));
+                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> popUp(Arrays.asList(brcaCnvExon), "Modify CNV in individual"));
 
                 setGraphic(label);
             }
@@ -372,13 +372,13 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             setText(null);
                         } else {
                             BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
-                            if(hgvsNomenclatureRadioButton.isSelected() && brcaCnvExon.getGene().equals("BRCA1")) {
+                            if(bicNomenclatureRadioButton.isSelected() && brcaCnvExon.getGene().equals("BRCA1")) {
                                 if(brcaCnvExon.getExon().equals("Promoter")) {
                                     setText(item);
                                 } else {
                                     int a = Integer.parseInt(item);
-                                    if(a >= 5) {
-                                        setText(String.valueOf(a - 1));
+                                    if(a >= 4) {
+                                        setText(String.valueOf(a + 1));
                                     } else {
                                         setText(item);
                                     }
@@ -540,13 +540,13 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         return fmt.print(date);
     }
 
-    private void popUp(List<BrcaCnvExon> changeList) {
+    private void popUp(List<BrcaCnvExon> changeList, String title) {
         if(changeList != null && !changeList.isEmpty()) {
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_BRCA_CNV);
                 Node node = loader.load();
                 BatchChangeBrcaCnvDialogController controller = loader.getController();
-                controller.settingItem(sample.getId(), changeList, this);
+                controller.settingItem(sample.getId(), changeList, this, title);
                 controller.setParamMap(getParamMap());
                 controller.setMainController(mainController);
                 controller.show((Parent) node);
@@ -980,24 +980,21 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         legendBox.setAlignment(Pos.CENTER);
         legendBox.setMinWidth(200);
         legendBox.setPrefWidth(200);
-        legendBox.setSpacing(10);
+        legendBox.setSpacing(60);
         VBox.setMargin(legendBox, new Insets(5, 0, 0, 0));
-        Label deletionLabel = new Label("Deletion");
-        deletionLabel.getStyleClass().add("font_size_9");
-        Label normalLabel = new Label("Normal");
+        Label deletionLabel = new Label("Del");
+        deletionLabel.getStyleClass().add("font_size_10");
+        Label normalLabel = new Label("Nor");
         normalLabel.setAlignment(Pos.CENTER);
-        normalLabel.getStyleClass().add("font_size_9");
-        Label amplificationLabel = new Label("Amplification");
-        reSizeNodeWidth(amplificationLabel, 55);
-        reSizeNodeWidth(deletionLabel, 55);
-        reSizeNodeWidth(normalLabel, 55);
+        normalLabel.getStyleClass().add("font_size_10");
+        Label amplificationLabel = new Label("Amp");
+        amplificationLabel.getStyleClass().add("font_size_10");
 
-        amplificationLabel.getStyleClass().add("font_size_9");
         legendBox.getChildren().addAll(deletionLabel, normalLabel, amplificationLabel);
 
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.setMinSize(170, 40);
-        anchorPane.setPrefSize(170, 40);
+        anchorPane.setMinSize(170, 30);
+        anchorPane.setPrefSize(170, 30);
         HBox box = new HBox();
         box.setAlignment(Pos.CENTER);
         box.setMinSize(170, 15);
@@ -1013,6 +1010,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         position.getStyleClass().add("ratio_position");
         position.setMinWidth(16);
 
+        Label warningLabel = new Label(amplicon.getWarning().replaceAll("low_confidence_cnv : ", ""));
+        reSizeNodeWidth(warningLabel, 200);
+        warningLabel.setAlignment(Pos.CENTER);
+        warningLabel.getStyleClass().addAll("font_size_10","txt_red", "bold");
+
         anchorPane.getChildren().add(box);
         anchorPane.getChildren().add(position);
         AnchorPane.setTopAnchor(position, 7.5);
@@ -1020,7 +1022,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         AnchorPane.setLeftAnchor(position, calcPosition(amplicon, box.getMinWidth(), normalBox.getMinWidth(),
                 leftAnchorVal - (position.getMinWidth() / 2)));
         AnchorPane.setLeftAnchor(box, leftAnchorVal);
-        mainVBox.getChildren().addAll(titleLabel, legendBox, anchorPane);
+        mainVBox.getChildren().addAll(titleLabel, legendBox, anchorPane, warningLabel);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
@@ -1188,7 +1190,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         double value = mainStackPane.widthProperty().getValue() == 0 ? 1060 : mainStackPane.widthProperty().getValue();
         double boxSize = Math.round(value / size);
         if(boxSize > 15) {
-            if(value * size > 1060) {
+            if((value * size) + 40 > 1060) {
                 return boxSize - 1;
             }
             return boxSize;
@@ -1208,7 +1210,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         double value = width == 0 ? 1060 : width;
         double boxSize = Math.round(value / size);
         if(boxSize > 15) {
-            if(value * size > width) {
+            if((value * size) + 40 > width) {
                 return boxSize - 1;
             }
             return boxSize;
@@ -1230,34 +1232,75 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     @FXML
     public void doExonCnvChange() {
-        popUp(getSelectedItemList());
+        popUp(getSelectedItemList(), "Modify CNV in multi-selection");
     }
 
     @FXML
     private void showLegendTooltip(Event event) {
         PopOver popOver = new PopOver();
-        popOver.setWidth(420);
+        popOver.setWidth(260);
         popOver.setHeight(200);
         popOver.setMaxHeight(160);
         VBox mainVBox = new VBox();
-        mainVBox.setPrefWidth(400);
+        mainVBox.setPrefWidth(260);
         mainVBox.setPrefHeight(160);
         HBox titleBox = createTitleBox();
-        HBox cds = createContentsBox("Deletion", "-fx-background-radius : 15 15; -fx-background-color : #cc3e4f;",
+        HBox deletion = createContentsBox("-fx-background-radius : 15 15; -fx-background-color : #cc3e4f;",
                 "Deletion");
-        HBox nonCds = createContentsBox("Normal", "-fx-background-radius : 15 15; -fx-background-color : #97a2be;",
+        HBox normal = createContentsBox("-fx-background-radius : 15 15; -fx-background-color : #97a2be;",
                 "Normal");
-        HBox offTarget = createContentsBox("Amplification", "-fx-background-radius : 15 15; -fx-background-color : #e1b07b;",
+        HBox amplification = createContentsBox("-fx-background-radius : 15 15; -fx-background-color : #e1b07b;",
                 "Amplification");
-        HBox deletion = createContentsBox("User Change", "-fx-border-width : 0.5; -fx-border-color : #13aff7;",
-                "Exon CNV status changed by User");
-        HBox likelyDeletion = createContentsBox("Suspected CNV", "-fx-border-width : 0.5; -fx-border-color : black;",
-                "Suspected CNV status");
+        HBox userChange = createContentsBox("-fx-border-width : 0.5; -fx-border-color : #13aff7;",
+                "CNV in Exon changed by User");
+        HBox putativeDel = createContentsBox("-fx-background-color : #cc3e4f;", "Putative Deletion");
+        HBox putativeAmp = createContentsBox("-fx-background-color : #e1b07b;", "Putative Amplification");
 
-        mainVBox.getChildren().addAll(titleBox, cds, nonCds, offTarget, deletion, likelyDeletion);
+        mainVBox.getChildren().addAll(titleBox, deletion, amplification, normal, putativeDel, putativeAmp, userChange);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
+        popOver.setHeaderAlwaysVisible(true);
+        popOver.setAutoHide(true);
+        popOver.setAutoFix(true);
+        popOver.setDetachable(true);
+        popOver.setArrowSize(15);
+        popOver.setArrowIndent(30);
+        popOver.setContentNode(mainVBox);
+        popOver.setTitle("");
+        popOver.show((Node)event.getSource());
+    }
+
+    @FXML
+    private void showNomenclatureTooltip(Event event) {
+        PopOver popOver = new PopOver();
+        popOver.setWidth(550);
+        popOver.setHeight(80);
+        popOver.setMaxHeight(80);
+        VBox mainVBox = new VBox();
+        mainVBox.setPrefWidth(550);
+        mainVBox.setPrefHeight(80);
+        mainVBox.getStyleClass().add("font_size_11");
+        HBox hgvsNomencaltureBox = new HBox();
+        Label hgvsTitleLabel = new Label(" HGVS Nomenclature: ");
+        hgvsTitleLabel.getStyleClass().add("bold");
+        Label hgvsContentsLabel = new Label("Nomenclature following HGVS recommendations");
+        hgvsNomencaltureBox.getChildren().addAll(hgvsTitleLabel, hgvsContentsLabel);
+
+        HBox bicNomencaltureBox = new HBox();
+        Label bicTitleLabel = new Label(" BIC Nomenclature: ");
+        bicTitleLabel.getStyleClass().add("bold");
+        Label bicContentsLabel = new Label("Nomenclature following HGVS recommendations, but with the following exceptions:");
+        bicNomencaltureBox.getChildren().addAll(bicTitleLabel, bicContentsLabel);
+
+        Label contents1Label = new Label("· BRCA1 nucleotide is from GenBank U14680.1, this exon 4 is missing.");
+        Label contents2Label = new Label("· BRCA2 nucleotide is from GenBank U43746.1");
+
+        mainVBox.getChildren().addAll(hgvsNomencaltureBox, bicNomencaltureBox, contents1Label, contents2Label);
+        VBox.setMargin(contents1Label, new Insets(0, 0, 0, 25));
+        VBox.setMargin(contents2Label, new Insets(0, 0, 0, 25));
+        popOver.getRoot().setAlignment(Pos.CENTER);
+        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
         popOver.setHeaderAlwaysVisible(true);
         popOver.setAutoHide(true);
         popOver.setAutoFix(true);
@@ -1273,12 +1316,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         HBox box = new HBox();
         box.setAlignment(Pos.CENTER_LEFT);
         box.setPrefHeight(25);
-        box.setPrefWidth(420);
-        Label nameLabel = new Label("Name");
-        nameLabel.getStyleClass().addAll("bold", "font_size_10");
-        nameLabel.setPrefWidth(120);
-        nameLabel.setAlignment(Pos.CENTER);
-        nameLabel.setPadding(new Insets(0, 0, 0, 10));
+        box.setPrefWidth(260);
 
         Label icon = new Label("Icon");
         icon.getStyleClass().addAll("bold", "font_size_10");
@@ -1294,22 +1332,17 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         contentsLabel.setPadding(new Insets(0, 0, 0, 10));
         contentsLabel.setAlignment(Pos.CENTER);
 
-        box.getChildren().addAll(nameLabel, icon, contentsLabel);
+        box.getChildren().addAll(icon, contentsLabel);
         box.setStyle("-fx-border-width : 0 0 0.5 0; -fx-border-color : black;");
 
         return box;
     }
 
-    private HBox createContentsBox(String name, String style, String contents) {
+    private HBox createContentsBox(String style, String contents) {
         HBox box = new HBox();
         box.setAlignment(Pos.CENTER_LEFT);
         box.setPrefHeight(25);
         box.setPrefWidth(420);
-        Label nameLabel = new Label(name);
-        nameLabel.setPrefWidth(120);
-        nameLabel.setAlignment(Pos.CENTER);
-        nameLabel.setPadding(new Insets(0, 0, 0, 10));
-        nameLabel.setFont(Font.font(10));
 
         HBox iconBox = new HBox();
         iconBox.setPrefWidth(45);
@@ -1330,7 +1363,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         contentsLabel.setAlignment(Pos.CENTER_LEFT);
         contentsLabel.setFont(Font.font(10));
 
-        box.getChildren().addAll(nameLabel, iconBox, contentsLabel);
+        box.getChildren().addAll(iconBox, contentsLabel);
 
         return box;
     }

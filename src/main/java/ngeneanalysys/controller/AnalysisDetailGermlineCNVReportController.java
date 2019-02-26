@@ -3,6 +3,8 @@ package ngeneanalysys.controller;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import ngeneanalysys.code.enums.BrcaCNVCode;
@@ -10,6 +12,7 @@ import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.BrcaCnvExon;
 import ngeneanalysys.model.BrcaCnvResult;
 import ngeneanalysys.util.ConvertUtil;
+import ngeneanalysys.util.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.IOException;
@@ -35,6 +38,9 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
     private TableColumn<BrcaCnvResult, String> cnvTableColumn;
     @FXML
     private TableColumn<BrcaCnvResult, String> exonTableColumn;
+
+    @FXML
+    private Label countLabel;
 
     /**
      * @param brcaCnvExonList List<BrcaCnvExon>
@@ -82,6 +88,23 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
     public void show(Parent root) throws IOException {
         geneTableColumn.setCellValueFactory(item ->  new SimpleStringProperty(item.getValue().getGene()));
         cnvTableColumn.setCellValueFactory(item ->  new SimpleStringProperty(item.getValue().getCnv()));
+        cnvTableColumn.setCellFactory(cell -> new TableCell<BrcaCnvResult, String>(){
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                if(StringUtils.isNotEmpty(item)) {
+                    BrcaCnvResult brcaCnvResult = this.getTableView().getItems().get(
+                            this.getIndex());
+                    long size = brcaCnvExonList.stream().filter(brcaCnvExon -> brcaCnvResult.getGene().equals(brcaCnvExon.getGene()) &&
+                            ((StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv())
+                                    && brcaCnvResult.getCnv().equalsIgnoreCase(brcaCnvExon.getExpertCnv()))
+                                    ||(StringUtils.isEmpty(brcaCnvExon.getExpertCnv())
+                                    && brcaCnvResult.getCnv().equalsIgnoreCase(brcaCnvExon.getSwCnv())))).count();
+                    setText(item + "(" + size + ")");
+                } else {
+                    setText(null);
+                }
+            }
+        });
         exonTableColumn.setCellValueFactory(item ->  new SimpleStringProperty(item.getValue().getResult()));
     }
 
@@ -112,6 +135,30 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDuplicationList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
+        }
+
+        long deletionCount = 0;
+        long amplificationCount = 0;
+        long totalCount = 0;
+
+        if(brcaCnvExonList != null) {
+            deletionCount = brcaCnvExonList.stream().filter(item ->
+                    (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.DELETION.getCode()))
+                            || item.getSwCnv().equals(BrcaCNVCode.DELETION.getCode())
+            ).count();
+
+            amplificationCount = brcaCnvExonList.stream().filter(item ->
+                    (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode()))
+                            || item.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())
+            ).count();
+        }
+
+        totalCount = deletionCount + amplificationCount;
+
+        if(totalCount > 0) {
+            countLabel.setText("(Total : " + totalCount
+                    + (deletionCount > 0 ? ", Deletion: " + deletionCount : "")
+                    + (amplificationCount > 0 ? ", Amplification: " + amplificationCount : "") + ")");
         }
     }
 }

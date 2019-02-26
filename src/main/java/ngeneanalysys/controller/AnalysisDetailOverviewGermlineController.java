@@ -175,7 +175,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         if(analysisDetailOverviewBrcaCnvController != null) {
             analysisDetailOverviewBrcaCnvController.getBrcaCnvList();
         } else if(analysisDetailOverviewHeredAmcController != null) {
-            analysisDetailOverviewHeredAmcController.setContents();
+            analysisDetailOverviewHeredAmcController.setContents("OVERVIEW");
         }
 
         SampleView sample = (SampleView) getParamMap().get("sampleView");

@@ -16,7 +16,7 @@
     <RowConstraints maxHeight="63.0" minHeight="63.0" prefHeight="63.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="DETECTED CNV SUMMARY" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <Label fx:id="titleLabel" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="DETECTED CNV SUMMARY" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <padding>
             <Insets bottom="5.0" />
          </padding>

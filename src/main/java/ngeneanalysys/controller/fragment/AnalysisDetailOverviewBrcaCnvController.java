@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
@@ -66,6 +67,23 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         cnvTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getCnv()));
+        cnvTableColumn.setCellFactory(cell -> new TableCell<BrcaCnvResult, String>(){
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                if(StringUtils.isNotEmpty(item)) {
+                    BrcaCnvResult brcaCnvResult = this.getTableView().getItems().get(
+                            this.getIndex());
+                    long size = brcaCnvExonList.stream().filter(brcaCnvExon -> brcaCnvResult.getGene().equals(brcaCnvExon.getGene()) &&
+                            ((StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv())
+                                    && brcaCnvResult.getCnv().equalsIgnoreCase(brcaCnvExon.getExpertCnv()))
+                                    ||(StringUtils.isEmpty(brcaCnvExon.getExpertCnv())
+                                    && brcaCnvResult.getCnv().equalsIgnoreCase(brcaCnvExon.getSwCnv())))).count();
+                    setText(item + "(" + size + ")");
+                } else {
+                    setText(null);
+                }
+            }
+        });
         geneTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getGene()));
         exonTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getResult()));
     }

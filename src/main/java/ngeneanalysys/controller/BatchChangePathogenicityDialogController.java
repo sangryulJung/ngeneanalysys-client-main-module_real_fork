@@ -61,10 +61,14 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
 
     private int sampleId;
 
-    void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
+    private String title;
+
+    void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController,
+                     String title) {
         this.sampleId = sampleId;
         this.variantList = variantList;
         this.snvController = snvController;
+        this.title = title;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Change Pathogenicity");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > " + title);
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));

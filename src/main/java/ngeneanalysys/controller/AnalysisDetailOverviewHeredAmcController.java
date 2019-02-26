@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -21,8 +22,11 @@ public class AnalysisDetailOverviewHeredAmcController extends AnalysisDetailComm
 
     private AnalysisDetailGermlineAmcCNVReportController controller;
 
-    void setContents() {
-        controller.setCompositeCmtCnvResults("OVERVIEW");
+    @FXML
+    private Label titleLabel;
+
+    void setContents(String contents) {
+        controller.setCompositeCmtCnvResults(contents, titleLabel);
     }
 
     @Override

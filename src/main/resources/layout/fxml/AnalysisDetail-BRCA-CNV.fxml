@@ -39,14 +39,53 @@
       <URL value="@../css/experimenter.css" />
    </stylesheets>
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
-         <children>
-            <ComboBox fx:id="geneComboBox" prefWidth="157.0" />
-         </children>
+      <GridPane GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="2.0" />
          </GridPane.margin>
-      </HBox>
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="650.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label text="Gene" />
+                  <ComboBox fx:id="geneComboBox" prefWidth="157.0" />
+                  <Label text="Legend" />
+                  <Label onMouseClicked="#showLegendTooltip" styleClass="help_tooltip" text="Label">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+                  <Label text="Deletion:" />
+                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #cc3e4f; -fx-background-radius: 15;" />
+                  <Label text="Normal:" />
+                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #97a2be; -fx-background-radius: 15;" />
+                  <Label text="Amplification:" />
+                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #e1b07b; -fx-background-radius: 15;" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+               <children>
+                  <Label text="Nomenclature" />
+                  <RadioButton fx:id="hgvsNomenclatureRadioButton" mnemonicParsing="false" selected="true" styleClass="font_size_11" text="HGVS">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="noemclatureGroup" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="bicNomenclatureRadioButton" mnemonicParsing="false" styleClass="font_size_11" text="BIC" toggleGroup="$noemclatureGroup" />
+                  <Label onMouseClicked="#showNomenclatureTooltip" styleClass="help_tooltip" text="Label">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
       <TableView fx:id="brcaCnvTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
         <columns>
           <TableColumn fx:id="geneTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Gene" />
@@ -54,7 +93,7 @@
             <TableColumn fx:id="cnvTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="CNV" />
             <TableColumn fx:id="warningTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Warning" />
             <TableColumn fx:id="domainTableColumn" prefWidth="200.0" style="-fx-alignment: center;" text="Domain" />
-            <TableColumn fx:id="totalTableColumn" prefWidth="164.33331298828125" style="-fx-alignment: center;" text="Total Amplicon" />
+            <TableColumn fx:id="totalTableColumn" prefWidth="165.0" style="-fx-alignment: center;" text="Total Amplicon" />
             <TableColumn prefWidth="300.0" text="Amplicon Copy Number">
                <columns>
                   <TableColumn fx:id="copyNumber1TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="1" />
@@ -62,13 +101,10 @@
                   <TableColumn fx:id="copyNumber3TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="3" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="commentTableColumn" prefWidth="275.0" text="Comment" />
+            <TableColumn fx:id="commentTableColumn" prefWidth="675.0" text="Comment" />
         </columns>
       </TableView>
       <HBox alignment="BOTTOM_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-         <children>
-            <Label text="CNV Detail Table" />
-         </children>
          <GridPane.margin>
             <Insets bottom="5.0" />
          </GridPane.margin>
@@ -171,12 +207,12 @@
                         <Label text="1" />
                      </children>
                   </VBox>
-                  <VBox opacity="0.2" prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0.5;">
                      <children>
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0.5;" />
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0.5;" />
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0.5;" />
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0.5;" />
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0;" />
                      </children>
                   </VBox>
                </children>
@@ -193,20 +229,5 @@
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-         <children>
-            <RadioButton fx:id="bicNomenclatureRadioButton" mnemonicParsing="false" selected="true" styleClass="font_size_11" text="BIC Nomenclature">
-               <toggleGroup>
-                  <ToggleGroup fx:id="noemclatureGroup" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="hgvsNomenclatureRadioButton" mnemonicParsing="false" styleClass="font_size_11" text="HGVS Nomenclature" toggleGroup="$noemclatureGroup" />
-            <Label onMouseClicked="#showLegendTooltip" styleClass="help_tooltip" text="Label">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Label>
-         </children>
-      </HBox>
    </children>
 </GridPane>

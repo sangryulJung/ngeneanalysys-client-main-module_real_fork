@@ -52,10 +52,14 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
 
     private int sampleId;
 
-    public void settingItem(int sampleId, List<BrcaCnvExon> brcaCnvExonList, AnalysisDetailBrcaCNVController cnvController) {
+    private String title;
+
+    public void settingItem(int sampleId, List<BrcaCnvExon> brcaCnvExonList, AnalysisDetailBrcaCNVController cnvController,
+                            String title) {
         this.sampleId = sampleId;
         this.brcaCnvExonList = brcaCnvExonList;
         this.cnvController = cnvController;
+        this.title = title;
     }
 
     @Override
@@ -68,7 +72,7 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Change CNV");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > " + title);
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));

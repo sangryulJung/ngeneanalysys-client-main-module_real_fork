@@ -43,6 +43,9 @@ public class AnalysisDetailSolidCNVReportController extends SubPaneController {
     @FXML
     private TableColumn<Cnv, BigDecimal> valueTableColumn;
 
+    @FXML
+    private Label titleLabel;
+
     void setContents() {
         Task<Void> task = new Task<Void>() {
 
@@ -65,9 +68,15 @@ public class AnalysisDetailSolidCNVReportController extends SubPaneController {
                     if(!solidCnvResultTable.getItems().isEmpty()) {
                         solidCnvResultTable.getItems().removeAll(solidCnvResultTable.getItems());
                     }
-                    list = list.stream().filter(item -> item.getCnvValue().compareTo(new BigDecimal("4.0")) > 0)
+                    list = list.stream().filter(item -> StringUtils.isNotEmpty(item.getTier()))
                             .collect(Collectors.toList());
                     solidCnvResultTable.getItems().addAll(list);
+
+                    if(list != null && !list.isEmpty()) {
+                        titleLabel.setText("REPORTED CNV VARIANT (Total: " + list.size() + ")");
+                    } else {
+                        titleLabel.setText("REPORTED CNV VARIANT");
+                    }
                 }
             }
 
