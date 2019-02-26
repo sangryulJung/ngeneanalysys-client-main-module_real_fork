@@ -3,878 +3,210 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <GridPane fx:id="brcaCNVView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="1140.0" style="-fx-background-color: #f2f5fa;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailBrcaCNVController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="1020.0" prefWidth="1020.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="510.0" minWidth="510.0" prefWidth="510.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="550.0" prefWidth="550.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="35.0" minHeight="30.0" prefHeight="35.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="150.0" minHeight="150.0" prefHeight="150.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
   </rowConstraints>
-   <children>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" spacing="20.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
-         <children>
-            <TableView fx:id="exonTableView" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
-              <columns>
-                  <TableColumn fx:id="exonExonTableColumn" minWidth="50.0" prefWidth="50.0" text="Exon" />
-                  <TableColumn fx:id="exonCopyNumberTableColumn" minWidth="40.0" prefWidth="40.0" text="CNV" />
-                  <TableColumn fx:id="exonWarningTableColumn" minWidth="55.0" prefWidth="55.0" styleClass="alignment_center" text="Warning" />
-                  <TableColumn fx:id="exonDomainTableColumn" minWidth="60.0" prefWidth="60.0" text="Domain" />
-                  <TableColumn maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="150.0" text="Amplicon Ratio">
-                     <columns>
-                        <TableColumn fx:id="exonCopyNumberOneAmpliconCountTableColumn" minWidth="60.0" prefWidth="60.0" styleClass="alignment_center_right" text="D" />
-                        <TableColumn fx:id="exonCopyNumberTwoAmpliconCountTableColumn" minWidth="60.0" prefWidth="60.0" styleClass="alignment_center_right" text="N" />
-                        <TableColumn fx:id="exonCopyNumberThreeAmpliconCountTableColumn" minWidth="60.0" prefWidth="60.0" styleClass="alignment_center_right" text="A" />
-                     </columns>
-                  </TableColumn>
-                  <TableColumn fx:id="exonSeqTableColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Amplicon Flow" />
-              </columns>
-            </TableView>
-            <TableView fx:id="cnvAmpliconTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="-Infinity" prefHeight="200.0" prefWidth="550.0" styleClass="cnvTable" HBox.hgrow="ALWAYS">
-              <columns>
-                <TableColumn fx:id="ampliconNameTableColumn" prefWidth="70.0" styleClass="alignment_center" text="Amplicon (1)" />
-                  <TableColumn fx:id="ampliconWarningTableColumn" minWidth="55.0" prefWidth="55.0" styleClass="alignment_center" text="Warning" />
-                  <TableColumn prefWidth="120.0" styleClass="alignment_center" text="Reference">
-                     <columns>
-                        <TableColumn fx:id="ampliconReferenceRatioTableColumn" minWidth="120.0" prefWidth="120.0" styleClass="alignment_center" text="Ratio Range" />
-                        <TableColumn fx:id="ampliconReferenceMedianDepthTableColumn" styleClass="alignment_center_right" text="Depth" />
-                     </columns>
-                  </TableColumn>
-                  <TableColumn prefWidth="90.0" styleClass="alignment_center" text="Sample Ratio">
-                     <columns>
-                        <TableColumn fx:id="ampliconSampleRatioTableColumn" maxWidth="-1.0" minWidth="80.0" styleClass="alignment_center" text="Ratio" />
-                        <TableColumn fx:id="ampliconSampleDepthTableColumn" maxWidth="-1.0" minWidth="80.0" styleClass="alignment_center_right" text="Depth" />
-                     </columns>
-                  </TableColumn>
-                  <TableColumn fx:id="ampliconCopyNumberTableColumn" maxWidth="80.0" minWidth="80.0" styleClass="alignment_center" text="Copy Number" />
-              </columns>
-            </TableView>
-         </children>
-      </HBox>
-      <HBox fx:id="brca1ExonBox" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-         <children>
-            <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label minWidth="12.0" text="5'" />
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="48.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-            <HBox fx:id="brca1_pro" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="15.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" minHeight="15.0" prefHeight="15.0" prefWidth="30.0">
-                     <padding>
-                        <Insets top="-3.0" />
-                     </padding></Label>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="15.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" minHeight="15.0" prefHeight="15.0" prefWidth="30.0">
-                     <padding>
-                        <Insets top="-3.0" />
-                     </padding></Label>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon2" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="30.0">
-               <children>
-                  <HBox maxHeight="-Infinity" minHeight="15.0" minWidth="-Infinity" prefHeight="15.0" prefWidth="3.0" style="-fx-border-width: 0.5 0 0.5 0.5;">
-                     <HBox.margin>
-                        <Insets bottom="-1.0" left="-1.0" right="-0.5" top="-1.0" />
-                     </HBox.margin>
-                  </HBox>
-                  <Label alignment="CENTER" minHeight="20.0" prefWidth="30.0">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets></Label>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon3" alignment="CENTER" maxHeight="20.0" maxWidth="-Infinity" minHeight="20.0" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox fx:id="br4Line" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="br4Body" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="31.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
-               <HBox.margin>
-                  <Insets left="-1.0" right="-1.0" />
-               </HBox.margin>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon5" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon6" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon7" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon8" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon9" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon10" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon11" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon12" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon13" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon14" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon15" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon16" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon17" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon18" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon19" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon20" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon21" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon22" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon23" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca1_exon24" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="38.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="29.0" />
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="10.0" style="-fx-border-width: 0.5 0.5 0.5 0;">
-                     <HBox.margin>
-                        <Insets bottom="-1.0" left="-0.5" right="-1.0" top="-1.0" />
-                     </HBox.margin>
-                  </HBox>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="31.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
-               <HBox.margin>
-                  <Insets left="-1.0" right="-1.0" />
-               </HBox.margin>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="31.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
-               <HBox.margin>
-                  <Insets left="-1.0" right="-1.0" />
-               </HBox.margin>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="31.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
-               <HBox.margin>
-                  <Insets left="-1.0" right="-1.0" />
-               </HBox.margin>
-            </HBox>
-            <VBox fx:id="brLastLine" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="0.0" style="-fx-border-color: black;">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </VBox>
-            <HBox fx:id="brLastBody" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="2.0" style="-fx-border-width: 0.5; -fx-border-color: black;">
-               <HBox.margin>
-                  <Insets left="-1.0" right="-1.0" />
-               </HBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefWidth="31.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="21.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-                  <Label minWidth="10.0" text="3'" />
-               </children>
-            </HBox>
-         </children>
-      </HBox>
-      <HBox fx:id="brca2ExonBox" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="100.0" prefWidth="1020.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
-         <children>
-            <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label minWidth="12.0" text="5'" />
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" prefHeight="0.0" prefWidth="48.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-            <HBox fx:id="brca2_pro" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="15.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" minHeight="15.0" prefHeight="15.0" prefWidth="30.0">
-                     <padding>
-                        <Insets top="-3.0" />
-                     </padding></Label>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" minHeight="15.0" prefHeight="15.0" prefWidth="30.0">
-                     <padding>
-                        <Insets top="-3.0" />
-                     </padding></Label>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="30.0">
-               <children>
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="3.0" style="-fx-border-width: 0.5 0 0.5 0.5;">
-                     <HBox.margin>
-                        <Insets bottom="-1.0" left="-1.0" right="-0.5" top="-1.0" />
-                     </HBox.margin>
-                  </HBox>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon3" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon4" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon5" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon6" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon7" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon8" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon9" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon10" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon11" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon12" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon13" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon14" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon15" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon16" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon17" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon18" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon19" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon20" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon21" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon22" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon23" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon24" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon25" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon26" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="29.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="30.0" />
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.1" prefWidth="5.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="brca2_exon27" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#exon_plot_click" prefHeight="20.0" prefWidth="38.0">
-               <children>
-                  <Label alignment="CENTER" prefWidth="29.0" />
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="10.0" style="-fx-border-width: 0.5 0.5 0.5 0;">
-                     <HBox.margin>
-                        <Insets bottom="-1.0" left="-0.5" right="-1.0" top="-1.0" />
-                     </HBox.margin>
-                  </HBox>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="31.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <VBox maxHeight="0.0" maxWidth="1.7976931348623157E308" minHeight="0.1" minWidth="-Infinity" prefHeight="0.0" prefWidth="21.0" style="-fx-border-color: black;" HBox.hgrow="ALWAYS" />
-                  <Label minWidth="10.0" text="3'" />
-               </children>
-            </HBox>
-         </children>
-      </HBox>
-      <VBox GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <children>
-            <RadioButton fx:id="brca1RadioButton" mnemonicParsing="false" text="BRCA1">
-               <toggleGroup>
-                  <ToggleGroup fx:id="brcaToggleGroup" />
-               </toggleGroup>
-            </RadioButton>
-            <Label fx:id="brca1NMLabel" styleClass="font_size_11" text="(NM_007294.3)" />
-         </children>
-      </VBox>
-      <VBox GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-         <children>
-            <RadioButton fx:id="brca2RadioButton" mnemonicParsing="false" text="BRCA2" toggleGroup="$brcaToggleGroup" />
-            <Label fx:id="brca2NMLabel" styleClass="font_size_11" text="(NM_000059.3)" />
-         </children>
-      </VBox>
-      <GridPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
-        <columnConstraints>
-          <ColumnConstraints hgrow="ALWAYS" minWidth="550.0" prefWidth="550.0" />
-          <ColumnConstraints maxWidth="0.0" minWidth="20.0" prefWidth="20.0" />
-            <ColumnConstraints hgrow="ALWAYS" minWidth="550.0" prefWidth="550.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Label fx:id="cnvExonLabel" text="Region-Level CNV" />
-                  <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxWidth="80.0" minWidth="80.0" onMouseClicked="#doExonCnvChange" prefWidth="80.0" styleClass="submitBtn" text="CNV">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></Label>
-               </children>
-               <GridPane.margin>
-                  <Insets bottom="5.0" />
-               </GridPane.margin>
-            </HBox>
-            <HBox alignment="BOTTOM_LEFT" GridPane.columnIndex="2">
-               <children>
-                  <Label fx:id="cnvDetailLabel" text="CNV DETAIL INFORMATION" />
-               </children>
-               <GridPane.margin>
-                  <Insets bottom="5.0" />
-               </GridPane.margin>
-            </HBox>
-         </children>
-      </GridPane>
-      <GridPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
-               <children>
-                  <Label text="Summary" />
-                  <Label onMouseClicked="#showLegendTooltip" styleClass="help_tooltip">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
-               <children>
-                  <RadioButton fx:id="bicRadio" mnemonicParsing="false" style="-fx-font-size: 10;" text="BIC Nomenclature">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="nomenclature" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="hgvsRadio" mnemonicParsing="false" style="-fx-font-size: 10;" text="HGVS Nomenclature" toggleGroup="$nomenclature" />
-                  <Label onMouseClicked="#exportExcel" styleClass="excel_download_image" />
-               </children>
-            </HBox>
-         </children>
-      </GridPane>
-      <HBox fx:id="brca1ExonBox1" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="10.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-         <children>
-            <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="Pro" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="1" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="30.0">
-               <children>
-                  <Label styleClass="font_size_10" text="2" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="3" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="4" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="5" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="6" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="7" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="8" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="9" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="10" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="11" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="12" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="13" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="14" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="15" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="16" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="17" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="18" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="19" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="20" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="21" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="22" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="23" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="24" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="25" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="29.0">
-               <children>
-                  <Label styleClass="font_size_10" text="26" />
-               </children>
-            </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="5.0" HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="38.0">
-               <children>
-                  <Label styleClass="font_size_10" text="27" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefWidth="31.0" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
-   </children>
    <stylesheets>
       <URL value="@../css/common.css" />
       <URL value="@../css/experimenter.css" />
    </stylesheets>
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+         <children>
+            <ComboBox fx:id="geneComboBox" prefWidth="157.0" />
+         </children>
+         <GridPane.margin>
+            <Insets bottom="2.0" />
+         </GridPane.margin>
+      </HBox>
+      <TableView fx:id="brcaCnvTable" prefHeight="200.0" prefWidth="200.0" styleClass="cnvTable" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
+        <columns>
+          <TableColumn fx:id="geneTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Gene" />
+          <TableColumn fx:id="exonTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Exon" />
+            <TableColumn fx:id="cnvTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="CNV" />
+            <TableColumn fx:id="warningTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Warning" />
+            <TableColumn fx:id="domainTableColumn" prefWidth="200.0" style="-fx-alignment: center;" text="Domain" />
+            <TableColumn fx:id="totalTableColumn" prefWidth="164.33331298828125" style="-fx-alignment: center;" text="Total Amplicon" />
+            <TableColumn prefWidth="300.0" text="Amplicon Copy Number">
+               <columns>
+                  <TableColumn fx:id="copyNumber1TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="1" />
+                  <TableColumn fx:id="copyNumber2TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="2" />
+                  <TableColumn fx:id="copyNumber3TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="3" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="commentTableColumn" prefWidth="275.0" text="Comment" />
+        </columns>
+      </TableView>
+      <HBox alignment="BOTTOM_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+         <children>
+            <Label text="CNV Detail Table" />
+         </children>
+         <GridPane.margin>
+            <Insets bottom="5.0" />
+         </GridPane.margin>
+      </HBox>
+      <HBox alignment="BOTTOM_RIGHT" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+         <children>
+            <Label maxWidth="70.0" minWidth="70.0" onMouseClicked="#doExonCnvChange" prefWidth="70.0" styleClass="submitBtn" text="CNV">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+         </children>
+         <GridPane.margin>
+            <Insets bottom="5.0" />
+         </GridPane.margin>
+      </HBox>
+      <StackPane fx:id="mainStackPane" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <children>
+            <ScrollPane fx:id="brca1ScrollPane" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER">
+               <content>
+                  <GridPane fx:id="brca1PlotGrid">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="18.0" minHeight="18.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="18.0" minHeight="18.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="18.0" minHeight="18.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <AnchorPane fx:id="brca1PlotAnchorPane" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <VBox opacity="0.2" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                                    <VBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                                    <VBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="25.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <HBox fx:id="brca1BoxPlotHBox" alignment="CENTER_LEFT" maxHeight="18.0" minHeight="18.0" prefHeight="18.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox fx:id="brca1ExonNumberHBox" alignment="CENTER_LEFT" maxHeight="18.0" minHeight="18.0" prefHeight="18.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                        <HBox fx:id="brca1DomainHBox" alignment="CENTER_LEFT" maxHeight="18.0" minHeight="18.0" prefHeight="18.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                     </children>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="brca2ScrollPane" prefHeight="200.0" prefWidth="200.0" vbarPolicy="NEVER" visible="false">
+               <content>
+                  <GridPane fx:id="brca2PlotGrid">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="18.0" minHeight="18.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="18.0" minHeight="18.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="18.0" minHeight="18.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <AnchorPane fx:id="brca2PlotAnchorPane" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <VBox opacity="0.2" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                                    <VBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                                    <VBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="25.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <HBox fx:id="brca2BoxPlotHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <HBox fx:id="brca2ExonNumberHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                        <HBox fx:id="brca2DomainHBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
+                     </children>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </StackPane>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <HBox prefHeight="60.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="3" />
+                        <Label text="2" />
+                        <Label text="1" />
+                     </children>
+                  </VBox>
+                  <VBox opacity="0.2" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0.5;" />
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0.5;" />
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0.5;" />
+                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0.5;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="18.0" prefWidth="200.0">
+               <children>
+                  <Label maxHeight="18.0" minHeight="18.0" prefHeight="18.0" text="5'" />
+                  <VBox maxHeight="0.1" maxWidth="30.0" minHeight="0.1" minWidth="30.0" prefHeight="0.1" prefWidth="30.0" style="-fx-border-width: 0.2; -fx-border-color: black;">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <children>
+            <RadioButton fx:id="bicNomenclatureRadioButton" mnemonicParsing="false" selected="true" styleClass="font_size_11" text="BIC Nomenclature">
+               <toggleGroup>
+                  <ToggleGroup fx:id="noemclatureGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="hgvsNomenclatureRadioButton" mnemonicParsing="false" styleClass="font_size_11" text="HGVS Nomenclature" toggleGroup="$noemclatureGroup" />
+            <Label onMouseClicked="#showLegendTooltip" styleClass="help_tooltip" text="Label">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+         </children>
+      </HBox>
+   </children>
 </GridPane>

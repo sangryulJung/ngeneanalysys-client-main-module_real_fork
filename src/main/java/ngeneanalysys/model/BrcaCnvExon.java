@@ -18,6 +18,14 @@ public class BrcaCnvExon {
     private Double copyNumberOneAmpliconPercentage;
     private Double copyNumberTwoAmpliconPercentage;
     private Double copyNumberThreeAmpliconPercentage;
+    private String comment;
+
+    /**
+     * @return comment
+     */
+    public String getComment() {
+        return comment;
+    }
 
     /**
      * @param checkItem

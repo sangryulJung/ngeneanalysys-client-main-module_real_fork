@@ -21,10 +21,12 @@ import javafx.scene.layout.VBox;
  * @since 2016. 6. 17. 오후 11:14:41
  */
 public class SNPsINDELsList {
+
+	private SNPsINDELsList() {}
 	/**
 	 * Warning 상세 이유 팝업 출력 버튼 객체 반환
-	 * @param jsonStr
-	 * @return
+	 * @param jsonStr String
+	 * @return Button
 	 */
 	@SuppressWarnings("static-access")
 	public static Button getWarningReasonPopOver(String jsonStr, Panel panel) {
@@ -81,7 +83,7 @@ public class SNPsINDELsList {
 		} else {
 			flagLabel.setText(flag.toUpperCase());
 		}
-		if(StringUtils.isNotEmpty(flag) && "YES".equals(flag.toUpperCase())) {
+		if(StringUtils.isNotEmpty(flag) && "YES".equalsIgnoreCase(flag)) {
 			flagLabel.getStyleClass().add("txt_green");
 		} else {
 			flagLabel.getStyleClass().add("txt_red");

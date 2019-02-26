@@ -128,5 +128,26 @@ public class BrcaCnvAmplicon {
     public Integer getDistributionPrediction() {
         return distributionPrediction;
     }
+
+    @Override
+    public String toString() {
+        return "BrcaCnvAmplicon{" +
+                "sampleId=" + sampleId +
+                ", gene='" + gene + '\'' +
+                ", exon='" + exon + '\'' +
+                ", amplicon='" + amplicon + '\'' +
+                ", warning='" + warning + '\'' +
+                ", rawRangeMin=" + rawRangeMin +
+                ", rawRangeMax=" + rawRangeMax +
+                ", distributionRangeMin=" + distributionRangeMin +
+                ", distributionRangeMax=" + distributionRangeMax +
+                ", referenceMeanDepth=" + referenceMeanDepth +
+                ", referenceMedianDepth=" + referenceMedianDepth +
+                ", sampleDepth=" + sampleDepth +
+                ", sampleRatio=" + sampleRatio +
+                ", distributionPrediction=" + distributionPrediction +
+                ", rawPrediction=" + rawPrediction +
+                '}';
+    }
 }
 

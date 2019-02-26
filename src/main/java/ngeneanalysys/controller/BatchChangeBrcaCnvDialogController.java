@@ -82,7 +82,7 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
             amplificationRadioButton.setSelected(true);
         }else if(brcaCnvExonList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getExpertCnv())
                 && v.getExpertCnv().equals(BrcaCNVCode.NORMAL.getCode())) ||
-                (StringUtils.isEmpty(v.getSwCnv()) && v.getSwCnv().equals(BrcaCNVCode.NORMAL.getCode())))) {
+                (StringUtils.isEmpty(v.getExpertCnv()) && v.getSwCnv().equals(BrcaCNVCode.NORMAL.getCode())))) {
             normalRadioButton.setSelected(true);
         }else if(brcaCnvExonList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getExpertCnv())
                 && v.getExpertCnv().equals(BrcaCNVCode.DELETION.getCode())) ||
@@ -112,7 +112,6 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
             params.put("comment", comment.isEmpty() ? "N/A" : comment);
             apiService.put("analysisResults/brcaCnvExon/updateCnv", params, null, true);
             cnvController.setList();
-            cnvController.setBrca1RadioButtonSelect();
             dialogStage.close();
         } catch (WebAPIException wae) {
             wae.printStackTrace();

@@ -338,7 +338,13 @@
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.variantType]]></fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
-																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.swPathogenicity]]></fo:block>
+																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
+																	#if($variant.snpInDel.expertPathogenicity)
+																	<![CDATA[$variant.snpInDel.expertPathogenicity]]>
+																	#else
+																	<![CDATA[$variant.snpInDel.swPathogenicity]]>
+																	#end
+																</fo:block>
 															</fo:table-cell>
 														</fo:table-row>
 													#end
@@ -452,7 +458,13 @@
 																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.snpInDelExpression.variantType]]></fo:block>
 															</fo:table-cell>
 															<fo:table-cell text-align="left" padding="2mm" border-width="0.5pt" border-style="solid">
-																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt"><![CDATA[$variant.snpInDel.swPathogenicity]]></fo:block>
+																<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
+																	#if($variant.snpInDel.expertPathogenicity)
+																	<![CDATA[$variant.snpInDel.expertPathogenicity]]>
+																	#else
+																	<![CDATA[$variant.snpInDel.swPathogenicity]]>
+																	#end
+																</fo:block>
 															</fo:table-cell>
 														</fo:table-row>
 													#end

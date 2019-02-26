@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
@@ -8,6 +7,6 @@
   <columns>
     <TableColumn fx:id="geneTableColumn" prefWidth="75.0" text="Gene" />
     <TableColumn fx:id="cnvTableColumn" prefWidth="100.0" text="CNV" />
-      <TableColumn fx:id="exonTableColumn" prefWidth="250.0" text="Exon" />
+      <TableColumn fx:id="exonTableColumn" prefWidth="800.0" text="Exon" />
   </columns>
 </TableView>
