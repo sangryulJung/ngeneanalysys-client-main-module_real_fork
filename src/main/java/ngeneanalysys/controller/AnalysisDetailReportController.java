@@ -187,8 +187,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode()) ||
                 panel.getCode().equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode())) {
-            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 153);
-            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 153);
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 163);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 163);
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SOLID_AMC_CNV_REPORT);
                 Node node = loader.load();
@@ -198,7 +198,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
                 contentVBox.getChildren().add(3, node);
-                VBox.setMargin(node, new Insets(10, 0, 0 ,0));
+                VBox.setMargin(node, new Insets(20, 0, 0 ,0));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -400,6 +400,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             tierThree = settingTierList(list, "T3");
 
             tierFour = settingTierList(list, "T4");
+            long snvCount = list.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport()) &&
+                    variant.getSnpInDel().getSnpInDelExpression().getVariantType().matches("SNV|SNP|snv|snp")).count();
+            long indelCount = list.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport()) &&
+                    variant.getSnpInDel().getSnpInDelExpression().getVariantType().matches("Ins|Del")).count();
             long tier1Count = tierOne != null ? tierOne.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long tier2Count = tierTwo != null ? tierTwo.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             long tier3Count = tierThree != null ? tierThree.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;

@@ -100,7 +100,7 @@ public class BatchExcludeReportDialogController extends SubPaneController {
             Map<String, Object> params = new HashMap<>();
             params.put("sampleId", sampleId);
             params.put("snpInDelIds", stringBuilder.toString());
-            params.put("comment", comment.isEmpty() ? "N/A" : comment);
+            params.put("comment", comment.isEmpty() ? "Not applicable" : comment);
             params.put("includeInReport", includeInReport);
             apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
             snvController.refreshTable();

@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -317,8 +318,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
 
         if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
-            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 160);
-            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 160);
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 170);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 170);
 
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV_REPORT);
@@ -329,12 +330,13 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
                 contentVBox.getChildren().add(2, node);
+                VBox.setMargin(node, new Insets(10, 0, 0 ,0));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
-            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 113);
-            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 113);
+            mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 123);
+            contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 123);
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_OVERVIEW);
                 Node node = loader.load();
@@ -344,6 +346,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
                 contentVBox.getChildren().add(2, node);
+                VBox.setMargin(node, new Insets(10, 0, 0 ,0));
             } catch (Exception e) {
                 e.printStackTrace();
             }

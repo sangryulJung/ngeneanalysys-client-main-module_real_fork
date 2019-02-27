@@ -135,9 +135,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     private void setBrcaCnvOverview() {
         Panel panel = (Panel)paramMap.get("panel");
         if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
-            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 265);
-            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(265);
-            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(265);
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 275);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(275);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(275);
 
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV_OVERVIEW);
@@ -148,13 +148,14 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
                 overviewMainGridPane.add(node, 0, 4);
+                GridPane.setValignment(node, VPos.BOTTOM);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode().equals(panel.getCode())) {
-            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 113);
-            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(113);
-            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(113);
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 123);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(123);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(123);
 
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_OVERVIEW);
@@ -165,6 +166,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 controller.setParamMap(paramMap);
                 controller.show((Parent) node);
                 overviewMainGridPane.add(node, 0, 4);
+                GridPane.setValignment(node, VPos.BOTTOM);
             } catch (Exception e) {
                 e.printStackTrace();
             }

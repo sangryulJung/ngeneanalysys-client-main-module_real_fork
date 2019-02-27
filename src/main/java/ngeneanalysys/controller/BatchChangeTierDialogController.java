@@ -121,7 +121,7 @@ public class BatchChangeTierDialogController extends SubPaneController {
             params.put("sampleId", sampleId);
             params.put("snpInDelIds", stringBuilder.toString());
             params.put("tier", returnSelectTier());
-            params.put("comment", comment.isEmpty() ? "N/A" : comment);
+            params.put("comment", comment.isEmpty() ? "Not applicable" : comment);
             apiService.put("analysisResults/snpInDels/updateTier", params, null, true);
             snvController.refreshTable();
             dialogStage.close();

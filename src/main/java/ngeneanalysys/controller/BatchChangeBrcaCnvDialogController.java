@@ -113,7 +113,7 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
             params.put("sampleId", sampleId);
             params.put("brcaCnvExonIds", stringBuilder.toString());
             params.put("cnv", returnSelectCnv());
-            params.put("comment", comment.isEmpty() ? "Comment is not entered." : comment);
+            params.put("comment", comment.isEmpty() ? "Not applicable" : comment);
             apiService.put("analysisResults/brcaCnvExon/updateCnv", params, null, true);
             cnvController.setList();
             dialogStage.close();

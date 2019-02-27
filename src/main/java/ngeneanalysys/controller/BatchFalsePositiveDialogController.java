@@ -100,7 +100,7 @@ public class BatchFalsePositiveDialogController extends SubPaneController {
             Map<String, Object> params = new HashMap<>();
             params.put("sampleId", sampleId);
             params.put("snpInDelIds", stringBuilder.toString());
-            params.put("falseReason", comment.isEmpty() ? "N/A" : comment);
+            params.put("falseReason", comment.isEmpty() ? "Not applicable" : comment);
             if(isFalseCheckBox.isSelected()) {
                 params.put("isFalse", "Y");
             } else {

@@ -101,7 +101,7 @@ public class ChangePathogenicityController extends SubPaneController {
         String comment = commentTextField.getText();
         Map<String, Object> params = new HashMap<>();
 
-        params.put("comment", StringUtils.isEmpty(comment) ? "N/A" : comment);
+        params.put("comment", StringUtils.isEmpty(comment) ? "Not applicable" : comment);
 
         try {
             params.put("pathogenicity", pathogenicity);

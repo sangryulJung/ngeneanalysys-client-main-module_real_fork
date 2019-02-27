@@ -55,21 +55,23 @@
                <children>
                   <Label styleClass="bold" text="Gene" />
                   <ComboBox fx:id="geneComboBox" prefWidth="157.0" />
-                  <Label styleClass="bold" text="Legend" />
+                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #cc3e4f; -fx-background-radius: 15;">
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin></Label>
+                  <Label text=": Deletion" />
+                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #97a2be; -fx-background-radius: 15;" />
+                  <Label text=": Normal" />
+                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #e1b07b; -fx-background-radius: 15;" />
+                  <Label text=": Amplification">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin></Label>
                   <Label onMouseClicked="#showLegendTooltip" styleClass="help_tooltip" text="Label">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <Label text="Deletion:">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding></Label>
-                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #cc3e4f; -fx-background-radius: 15;" />
-                  <Label text="Normal:" />
-                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #97a2be; -fx-background-radius: 15;" />
-                  <Label text="Amplification:" />
-                  <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #e1b07b; -fx-background-radius: 15;" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
