@@ -21,7 +21,7 @@
       <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="120.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="DETECTED CNV SUMMARY">
+      <Label alignment="BOTTOM_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="CNV SUMMARY">
          <styleClass>
             <String fx:value="font_size_15" />
             <String fx:value="font_gray" />
@@ -38,98 +38,98 @@
          <children>
             <HBox maxWidth="1.7976931348623157E308" minWidth="900.0" prefHeight="30.0" styleClass="border_top">
                <children>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="60.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="60.0" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="1" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="2" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="3" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="4" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="5" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="6" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="7" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="8" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="9" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="10" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="11" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="12" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="13" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="14" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="15" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="16" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="17" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="18" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="19" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="20" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="21" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="22" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="23" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="24" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="25" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="26" HBox.hgrow="ALWAYS" />
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="27" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="70.0" minHeight="30.0" minWidth="70.0" prefHeight="30.0" prefWidth="70.0" HBox.hgrow="NEVER" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="1" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="2" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="3" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="4" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="5" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="6" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="7" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="8" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="9" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="10" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="11" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="12" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="13" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="14" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="15" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="16" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="17" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="18" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="19" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="20" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="21" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="22" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="23" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="24" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="25" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="26" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="27" />
                </children>
             </HBox>
             <HBox fx:id="brca1Plot" maxWidth="1.7976931348623157E308" minWidth="900.0" prefHeight="30.0" styleClass="border_top">
                <children>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="60.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="60.0" text="BRCA1" />
-                  <Label fx:id="brca1_1" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="1" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_2" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="2" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_3" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="3" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_4" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="4" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_5" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="5" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_6" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="6" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_7" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="7" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_8" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="8" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_9" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="9" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_10" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="10" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_11" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="11" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_12" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="12" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_13" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="13" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_14" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="14" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_15" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="15" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_16" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="16" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_17" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="17" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_18" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="18" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_19" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="19" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_20" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="20" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_21" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="21" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_22" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="22" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_23" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="23" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_24" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="24" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_25" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="25" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_26" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="26" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca1_27" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="27" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="70.0" minHeight="30.0" minWidth="70.0" prefHeight="30.0" prefWidth="70.0" text="BRCA1" HBox.hgrow="NEVER" />
+                  <Label fx:id="brca1_1" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="1" />
+                  <Label fx:id="brca1_2" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="2" />
+                  <Label fx:id="brca1_3" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="3" />
+                  <Label fx:id="brca1_4" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="4" />
+                  <Label fx:id="brca1_5" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="5" />
+                  <Label fx:id="brca1_6" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="6" />
+                  <Label fx:id="brca1_7" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="7" />
+                  <Label fx:id="brca1_8" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="8" />
+                  <Label fx:id="brca1_9" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="9" />
+                  <Label fx:id="brca1_10" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="10" />
+                  <Label fx:id="brca1_11" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="11" />
+                  <Label fx:id="brca1_12" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="12" />
+                  <Label fx:id="brca1_13" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="13" />
+                  <Label fx:id="brca1_14" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="14" />
+                  <Label fx:id="brca1_15" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="15" />
+                  <Label fx:id="brca1_16" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="16" />
+                  <Label fx:id="brca1_17" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="17" />
+                  <Label fx:id="brca1_18" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="18" />
+                  <Label fx:id="brca1_19" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="19" />
+                  <Label fx:id="brca1_20" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="20" />
+                  <Label fx:id="brca1_21" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="21" />
+                  <Label fx:id="brca1_22" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="22" />
+                  <Label fx:id="brca1_23" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="23" />
+                  <Label fx:id="brca1_24" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="24" />
+                  <Label fx:id="brca1_25" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="25" />
+                  <Label fx:id="brca1_26" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="26" />
+                  <Label fx:id="brca1_27" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="27" />
                </children>
             </HBox>
             <HBox fx:id="brca2Plot" maxWidth="1.7976931348623157E308" minWidth="900.0" prefHeight="30.0" styleClass="border_bottom">
                <children>
-                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="60.0" minHeight="30.0" minWidth="60.0" prefHeight="30.0" prefWidth="60.0" text="BRCA2" />
-                  <Label fx:id="brca2_28" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="1" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_2" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="2" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_3" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="3" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_4" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="4" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_5" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="5" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_6" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="6" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_7" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="7" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_8" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="8" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_9" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="9" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_10" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="10" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_11" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="11" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_12" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="12" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_13" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="13" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_14" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="14" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_15" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="15" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_16" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="16" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_17" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="17" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_18" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="18" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_19" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="19" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_20" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="20" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_21" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="21" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_22" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="22" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_23" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="23" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_24" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="24" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_25" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="25" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_26" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="26" HBox.hgrow="ALWAYS" />
-                  <Label fx:id="brca2_27" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" text="27" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" maxHeight="30.0" maxWidth="70.0" minHeight="30.0" minWidth="70.0" prefHeight="30.0" prefWidth="70.0" text="BRCA2" HBox.hgrow="NEVER" />
+                  <Label fx:id="brca2_28" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="1" />
+                  <Label fx:id="brca2_2" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="2" />
+                  <Label fx:id="brca2_3" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="3" />
+                  <Label fx:id="brca2_4" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="4" />
+                  <Label fx:id="brca2_5" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="5" />
+                  <Label fx:id="brca2_6" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="6" />
+                  <Label fx:id="brca2_7" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="7" />
+                  <Label fx:id="brca2_8" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="8" />
+                  <Label fx:id="brca2_9" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="9" />
+                  <Label fx:id="brca2_10" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="10" />
+                  <Label fx:id="brca2_11" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="11" />
+                  <Label fx:id="brca2_12" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="12" />
+                  <Label fx:id="brca2_13" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="13" />
+                  <Label fx:id="brca2_14" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="14" />
+                  <Label fx:id="brca2_15" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="15" />
+                  <Label fx:id="brca2_16" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="16" />
+                  <Label fx:id="brca2_17" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="17" />
+                  <Label fx:id="brca2_18" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="18" />
+                  <Label fx:id="brca2_19" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="19" />
+                  <Label fx:id="brca2_20" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="20" />
+                  <Label fx:id="brca2_21" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="21" />
+                  <Label fx:id="brca2_22" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="22" />
+                  <Label fx:id="brca2_23" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="23" />
+                  <Label fx:id="brca2_24" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="24" />
+                  <Label fx:id="brca2_25" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="25" />
+                  <Label fx:id="brca2_26" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="26" />
+                  <Label fx:id="brca2_27" alignment="CENTER" maxHeight="30.0" maxWidth="39.0" minHeight="30.0" minWidth="39.0" prefHeight="30.0" prefWidth="39.0" text="27" />
                </children>
             </HBox>
          </children>

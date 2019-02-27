@@ -75,9 +75,9 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
                     if((type.equals("OVERVIEW") && StringUtils.isNotEmpty(compositeCmtCnvResult.getPrediction()))
                             || "Y".equals(compositeCmtCnvResult.getIncludedInReport())) {
                         heredAmcCnvResultTable.getItems().add(compositeCmtCnvResult);
-                        titleLabel.setText("DETECTED CNV SUMMARY");
+                        titleLabel.setText("CNV SUMMARY");
                     } else {
-                        titleLabel.setText("REPORTED CNV VARIANT" + (compositeCmtCnvResult != null && compositeCmtCnvResult.getIncludedInReport().equals("Y") ?
+                        titleLabel.setText("CNV " + (compositeCmtCnvResult != null && compositeCmtCnvResult.getIncludedInReport().equals("Y") ?
                                 "(" + compositeCmtCnvResult.getGene() + " : " + WordUtils.capitalize(compositeCmtCnvResult.getPrediction()) + ")" : ""));
                     }
                 });

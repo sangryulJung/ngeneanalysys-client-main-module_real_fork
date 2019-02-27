@@ -164,14 +164,16 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
         if(optionalBrcaCnvExon.isPresent()) {
             BrcaCnvExon brcaCnvExon = optionalBrcaCnvExon.get();
             label.getStyleClass().removeAll("deletion_paint", "duplication_paint");
-            if((brcaCnvExon.getExpertCnv() != null &&
+            if((StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                     BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                    BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv())) {
+                    (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
+                    BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv()))) {
                 label.getStyleClass().add("duplication_paint");
                 ((Label)label).setText(BrcaCNVCode.AMPLIFICATION.getInitial());
-            } else if((brcaCnvExon.getExpertCnv() != null &&
+            } else if((StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                     BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                    BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv())) {
+                    (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
+                    BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv()))) {
                 label.getStyleClass().add("deletion_paint");
                 ((Label)label).setText(BrcaCNVCode.DELETION.getInitial());
             } else {
@@ -187,14 +189,16 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
                 .collect(Collectors.toList());
 
         List<BrcaCnvExon> brcaCnvExonDeletionList = brcaCnvExons.stream().filter(brcaCnvExon ->
-            (brcaCnvExon.getExpertCnv() != null &&
-                    BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                    BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv()))
+                (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
+                        BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
+                        (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
+                                BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
         List<BrcaCnvExon> brcaCnvExonDuplicationList = brcaCnvExons.stream().filter(brcaCnvExon ->
-                (brcaCnvExon.getExpertCnv() != null &&
+                (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv()))
+                        (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
+                                BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
 
         if(!brcaCnvExonDeletionList.isEmpty()) {

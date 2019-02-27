@@ -40,7 +40,7 @@
                            <children>
                               <HBox maxHeight="25.0" minHeight="25.0" prefHeight="25.0" prefWidth="200.0" spacing="10.0">
                                  <children>
-                                    <Label text="REPORTED SNV/INDEL VARIANT">
+                                    <Label text="SNV/INDEL">
                                        <styleClass>
                                           <String fx:value="font_size_15" />
                                           <String fx:value="font_gray" />
@@ -58,14 +58,14 @@
                               </HBox>
                               <TableView fx:id="variantsTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="1120.0" style="-fx-border-width: 0;" styleClass="txt_black">
                                  <columns>
-                                    <TableColumn fx:id="pathogenicityColumn" styleClass="txt_black" text="Pathogenicity" />
+                                    <TableColumn fx:id="pathogenicityColumn" prefWidth="90.0" styleClass="txt_black" text="Pathogenicity" />
                                     <TableColumn fx:id="chrColumn" prefWidth="95.0" styleClass="txt_black" text="Chr" />
                                     <TableColumn fx:id="geneColumn" styleClass="txt_black" text="Gene" />
                                     <TableColumn fx:id="positionColumn" prefWidth="100.0" styleClass="txt_black" text="Position" />
                                     <TableColumn fx:id="transcriptColumn" prefWidth="120.0" styleClass="txt_black" text="Transcript" />
-                                    <TableColumn fx:id="ntChangeColumn" prefWidth="210.0" styleClass="txt_black" text="NT Change" />
-                                    <TableColumn fx:id="aaChangeColumn" prefWidth="210.0" styleClass="txt_black" text="AA Change" />
-                                    <TableColumn fx:id="alleleFrequencyColumn" prefWidth="65.0" styleClass="txt_black" text="VAF" />
+                                    <TableColumn fx:id="ntChangeColumn" prefWidth="190.0" styleClass="txt_black" text="NT Change" />
+                                    <TableColumn fx:id="aaChangeColumn" prefWidth="190.0" styleClass="txt_black" text="AA Change" />
+                                    <TableColumn fx:id="alleleFrequencyColumn" prefWidth="150.0" styleClass="txt_black" text="VAF" />
                                  </columns>
                               </TableView>
                               <Label fx:id="conclusions" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="CONCLUSION">

@@ -23,6 +23,6 @@
             <TableColumn fx:id="valueTableColumn" minWidth="70.0" prefWidth="70.0" style="-fx-text-fill: black;" text="Value" />
         </columns>
       </TableView>
-      <Label fx:id="titleLabel" styleClass="font_size_15" text="REPORTED CNV VARIANT" />
+      <Label fx:id="titleLabel" styleClass="font_size_15" text="CNV" />
    </children>
 </GridPane>

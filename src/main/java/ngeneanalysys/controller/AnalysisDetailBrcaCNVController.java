@@ -1010,7 +1010,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         position.getStyleClass().add("ratio_position");
         position.setMinWidth(16);
 
-        Label warningLabel = new Label(amplicon.getWarning().replaceAll("low_confidence_cnv : ", ""));
+        Label warningLabel = new Label();
+        if(StringUtils.isNotEmpty(amplicon.getWarning())) {
+            warningLabel.setText(amplicon.getWarning().replaceAll("low_confidence_cnv : ", ""));
+        }
         reSizeNodeWidth(warningLabel, 200);
         warningLabel.setAlignment(Pos.CENTER);
         warningLabel.getStyleClass().addAll("font_size_10","txt_red", "bold");
@@ -1274,11 +1277,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     @FXML
     private void showNomenclatureTooltip(Event event) {
         PopOver popOver = new PopOver();
-        popOver.setWidth(550);
+        popOver.setWidth(560);
         popOver.setHeight(80);
         popOver.setMaxHeight(80);
         VBox mainVBox = new VBox();
-        mainVBox.setPrefWidth(550);
+        mainVBox.setPrefWidth(560);
         mainVBox.setPrefHeight(80);
         mainVBox.getStyleClass().add("font_size_11");
         HBox hgvsNomencaltureBox = new HBox();
@@ -1297,8 +1300,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         Label contents2Label = new Label("· BRCA2 nucleotide is from GenBank U43746.1");
 
         mainVBox.getChildren().addAll(hgvsNomencaltureBox, bicNomencaltureBox, contents1Label, contents2Label);
-        VBox.setMargin(contents1Label, new Insets(0, 0, 0, 25));
-        VBox.setMargin(contents2Label, new Insets(0, 0, 0, 25));
+        VBox.setMargin(hgvsNomencaltureBox, new Insets(0, 0, 0, 10));
+        VBox.setMargin(bicNomencaltureBox, new Insets(0, 0, 0, 10));
+        VBox.setMargin(contents1Label, new Insets(0, 0, 0, 30));
+        VBox.setMargin(contents2Label, new Insets(0, 0, 0, 30));
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
         popOver.setHeaderAlwaysVisible(true);
@@ -1319,7 +1324,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         box.setPrefWidth(260);
 
         Label icon = new Label("Icon");
-        icon.getStyleClass().addAll("bold", "font_size_10");
+        icon.getStyleClass().addAll("bold", "font_size_12");
         icon.setPrefWidth(45);
         icon.setMinHeight(15);
         icon.setPrefHeight(15);
@@ -1327,7 +1332,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         icon.setAlignment(Pos.CENTER);
 
         Label contentsLabel = new Label("Description");
-        contentsLabel.getStyleClass().addAll("bold", "font_size_10");
+        contentsLabel.getStyleClass().addAll("bold", "font_size_12");
         contentsLabel.setPrefWidth(215);
         contentsLabel.setPadding(new Insets(0, 0, 0, 10));
         contentsLabel.setAlignment(Pos.CENTER);
@@ -1361,7 +1366,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         contentsLabel.setPrefWidth(215);
         contentsLabel.setPadding(new Insets(0, 0, 0, 10));
         contentsLabel.setAlignment(Pos.CENTER_LEFT);
-        contentsLabel.setFont(Font.font(10));
+        contentsLabel.setFont(Font.font(12));
 
         box.getChildren().addAll(iconBox, contentsLabel);
 

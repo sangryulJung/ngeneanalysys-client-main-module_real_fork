@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import ngeneanalysys.model.SnpInDelEvidence;
 import org.apache.commons.lang.WordUtils;
@@ -189,6 +190,7 @@ public class ConvertUtil {
 	public static String convertBrcaCnvRegion(List<String> list, final String gene) {
 		final StringBuilder sb = new StringBuilder();
 		LinkedList<String> tempList = new LinkedList<>();
+		list.remove("Promoter");
 		try {
 			list.forEach(item -> {
 				if (item.equals("Promoter")) {

@@ -73,9 +73,9 @@ public class AnalysisDetailSolidCNVReportController extends SubPaneController {
                     solidCnvResultTable.getItems().addAll(list);
 
                     if(list != null && !list.isEmpty()) {
-                        titleLabel.setText("REPORTED CNV VARIANT (Total: " + list.size() + ")");
+                        titleLabel.setText("CNV (Total: " + list.size() + ")");
                     } else {
-                        titleLabel.setText("REPORTED CNV VARIANT");
+                        titleLabel.setText("CNV");
                     }
                 }
             }

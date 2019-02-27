@@ -29,7 +29,7 @@
       </TableView>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="REPORTED CNV VARIANT">
+            <Label text="CNV">
                <styleClass>
                   <String fx:value="font_size_15" />
                   <String fx:value="font_gray" />

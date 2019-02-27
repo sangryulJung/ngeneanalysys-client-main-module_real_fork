@@ -113,14 +113,16 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
                 .collect(Collectors.toList());
 
         List<BrcaCnvExon> brcaCnvExonDeletionList = brcaCnvExons.stream().filter(brcaCnvExon ->
-                (brcaCnvExon.getExpertCnv() != null &&
+                (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                        BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv()))
+                        (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
+                        BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
         List<BrcaCnvExon> brcaCnvExonDuplicationList = brcaCnvExons.stream().filter(brcaCnvExon ->
-                (brcaCnvExon.getExpertCnv() != null &&
+                (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv()))
+                        (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
+                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
 
         if(!brcaCnvExonDeletionList.isEmpty()) {
@@ -143,14 +145,16 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
 
         if(brcaCnvExonList != null) {
             deletionCount = brcaCnvExonList.stream().filter(item ->
-                    (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.DELETION.getCode()))
-                            || item.getSwCnv().equals(BrcaCNVCode.DELETION.getCode())
-            ).count();
+                    (StringUtils.isNotEmpty(item.getExpertCnv()) &&
+                            BrcaCNVCode.DELETION.getCode().equals(item.getExpertCnv())) ||
+                            (StringUtils.isEmpty(item.getExpertCnv()) &&
+                                    BrcaCNVCode.DELETION.getCode().equals(item.getSwCnv()))).count();
 
             amplificationCount = brcaCnvExonList.stream().filter(item ->
-                    (item.getExpertCnv() != null && item.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode()))
-                            || item.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())
-            ).count();
+                    (StringUtils.isNotEmpty(item.getExpertCnv()) &&
+                            BrcaCNVCode.AMPLIFICATION.getCode().equals(item.getExpertCnv())) ||
+                            (StringUtils.isEmpty(item.getExpertCnv()) &&
+                                    BrcaCNVCode.AMPLIFICATION.getCode().equals(item.getSwCnv()))).count();
         }
 
         totalCount = deletionCount + amplificationCount;
@@ -159,6 +163,8 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
             countLabel.setText("(Total : " + totalCount
                     + (deletionCount > 0 ? ", Deletion: " + deletionCount : "")
                     + (amplificationCount > 0 ? ", Amplification: " + amplificationCount : "") + ")");
+        } else {
+            countLabel.setText("(Total : " + totalCount + ")");
         }
     }
 }

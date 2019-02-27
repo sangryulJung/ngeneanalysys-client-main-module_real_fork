@@ -53,15 +53,18 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label text="Gene" />
+                  <Label styleClass="bold" text="Gene" />
                   <ComboBox fx:id="geneComboBox" prefWidth="157.0" />
-                  <Label text="Legend" />
+                  <Label styleClass="bold" text="Legend" />
                   <Label onMouseClicked="#showLegendTooltip" styleClass="help_tooltip" text="Label">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <Label text="Deletion:" />
+                  <Label text="Deletion:">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Label>
                   <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #cc3e4f; -fx-background-radius: 15;" />
                   <Label text="Normal:" />
                   <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #97a2be; -fx-background-radius: 15;" />
@@ -71,7 +74,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
                <children>
-                  <Label text="Nomenclature" />
+                  <Label styleClass="bold" text="Nomenclature" />
                   <RadioButton fx:id="hgvsNomenclatureRadioButton" mnemonicParsing="false" selected="true" styleClass="font_size_11" text="HGVS">
                      <toggleGroup>
                         <ToggleGroup fx:id="noemclatureGroup" />

@@ -209,7 +209,7 @@
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" number-columns-spanned="4">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
 								#if($contents.isExistReportedVariant == "Y")
-									<fo:block padding="2mm">Positive-clinically significant mutation identified.</fo:block>
+									<fo:block padding="2mm">Positive-clinically significant SNV/Indel identified.</fo:block>
 									#foreach($variant in $contents.variantList)
 										#if($variant.snpInDel.includedInReport == 'Y')
 											<fo:block padding="1mm">
@@ -223,18 +223,18 @@
 										#end	
 									#end
 								#else
-									<fo:block padding="2mm">No mutations were identified.</fo:block>
+									<fo:block padding="2mm">No SNV/Indel were identified.</fo:block>
 								#end
 									<fo:block padding="2mm"></fo:block>
 								#if($contents.brcaCnvResults)
-									<fo:block padding="2mm">Possibly copy number variants identified.</fo:block>
+									<fo:block padding="2mm">Possibly-clinically significant CNV identified.</fo:block>
 									#foreach($cnv in $contents.brcaCnvResults)
 										<fo:block padding="1mm">
 											<![CDATA[$cnv.gene]]>, <![CDATA[$cnv.cnv]]>, Exon <![CDATA[$cnv.result]]>
 										</fo:block>
 									#end
 								#else
-									<fo:block padding="2mm">No cnv were identified.</fo:block>
+									<fo:block padding="2mm">No CNV were identified.</fo:block>
 								#end
 
 								</fo:block>
@@ -524,11 +524,6 @@
 												</fo:table-cell>
 												<fo:table-cell border-width="0.5pt" border-style="solid">
 													<fo:block>
-														Pro
-													</fo:block>
-												</fo:table-cell>
-												<fo:table-cell border-width="0.5pt" border-style="solid">
-													<fo:block>
 														1
 													</fo:block>
 												</fo:table-cell>
@@ -672,13 +667,16 @@
 												</fo:table-cell>
 												#foreach($exonData in $contents.brca1CnvList)
 													#if($exonData.result == "D")
-														#set($color = "#F04978")
+														#set($color = "#cc3e4f")
 														#set($fontColor = "#FFF")
 													#elseif($exonData.result == "A")
-														#set($color = "#2D70E8")
+														#set($color = "#e1b07b")
 														#set($fontColor = "#FFF")
-													#else
+													#elseif($exonData.result == "N")
 														#set($color = "#FFFFFF")
+														#set($fontColor = "#000")
+													#else
+														#set($color = "#101010")
 														#set($fontColor = "#000")
 													#end
 													<fo:table-cell border-width="0.5pt" border-style="solid" background-color="$color" text-align="center">
@@ -697,13 +695,16 @@
 												</fo:table-cell>
 												#foreach($exonData in $contents.brca2CnvList)
 													#if($exonData.result == "D")
-														#set($color = "#F04978")
+														#set($color = "#cc3e4f")
 														#set($fontColor = "#FFF")
 													#elseif($exonData.result == "A")
-														#set($color = "#2D70E8")
+														#set($color = "#e1b07b")
 														#set($fontColor = "#FFF")
-													#else
+													#elseif($exonData.result == "N")
 														#set($color = "#FFFFFF")
+														#set($fontColor = "#000")
+													#else
+														#set($color = "#101010")
 														#set($fontColor = "#000")
 													#end
 													<fo:table-cell border-width="0.5pt" border-style="solid" background-color="$color" text-align="center">
@@ -712,6 +713,13 @@
 														</fo:block>
 													</fo:table-cell>
 												#end
+											</fo:table-row>
+											<fo:table-row text-align="left" font-family="Noto Sans CJK KR Regular" font-size="6pt">
+												<fo:table-cell padding="2mm" padding-left="5mm" border-width="0pt" number-columns-spanned="28">
+													<fo:block padding="0.2mm">1. BRCA1: Nucleotide(NT) numbering from NM_007294.3</fo:block>
+													<fo:block padding="0.2mm">2. BRCA2: Nucleotide(NT) numbering from NM_000059.3</fo:block>
+													<fo:block padding="0.2mm">* D: Deletion, N: Normal, A: Amplification</fo:block>
+												</fo:table-cell>
 											</fo:table-row>
 
 										</fo:table-body>

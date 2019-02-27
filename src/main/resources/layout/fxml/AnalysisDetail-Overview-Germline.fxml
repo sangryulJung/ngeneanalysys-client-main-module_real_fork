@@ -35,7 +35,7 @@
                <children>
                   <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="DETECTED SNV/INDEL SUMMARY">
+                        <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="SNV/INDEL SUMMARY">
                            <styleClass>
                               <String fx:value="font_size_15" />
                               <String fx:value="font_gray" />
