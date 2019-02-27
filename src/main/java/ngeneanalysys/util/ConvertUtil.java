@@ -191,6 +191,8 @@ public class ConvertUtil {
 		final StringBuilder sb = new StringBuilder();
 		LinkedList<String> tempList = new LinkedList<>();
 		list.remove("Promoter");
+		/** MLPA 처리방식 논의중 **/
+		list.remove("MLPA");
 		try {
 			list.forEach(item -> {
 				if (item.equals("Promoter")) {

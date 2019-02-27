@@ -51,9 +51,9 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
         }
         this.brcaCnvExonList = brcaCnvExonList.stream().sorted((a, b) ->
         {
-            if(a.getExon().equals("Promoter")) {
+            if(a.getExon().matches("[a-zA-Z]*")) {
                 return -1;
-            } else if(b.getExon().equals("Promoter")) {
+            } else if(b.getExon().matches("[a-zA-Z]*")) {
                 return 1;
             } else {
                 int intA = Integer.parseInt(a.getExon());

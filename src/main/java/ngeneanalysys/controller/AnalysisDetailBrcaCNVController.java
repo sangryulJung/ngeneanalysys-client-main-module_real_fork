@@ -391,9 +391,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 }
         );
         exonTableColumn.setComparator((a,  b) -> {
-            if(a.equals("Promoter")) {
+            if(a.matches("[a-zA-Z]*")) {
                 return -1;
-            } else if(b.equals("Promoter")) {
+            } else if(b.matches("[a-zA-Z]*")) {
                 return 1;
             }else {
                 int intA = Integer.parseInt(a);
@@ -498,7 +498,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             oldValue.setMinWidth(95);
             oldValue.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOldValue()));
             TableColumn<BrcaCnvLog, String> newValue = new TableColumn<>();
-            newValue.setText("new Value");
+            newValue.setText("New Value");
             newValue.setMinWidth(95);
             newValue.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNewValue()));
             TableColumn<BrcaCnvLog, String> comment = new TableColumn<>();
@@ -506,7 +506,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             comment.setMinWidth(270);
             comment.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
             TableColumn<BrcaCnvLog, String> dateTime = new TableColumn<>();
-            dateTime.setText("Created At");
+            dateTime.setText("Created at");
             dateTime.setMinWidth(140);
             dateTime.setCellValueFactory(cellData -> new SimpleStringProperty(
                     timeConvertString(cellData.getValue().getCreatedAt())));
@@ -581,9 +581,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
             brcaCnvExonList = pagedBrcaCNVExon.getResult().stream().sorted((a, b) ->
             {
-                if(a.getExon().equals("Promoter")) {
+                if(a.getExon().matches("[a-zA-Z]*")) {
                     return -1;
-                } else if(b.getExon().equals("Promoter")) {
+                } else if(b.getExon().matches("[a-zA-Z]*")) {
                     return 1;
                 } else {
                     int intA = Integer.parseInt(a.getExon());
@@ -1235,7 +1235,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     @FXML
     public void doExonCnvChange() {
-        popUp(getSelectedItemList(), "Modify CNV in multi-selection");
+        if(getSelectedItemList().isEmpty()) {
+            DialogUtil.warning("", "Please select Exon to change the value.", mainController.getPrimaryStage(), true);
+        } else {
+            popUp(getSelectedItemList(), "Modify CNV in multi-selection");
+        }
     }
 
     @FXML
