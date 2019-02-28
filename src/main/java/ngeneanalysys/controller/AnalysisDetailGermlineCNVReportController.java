@@ -113,12 +113,14 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
                 .collect(Collectors.toList());
 
         List<BrcaCnvExon> brcaCnvExonDeletionList = brcaCnvExons.stream().filter(brcaCnvExon ->
+                brcaCnvExon.getIncludedInReport().equals("Y") &&
                 (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                         (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
         List<BrcaCnvExon> brcaCnvExonDuplicationList = brcaCnvExons.stream().filter(brcaCnvExon ->
+                brcaCnvExon.getIncludedInReport().equals("Y") &&
                 (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                         (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
@@ -145,12 +147,14 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
 
         if(brcaCnvExonList != null) {
             deletionCount = brcaCnvExonList.stream().filter(item ->
+                    item.getIncludedInReport().equals("Y") &&
                     (StringUtils.isNotEmpty(item.getExpertCnv()) &&
                             BrcaCNVCode.DELETION.getCode().equals(item.getExpertCnv())) ||
                             (StringUtils.isEmpty(item.getExpertCnv()) &&
                                     BrcaCNVCode.DELETION.getCode().equals(item.getSwCnv()))).count();
 
             amplificationCount = brcaCnvExonList.stream().filter(item ->
+                    item.getIncludedInReport().equals("Y") &&
                     (StringUtils.isNotEmpty(item.getExpertCnv()) &&
                             BrcaCNVCode.AMPLIFICATION.getCode().equals(item.getExpertCnv())) ||
                             (StringUtils.isEmpty(item.getExpertCnv()) &&

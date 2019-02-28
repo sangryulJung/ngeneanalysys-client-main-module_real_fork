@@ -2,13 +2,10 @@ package ngeneanalysys.controller.fragment;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
 import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -30,7 +27,6 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -45,12 +41,6 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
     private List<BrcaCnvExon> brcaCnvExonList;
 
     private List<BrcaCnvResult> brcaCnvResultList = new ArrayList<>();
-
-    @FXML
-    private HBox brca1Plot;
-
-    @FXML
-    private HBox brca2Plot;
 
     @FXML
     private TableView<BrcaCnvResult> cnvSummaryTable;
@@ -117,9 +107,6 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
                 }
             }).collect(Collectors.toList());
 
-            paintBrcaCnvTable("BRCA1");
-            paintBrcaCnvTable("BRCA2");
-
             addBrcaCnvTable("BRCA1");
             addBrcaCnvTable("BRCA2");
             if(!brcaCnvResultList.isEmpty()) {
@@ -128,59 +115,6 @@ public class AnalysisDetailOverviewBrcaCnvController extends SubPaneController {
             }
         } catch (WebAPIException wae) {
             DialogUtil.warning(wae.getHeaderText(), wae.getMessage(), mainApp.getPrimaryStage(), true);
-        }
-    }
-
-    private void paintBrcaCnvTable(String gene) {
-        HBox hBox;
-        String text;
-        if(gene.equals("BRCA1")) {
-            hBox = brca1Plot;
-            text = "brca1_";
-        } else {
-            hBox = brca2Plot;
-            text = "brca2_";
-        }
-        List<BrcaCnvExon> brcaCnvExonList = this.brcaCnvExonList.stream().filter(item -> gene.equals(item.getGene()))
-                .collect(Collectors.toList());
-
-        hBox.getChildren().forEach(label -> {
-            if(StringUtils.isNotEmpty(label.getId())) {
-                if(label.getId().contains("pro")) {
-                    Optional<BrcaCnvExon> optionalBrcaCnvExon = brcaCnvExonList.stream().filter(item ->
-                            item.getExon().equals("Promoter")).findFirst();
-                    setLabelStyleClass(optionalBrcaCnvExon, label);
-                } else {
-                    Optional<BrcaCnvExon> optionalBrcaCnvExon = brcaCnvExonList.stream().filter(item ->
-                            item.getExon().equals(label.getId().replaceAll(text, ""))).findFirst();
-                    setLabelStyleClass(optionalBrcaCnvExon, label);
-                }
-            }
-        });
-
-    }
-
-    private void setLabelStyleClass(Optional<BrcaCnvExon> optionalBrcaCnvExon, Node label) {
-        if(optionalBrcaCnvExon.isPresent()) {
-            BrcaCnvExon brcaCnvExon = optionalBrcaCnvExon.get();
-            label.getStyleClass().removeAll("deletion_paint", "duplication_paint");
-            if((StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
-                    BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                    (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
-                    BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv()))) {
-                label.getStyleClass().add("duplication_paint");
-                ((Label)label).setText(BrcaCNVCode.AMPLIFICATION.getInitial());
-            } else if((StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
-                    BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
-                    (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
-                    BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv()))) {
-                label.getStyleClass().add("deletion_paint");
-                ((Label)label).setText(BrcaCNVCode.DELETION.getInitial());
-            } else {
-                ((Label)label).setText(BrcaCNVCode.NORMAL.getInitial());
-            }
-        } else {
-            ((Label)label).setText("");
         }
     }
 

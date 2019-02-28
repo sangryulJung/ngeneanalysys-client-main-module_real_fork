@@ -135,9 +135,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     private void setBrcaCnvOverview() {
         Panel panel = (Panel)paramMap.get("panel");
         if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
-            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 275);
-            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(275);
-            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(275);
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 165);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(165);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(165);
 
             try {
                 FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV_OVERVIEW);

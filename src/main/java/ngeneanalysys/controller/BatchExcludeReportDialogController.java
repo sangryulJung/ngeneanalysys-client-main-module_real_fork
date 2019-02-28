@@ -10,6 +10,7 @@ import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
+import ngeneanalysys.model.BrcaCnvExon;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
@@ -33,6 +34,10 @@ public class BatchExcludeReportDialogController extends SubPaneController {
 
     private AnalysisDetailSNVController snvController;
 
+    private List<BrcaCnvExon> brcaCnvExonList = null;
+
+    private AnalysisDetailBrcaCNVController analysisDetailBrcaCNVController;
+
     @FXML
     private CheckBox addToReportCheckBox;
 
@@ -42,6 +47,12 @@ public class BatchExcludeReportDialogController extends SubPaneController {
     private Stage dialogStage;
 
     private int sampleId;
+
+    void settingBrcaCnvItem(int sampleId, List<BrcaCnvExon> brcaCnvExonList, AnalysisDetailBrcaCNVController analysisDetailBrcaCNVController) {
+        this.sampleId = sampleId;
+        this.brcaCnvExonList = brcaCnvExonList;
+        this.analysisDetailBrcaCNVController = analysisDetailBrcaCNVController;
+    }
 
     void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
         this.sampleId = sampleId;
@@ -67,12 +78,22 @@ public class BatchExcludeReportDialogController extends SubPaneController {
         dialogStage.initOwner(getMainApp().getPrimaryStage());
         dialogStage.setResizable(false);
 
-        if(variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("Y"))) {
-            addToReportCheckBox.setSelected(true);
-        } else if(variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("N"))) {
-            addToReportCheckBox.setSelected(false);
+        if(snvController != null) {
+            if (variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("Y"))) {
+                addToReportCheckBox.setSelected(true);
+            } else if (variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("N"))) {
+                addToReportCheckBox.setSelected(false);
+            } else {
+                addToReportCheckBox.setIndeterminate(true);
+            }
         } else {
-            addToReportCheckBox.setIndeterminate(true);
+            if (brcaCnvExonList.stream().allMatch(v -> v.getIncludedInReport().equals("Y"))) {
+                addToReportCheckBox.setSelected(true);
+            } else if (variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("N"))) {
+                addToReportCheckBox.setSelected(false);
+            } else {
+                addToReportCheckBox.setIndeterminate(true);
+            }
         }
 
         // Scene Init
@@ -93,17 +114,24 @@ public class BatchExcludeReportDialogController extends SubPaneController {
         try {
             StringBuilder stringBuilder = new StringBuilder();
 
-            variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId()).append(","));
-            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-
             String includeInReport = addToReportCheckBox.isSelected() ? "Y" : "N";
             Map<String, Object> params = new HashMap<>();
             params.put("sampleId", sampleId);
-            params.put("snpInDelIds", stringBuilder.toString());
             params.put("comment", comment.isEmpty() ? "Not applicable" : comment);
             params.put("includeInReport", includeInReport);
-            apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
-            snvController.refreshTable();
+            if(snvController != null) {
+                variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId()).append(","));
+                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                params.put("snpInDelIds", stringBuilder.toString());
+                apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+                snvController.refreshTable();
+            } else {
+                brcaCnvExonList.forEach(item -> stringBuilder.append(item.getId()).append(","));
+                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                params.put("brcaCnvExonIds", stringBuilder.toString());
+                apiService.put("analysisResults/brcaCnvExon/updateReport", params, null, true);
+                analysisDetailBrcaCNVController.setList();
+            }
             dialogStage.close();
         } catch (WebAPIException wae) {
             wae.printStackTrace();

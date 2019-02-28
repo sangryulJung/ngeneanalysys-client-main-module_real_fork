@@ -96,9 +96,10 @@
           <TableColumn fx:id="geneTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Gene" />
           <TableColumn fx:id="exonTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Exon" />
             <TableColumn fx:id="cnvTableColumn" prefWidth="110.0" style="-fx-alignment: center;" text="CNV" />
+            <TableColumn fx:id="reportTableColumn" prefWidth="60.0" style="-fx-alignment: center;" text="Report" />
             <TableColumn fx:id="warningTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Warning" />
-            <TableColumn fx:id="domainTableColumn" prefWidth="200.0" style="-fx-alignment: center;" text="Domain" />
-            <TableColumn fx:id="totalTableColumn" prefWidth="165.0" style="-fx-alignment: center;" text="Total Amplicon" />
+            <TableColumn fx:id="domainTableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Domain" />
+            <TableColumn fx:id="totalTableColumn" prefWidth="135.0" style="-fx-alignment: center;" text="Total Amplicon" />
             <TableColumn prefWidth="300.0" text="Amplicon Copy Number">
                <columns>
                   <TableColumn fx:id="copyNumber1TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="1" />
@@ -106,7 +107,7 @@
                   <TableColumn fx:id="copyNumber3TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="3" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="commentTableColumn" prefWidth="675.0" text="Comment" />
+            <TableColumn fx:id="commentTableColumn" prefWidth="555.0" text="Comment" />
         </columns>
       </TableView>
       <HBox alignment="BOTTOM_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">

@@ -138,6 +138,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private TableColumn<BrcaCnvExon, Integer> copyNumber3TableColumn;
     @FXML
     private TableColumn<BrcaCnvExon, String> commentTableColumn;
+    @FXML
+    private TableColumn<BrcaCnvExon, String> reportTableColumn;
 
     private APIService apiService;
 
@@ -361,6 +363,36 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 setGraphic(label);
             }
         });
+        reportTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIncludedInReport()));
+        reportTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                if(StringUtils.isEmpty(item) || empty) {
+                    setGraphic(null);
+                    return;
+                }
+                BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
+                Label label = new Label();
+                label.getStyleClass().remove("label");
+                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                    label.setText("R");
+                    label.getStyleClass().add("report_check");
+                } else {
+                    label.getStyleClass().add("report_uncheck");
+                }
+                List<BrcaCnvExon> brcaCnvExonList = new ArrayList<>();
+                brcaCnvExonList.add(brcaCnvExon);
+                label.setCursor(Cursor.HAND);
+                label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+                    if (ev.getClickCount() == 1) {
+                        popUpReport(brcaCnvExonList);
+                    }
+                });
+                setGraphic(label);
+            }
+        });
+
+
         exonTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getExon()));
         exonTableColumn.setCellFactory(column ->
                 new TableCell<BrcaCnvExon, String>() {
@@ -510,7 +542,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             dateTime.setMinWidth(140);
             dateTime.setCellValueFactory(cellData -> new SimpleStringProperty(
                     timeConvertString(cellData.getValue().getCreatedAt())));
-            tableView.getColumns().addAll(oldValue, newValue, comment, dateTime);
+            tableView.getColumns().addAll(dateTime, oldValue, newValue, comment);
 
             tableView.getItems().addAll(pagedBrcaCnvLog.getResult());
             hBox.getChildren().add(tableView);
@@ -547,6 +579,22 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 Node node = loader.load();
                 BatchChangeBrcaCnvDialogController controller = loader.getController();
                 controller.settingItem(sample.getId(), changeList, this, title);
+                controller.setParamMap(getParamMap());
+                controller.setMainController(mainController);
+                controller.show((Parent) node);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void popUpReport(List<BrcaCnvExon> changeList) {
+        if(changeList != null && !changeList.isEmpty()) {
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_EXCLUDE_REPORT);
+                Node node = loader.load();
+                BatchExcludeReportDialogController controller = loader.getController();
+                controller.settingBrcaCnvItem(sample.getId(), changeList, this);
                 controller.setParamMap(getParamMap());
                 controller.setMainController(mainController);
                 controller.show((Parent) node);
@@ -1045,40 +1093,38 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         double otherAreaWidth = (boxWidth - normalWidth) / 2;
         double maxValue = 2d;
         if(brcaCnvAmplicon.getSampleRatio().compareTo(BigDecimal.valueOf(maxValue)) > 0) {
-            return boxWidth + margin;
+            return boxWidth + margin -10;
         }
         if(panel.getCnvConfigBRCAaccuTest().getAmpliconCopyNumberPredictionAlgorithm()
                 .equals(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode())) {
             if(brcaCnvAmplicon.getDistributionPrediction() == 3) {
-                BigDecimal max = BigDecimal.valueOf(maxValue);
-                max = max.subtract(brcaCnvAmplicon.getDistributionRangeMax());
-                BigDecimal correctionValue = brcaCnvAmplicon.getSampleRatio().subtract(brcaCnvAmplicon.getDistributionRangeMax());
-                return correctionValue.divide(max, 4, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(otherAreaWidth)).doubleValue() + normalWidth + otherAreaWidth + margin;
+                return boxWidth + margin - 10;
             } else if(brcaCnvAmplicon.getDistributionPrediction() == 1) {
-                return brcaCnvAmplicon.getSampleRatio().divide(brcaCnvAmplicon.getDistributionRangeMin(), 4, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(otherAreaWidth)).doubleValue() + margin;
+                return margin + 10;
             } else {
-                BigDecimal max = brcaCnvAmplicon.getDistributionRangeMax().subtract(brcaCnvAmplicon.getDistributionRangeMin());
-                BigDecimal correctionValue = brcaCnvAmplicon.getSampleRatio().subtract(brcaCnvAmplicon.getDistributionRangeMin());
-                return correctionValue.divide(max, 4, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(normalWidth)).doubleValue() + otherAreaWidth + margin;
+                if(StringUtils.isNotEmpty(brcaCnvAmplicon.getWarning())) {
+                    BigDecimal max = brcaCnvAmplicon.getDistributionRangeMax().subtract(brcaCnvAmplicon.getDistributionRangeMin());
+                    BigDecimal correctionValue = brcaCnvAmplicon.getSampleRatio().subtract(brcaCnvAmplicon.getDistributionRangeMin());
+                    return correctionValue.divide(max, 4, BigDecimal.ROUND_HALF_UP)
+                            .multiply(BigDecimal.valueOf(normalWidth)).doubleValue() + otherAreaWidth + margin;
+                } else {
+                    return (boxWidth / 2) + margin;
+                }
             }
         } else {
             if(brcaCnvAmplicon.getDistributionPrediction() == 3) {
-                BigDecimal max = BigDecimal.valueOf(maxValue);
-                max = max.subtract(brcaCnvAmplicon.getRawRangeMax());
-                BigDecimal correctionValue = brcaCnvAmplicon.getSampleRatio().subtract(brcaCnvAmplicon.getRawRangeMax());
-                return correctionValue.divide(max, 4, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(otherAreaWidth)).doubleValue() + normalWidth + otherAreaWidth + margin;
+                return boxWidth + margin - 10;
             } else if(brcaCnvAmplicon.getRawPrediction() == 1) {
-                return brcaCnvAmplicon.getSampleRatio().divide(brcaCnvAmplicon.getRawRangeMin(), 4, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(otherAreaWidth)).doubleValue() + margin;
+                return margin + 10;
             } else {
-                BigDecimal max = brcaCnvAmplicon.getRawRangeMax().subtract(brcaCnvAmplicon.getRawRangeMin());
-                BigDecimal correctionValue = brcaCnvAmplicon.getSampleRatio().subtract(brcaCnvAmplicon.getRawRangeMin());
-                return correctionValue.divide(max, 4, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(normalWidth)).doubleValue() + otherAreaWidth + margin;
+                if(StringUtils.isNotEmpty(brcaCnvAmplicon.getWarning())) {
+                    BigDecimal max = brcaCnvAmplicon.getRawRangeMax().subtract(brcaCnvAmplicon.getRawRangeMin());
+                    BigDecimal correctionValue = brcaCnvAmplicon.getSampleRatio().subtract(brcaCnvAmplicon.getRawRangeMin());
+                    return correctionValue.divide(max, 4, BigDecimal.ROUND_HALF_UP)
+                            .multiply(BigDecimal.valueOf(normalWidth)).doubleValue() + otherAreaWidth + margin;
+                } else {
+                    return (boxWidth / 2) + margin;
+                }
             }
         }
     }
@@ -1248,10 +1294,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         PopOver popOver = new PopOver();
         popOver.setWidth(260);
         popOver.setHeight(200);
-        popOver.setMaxHeight(160);
+        popOver.setMaxHeight(190);
         VBox mainVBox = new VBox();
         mainVBox.setPrefWidth(260);
-        mainVBox.setPrefHeight(160);
+        mainVBox.setPrefHeight(190);
         HBox titleBox = createTitleBox();
         HBox deletion = createContentsBox("-fx-background-radius : 15 15; -fx-background-color : #cc3e4f;",
                 "Deletion");
@@ -1266,7 +1312,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
         mainVBox.getChildren().addAll(titleBox, deletion, amplification, normal, putativeDel, putativeAmp, userChange);
         popOver.getRoot().setAlignment(Pos.CENTER);
-        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+        popOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
         popOver.setHeaderAlwaysVisible(true);
         popOver.setAutoHide(true);
