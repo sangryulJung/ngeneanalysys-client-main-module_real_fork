@@ -95,7 +95,7 @@
         <columns>
           <TableColumn fx:id="geneTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Gene" />
           <TableColumn fx:id="exonTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Exon" />
-            <TableColumn fx:id="cnvTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="CNV" />
+            <TableColumn fx:id="cnvTableColumn" prefWidth="110.0" style="-fx-alignment: center;" text="CNV" />
             <TableColumn fx:id="warningTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Warning" />
             <TableColumn fx:id="domainTableColumn" prefWidth="200.0" style="-fx-alignment: center;" text="Domain" />
             <TableColumn fx:id="totalTableColumn" prefWidth="165.0" style="-fx-alignment: center;" text="Total Amplicon" />
@@ -225,7 +225,7 @@
             <HBox alignment="CENTER" prefHeight="18.0" prefWidth="200.0">
                <children>
                   <Label maxHeight="18.0" minHeight="18.0" prefHeight="18.0" text="5'" />
-                  <VBox maxHeight="0.1" maxWidth="30.0" minHeight="0.1" minWidth="30.0" prefHeight="0.1" prefWidth="30.0" style="-fx-border-width: 0.2; -fx-border-color: black;">
+                  <VBox maxHeight="0.1" maxWidth="30.0" minHeight="0.1" minWidth="30.0" prefHeight="0.1" prefWidth="30.0" style="-fx-border-width: 0.5 0 0 0; -fx-border-color: black;">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

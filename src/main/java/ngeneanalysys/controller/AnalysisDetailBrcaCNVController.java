@@ -327,7 +327,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     return;
                 }
                 BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
-                Label label = new Label(WordUtils.capitalize(item.substring(0, 3)));
+                Label label = new Label(WordUtils.capitalize(item));
                 Tooltip toolTip = new Tooltip(item);
                 label.setTooltip(toolTip);
                 label.getStyleClass().remove("label");
@@ -373,7 +373,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         } else {
                             BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
                             if(bicNomenclatureRadioButton.isSelected() && brcaCnvExon.getGene().equals("BRCA1")) {
-                                if(brcaCnvExon.getExon().equals("Promoter")) {
+                                if(brcaCnvExon.getExon().matches("[a-zA-Z]*")) {
                                     setText(item);
                                 } else {
                                     int a = Integer.parseInt(item);
@@ -561,7 +561,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             brcaCnvTable.getItems().removeAll(brcaCnvTable.getItems());
         }
 
-        List<BrcaCnvExon> list = brcaCnvExonList.stream().filter(item -> !item.getExon().equals("Promoter"))
+        List<BrcaCnvExon> list = brcaCnvExonList.stream().filter(item -> item.getExon().matches("[0-9]*"))
                 .collect(Collectors.toList());
 
         if(!list.isEmpty()) {
@@ -569,6 +569,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             brcaCnvTable.getItems().addAll(brca1List);
         }
         brcaCnvTable.refresh();
+        brcaCnvTable.scrollTo(0);
     }
 
     public void setList() {
@@ -794,7 +795,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 addLineInHBox(gene, box, "");
             }
             List<BrcaCnvAmplicon> amplicons = getBrcaCnvAmpliconsByExon(gene, brcaCnvExon.getExon());
-            if(brcaCnvExon.getExon().equals("Promoter")) {
+            if(brcaCnvExon.getExon().matches("[a-zA-Z]*")) {
                 addChildrenInHBox(gene, box, amplicons.size());
             } else {
                 Label label = new Label(brcaCnvExon.getExon());
@@ -821,9 +822,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             }
             List<BrcaCnvAmplicon> amplicons = getBrcaCnvAmpliconsByExon(gene, brcaCnvExon.getExon());
             double boxSize = oneBoxSize * amplicons.size() - oneLineSize;
-            if(brcaCnvExon.getExon().equals("Promoter")) {
+            if(brcaCnvExon.getExon().matches("[a-zA-Z]*")) {
                 HBox line = new HBox();
-                line.setId(gene + "_Promoter");
+                line.setId(gene + "_" + brcaCnvExon.getExon());
                 line.setMinSize(boxSize, 0.1);
                 line.setPrefSize(boxSize, 0.1);
                 line.setMaxSize(boxSize, 0.1);

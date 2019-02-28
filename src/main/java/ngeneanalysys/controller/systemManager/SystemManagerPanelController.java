@@ -71,6 +71,8 @@ public class SystemManagerPanelController extends SubPaneController {
     private Label cutOffToolTip;
     @FXML
     private Label predictionThresholdToolTip;
+    @FXML
+    private Label putativeToolTip;
 
     @FXML
     private Button loadSettingFileBtn;
@@ -387,6 +389,8 @@ public class SystemManagerPanelController extends SubPaneController {
                 "If you choose “Simple Cut-off”, the BRCA CNV analysis will use the algorithm applying the cut-off criteria you set.\n This algorithm analyzes the CNV by applying the corresponding criteria to the data of the samples analyzed in one run.");
         PopOverUtil.openToolTipPopOver(predictionThresholdToolTip,
                 "The BRCAaccuTest Series determines the CNV of the corresponding exon compared to the criterion set by\n the copy number ratio of multiple amplicons in an exon. (Default = 60%)");
+        PopOverUtil.openToolTipPopOver(putativeToolTip,
+                "If the sample ratio is in the normal range but the ratio is very close to the deletion or amplification range, this is called Putative CNV.\n The value set in Putative CNV is used to determine the degree of difference between the sample ratio and the deletion or amplification range.");
     }
 
     private void setTST170Default() {

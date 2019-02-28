@@ -163,16 +163,24 @@
                                              </children>
                                           </HBox>
                                           <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
                                              <children>
-                                                <Label text="Low Confidence CNV Deletion: " />
+                                                <Label text="Putative CNV" />
+                                                <Label fx:id="putativeToolTip" styleClass="help_tooltip">
+                                                   <HBox.margin>
+                                                      <Insets right="40.0" />
+                                                   </HBox.margin>
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor>
+                                                </Label>
+                                                <Label text="Amplification: " />
+                                                <TextField fx:id="lowConfidenceCnvDuplicationTextField" prefWidth="60.0">
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin></TextField>
+                                                <Label text="Deletion: " />
                                                 <TextField fx:id="lowConfidenceCnvDeletionTextField" prefWidth="60.0" />
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="7">
-                                             <children>
-                                                <Label text="Low Confidence CNV Amplification: " />
-                                                <TextField fx:id="lowConfidenceCnvDuplicationTextField" prefWidth="60.0" />
                                              </children>
                                           </HBox>
                                        </children>
