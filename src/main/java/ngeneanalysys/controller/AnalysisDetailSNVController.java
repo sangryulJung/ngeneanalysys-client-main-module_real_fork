@@ -1824,7 +1824,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> enigma = new TableColumn<>("ENIGMA");
         createTableHeader(enigma, "ENIGMA", "Evidence-based Network for the Interpretation of Germline Mutant Alleles" ,null, "enigma");
-        enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
+        enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getEnigma()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> clinVarVariationId = new TableColumn<>("ClinVar Variation ID");
         createTableHeader(clinVarVariationId, "ClinVar Variation ID", null ,null, "clinVarVariationId");

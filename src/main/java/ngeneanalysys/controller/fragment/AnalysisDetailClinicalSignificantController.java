@@ -319,7 +319,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     private void showClinicalSignificantGraph() {
         Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
         Map<String,Object> variantClassifierMap = returnResultsAfterSearch("variant_classifier");
-        Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical");
+        Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical_variation");
         Map<String,Object> breastCancerInformationCoreMap = returnResultsAfterSearch("breast_cancer_information_core");
         Map<String,Object> siftMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("SIFT")) ? (Map<String,Object>) inSilicoPredictionMap.get("SIFT") : null;
         Map<String,Object> polyphenMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("PolyPhen2")) ? (Map<String,Object>) inSilicoPredictionMap.get("PolyPhen2") : null;
@@ -345,7 +345,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
         // CLINVAR
         if(clinicalMap != null) {
-            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", (String) clinicalMap.get("radar"));
+            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", (String) clinicalMap.get("variation_radar"));
         } else {
             renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", null);
         }

@@ -81,16 +81,16 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
         dialogStage.setResizable(false);
 
         if(brcaCnvExonList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getExpertCnv())
-                && v.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())) ||
-                (StringUtils.isEmpty(v.getExpertCnv()) && v.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())))) {
+                && v.getExpertCnv().equals(BrcaCNVCode.COPY_GAIN.getCode())) ||
+                (StringUtils.isEmpty(v.getExpertCnv()) && v.getSwCnv().equals(BrcaCNVCode.COPY_GAIN.getCode())))) {
             amplificationRadioButton.setSelected(true);
         }else if(brcaCnvExonList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getExpertCnv())
                 && v.getExpertCnv().equals(BrcaCNVCode.NORMAL.getCode())) ||
                 (StringUtils.isEmpty(v.getExpertCnv()) && v.getSwCnv().equals(BrcaCNVCode.NORMAL.getCode())))) {
             normalRadioButton.setSelected(true);
         }else if(brcaCnvExonList.stream().allMatch(v -> (StringUtils.isNotEmpty(v.getExpertCnv())
-                && v.getExpertCnv().equals(BrcaCNVCode.DELETION.getCode())) ||
-                (StringUtils.isEmpty(v.getExpertCnv()) && v.getSwCnv().equals(BrcaCNVCode.DELETION.getCode())))) {
+                && v.getExpertCnv().equals(BrcaCNVCode.COPY_LOSS.getCode())) ||
+                (StringUtils.isEmpty(v.getExpertCnv()) && v.getSwCnv().equals(BrcaCNVCode.COPY_LOSS.getCode())))) {
             deletionRadioButton.setSelected(true);
         }
 
@@ -124,11 +124,11 @@ public class BatchChangeBrcaCnvDialogController extends SubPaneController {
 
     private String returnSelectCnv() {
         if(deletionRadioButton.isSelected()) {
-            return BrcaCNVCode.DELETION.getCode();
+            return BrcaCNVCode.COPY_LOSS.getCode();
         } else if(normalRadioButton.isSelected()) {
             return BrcaCNVCode.NORMAL.getCode();
         } else if(amplificationRadioButton.isSelected()) {
-            return BrcaCNVCode.AMPLIFICATION.getCode();
+            return BrcaCNVCode.COPY_GAIN.getCode();
         } else {
             return "";
         }

@@ -22,7 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
-import ngeneanalysys.code.enums.BrcaCNVCode;
+import ngeneanalysys.code.enums.CnvPredictionCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -133,8 +133,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
 
     private void cnvTest() {
         predictionComboBox.setConverter(new ComboBoxConverter());
-        predictionComboBox.getItems().add(new ComboBoxItem(BrcaCNVCode.DUPLICATION.getCode(), "Duplication"));
-        predictionComboBox.getItems().add(new ComboBoxItem(BrcaCNVCode.DELETION.getCode(), "Deletion"));
+        predictionComboBox.getItems().add(new ComboBoxItem(CnvPredictionCode.DUPLICATION.getCode(), "Duplication"));
+        predictionComboBox.getItems().add(new ComboBoxItem(CnvPredictionCode.DELETION.getCode(), "Deletion"));
 
         reportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             Map<String, Object> params = new HashMap<>();

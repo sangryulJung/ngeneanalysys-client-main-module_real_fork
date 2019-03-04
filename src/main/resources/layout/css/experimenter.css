@@ -273,11 +273,9 @@
 }
 
 .brca_cnv_2_expert Label{
-    -fx-background-color : #97a2be;
+    -fx-background-color : transparent;
     -fx-border-width : 0.8;
-    /*-fx-border-radius : 3 3;
-    -fx-background-radius : 3 3;*/
-    -fx-border-color : #13aff7;
+    -fx-border-color : #97a2be;
 }
 
 .brca_cnv_1 Label{
@@ -285,11 +283,9 @@
 }
 
 .brca_cnv_1_expert Label{
-    -fx-background-color : #cc3e4f;
+    -fx-background-color : transparent;
     -fx-border-width : 0.8;
-/*    -fx-border-radius : 3 3;
-    -fx-background-radius : 3 3;*/
-    -fx-border-color : #13aff7;
+    -fx-border-color : #cc3e4f;
 }
 
 .brca_cnv_3 Label{
@@ -297,11 +293,9 @@
 }
 
 .brca_cnv_3_expert Label{
-    -fx-background-color : #e1b07b;
+    -fx-background-color : transparent;
     -fx-border-width : 0.8;
-    /*-fx-border-radius : 3 3;
-    -fx-background-radius : 3 3;*/
-    -fx-border-color : #13aff7;
+    -fx-border-color : #e1b07b;
 }
 
 .brca_cnv_normal_duplication .label {
@@ -559,62 +553,40 @@
     -fx-background-radius : 15 15;
 }
 
-.amplification_label {
-    -fx-background-color : #e1b07b;
-    -fx-background-radius : 15 15;
-    -fx-min-width : 6;
-    -fx-min-height : 6;
-    -fx-pref-width : 6;
-    -fx-pref-height : 6;
-    -fx-max-width : 6;
-    -fx-max-height : 6;
-    -fx-cursor:hand;
-}
-
 .normal_label {
     -fx-background-color : #97a2be;
     -fx-background-radius : 15 15;
-    -fx-min-width : 6;
-    -fx-min-height : 6;
-    -fx-pref-width : 6;
-    -fx-pref-height : 6;
-    -fx-max-width : 6;
-    -fx-max-height : 6;
+    -fx-min-width : 8;
+    -fx-min-height : 8;
+    -fx-pref-width : 8;
+    -fx-pref-height : 8;
+    -fx-max-width : 8;
+    -fx-max-height : 8;
     -fx-cursor:hand;
 }
 
 .deletion_normal_label {
     -fx-background-color : #cc3e4f;
-    -fx-min-width : 6;
-    -fx-min-height : 6;
-    -fx-pref-width : 6;
-    -fx-pref-height : 6;
-    -fx-max-width : 6;
-    -fx-max-height : 6;
+    -fx-background-radius : 15 15;
+    -fx-min-width : 8;
+    -fx-min-height : 8;
+    -fx-pref-width : 8;
+    -fx-pref-height : 8;
+    -fx-max-width : 8;
+    -fx-max-height : 8;
     -fx-cursor:hand;
 }
 
 .amplification_normal_label {
     -fx-background-color : #e1b07b;
-    -fx-min-width : 6;
-    -fx-min-height : 6;
-    -fx-pref-width : 6;
-    -fx-pref-height : 6;
-    -fx-max-width : 6;
-    -fx-max-height : 6;
-    -fx-cursor:hand;
-}
-
-.deletion_label {
-    -fx-background-color : #cc3e4f;
     -fx-background-radius : 15 15;
-    -fx-min-width : 6;
-    -fx-min-height : 6;
-    -fx-pref-width : 6;
-    -fx-pref-height : 6;
-    -fx-max-width : 6;
-    -fx-max-height : 6;
-    -fx-cursor : hand;
+    -fx-min-width : 8;
+    -fx-min-height : 8;
+    -fx-pref-width : 8;
+    -fx-pref-height : 8;
+    -fx-max-width : 8;
+    -fx-max-height : 8;
+    -fx-cursor:hand;
 }
 
 .domain_label {

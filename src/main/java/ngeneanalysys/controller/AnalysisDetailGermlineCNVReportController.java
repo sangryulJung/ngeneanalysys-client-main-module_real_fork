@@ -115,27 +115,27 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
         List<BrcaCnvExon> brcaCnvExonDeletionList = brcaCnvExons.stream().filter(brcaCnvExon ->
                 brcaCnvExon.getIncludedInReport().equals("Y") &&
                 (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
-                        BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
+                        BrcaCNVCode.COPY_LOSS.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                         (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
-                        BrcaCNVCode.DELETION.getCode().equals(brcaCnvExon.getSwCnv())))
+                        BrcaCNVCode.COPY_LOSS.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
         List<BrcaCnvExon> brcaCnvExonDuplicationList = brcaCnvExons.stream().filter(brcaCnvExon ->
                 brcaCnvExon.getIncludedInReport().equals("Y") &&
                 (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
-                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getExpertCnv())) ||
+                        BrcaCNVCode.COPY_GAIN.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                         (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
-                        BrcaCNVCode.AMPLIFICATION.getCode().equals(brcaCnvExon.getSwCnv())))
+                        BrcaCNVCode.COPY_GAIN.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
 
         if(!brcaCnvExonDeletionList.isEmpty()) {
-            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.DELETION.getCode()),
+            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.COPY_LOSS.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDeletionList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
         }
 
         if(!brcaCnvExonDuplicationList.isEmpty()) {
-            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.AMPLIFICATION.getCode()),
+            BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.COPY_GAIN.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDuplicationList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
@@ -149,16 +149,16 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
             deletionCount = brcaCnvExonList.stream().filter(item ->
                     item.getIncludedInReport().equals("Y") &&
                     (StringUtils.isNotEmpty(item.getExpertCnv()) &&
-                            BrcaCNVCode.DELETION.getCode().equals(item.getExpertCnv())) ||
+                            BrcaCNVCode.COPY_LOSS.getCode().equals(item.getExpertCnv())) ||
                             (StringUtils.isEmpty(item.getExpertCnv()) &&
-                                    BrcaCNVCode.DELETION.getCode().equals(item.getSwCnv()))).count();
+                                    BrcaCNVCode.COPY_LOSS.getCode().equals(item.getSwCnv()))).count();
 
             amplificationCount = brcaCnvExonList.stream().filter(item ->
                     item.getIncludedInReport().equals("Y") &&
                     (StringUtils.isNotEmpty(item.getExpertCnv()) &&
-                            BrcaCNVCode.AMPLIFICATION.getCode().equals(item.getExpertCnv())) ||
+                            BrcaCNVCode.COPY_GAIN.getCode().equals(item.getExpertCnv())) ||
                             (StringUtils.isEmpty(item.getExpertCnv()) &&
-                                    BrcaCNVCode.AMPLIFICATION.getCode().equals(item.getSwCnv()))).count();
+                                    BrcaCNVCode.COPY_GAIN.getCode().equals(item.getSwCnv()))).count();
         }
 
         totalCount = deletionCount + amplificationCount;

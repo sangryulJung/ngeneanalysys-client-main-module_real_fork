@@ -59,11 +59,11 @@
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin></Label>
-                  <Label text=": Deletion" />
+                  <Label text="Copy Loss" />
                   <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #97a2be; -fx-background-radius: 15;" />
-                  <Label text=": Normal" />
+                  <Label text=" Normal" />
                   <Label maxHeight="16.0" maxWidth="16.0" minHeight="16.0" minWidth="16.0" style="-fx-background-color: #e1b07b; -fx-background-radius: 15;" />
-                  <Label text=": Amplification">
+                  <Label text="Copy Gain">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin></Label>
@@ -95,29 +95,29 @@
         <columns>
           <TableColumn fx:id="geneTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Gene" />
           <TableColumn fx:id="exonTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Exon" />
-            <TableColumn fx:id="cnvTableColumn" prefWidth="110.0" style="-fx-alignment: center;" text="CNV" />
+            <TableColumn fx:id="cnvTableColumn" prefWidth="110.0" style="-fx-alignment: center; -fx-underline: true;" text="CNV" />
             <TableColumn fx:id="reportTableColumn" prefWidth="60.0" style="-fx-alignment: center;" text="Report" />
             <TableColumn fx:id="warningTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Warning" />
             <TableColumn fx:id="domainTableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Domain" />
             <TableColumn fx:id="totalTableColumn" prefWidth="135.0" style="-fx-alignment: center;" text="Total Amplicon" />
             <TableColumn prefWidth="300.0" text="Amplicon Copy Number">
                <columns>
-                  <TableColumn fx:id="copyNumber1TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="1" />
-                  <TableColumn fx:id="copyNumber2TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="2" />
-                  <TableColumn fx:id="copyNumber3TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="3" />
+                  <TableColumn fx:id="copyNumber1TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Loss" />
+                  <TableColumn fx:id="copyNumber2TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Normal" />
+                  <TableColumn fx:id="copyNumber3TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Gain" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="commentTableColumn" prefWidth="555.0" text="Comment" />
+            <TableColumn fx:id="commentTableColumn" prefWidth="555.0" style="-fx-underline: true;" text="Comment" />
         </columns>
       </TableView>
-      <HBox alignment="BOTTOM_LEFT" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets bottom="5.0" />
-         </GridPane.margin>
-      </HBox>
-      <HBox alignment="BOTTOM_RIGHT" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+      <HBox alignment="BOTTOM_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <children>
-            <Label maxWidth="70.0" minWidth="70.0" onMouseClicked="#doExonCnvChange" prefWidth="70.0" styleClass="submitBtn" text="CNV">
+            <Label maxWidth="90.0" minWidth="90.0" onMouseClicked="#doExonCnvChange" prefWidth="90.0" styleClass="submitBtn" text="Modify CNV">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label maxWidth="70.0" minWidth="70.0" onMouseClicked="#doExonAddToReport" prefWidth="70.0" styleClass="submitBtn" text="Report">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -154,7 +154,7 @@
                                     <VBox maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
                                  </children>
                                  <padding>
-                                    <Insets right="25.0" />
+                                    <Insets right="20.0" />
                                  </padding>
                               </VBox>
                            </children>
@@ -208,17 +208,17 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label text="3" />
-                        <Label text="2" />
-                        <Label text="1" />
+                        <Label minHeight="20.0" styleClass="font_size_10" text="Gain" />
+                        <Label minHeight="20.0" styleClass="font_size_10" text="Normal" />
+                        <Label minHeight="20.0" styleClass="font_size_10" text="Loss" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0.5;">
+                  <VBox prefHeight="200.0" prefWidth="5.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0.5;">
                      <children>
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
-                        <VBox maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" opacity="0.2" prefHeight="20.0" prefWidth="20.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0;" />
+                        <VBox maxHeight="20.0" maxWidth="5.0" minHeight="20.0" minWidth="5.0" opacity="0.2" prefHeight="20.0" prefWidth="5.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                        <VBox maxHeight="20.0" maxWidth="5.0" minHeight="20.0" minWidth="5.0" opacity="0.2" prefHeight="20.0" prefWidth="5.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                        <VBox maxHeight="20.0" maxWidth="5.0" minHeight="20.0" minWidth="5.0" opacity="0.2" prefHeight="20.0" prefWidth="5.0" style="-fx-border-color: black; -fx-border-width: 0 0 0.5 0;" />
+                        <VBox maxHeight="20.0" maxWidth="5.0" minHeight="20.0" minWidth="5.0" opacity="0.2" prefHeight="20.0" prefWidth="5.0" style="-fx-border-color: black; -fx-border-width: 0 0 0 0;" />
                      </children>
                   </VBox>
                </children>

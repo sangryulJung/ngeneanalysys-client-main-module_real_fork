@@ -37,15 +37,13 @@ import ngeneanalysys.model.render.SNPsINDELsList;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.lang.WordUtils;
 import org.controlsfx.control.PopOver;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,7 +61,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private static final double DELETION_HEIGHT = 56;
 
-    private static final double LABEL_CENTER_FIX = 0.5;
+    private static final double LABEL_CENTER_FIX = 0;
+
+    private static final double LABEL_HEIGHT = 8;
 
     private CheckBox tableCheckBox;
 
@@ -286,7 +286,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void rePositionLabel(String gene, List<Label> list, double value) {
-        double positionX = (calcOneBoxSize(getTotalAmpliconCountInGene(gene)) / 2) - 5;
+        double positionX = (calcOneBoxSize(getTotalAmpliconCountInGene(gene)) / 2) - 6;
         for(Label label: list) {
             AnchorPane.setLeftAnchor(label, positionX);
             positionX += calcOneBoxSize(getTotalAmpliconCountInGene(gene), value);
@@ -298,11 +298,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
         for(int idx = 0; idx < totalIdx; idx++) {
             Line line = list.get(idx);
-            line.setStartX(AnchorPane.getLeftAnchor(labelList.get(idx)) + 3);
-            line.setStartY(AnchorPane.getTopAnchor(labelList.get(idx)) + 3);
+            line.setStartX(AnchorPane.getLeftAnchor(labelList.get(idx)) + (LABEL_HEIGHT / 2));
+            line.setStartY(AnchorPane.getTopAnchor(labelList.get(idx)) + (LABEL_HEIGHT / 2));
 
-            line.setEndX(AnchorPane.getLeftAnchor(labelList.get(idx + 1)) + 3);
-            line.setEndY(AnchorPane.getTopAnchor(labelList.get(idx + 1)) + 3);
+            line.setEndX(AnchorPane.getLeftAnchor(labelList.get(idx + 1)) + (LABEL_HEIGHT / 2));
+            line.setEndY(AnchorPane.getTopAnchor(labelList.get(idx + 1)) + (LABEL_HEIGHT / 2));
         }
     }
 
@@ -324,7 +324,17 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         cnvTableColumn.setCellFactory(param -> new TableCell<BrcaCnvExon, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
-                if(item == null || empty) {
+                if(StringUtils.isNotEmpty(item)) {
+                    setText(item);
+                    this.setCursor(Cursor.HAND);
+                    BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
+                    this.setOnMouseClicked(ev -> popUp(Arrays.asList(brcaCnvExon), "Modify CNV in individual"));
+                } else {
+                    this.setCursor(Cursor.DEFAULT);
+                    this.setOnMouseClicked(null);
+                    setText(null);
+                }
+                /*if(item == null || empty) {
                     setGraphic(null);
                     return;
                 }
@@ -332,13 +342,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 Label label = new Label(WordUtils.capitalize(item));
                 Tooltip toolTip = new Tooltip(item);
                 label.setTooltip(toolTip);
+                label.setStyle(label.getStyle() + "; -fx-underline : true;");
                 label.getStyleClass().remove("label");
                 if(brcaCnvExon.getExpertCnv() != null) {
                     if (item.equalsIgnoreCase(BrcaCNVCode.NORMAL.getCode())) {
                         label.getStyleClass().add("expert_cnv_normal");
-                    } else if (item.equalsIgnoreCase(BrcaCNVCode.AMPLIFICATION.getCode())) {
+                    } else if (item.equalsIgnoreCase(BrcaCNVCode.COPY_GAIN.getCode())) {
                         label.getStyleClass().add("expert_cnv_duplication");
-                    } else if (item.equalsIgnoreCase(BrcaCNVCode.DELETION.getCode())) {
+                    } else if (item.equalsIgnoreCase(BrcaCNVCode.COPY_LOSS.getCode())) {
                         label.getStyleClass().add("expert_cnv_deletion");
                     } else {
                         setGraphic(null);
@@ -347,9 +358,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 } else {
                     if (item.equalsIgnoreCase(BrcaCNVCode.NORMAL.getCode())) {
                         label.getStyleClass().add("cnv_normal");
-                    } else if (item.equalsIgnoreCase(BrcaCNVCode.AMPLIFICATION.getCode())) {
+                    } else if (item.equalsIgnoreCase(BrcaCNVCode.COPY_GAIN.getCode())) {
                         label.getStyleClass().add("cnv_duplication");
-                    } else if (item.equalsIgnoreCase(BrcaCNVCode.DELETION.getCode())) {
+                    } else if (item.equalsIgnoreCase(BrcaCNVCode.COPY_LOSS.getCode())) {
                         label.getStyleClass().add("cnv_deletion");
                     } else {
                         setGraphic(null);
@@ -360,7 +371,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 label.setCursor(Cursor.HAND);
                 label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> popUp(Arrays.asList(brcaCnvExon), "Modify CNV in individual"));
 
-                setGraphic(label);
+                setGraphic(label);*/
             }
         });
         reportTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIncludedInReport()));
@@ -504,7 +515,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         try {
             HttpClientResponse  response = apiService.get("/analysisResults/brcaCnvExonLog/" + id, null, null, null);
             PagedBrcaCnvLog pagedBrcaCnvLog = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCnvLog.class);
-
+            pagedBrcaCnvLog.getResult().sort((a, b) -> -(a.getId() - b.getId()));
             PopOver popOver = new PopOver();
             popOver.setMinWidth(650);
             popOver.setHeight(150);
@@ -547,7 +558,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             tableView.getItems().addAll(pagedBrcaCnvLog.getResult());
             hBox.getChildren().add(tableView);
             popOver.getRoot().setAlignment(Pos.CENTER);
-            popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+            popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
             //popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
             popOver.setHeaderAlwaysVisible(true);
             popOver.setAutoHide(true);
@@ -568,8 +579,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         if(date == null)
             return "";
 
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        return fmt.print(date);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return format.format(date.toDate());
     }
 
     private void popUp(List<BrcaCnvExon> changeList, String title) {
@@ -820,11 +831,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         for(int idx = 0; idx < totalIdx; idx++) {
             Line line = new Line();
             lineList.add(line);
-            line.setStartX(AnchorPane.getLeftAnchor(labelList.get(idx)) + 3);
-            line.setStartY(AnchorPane.getTopAnchor(labelList.get(idx)) + 3);
+            line.setStartX(AnchorPane.getLeftAnchor(labelList.get(idx)) + (LABEL_HEIGHT / 2));
+            line.setStartY(AnchorPane.getTopAnchor(labelList.get(idx)) + (LABEL_HEIGHT / 2));
 
-            line.setEndX(AnchorPane.getLeftAnchor(labelList.get(idx + 1)) + 3);
-            line.setEndY(AnchorPane.getTopAnchor(labelList.get(idx + 1)) + 3);
+            line.setEndX(AnchorPane.getLeftAnchor(labelList.get(idx + 1)) + (LABEL_HEIGHT / 2));
+            line.setEndY(AnchorPane.getTopAnchor(labelList.get(idx + 1)) + (LABEL_HEIGHT / 2));
             line.setFill(Color.BLACK);
             line.setStrokeWidth(0.5f);
             pane.getChildren().add(0, line);
@@ -900,6 +911,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         line.setStyle(boxStyle);
         box.getChildren().add(line);
         Label label = new Label("3'");
+        reSizeNodeWidth(label, 11);
         box.getChildren().add(label);
     }
 
@@ -917,7 +929,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private void paintPlotBox(HBox box, BrcaCnvExon brcaCnvExon) {
         box.getStyleClass().removeAll(box.getStyleClass());
         if(StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv())) {
-            if(brcaCnvExon.getExpertCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())) {
+            if(brcaCnvExon.getExpertCnv().equals(BrcaCNVCode.COPY_GAIN.getCode())) {
                 box.getStyleClass().add("brca_cnv_3_expert");
             } else if(brcaCnvExon.getExpertCnv().equals(BrcaCNVCode.NORMAL.getCode())) {
                 box.getStyleClass().add("brca_cnv_2_expert");
@@ -925,7 +937,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 box.getStyleClass().add("brca_cnv_1_expert");
             }
         } else {
-            if(brcaCnvExon.getSwCnv().equals(BrcaCNVCode.AMPLIFICATION.getCode())) {
+            if(brcaCnvExon.getSwCnv().equals(BrcaCNVCode.COPY_GAIN.getCode())) {
                 box.getStyleClass().add("brca_cnv_3");
             } else if(brcaCnvExon.getSwCnv().equals(BrcaCNVCode.NORMAL.getCode())) {
                 box.getStyleClass().add("brca_cnv_2");
@@ -985,7 +997,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void createLabelList(String gene, List<Label> labelList, AnchorPane anchorPane) {
-        double positionX = (calcOneBoxSize(getTotalAmpliconCountInGene(gene)) / 2) - 5;
+        double xPosition = (calcOneBoxSize(getTotalAmpliconCountInGene(gene)) / 2) - 6;
         List<BrcaCnvExon> list = getBrcaCnvExons(gene);
 
         for(BrcaCnvExon brcaCnvExon : list) {
@@ -1004,8 +1016,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 });
                 anchorPane.getChildren().add(label);
                 AnchorPane.setTopAnchor(label, getLabelHeight(prediction) + LABEL_CENTER_FIX);
-                AnchorPane.setLeftAnchor(label, positionX);
-                positionX += calcOneBoxSize(getTotalAmpliconCountInGene(gene));
+                AnchorPane.setLeftAnchor(label, xPosition);
+                xPosition += calcOneBoxSize(getTotalAmpliconCountInGene(gene));
                 labelList.add(label);
             }
         }
@@ -1130,12 +1142,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private String getLabelStyleClass(Integer prediction, BrcaCnvAmplicon amplicon) {
-        if(prediction == 1) {
-            return "deletion_label";
-        } else if(prediction == 2) {
+        if(prediction == 2) {
             return getAmbiguousValue(amplicon);
         }
-        return "amplification_label";
+        return "normal_label";
     }
 
     private Double getLabelHeight(Integer prediction) {
@@ -1215,7 +1225,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
     }
 
-    private String getExportFields() {
+    /*private String getExportFields() {
         StringBuilder stringBuilder = new StringBuilder();
 
         getSelectedItemList().forEach(item -> stringBuilder.append(item.getId()).append(","));
@@ -1226,7 +1236,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     public void exportExcel() {
         WorksheetUtil worksheetUtil = new WorksheetUtil();
         worksheetUtil.exportGermlineCnvData(this.getMainApp(), sample, true, false);
-    }
+    }*/
 
     private List<BrcaCnvExon> getSelectedItemList() {
         if(brcaCnvTable.getItems() == null) {
@@ -1286,6 +1296,15 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             DialogUtil.warning("", "Please select Exon to change the value.", mainController.getPrimaryStage(), true);
         } else {
             popUp(getSelectedItemList(), "Modify CNV in multi-selection");
+        }
+    }
+
+    @FXML
+    private void doExonAddToReport() {
+        if(getSelectedItemList().isEmpty()) {
+            DialogUtil.warning("", "Please select Exon to change the value.", mainController.getPrimaryStage(), true);
+        } else {
+            popUpReport(getSelectedItemList());
         }
     }
 
