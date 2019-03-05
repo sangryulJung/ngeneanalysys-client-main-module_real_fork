@@ -89,7 +89,7 @@ public class BatchExcludeReportDialogController extends SubPaneController {
         } else {
             if (brcaCnvExonList.stream().allMatch(v -> v.getIncludedInReport().equals("Y"))) {
                 addToReportCheckBox.setSelected(true);
-            } else if (variantList.stream().allMatch(v -> v.getSnpInDel().getIncludedInReport().equals("N"))) {
+            } else if (brcaCnvExonList.stream().allMatch(v -> v.getIncludedInReport().equals("N"))) {
                 addToReportCheckBox.setSelected(false);
             } else {
                 addToReportCheckBox.setIndeterminate(true);

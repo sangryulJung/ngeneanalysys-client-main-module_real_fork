@@ -565,21 +565,13 @@
     -fx-cursor:hand;
 }
 
-.deletion_normal_label {
-    -fx-background-color : #cc3e4f;
-    -fx-background-radius : 15 15;
-    -fx-min-width : 8;
-    -fx-min-height : 8;
-    -fx-pref-width : 8;
-    -fx-pref-height : 8;
-    -fx-max-width : 8;
-    -fx-max-height : 8;
-    -fx-cursor:hand;
-}
 
-.amplification_normal_label {
-    -fx-background-color : #e1b07b;
-    -fx-background-radius : 15 15;
+.putative_normal_label {
+    -fx-background-color : #FFFFFF;
+    -fx-background-radius : 15;
+    -fx-border-width : 0.5;
+    -fx-border-radius : 15;
+    -fx-border-color : #97a2be;
     -fx-min-width : 8;
     -fx-min-height : 8;
     -fx-pref-width : 8;

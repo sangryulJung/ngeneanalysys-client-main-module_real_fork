@@ -205,7 +205,7 @@ public class ConvertUtil {
 						if (last.equals("Promoter") && item.equals("1")) {
 							tempList.add(item);
 						} else if (last.equals("Promoter")) {
-							sb.append(last).append(" / ");
+							sb.append(last).append(", ");
 							tempList.clear();
 						} else {
 							int lastInt = Integer.parseInt(last);
@@ -214,11 +214,11 @@ public class ConvertUtil {
                                     ("BRCA1".equals(gene) && lastInt == 3 && currentInt == 5)*/) {
 								tempList.add(item);
 							} else if (tempList.size() > 1) {
-								sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast()).append(" / ");
+								sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast()).append(", ");
 								tempList.clear();
 								tempList.add(item);
 							} else {
-								sb.append(last).append(" / ");
+								sb.append(last).append(", ");
 								tempList.clear();
 								tempList.add(item);
 							}

@@ -112,7 +112,7 @@
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <children>
                                                 <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
-                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Amplification Cut-off Level:" />
+                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Copy Gain Cut-off Level:" />
                                                 <TextField fx:id="brcaCnvAmpliconCnDuplicationCutoffTextField" prefWidth="60.0" text="0.2" />
                                              </children>
                                           </HBox>
@@ -158,7 +158,7 @@
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                              <children>
                                                 <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
-                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Deletion Cut-off Level:" />
+                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Copy Loss Cut-off Level:" />
                                                 <TextField fx:id="brcaCnvAmpliconCnDeletionCutoffTextField" prefWidth="60.0" text="0.25" />
                                              </children>
                                           </HBox>
@@ -174,12 +174,12 @@
                                                       <Cursor fx:constant="HAND" />
                                                    </cursor>
                                                 </Label>
-                                                <Label text="Amplification: " />
+                                                <Label text="Copy Gain: " />
                                                 <TextField fx:id="lowConfidenceCnvDuplicationTextField" prefWidth="60.0">
                                                    <HBox.margin>
                                                       <Insets right="20.0" />
                                                    </HBox.margin></TextField>
-                                                <Label text="Deletion: " />
+                                                <Label text="Copy Loss: " />
                                                 <TextField fx:id="lowConfidenceCnvDeletionTextField" prefWidth="60.0" />
                                              </children>
                                           </HBox>

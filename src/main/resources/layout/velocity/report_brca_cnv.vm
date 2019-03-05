@@ -230,7 +230,7 @@
 									<fo:block padding="2mm">Positively, clinically significant CNV identified.</fo:block>
 									#foreach($cnv in $contents.brcaCnvResults)
 										<fo:block padding="1mm">
-											<![CDATA[$cnv.gene]]> (<![CDATA[$cnv.cnv]]>): <![CDATA[$cnv.result]]>
+											<![CDATA[$cnv.gene]]>: <![CDATA[$cnv.cnv]]> (Exon <![CDATA[$cnv.result]]>)
 										</fo:block>
 									#end
 								#else

@@ -397,6 +397,61 @@
 	-fx-padding : 0 0 15 0;
 }
 
+/************ENIGMA FLAG**************/
+
+.enigma_level_a {
+	-fx-background-color:#F6545C;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.enigma_level_b {
+	-fx-background-color:#FF9482;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.enigma_level_c {
+	-fx-background-color:#70ACF5;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.enigma_level_d {
+	-fx-background-color:#1F2D87;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+.enigma_level_e {
+	-fx-background-color:#5a64a5;
+	-fx-background-radius:2;
+	-fx-font-size:12;
+	-fx-text-fill:#fff;
+	-fx-pref-width:20;
+	-fx-text-alignment:center ;
+	-fx-alignment:center;
+}
+
+
+/**************************/
+
 .acmg_PVS {
 	-fx-background-color:#C00000;
 	-fx-background-radius:2;

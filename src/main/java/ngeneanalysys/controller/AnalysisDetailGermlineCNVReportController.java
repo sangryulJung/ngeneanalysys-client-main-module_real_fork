@@ -109,18 +109,17 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
     }
 
     private void addBrcaCnvTable(String gene) {
-        List<BrcaCnvExon> brcaCnvExons = brcaCnvExonList.stream().filter(item -> gene.equals(item.getGene()))
+        List<BrcaCnvExon> brcaCnvExons = brcaCnvExonList.stream().filter(item -> gene.equals(item.getGene())
+                && item.getIncludedInReport().equals("Y"))
                 .collect(Collectors.toList());
 
         List<BrcaCnvExon> brcaCnvExonDeletionList = brcaCnvExons.stream().filter(brcaCnvExon ->
-                brcaCnvExon.getIncludedInReport().equals("Y") &&
                 (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.COPY_LOSS.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                         (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.COPY_LOSS.getCode().equals(brcaCnvExon.getSwCnv())))
                 .collect(Collectors.toList());
         List<BrcaCnvExon> brcaCnvExonDuplicationList = brcaCnvExons.stream().filter(brcaCnvExon ->
-                brcaCnvExon.getIncludedInReport().equals("Y") &&
                 (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) &&
                         BrcaCNVCode.COPY_GAIN.getCode().equals(brcaCnvExon.getExpertCnv())) ||
                         (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) &&
@@ -165,8 +164,8 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
 
         if(totalCount > 0) {
             countLabel.setText("(Total : " + totalCount
-                    + (deletionCount > 0 ? ", Deletion: " + deletionCount : "")
-                    + (amplificationCount > 0 ? ", Amplification: " + amplificationCount : "") + ")");
+                    + (deletionCount > 0 ? ", Copy loss: " + deletionCount : "")
+                    + (amplificationCount > 0 ? ", Copy Gain: " + amplificationCount : "") + ")");
         } else {
             countLabel.setText("(Total : " + totalCount + ")");
         }

@@ -155,7 +155,9 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     @SuppressWarnings("unchecked")
     private void setACMG() {
         Map<String, Object> acmg = returnResultsAfterSearch("acmg");
-        if(acmg != null && !acmg.isEmpty()) {
+        Map<String, Object> enigma = returnResultsAfterSearch("ENIGMA");
+        boolean enigmaFlag = enigma != null && StringUtils.isNotEmpty((String)enigma.get("message"));
+        if(enigmaFlag || (acmg != null && !acmg.isEmpty())) {
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -170,14 +172,27 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
             scrollPane.setContent(box);
 
-            String rules = (String)acmg.get("rules");
-            String[] results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
-            String rulesText = StringUtils.isNotEmpty(rules) ? "(" + rules + ")" : "";
+            String rules;
+            String[] results;
+            String rulesText;
+            String pathogenicity;
+            if(enigmaFlag) {
+                rules = (String) enigma.get("rules");
+                results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
+                rulesText = StringUtils.isNotEmpty(rules) ? "(" + rules + ")" : "";
+                pathogenicity = enigma.containsKey("pathogenic") ? (String)enigma.get("pathogenic") : null;
+
+            } else {
+                rules = (String) acmg.get("rules");
+                results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
+                rulesText = StringUtils.isNotEmpty(rules) ? "(" + rules + ")" : "";
+                pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
+            }
 
             Label reason = new Label();
             reason.setMaxWidth(widthSize);
             reason.setWrapText(true);
-            String pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
+
             reason.setText(pathogenicity + rulesText);
             if("benign".equalsIgnoreCase(pathogenicity)) {
                 reason.getStyleClass().add("benign");
@@ -201,37 +216,61 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             } else {
                 for (String result : results) {
                     Map<String, Object> role = (Map<String, Object>) acmg.get(result);
+                    String desc;
+                    String massage;
+                    if(enigmaFlag) {
+                        desc = (String) enigma.get("desc");
+                        massage = (String) enigma.get("message");
+                    } else {
+                        desc = role.containsKey("desc") ? (String) role.get("desc") : null;
+                        massage = role.containsKey("message") ? (String) role.get("message") : null;
+                    }
 
-                    Label roleLabel = new Label(result);
+                    Label roleLabel = new Label();
                     roleLabel.setMaxWidth(50);
                     roleLabel.setWrapText(true);
                     roleLabel.getStyleClass().add("acmg_content_role_label");
-                    if (result.startsWith("PVS")) {
-                        roleLabel.getStyleClass().add("acmg_PVS");
-                    } else if (result.startsWith("PS")) {
-                        roleLabel.getStyleClass().add("acmg_PS");
-                    } else if (result.startsWith("PM")) {
-                        roleLabel.getStyleClass().add("acmg_PM");
-                    } else if (result.startsWith("PP")) {
-                        roleLabel.getStyleClass().add("acmg_PP");
-                    } else if (result.startsWith("BP")) {
-                        roleLabel.getStyleClass().add("acmg_BP");
-                    } else if (result.startsWith("BS")) {
-                        roleLabel.getStyleClass().add("acmg_BS");
-                    } else if (result.startsWith("BA")) {
-                        roleLabel.getStyleClass().add("acmg_BA");
+                    if(enigmaFlag) {
+                        roleLabel.setText("ENIGMA");
+                        if("benign".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_e");
+                        } else if("likely benign".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_d");
+                        } else if("uncertain significance".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_c");
+                        } else if("likely pathogenic".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_b");
+                        } else if("pathogenic".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_a");
+                        }
+                    } else {
+                        roleLabel.setText(result);
+                        if (result.startsWith("PVS")) {
+                            roleLabel.getStyleClass().add("acmg_PVS");
+                        } else if (result.startsWith("PS")) {
+                            roleLabel.getStyleClass().add("acmg_PS");
+                        } else if (result.startsWith("PM")) {
+                            roleLabel.getStyleClass().add("acmg_PM");
+                        } else if (result.startsWith("PP")) {
+                            roleLabel.getStyleClass().add("acmg_PP");
+                        } else if (result.startsWith("BP")) {
+                            roleLabel.getStyleClass().add("acmg_BP");
+                        } else if (result.startsWith("BS")) {
+                            roleLabel.getStyleClass().add("acmg_BS");
+                        } else if (result.startsWith("BA")) {
+                            roleLabel.getStyleClass().add("acmg_BA");
+                        }
                     }
                     box.getChildren().add(roleLabel);
 
                     Label descLabel = new Label();
-                    String desc = role.containsKey("desc") ? (String) role.get("desc") : null;
+
                     descLabel.setWrapText(true);
                     descLabel.setText(desc);
                     descLabel.getStyleClass().add("acmg_content_desc_label");
                     descLabel.setMaxWidth(widthSize);
                     box.getChildren().add(descLabel);
 
-                    String massage = role.containsKey("message") ? (String) role.get("message") : null;
                     if (!StringUtils.isEmpty(massage)) {
                         Label msgLabel = new Label();
                         msgLabel.setWrapText(true);

@@ -79,6 +79,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private final String[] brcaAndPlusNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
 
     @FXML
+    private Label totalCountLabel;
+
+    @FXML
     private RadioButton bicNomenclatureRadioButton;
     @FXML
     private RadioButton hgvsNomenclatureRadioButton;
@@ -651,6 +654,17 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     return Integer.compare(intA, intB);
                 }
             }).collect(Collectors.toList());
+            long brca1LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA1")
+                    && checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode())).count();
+            long brca1GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA1")
+                    && checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode())).count();
+            long brca2LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA2")
+                    && checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode())).count();
+            long brca2GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA2")
+                    && checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode())).count();
+
+            totalCountLabel.setText("BRCA1 Copy Loss : " + brca1LossCount + ", Copy Gain : " + brca1GainCount +
+                    " | BRCA1 Copy Loss : " + brca2LossCount + ", Copy Gain : " + brca2GainCount);
 
             setTableItem(geneComboBox.getSelectionModel().getSelectedItem().getValue());
 
@@ -659,6 +673,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         } catch (WebAPIException wae) {
             DialogUtil.warning(wae.getHeaderText(), wae.getMessage(), mainApp.getPrimaryStage(), true);
         }
+    }
+
+    private boolean checkCnv(BrcaCnvExon brcaCnvExon, String value) {
+        return (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) && brcaCnvExon.getExpertCnv().equals(value))
+                || (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) && brcaCnvExon.getSwCnv().equals(value));
     }
 
     private void initImageArea() {
@@ -1033,7 +1052,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         mainVBox.setMinWidth(200);
         mainVBox.setPrefWidth(200);
         mainVBox.setPrefHeight(50);
-        Label titleLabel = new Label("Sample Ratio");
+        Label titleLabel = new Label("Amplicon Ratio");
         titleLabel.getStyleClass().addAll("font_size_12", "bold");
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setPrefWidth(200);
@@ -1041,14 +1060,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         legendBox.setAlignment(Pos.CENTER);
         legendBox.setMinWidth(200);
         legendBox.setPrefWidth(200);
-        legendBox.setSpacing(60);
+        legendBox.setSpacing(55);
         VBox.setMargin(legendBox, new Insets(5, 0, 0, 0));
-        Label deletionLabel = new Label("Del");
+        Label deletionLabel = new Label("Loss");
         deletionLabel.getStyleClass().add("font_size_10");
-        Label normalLabel = new Label("Nor");
+        Label normalLabel = new Label("Normal");
         normalLabel.setAlignment(Pos.CENTER);
         normalLabel.getStyleClass().add("font_size_10");
-        Label amplificationLabel = new Label("Amp");
+        Label amplificationLabel = new Label("Gain");
         amplificationLabel.getStyleClass().add("font_size_10");
 
         legendBox.getChildren().addAll(deletionLabel, normalLabel, amplificationLabel);
@@ -1080,6 +1099,18 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         warningLabel.getStyleClass().addAll("font_size_10","txt_red", "bold");
 
         anchorPane.getChildren().add(box);
+
+        if(StringUtils.isNotEmpty(amplicon.getWarning())) {
+            Line line = new Line();
+            line.setStroke(Color.RED);
+            line.setStrokeWidth(1);
+            line.setStartX(calcPosition(amplicon, box.getMinWidth(), normalBox.getMinWidth(), 15));
+            line.setStartY(0);
+            line.setEndX(calcPosition(amplicon, box.getMinWidth(), normalBox.getMinWidth(), 15));
+            line.setEndY(15);
+            anchorPane.getChildren().add(line);
+        }
+
         anchorPane.getChildren().add(position);
         AnchorPane.setTopAnchor(position, 7.5);
         double leftAnchorVal = (mainVBox.getMinWidth() - box.getMinWidth()) / 2;
@@ -1195,6 +1226,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private String getAmbiguousValue(BrcaCnvAmplicon amplicon) {
+        String putative = "putative_normal_label";
         Double deletionGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDeletion();
         Double duplicationGap = panel.getCnvConfigBRCAaccuTest().getLowConfidenceCnvDuplication();
         if(BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode().equals(
@@ -1202,11 +1234,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             if(deletionGap != null && amplicon.getSampleRatio()
                     .subtract(amplicon.getDistributionRangeMin())
                     .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
-                return "deletion_normal_label";
+                return putative;
             } else if((duplicationGap != null && amplicon.getDistributionRangeMax()
                     .subtract(amplicon.getSampleRatio())
                     .compareTo(new BigDecimal(duplicationGap.toString())) < 0)) {
-                return "amplification_normal_label";
+                return putative;
             } else {
                 return "normal_label";
             }
@@ -1214,11 +1246,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             if(deletionGap != null && amplicon.getSampleRatio()
                     .subtract(amplicon.getRawRangeMin())
                     .compareTo(new BigDecimal(deletionGap.toString())) < 0) {
-                return "deletion_normal_label";
+                return putative;
             } else if((duplicationGap != null && amplicon.getRawRangeMax()
                     .subtract(amplicon.getSampleRatio())
                     .compareTo(new BigDecimal(duplicationGap.toString())) < 0)) {
-                return "amplification_normal_label";
+                return putative;
             } else {
                 return "normal_label";
             }
@@ -1312,24 +1344,32 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private void showLegendTooltip(Event event) {
         PopOver popOver = new PopOver();
         popOver.setWidth(260);
-        popOver.setHeight(200);
-        popOver.setMaxHeight(190);
+        popOver.setHeight(210);
+        popOver.setMaxHeight(210);
         VBox mainVBox = new VBox();
         mainVBox.setPrefWidth(260);
-        mainVBox.setPrefHeight(190);
+        mainVBox.setPrefHeight(200);
+        String boxSize = "-fx-min-width : 16; -fx-max-width : 16; -fx-min-height : 11; -fx-max-height : 11;";
         HBox titleBox = createTitleBox();
-        HBox deletion = createContentsBox("-fx-background-radius : 15 15; -fx-background-color : #cc3e4f;",
-                "Deletion");
-        HBox normal = createContentsBox("-fx-background-radius : 15 15; -fx-background-color : #97a2be;",
+        HBox deletion = createContentsBox(boxSize + "-fx-background-color : #cc3e4f;",
+                "Copy Loss");
+        HBox normal = createContentsBox(boxSize + "-fx-background-color : #97a2be;",
                 "Normal");
-        HBox amplification = createContentsBox("-fx-background-radius : 15 15; -fx-background-color : #e1b07b;",
-                "Amplification");
-        HBox userChange = createContentsBox("-fx-border-width : 0.5; -fx-border-color : #13aff7;",
-                "CNV in Exon changed by User");
-        HBox putativeDel = createContentsBox("-fx-background-color : #cc3e4f;", "Putative Deletion");
-        HBox putativeAmp = createContentsBox("-fx-background-color : #e1b07b;", "Putative Amplification");
+        HBox amplification = createContentsBox(boxSize + "-fx-background-color : #e1b07b;",
+                "Copy Gain");
+        HBox userDeletion = createContentsBox(boxSize + "-fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-color : #cc3e4f",
+                "Copy Loss changed by User");
+        HBox userNormal = createContentsBox(boxSize + "-fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-color : #97a2be",
+                "Normal changed by User");
+        HBox userAmplification = createContentsBox(boxSize + "-fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-color : #e1b07b",
+                "Copy Gain changed by User");
+        HBox amplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #97a2be;",
+                "Amplicon");
+        HBox putativeAmplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-radius : 15; -fx-border-color : #97a2be;",
+                "Putative Amplicon");
 
-        mainVBox.getChildren().addAll(titleBox, deletion, amplification, normal, putativeDel, putativeAmp, userChange);
+        mainVBox.getChildren().addAll(titleBox, deletion, amplification, normal, userDeletion, userNormal,
+                userAmplification, amplicon, putativeAmplicon);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
         popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
@@ -1425,10 +1465,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         iconBox.setAlignment(Pos.CENTER);
         Label icon = new Label();
         icon.setStyle(style);
-        icon.setPrefWidth(15);
-        icon.setMinHeight(15);
-        icon.setPrefHeight(15);
-        icon.setMaxHeight(15);
+        icon.setPrefWidth(8);
+        icon.setMinHeight(8);
+        icon.setPrefHeight(8);
+        icon.setMaxHeight(8);
         icon.setAlignment(Pos.CENTER);
         iconBox.getChildren().add(icon);
 

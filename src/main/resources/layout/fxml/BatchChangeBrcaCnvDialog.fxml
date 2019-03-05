@@ -16,12 +16,12 @@
          <children>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="390.0" spacing="10.0">
                <children>
-                  <RadioButton fx:id="deletionRadioButton" mnemonicParsing="false" text="Deletion">
+                  <RadioButton fx:id="deletionRadioButton" mnemonicParsing="false" text="Copy Loss">
                      <toggleGroup>
                         <ToggleGroup fx:id="cnvToggle" />
                      </toggleGroup></RadioButton>
                   <RadioButton fx:id="normalRadioButton" mnemonicParsing="false" text="Normal" toggleGroup="$cnvToggle" />
-                  <RadioButton fx:id="amplificationRadioButton" mnemonicParsing="false" selected="true" text="Amplification" toggleGroup="$cnvToggle" />
+                  <RadioButton fx:id="amplificationRadioButton" mnemonicParsing="false" selected="true" text="Copy Gain" toggleGroup="$cnvToggle" />
                </children>
             </HBox>
             <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="390.0">
