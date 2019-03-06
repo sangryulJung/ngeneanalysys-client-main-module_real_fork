@@ -665,13 +665,15 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     return Integer.compare(intA, intB);
                 }
             }).collect(Collectors.toList());
-            long brca1LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA1)
+            List<BrcaCnvExon> countList = brcaCnvExonList.stream()
+                    .filter(item -> item.getExon().matches("[0-9]*")).collect(Collectors.toList());
+            long brca1LossCount = countList.stream().filter(item -> item.getGene().equals(BRCA1)
                     && checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode())).count();
-            long brca1GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA1)
+            long brca1GainCount = countList.stream().filter(item -> item.getGene().equals(BRCA1)
                     && checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode())).count();
-            long brca2LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA2)
+            long brca2LossCount = countList.stream().filter(item -> item.getGene().equals(BRCA2)
                     && checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode())).count();
-            long brca2GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA2)
+            long brca2GainCount = countList.stream().filter(item -> item.getGene().equals(BRCA2)
                     && checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode())).count();
 
             totalCountLabel.setText("BRCA1 Copy Loss : " + brca1LossCount + ", Copy Gain : " + brca1GainCount +

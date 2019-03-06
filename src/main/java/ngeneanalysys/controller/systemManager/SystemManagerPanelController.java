@@ -505,20 +505,20 @@ public class SystemManagerPanelController extends SubPaneController {
 
         essentialGenesTextField.setText("");
         essentialGenesTextField.setDisable(false);
-        indelMinAlleleFractionTextField.setText("5.0");
+        indelMinAlleleFractionTextField.setText("");
         indelMinAlleleFractionTextField.setDisable(false);
-        indelMinReadDepthTextField.setText("30");
+        indelMinReadDepthTextField.setText("");
         indelMinReadDepthTextField.setDisable(false);
-        indelMinAlternateCountTextField.setText("6");
+        indelMinAlternateCountTextField.setText("");
         indelMinAlternateCountTextField.setDisable(false);
 
         snvMinAlleleFractionTextField.setText("");
         snvMinAlleleFractionTextField.setDisable(true);
         snvMinAlternateCountTextField.setText("");
         snvMinAlternateCountTextField.setDisable(true);
-        snvMinReadDepthTextField.setText("30");
+        snvMinReadDepthTextField.setText("");
         snvMinReadDepthTextField.setDisable(false);
-        lowConfidenceMinAlleleFractionTextField.setText("5.0");
+        lowConfidenceMinAlleleFractionTextField.setText("");
         lowConfidenceMinAlleleFractionTextField.setDisable(false);
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(false);
@@ -546,20 +546,20 @@ public class SystemManagerPanelController extends SubPaneController {
         essentialGenesTextField.setText("");
         essentialGenesTextField.setDisable(false);
 
-        indelMinAlleleFractionTextField.setText("5.0");
+        indelMinAlleleFractionTextField.setText("");
         indelMinAlleleFractionTextField.setDisable(false);
-        indelMinReadDepthTextField.setText("30");
+        indelMinReadDepthTextField.setText("");
         indelMinReadDepthTextField.setDisable(false);
-        indelMinAlternateCountTextField.setText("6");
+        indelMinAlternateCountTextField.setText("");
         indelMinAlternateCountTextField.setDisable(false);
 
         snvMinAlleleFractionTextField.setText("");
         snvMinAlleleFractionTextField.setDisable(true);
         snvMinAlternateCountTextField.setText("");
         snvMinAlternateCountTextField.setDisable(true);
-        snvMinReadDepthTextField.setText("30");
+        snvMinReadDepthTextField.setText("");
         snvMinReadDepthTextField.setDisable(false);
-        lowConfidenceMinAlleleFractionTextField.setText("5.0");
+        lowConfidenceMinAlleleFractionTextField.setText("");
         lowConfidenceMinAlleleFractionTextField.setDisable(false);
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(false);
@@ -603,7 +603,7 @@ public class SystemManagerPanelController extends SubPaneController {
         indelMinReadDepthTextField.setDisable(true);
         indelMinAlternateCountTextField.setText("");
         indelMinAlternateCountTextField.setDisable(true);
-        snvMinAlleleFractionTextField.setText("30");
+        snvMinAlleleFractionTextField.setText("");
         snvMinAlleleFractionTextField.setDisable(false);
         snvMinAlternateCountTextField.setText("");
         snvMinAlternateCountTextField.setDisable(true);

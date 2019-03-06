@@ -69,6 +69,7 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
         brcaCnvResultList.clear();
         addBrcaCnvTable("BRCA1");
         addBrcaCnvTable("BRCA2");
+        setCountLabel();
         if(!brcaCnvExonList.isEmpty()) {
             brcaCnvResultTable.getItems().addAll(brcaCnvResultList);
         }
@@ -129,6 +130,72 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
         });
     }
 
+    private boolean checkCnv(BrcaCnvExon brcaCnvExon, String value) {
+        return (StringUtils.isNotEmpty(brcaCnvExon.getExpertCnv()) && brcaCnvExon.getExpertCnv().equals(value))
+                || (StringUtils.isEmpty(brcaCnvExon.getExpertCnv()) && brcaCnvExon.getSwCnv().equals(value));
+    }
+
+    private void setCountLabel() {
+        long brca1DeletionCount = 0;
+        long brca1AmplificationCount = 0;
+        long brca2DeletionCount = 0;
+        long brca2AmplificationCount = 0;
+        long brca1TotalCount = 0;
+        long brca2TotalCount = 0;
+
+        if(brcaCnvExonList != null) {
+            List<BrcaCnvExon> brcaCnvExons = brcaCnvExonList.stream()
+                    .filter(item -> item.getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList());
+
+
+            brca1DeletionCount = brcaCnvExons.stream().filter(item ->
+                            item.getGene().equals("BRCA1") &&
+                            (checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode()))).count();
+
+            brca1AmplificationCount = brcaCnvExons.stream().filter(item ->
+                            item.getGene().equals("BRCA1") &&
+                                    (checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode()))).count();
+
+            brca2DeletionCount = brcaCnvExons.stream().filter(item ->
+                            item.getGene().equals("BRCA2") &&
+                                    (checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode()))).count();
+
+            brca2AmplificationCount = brcaCnvExons.stream().filter(item ->
+                            item.getGene().equals("BRCA2") &&
+                                    (checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode()))).count();
+        }
+
+        brca1TotalCount = brca1DeletionCount + brca1AmplificationCount;
+        brca2TotalCount = brca2DeletionCount + brca2AmplificationCount;
+
+        if(brca1TotalCount > 0 || brca2TotalCount > 0) {
+            String brca1Text = "";
+            String brca2Text = "";
+
+            if(brca1DeletionCount > 0 && brca1AmplificationCount > 0) {
+                brca1Text = "BRCA1 Copy Loss : " + brca1DeletionCount + ", Copy Gain : " + brca1AmplificationCount;
+            } else if(brca1DeletionCount > 0) {
+                brca1Text = "BRCA1 Copy Loss : " + brca1DeletionCount;
+            } else if(brca1AmplificationCount > 0) {
+                brca1Text = "BRCA1 Copy Gain : " + brca1AmplificationCount;
+            }
+
+            if(brca2DeletionCount > 0 && brca2AmplificationCount > 0) {
+                brca2Text = "BRCA2 Copy Loss : " + brca2DeletionCount + ", Copy Gain : " + brca2AmplificationCount;
+            } else if(brca1DeletionCount > 0) {
+                brca2Text = "BRCA2 Copy Loss : " + brca2DeletionCount;
+            } else if(brca1AmplificationCount > 0) {
+                brca2Text = "BRCA2 Copy Gain : " + brca2AmplificationCount;
+            }
+
+            countLabel.setText(brca1Text + (StringUtils.isNotEmpty(brca1Text) ? " | " : "")
+                    + brca2Text);
+        } else {
+            countLabel.setText("");
+        }
+    }
+
     private void addBrcaCnvTable(String gene) {
         List<BrcaCnvExon> brcaCnvExons = brcaCnvExonList.stream().filter(item -> gene.equals(item.getGene())
                 && item.getIncludedInReport().equals("Y"))
@@ -159,36 +226,6 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDuplicationList.stream().map(BrcaCnvExon::getExon)
                             .collect(Collectors.toList()), gene));
             brcaCnvResultList.add(brcaCnvResult);
-        }
-
-        long deletionCount = 0;
-        long amplificationCount = 0;
-        long totalCount = 0;
-
-        if(brcaCnvExonList != null) {
-            deletionCount = brcaCnvExonList.stream().filter(item ->
-                    item.getIncludedInReport().equals("Y") &&
-                    (StringUtils.isNotEmpty(item.getExpertCnv()) &&
-                            BrcaCNVCode.COPY_LOSS.getCode().equals(item.getExpertCnv())) ||
-                            (StringUtils.isEmpty(item.getExpertCnv()) &&
-                                    BrcaCNVCode.COPY_LOSS.getCode().equals(item.getSwCnv()))).count();
-
-            amplificationCount = brcaCnvExonList.stream().filter(item ->
-                    item.getIncludedInReport().equals("Y") &&
-                    (StringUtils.isNotEmpty(item.getExpertCnv()) &&
-                            BrcaCNVCode.COPY_GAIN.getCode().equals(item.getExpertCnv())) ||
-                            (StringUtils.isEmpty(item.getExpertCnv()) &&
-                                    BrcaCNVCode.COPY_GAIN.getCode().equals(item.getSwCnv()))).count();
-        }
-
-        totalCount = deletionCount + amplificationCount;
-
-        if(totalCount > 0) {
-            countLabel.setText("(Total : " + totalCount
-                    + (deletionCount > 0 ? ", Copy loss: " + deletionCount : "")
-                    + (amplificationCount > 0 ? ", Copy Gain: " + amplificationCount : "") + ")");
-        } else {
-            countLabel.setText("(Total : " + totalCount + ")");
         }
     }
 }
