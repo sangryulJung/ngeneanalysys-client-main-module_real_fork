@@ -151,6 +151,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private AnalysisDetailVariantStatisticsController statisticsController;
 
+    private AnalysisDetailClinicalSignificantController clinicalSignificantController;
+
     /** 현재 선택된 변이 정보 객체 */
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
     /** 현재 선택된 변이 리스트 객체의 index */
@@ -245,6 +247,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 showPredictionAndInterpretation();
             } else if(interpretationController != null) {
                 interpretationController.contentRefresh();
+            }
+        } catch (Exception e) {
+            logger.error("Unknown Error", e);
+            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    private void setClincialSignificant() {
+        try {
+            // comment tab 화면 출력
+            if (clinicalSignificantTitledPane.getContent() == null) {
+                showClinicalSignificant();
+            } else if(clinicalSignificantController != null) {
+                clinicalSignificantController.refresh();
             }
         } catch (Exception e) {
             logger.error("Unknown Error", e);
@@ -382,6 +398,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         statisticsTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
             if(nv != null && nv) {
                 setStatisticsContents();
+            }
+        });
+        clinicalSignificantTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setClincialSignificant();
             }
         });
 
@@ -875,7 +896,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
                     } else {
                         overviewAccordion.getPanes().remove(interpretationTitledPane);
-                        showClinicalSignificant();
                     }
                     overviewAccordion.setExpandedPane(variantDetailTitledPane);
                 });
@@ -898,9 +918,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             AnalysisDetailClinicalSignificantController controller = loader.getController();
             controller.setMainController(this.getMainController());
             controller.setParamMap(getParamMap());
-            controller.setSelectedAnalysisResultVariant(selectedAnalysisResultVariant);
             controller.setController(this);
             controller.show((Parent) node);
+            clinicalSignificantController = controller;
             clinicalSignificantTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();

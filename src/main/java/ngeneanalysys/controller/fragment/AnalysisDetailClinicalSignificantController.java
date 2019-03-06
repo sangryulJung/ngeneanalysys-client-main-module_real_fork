@@ -93,20 +93,18 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         this.controller = controller;
     }
 
-    /**
-     * @param selectedAnalysisResultVariant VariantAndInterpretationEvidence
-     */
-    public void setSelectedAnalysisResultVariant(VariantAndInterpretationEvidence selectedAnalysisResultVariant) {
-        this.selectedAnalysisResultVariant = selectedAnalysisResultVariant;
-    }
-
     @Override
     public void show(Parent root) throws IOException {
+        refresh();
+        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
+    }
+
+    public void refresh() {
+        selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
         setGermlineArea();
         setACMG();
         checkBoxSetting(addToGermlineReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
         showClinicalSignificantGraph();
-        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
     }
 
     private void checkBoxSetting(CheckBox checkBox, String symbol) {
@@ -117,7 +115,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
-    
     private void setGermlineArea() {
         if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity() != null) {
             for(Node node : predictionArea.getChildren()) {
@@ -153,6 +150,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     @SuppressWarnings("unchecked")
     private void setACMG() {
+        acmgVBox.getChildren().removeAll(acmgVBox.getChildren());
         Map<String, Object> acmg = returnResultsAfterSearch("acmg");
         Map<String, Object> enigma = returnResultsAfterSearch("ENIGMA");
         boolean enigmaFlag = enigma != null && StringUtils.isNotEmpty((String)enigma.get("message"));

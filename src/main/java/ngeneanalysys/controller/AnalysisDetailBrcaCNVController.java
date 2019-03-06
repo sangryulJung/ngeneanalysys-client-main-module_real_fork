@@ -1061,7 +1061,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         mainVBox.setMinWidth(200);
         mainVBox.setPrefWidth(200);
         mainVBox.setPrefHeight(50);
-        Label titleLabel = new Label("Amplicon Ratio");
+        Label titleLabel = new Label("No." +amplicon.getAmplicon() + " Amplicon Ratio");
         titleLabel.getStyleClass().addAll("font_size_12", "bold");
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setPrefWidth(200);
@@ -1102,7 +1102,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         Label warningLabel = new Label();
         if(StringUtils.isNotEmpty(amplicon.getWarning())) {
             warningLabel.setText(amplicon.getWarning()
-                    .replaceAll("low_confidence: ", ""));
+                    .replaceAll("low_confidence: ", "")
+                    .replaceAll(" Amplicon", ""));
         }
         reSizeNodeWidth(warningLabel, 200);
         warningLabel.setAlignment(Pos.CENTER);
