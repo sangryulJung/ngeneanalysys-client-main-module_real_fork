@@ -65,6 +65,10 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private static final double LABEL_HEIGHT = 8;
 
+    private static final String BRCA1 = "BRCA1";
+
+    private static final String BRCA2 = "BRCA2";
+
     private CheckBox tableCheckBox;
 
     private final String[] brcaExonThinArea = new String[]{"BRCA1_1", "BRCA1_2", "BRCA1_24", "BRCA2_1", "BRCA2_2",
@@ -182,13 +186,13 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         brca2LineList = new ArrayList<>();
 
         geneComboBox.setConverter(new ComboBoxConverter());
-        geneComboBox.getItems().add(new ComboBoxItem("BRCA1", "BRCA1 (NM_007294.3)"));
-        geneComboBox.getItems().add(new ComboBoxItem("BRCA2", "BRCA2 (NM_000059.3)"));
+        geneComboBox.getItems().add(new ComboBoxItem(BRCA1, "BRCA1 (NM_007294.3)"));
+        geneComboBox.getItems().add(new ComboBoxItem(BRCA2, "BRCA2 (NM_000059.3)"));
         geneComboBox.getSelectionModel().selectFirst();
         geneComboBox.valueProperty().addListener((ob, ov, nv) -> {
             if(nv != null) {
                 setTableItem(nv.getValue());
-                if(nv.getValue().equals("BRCA1")) {
+                if(nv.getValue().equals(BRCA1)) {
                     brca1ScrollPane.setVisible(true);
                     brca2ScrollPane.setVisible(false);
                 } else {
@@ -216,7 +220,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void setNomenclature(String nomenclature) {
-        List<BrcaCnvExon> list = getBrcaCnvExons("BRCA1");
+        List<BrcaCnvExon> list = getBrcaCnvExons(BRCA1);
         list = list.stream().filter(brcaCnvExon -> !brcaCnvExon.getExon().equalsIgnoreCase("Promoter"))
                 .collect(Collectors.toList());
         int idx = 0;
@@ -245,16 +249,16 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void resizeImage(double value) {
-        resizeGridPane(getTotalAmpliconCountInGene("BRCA1"), brca1PlotGrid, value);
-        resizeGridPane(getTotalAmpliconCountInGene("BRCA2"), brca2PlotGrid, value);
-        rePositionLabel("BRCA1", brca1LabelList, value);
-        rePositionLabel("BRCA2", brca2LabelList, value);
+        resizeGridPane(getTotalAmpliconCountInGene(BRCA1), brca1PlotGrid, value);
+        resizeGridPane(getTotalAmpliconCountInGene(BRCA2), brca2PlotGrid, value);
+        rePositionLabel(BRCA1, brca1LabelList, value);
+        rePositionLabel(BRCA2, brca2LabelList, value);
         rePositionLine(brca1LabelList, brca1LineList);
         rePositionLine(brca2LabelList, brca2LineList);
-        reSizeBoxPlot("BRCA1", brca1BoxPlotHBox, brca1ExonNumberHBox, value);
-        reSizeBoxPlot("BRCA2", brca2BoxPlotHBox, brca2ExonNumberHBox, value);
-        reSizeDomainArea("BRCA1", brca1DomainHBox, value);
-        reSizeDomainArea("BRCA2", brca2DomainHBox, value);
+        reSizeBoxPlot(BRCA1, brca1BoxPlotHBox, brca1ExonNumberHBox, value);
+        reSizeBoxPlot(BRCA2, brca2BoxPlotHBox, brca2ExonNumberHBox, value);
+        reSizeDomainArea(BRCA1, brca1DomainHBox, value);
+        reSizeDomainArea(BRCA2, brca2DomainHBox, value);
     }
 
     private void reSizeBoxPlot(String gene, HBox box, HBox exonNumBox, double width) {
@@ -418,7 +422,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                             setText(null);
                         } else {
                             BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
-                            if(bicNomenclatureRadioButton.isSelected() && brcaCnvExon.getGene().equals("BRCA1")) {
+                            if(bicNomenclatureRadioButton.isSelected() && brcaCnvExon.getGene().equals(BRCA1)) {
                                 if(brcaCnvExon.getExon().matches("[a-zA-Z]*")) {
                                     setText(item);
                                 } else {
@@ -540,23 +544,30 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             tableView.setMaxHeight(120);
             tableView.getStyleClass().add("cnvTable");
             TableColumn<BrcaCnvLog, String> oldValue = new TableColumn<>();
+            oldValue.getStyleClass().add("alignment_center");
             oldValue.setText("Old Value");
-            oldValue.setMinWidth(95);
+            oldValue.setPrefWidth(75);
             oldValue.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOldValue()));
             TableColumn<BrcaCnvLog, String> newValue = new TableColumn<>();
+            newValue.getStyleClass().add("alignment_center");
             newValue.setText("New Value");
-            newValue.setMinWidth(95);
+            newValue.setPrefWidth(75);
             newValue.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNewValue()));
+            TableColumn<BrcaCnvLog, String> type = new TableColumn<>();
+            type.getStyleClass().add("alignment_center");
+            type.setText("Type");
+            type.setPrefWidth(60);
+            type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLogType()));
             TableColumn<BrcaCnvLog, String> comment = new TableColumn<>();
             comment.setText("Comment");
-            comment.setMinWidth(270);
+            comment.setPrefWidth(270);
             comment.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getComment()));
             TableColumn<BrcaCnvLog, String> dateTime = new TableColumn<>();
             dateTime.setText("Created at");
-            dateTime.setMinWidth(140);
+            dateTime.setPrefWidth(140);
             dateTime.setCellValueFactory(cellData -> new SimpleStringProperty(
                     timeConvertString(cellData.getValue().getCreatedAt())));
-            tableView.getColumns().addAll(dateTime, oldValue, newValue, comment);
+            tableView.getColumns().addAll(dateTime, type, oldValue, newValue, comment);
 
             tableView.getItems().addAll(pagedBrcaCnvLog.getResult());
             hBox.getChildren().add(tableView);
@@ -654,17 +665,17 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                     return Integer.compare(intA, intB);
                 }
             }).collect(Collectors.toList());
-            long brca1LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA1")
+            long brca1LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA1)
                     && checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode())).count();
-            long brca1GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA1")
+            long brca1GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA1)
                     && checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode())).count();
-            long brca2LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA2")
+            long brca2LossCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA2)
                     && checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode())).count();
-            long brca2GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals("BRCA2")
+            long brca2GainCount = brcaCnvExonList.stream().filter(item -> item.getGene().equals(BRCA2)
                     && checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode())).count();
 
             totalCountLabel.setText("BRCA1 Copy Loss : " + brca1LossCount + ", Copy Gain : " + brca1GainCount +
-                    " | BRCA1 Copy Loss : " + brca2LossCount + ", Copy Gain : " + brca2GainCount);
+                    " | BRCA2 Copy Loss : " + brca2LossCount + ", Copy Gain : " + brca2GainCount);
 
             setTableItem(geneComboBox.getSelectionModel().getSelectedItem().getValue());
 
@@ -682,24 +693,22 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private void initImageArea() {
         if(brca1LabelList.isEmpty()) {
-            String brca1 = "BRCA1";
-            resizeGridPane(getTotalAmpliconCountInGene(brca1), brca1PlotGrid);
-            createLabelList(brca1, brca1LabelList, brca1PlotAnchorPane);
+            resizeGridPane(getTotalAmpliconCountInGene(BRCA1), brca1PlotGrid);
+            createLabelList(BRCA1, brca1LabelList, brca1PlotAnchorPane);
             drawConnectLabelLine(brca1LabelList, brca1PlotAnchorPane, brca1LineList);
-            createBoxPlot(brca1, brca1BoxPlotHBox);
-            createBoxPlotNumber(brca1, brca1ExonNumberHBox);
-            drawDomainArea(brca1, brca1DomainHBox);
+            createBoxPlot(BRCA1, brca1BoxPlotHBox);
+            createBoxPlotNumber(BRCA1, brca1ExonNumberHBox);
+            drawDomainArea(BRCA1, brca1DomainHBox);
         } else {
             rePaintingPlotBox(brca1BoxPlotHBox);
         }
         if(brca2LabelList.isEmpty()) {
-            String brca2 = "BRCA2";
-            resizeGridPane(getTotalAmpliconCountInGene(brca2), brca2PlotGrid);
-            createLabelList(brca2, brca2LabelList, brca2PlotAnchorPane);
+            resizeGridPane(getTotalAmpliconCountInGene(BRCA2), brca2PlotGrid);
+            createLabelList(BRCA2, brca2LabelList, brca2PlotAnchorPane);
             drawConnectLabelLine(brca2LabelList, brca2PlotAnchorPane, brca2LineList);
-            createBoxPlot(brca2, brca2BoxPlotHBox);
-            createBoxPlotNumber(brca2, brca2ExonNumberHBox);
-            drawDomainArea(brca2, brca2DomainHBox);
+            createBoxPlot(BRCA2, brca2BoxPlotHBox);
+            createBoxPlotNumber(BRCA2, brca2ExonNumberHBox);
+            drawDomainArea(BRCA2, brca2DomainHBox);
         } else {
             rePaintingPlotBox(brca2BoxPlotHBox);
         }
@@ -1092,7 +1101,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
         Label warningLabel = new Label();
         if(StringUtils.isNotEmpty(amplicon.getWarning())) {
-            warningLabel.setText(amplicon.getWarning().replaceAll("low_confidence_cnv : ", ""));
+            warningLabel.setText(amplicon.getWarning()
+                    .replaceAll("low_confidence: ", ""));
         }
         reSizeNodeWidth(warningLabel, 200);
         warningLabel.setAlignment(Pos.CENTER);
@@ -1104,9 +1114,13 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             Line line = new Line();
             line.setStroke(Color.RED);
             line.setStrokeWidth(1);
-            line.setStartX(calcPosition(amplicon, box.getMinWidth(), normalBox.getMinWidth(), 15));
+            double width = ((box.getMinWidth() - normalBox.getMinWidth()) / 2) + 15;
+            if(amplicon.getWarning().contains("Gain")) {
+                width = width + normalBox.getMinWidth();
+            }
+            line.setStartX(width);
+            line.setEndX(width);
             line.setStartY(0);
-            line.setEndX(calcPosition(amplicon, box.getMinWidth(), normalBox.getMinWidth(), 15));
             line.setEndY(15);
             anchorPane.getChildren().add(line);
         }
@@ -1352,11 +1366,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         String boxSize = "-fx-min-width : 16; -fx-max-width : 16; -fx-min-height : 11; -fx-max-height : 11;";
         HBox titleBox = createTitleBox();
         HBox deletion = createContentsBox(boxSize + "-fx-background-color : #cc3e4f;",
-                "Copy Loss");
+                "Loss of Exon Copy");
         HBox normal = createContentsBox(boxSize + "-fx-background-color : #97a2be;",
-                "Normal");
+                "Normal of Exon Copy");
         HBox amplification = createContentsBox(boxSize + "-fx-background-color : #e1b07b;",
-                "Copy Gain");
+                "Gain of Exon Copy");
         HBox userDeletion = createContentsBox(boxSize + "-fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-color : #cc3e4f",
                 "Copy Loss changed by User");
         HBox userNormal = createContentsBox(boxSize + "-fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-color : #97a2be",
@@ -1364,11 +1378,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         HBox userAmplification = createContentsBox(boxSize + "-fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-color : #e1b07b",
                 "Copy Gain changed by User");
         HBox amplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #97a2be;",
-                "Amplicon");
+                "Verified Amplicon");
         HBox putativeAmplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-radius : 15; -fx-border-color : #97a2be;",
-                "Putative Amplicon");
+                "Hypothetical Copy Gain or Loss");
 
-        mainVBox.getChildren().addAll(titleBox, deletion, amplification, normal, userDeletion, userNormal,
+        mainVBox.getChildren().addAll(titleBox, deletion, normal, amplification, userDeletion, userNormal,
                 userAmplification, amplicon, putativeAmplicon);
         popOver.getRoot().setAlignment(Pos.CENTER);
         popOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
@@ -1529,8 +1543,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 return;
             }
             this.setStyle(this.getStyle() + "; -fx-background-color : white;");
-            BrcaCnvExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(
-                    BooleanCell.this.getIndex());
+            BrcaCnvExon brcaCNVExon = BooleanCell.this.getTableView().getItems().get(BooleanCell.this.getIndex());
             checkBox.setSelected(brcaCNVExon.getCheckItem());
 
             setGraphic(checkBox);

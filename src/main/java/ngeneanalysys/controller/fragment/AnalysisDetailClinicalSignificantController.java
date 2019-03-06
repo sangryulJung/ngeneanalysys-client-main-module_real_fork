@@ -25,7 +25,6 @@ import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
 import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 

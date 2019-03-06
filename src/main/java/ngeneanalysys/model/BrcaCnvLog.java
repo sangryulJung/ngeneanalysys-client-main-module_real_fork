@@ -13,7 +13,16 @@ public class BrcaCnvLog {
     private String oldValue;
     private String newValue;
     private String comment;
+    private String logType;
     private DateTime createdAt;
+
+
+    /**
+     * @return logType
+     */
+    public String getLogType() {
+        return logType;
+    }
 
     /**
      * @return id

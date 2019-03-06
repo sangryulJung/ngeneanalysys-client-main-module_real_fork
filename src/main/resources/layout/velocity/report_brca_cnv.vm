@@ -544,7 +544,7 @@
 								<fo:block padding="1mm" margin-left="3mm">1) Gene</fo:block>
 								<fo:block padding="1mm" margin-left="5mm">i. BRCA1 [breast cancer 1, early onset; 17q21; GeneID: 672]</fo:block>
 								<fo:block padding="1mm" margin-left="5mm">ii. BRCA2 [breast cancer 2, early onset; 13q12.3; GeneID: 675]</fo:block>
-								<fo:block padding="1mm" margin-left="3mm">2) Molecular Diagnostic Test: Sequencing BRCA1/2 whole exons.</fo:block>
+								<fo:block padding="1mm" margin-left="3mm">2) Molecular Diagnostic Test: Sequencing BRCA1/2 coding exons.</fo:block>
 								<fo:block padding="1mm" margin-left="3mm">3) Related diseases: hereditary breast cancer, ovarian cancer, etc.</fo:block>
 								<fo:block padding="1mm" margin-left="3mm">4) Background and significance</fo:block>
 								<fo:block padding="1mm" margin-left="5mm">i. 15 - 20% of breast cancer patients with family history and 5% of entire breast cancer patients are estimated to be caused by mutation in BRCA1 or BRCA2 gene.</fo:block>
