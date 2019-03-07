@@ -108,11 +108,11 @@
                                           <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label text="Amplicon Copy Number Prediction Algorithm" GridPane.columnSpan="2" />
+                                          <Label text="CNV Algorithm Setting" GridPane.columnSpan="2" />
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <children>
                                                 <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
-                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Copy Gain Cut-off Level:" />
+                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" text="Copy Gain :" />
                                                 <TextField fx:id="brcaCnvAmpliconCnDuplicationCutoffTextField" prefWidth="60.0" text="0.2" />
                                              </children>
                                           </HBox>
@@ -158,14 +158,14 @@
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                              <children>
                                                 <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
-                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="170.0" text="Copy Loss Cut-off Level:" />
+                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" text="Copy Loss :" />
                                                 <TextField fx:id="brcaCnvAmpliconCnDeletionCutoffTextField" prefWidth="60.0" text="0.25" />
                                              </children>
                                           </HBox>
                                           <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6" />
                                           <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
                                              <children>
-                                                <Label text="Putative CNV" />
+                                                <Label text="Hypothetical CNV Cut-off Limit" />
                                                 <Label fx:id="putativeToolTip" styleClass="help_tooltip">
                                                    <HBox.margin>
                                                       <Insets right="40.0" />
@@ -256,17 +256,17 @@
                                        <children>
                                           <Label text="InDel MAF( % )" GridPane.halignment="LEFT">
                                              <tooltip>
-                                                <Tooltip text="Min Allele Fraction, Default 5%" />
+                                                <Tooltip text="InDel Min Allele Fraction" />
                                              </tooltip>
                                           </Label>
                                           <Label text="InDel MRD( x )" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth, Default 30x" />
+                                                <Tooltip text="InDel Min Read Depth" />
                                              </tooltip>
                                           </Label>
                                           <Label text="InDel MAC" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                                              <tooltip>
-                                                <Tooltip text="Min Alternate Count, Default 6" />
+                                                <Tooltip text="InDel Min Alternate Count" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="indelMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" />
@@ -276,7 +276,7 @@
                                           <TextField fx:id="essentialGenesTextField" maxWidth="1.7976931348623157E308" styleClass="txt_black" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                                           <Label text="SNV MRD( x )" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth, Default 30x" />
+                                                <Tooltip text="SNV Min Read Depth" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="snvMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" GridPane.rowIndex="2" />
@@ -288,12 +288,12 @@
                                           <TextField fx:id="lowConfidenceMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                           <Label text="SNV MAC" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth, Default 30x" />
+                                                <Tooltip text="SNV Min Alternate Count" />
                                              </tooltip>
                                           </Label>
                                           <Label text="SNV MAF( % )" GridPane.columnIndex="2">
                                              <tooltip>
-                                                <Tooltip text="Min Allele Fraction, Default 5%" />
+                                                <Tooltip text="SNV Min Allele Fraction" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="snvMinAlternateCountTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" GridPane.rowIndex="1" />

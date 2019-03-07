@@ -649,7 +649,17 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         try {
             HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, false);
             PagedBrcaCNV pagedBrcaCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
-            brcaCnvAmpliconList = pagedBrcaCNV.getResult();
+            brcaCnvAmpliconList = pagedBrcaCNV.getResult().stream().sorted((a, b) -> {
+                if(a.getAmplicon().matches("[a-zA-Z]*")){
+                    return 1;
+                } else if(b.getAmplicon().matches("[a-zA-Z]*")) {
+                    return -1;
+                } else {
+                    int intA = Integer.parseInt(a.getAmplicon());
+                    int intB = Integer.parseInt(b.getAmplicon());
+                    return Integer.compare(intA, intB);
+                }
+            }).collect(Collectors.toList());
 
             response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null, null, false);
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
@@ -1041,7 +1051,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         brcaCnvTable.getSelectionModel().select(brcaCnvExon);
                         brcaCnvTable.scrollTo(brcaCnvTable.getSelectionModel().getSelectedIndex());
                     }
-                    sampleRatioPopOver(label, amplicon);
+                    sampleRatioPopOver(label, amplicon, amplicons.size());
 
                 });
                 anchorPane.getChildren().add(label);
@@ -1053,7 +1063,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
     }
 
-    private void sampleRatioPopOver(Label label, BrcaCnvAmplicon amplicon) {
+    private void sampleRatioPopOver(Label label, BrcaCnvAmplicon amplicon, long size) {
         PopOver popOver = new PopOver();
         popOver.setMinWidth(200);
         popOver.setHeight(50);
@@ -1063,7 +1073,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         mainVBox.setMinWidth(200);
         mainVBox.setPrefWidth(200);
         mainVBox.setPrefHeight(50);
-        Label titleLabel = new Label("No." +amplicon.getAmplicon() + " Amplicon Ratio");
+        Label titleLabel = new Label("Amplicon" + "(" + amplicon.getAmplicon() +"/" + size + ")" + "Ratio");
         titleLabel.getStyleClass().addAll("font_size_12", "bold");
         titleLabel.setAlignment(Pos.CENTER);
         titleLabel.setPrefWidth(200);
@@ -1361,11 +1371,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     private void showLegendTooltip(Event event) {
         PopOver popOver = new PopOver();
         popOver.setWidth(260);
-        popOver.setHeight(210);
-        popOver.setMaxHeight(210);
+        popOver.setHeight(245);
+        popOver.setMaxHeight(245);
         VBox mainVBox = new VBox();
         mainVBox.setPrefWidth(260);
-        mainVBox.setPrefHeight(200);
+        mainVBox.setPrefHeight(235);
         String boxSize = "-fx-min-width : 16; -fx-max-width : 16; -fx-min-height : 11; -fx-max-height : 11;";
         HBox titleBox = createTitleBox();
         HBox deletion = createContentsBox(boxSize + "-fx-background-color : #cc3e4f;",
@@ -1380,9 +1390,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 "Normal changed by User");
         HBox userAmplification = createContentsBox(boxSize + "-fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-color : #e1b07b",
                 "Copy Gain changed by User");
-        HBox amplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #97a2be;",
+        HBox amplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #7F7F7F;",
                 "Verified Amplicon");
-        HBox putativeAmplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-radius : 15; -fx-border-color : #97a2be;",
+        HBox putativeAmplicon = createContentsBox("-fx-background-radius : 15; -fx-background-color : #FFFFFF; -fx-border-width : 0.5; -fx-border-radius : 15; -fx-border-color : #7F7F7F;",
                 "Hypothetical Copy Gain or Loss");
 
         mainVBox.getChildren().addAll(titleBox, deletion, normal, amplification, userDeletion, userNormal,

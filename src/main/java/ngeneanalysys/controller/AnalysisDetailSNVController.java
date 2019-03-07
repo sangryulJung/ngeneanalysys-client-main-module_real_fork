@@ -1517,9 +1517,32 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
-        fraction.setStyle(fraction.getStyle() + "-fx-alignment : baseline-right;");
         createTableHeader(fraction, "Fraction", "" ,null, "alleleFraction");
         fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        fraction.setCellFactory(column ->
+                new TableCell<VariantAndInterpretationEvidence, BigDecimal>() {
+                    @Override
+                    protected void updateItem(BigDecimal item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setStyle(getStyle() + "; -fx-alignment : baseline-right;");
+                        if(item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(item.toString());
+                            if(PipelineCode.isBRCAPipeline(panel.getCode()) || PipelineCode.isHeredPipeline(panel.getCode())) {
+                                double doubleVal = item.doubleValue();
+                                if ((doubleVal >= 5 && doubleVal <= 40) || (doubleVal >= 60 && doubleVal <= 95)) {
+                                    setTextFill(Color.RED);
+                                } else {
+                                    setTextFill(Color.BLACK);
+                                }
+                            } else {
+                                setTextFill(Color.BLACK);
+                            }
+                        }
+                    }
+                }
+        );
 
         TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>("Depth");
         depth.setStyle(depth.getStyle() + "-fx-alignment : baseline-right;");

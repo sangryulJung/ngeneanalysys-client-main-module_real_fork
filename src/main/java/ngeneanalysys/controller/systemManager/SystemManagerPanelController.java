@@ -22,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.code.enums.PipelineCode;
@@ -62,8 +63,6 @@ public class SystemManagerPanelController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
     private Label distributionToolTip;
@@ -349,18 +348,18 @@ public class SystemManagerPanelController extends SubPaneController {
         });
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
+                item.getValue().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getUpdatedAt() != null)
                 return new SimpleStringProperty(DateFormatUtils.format(
-                    item.getValue().getUpdatedAt().toDate(), DATE_FORMAT));
+                    item.getValue().getUpdatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), DATE_FORMAT));
+                        item.getValue().getDeletedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
@@ -384,13 +383,13 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private void initToolTip() {
         PopOverUtil.openToolTipPopOver(distributionToolTip,
-                "If you choose “Distribution”, the BRCA CNV analysis will use an algorithm with a normal distribution.\n This algorithm analyzes the CNV by calculating the normal distribution of the data of the samples analyzed in the run.");
+                "CNV analysis using normal distribution");
         PopOverUtil.openToolTipPopOver(cutOffToolTip,
-                "If you choose “Simple Cut-off”, the BRCA CNV analysis will use the algorithm applying the cut-off criteria you set.\n This algorithm analyzes the CNV by applying the corresponding criteria to the data of the samples analyzed in one run.");
+                "CNV analysis applied with cut-off value(s) set by user (default Copy Gain = 0.25, Copy Loss = 0.2)");
         PopOverUtil.openToolTipPopOver(predictionThresholdToolTip,
-                "The BRCAaccuTest Series determines the CNV of the corresponding exon compared to the criterion set by\n the copy number ratio of multiple amplicons in an exon. (Default = 60%)");
+                "Exon CNV determination according to the ratio of amplicon copy number (default = 60%)");
         PopOverUtil.openToolTipPopOver(putativeToolTip,
-                "If the sample ratio is in the normal range but the ratio is very close to the deletion or amplification range, this is called Putative CNV.\n The value set in Putative CNV is used to determine the degree of difference between the sample ratio and the deletion or amplification range.");
+                "Cut-off limit value for hypothetical gain or loss each amplicon (default = 0.05)");
     }
 
     private void setTST170Default() {
@@ -581,13 +580,20 @@ public class SystemManagerPanelController extends SubPaneController {
         canonicalTranscriptTextArea.setDisable(true);
         if(PipelineCode.isBRCACNVPipeline(code)) {
             cnvForBrcaAaccuTestTitledPane.setDisable(false);
+            distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
+            brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+            exonCnpThresholdTextField.setText(String.valueOf(exonCpnThresholdDefault));
+            lowConfidenceCnvDuplicationTextField.setText("0.05");
+            lowConfidenceCnvDeletionTextField.setText("0.05");
         } else {
             cnvForBrcaAaccuTestTitledPane.setDisable(true);
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setText("");
+            brcaCnvAmpliconCnDeletionCutoffTextField.setText("");
+            exonCnpThresholdTextField.setText("");
+            lowConfidenceCnvDuplicationTextField.setText("");
+            lowConfidenceCnvDeletionTextField.setText("");
         }
-        distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
-        brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
-        brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
-        exonCnpThresholdTextField.setText(String.valueOf(exonCpnThresholdDefault));
 
         warningReadDepthTextField.setText("");
         warningReadDepthTextField.setDisable(true);
@@ -604,7 +610,7 @@ public class SystemManagerPanelController extends SubPaneController {
         indelMinAlternateCountTextField.setText("");
         indelMinAlternateCountTextField.setDisable(true);
         snvMinAlleleFractionTextField.setText("");
-        snvMinAlleleFractionTextField.setDisable(false);
+        snvMinAlleleFractionTextField.setDisable(true);
         snvMinAlternateCountTextField.setText("");
         snvMinAlternateCountTextField.setDisable(true);
         snvMinReadDepthTextField.setText("");
@@ -642,7 +648,6 @@ public class SystemManagerPanelController extends SubPaneController {
         mappingQuality60PercentageTextField.setDisable(true);
         saveTextFile.setDisable(false);
         bedFile = null;
-
     }
 
     private void resetQcInformation() {

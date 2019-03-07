@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.SnpInDelEvidence;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +79,7 @@ public class ConvertUtil {
 	 * @return
 	 */
 	public static String convertLocalTimeToUTC(String inputDateTime, String dateFormat, String utcDateFormat) {
-		if(dateFormat == null) dateFormat = "yyyy-MM-dd";
+		if(dateFormat == null) dateFormat = CommonConstants.DEFAULT_DAY_FORMAT;
 		if(utcDateFormat == null) utcDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'";
 		
 		String utcTime = null;

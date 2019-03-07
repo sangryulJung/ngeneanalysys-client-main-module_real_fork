@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import ngeneanalysys.code.UserTypeCode;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.model.*;
@@ -198,15 +199,13 @@ public class PastResultsController extends SubPaneController {
 				final DatePicker endDate = new DatePicker();
 				endDate.setPrefWidth(240);
 
-				String dateFormat = "yyyy-MM-dd";
-
-				startDate.setConverter(DatepickerConverter.getConverter(dateFormat));
-				startDate.setPromptText(dateFormat);
+				startDate.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
+				startDate.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
 				startDate.valueProperty().addListener(element -> compareDate(startDate, endDate, true
 				, "선택한 날짜가 검색의 마지막 날짜 이후의 날짜입니다.", "Date is later than the last day of the selected date search."));
 
-				endDate.setConverter(DatepickerConverter.getConverter(dateFormat));
-				endDate.setPromptText(dateFormat);
+				endDate.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
+				endDate.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
 				endDate.valueProperty().addListener(element -> compareDate(startDate, endDate, false
 						, "선택한 날짜가 검색의 시작 날짜 이전의 날짜입니다.", "The selected date is the date before the search of the start date."));
 
@@ -505,7 +504,7 @@ public class PastResultsController extends SubPaneController {
 	 * @param list List<RunSampleView>
 	 */
 	private void renderSampleList(List<RunSampleView> list) {
-
+		Insets insets = new Insets(0, 0, 30, 0);
 		resultVBox.getChildren().removeAll(resultVBox.getChildren());
 		resultVBox.setPrefHeight(0);
 		if (list != null && !list.isEmpty()) {
@@ -521,7 +520,6 @@ public class PastResultsController extends SubPaneController {
 				resultVBox.getChildren().add(vBox);
 				setVBoxPrefSize(vBox);
 				if(list.indexOf(runSampleView) < list.size() - 1) {
-                    Insets insets = new Insets(0, 0, 30, 0);
                     VBox.setMargin(vBox, insets);
                     resultVBox.setPrefHeight(resultVBox.getPrefHeight() + 30);
                 }

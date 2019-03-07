@@ -407,9 +407,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         if(type.equalsIgnoreCase("Date")) {
                             DatePicker datePicker = new DatePicker();
                             datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
-                            String dateType = "yyyy-MM-dd";
-                            datePicker.setPromptText(dateType);
-                            datePicker.setConverter(DatepickerConverter.getConverter(dateType));
+                            datePicker.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
+                            datePicker.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
                             datePicker.setId(key);
                             customFieldGridPane.add(datePicker, colIndex++, rowIndex);
                         } else if (type.equalsIgnoreCase("ComboBox")) {
@@ -518,9 +517,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     displayName.equalsIgnoreCase("Specimen Received Date")) {
                 DatePicker datePicker = new DatePicker();
                 datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
-                String dateType = "yyyy-MM-dd";
-                datePicker.setPromptText(dateType);
-                datePicker.setConverter(DatepickerConverter.getConverter(dateType));
+                datePicker.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
+                datePicker.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
                 datePicker.setId(variableName);
                 customFieldGridPane.add(datePicker, colIndex++, rowIndex);
             } else {
@@ -606,14 +604,14 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             long bCount = benignList != null ? benignList.stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0;
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("(Total : ").append((pCount + lpCount + usCount + lbCount + bCount));
-            if(snvCount > 0) stringBuilder.append(", SNV: ").append(snvCount);
-            if(indelCount > 0) stringBuilder.append(", Indel: ").append(indelCount);
-            if((pCount + lpCount + usCount + lbCount + bCount) > 0) stringBuilder.append(" / ");
-            if(pCount > 0) stringBuilder.append("P: ").append(pCount).append(", ");
-            if(lpCount > 0) stringBuilder.append("LP: ").append(lpCount).append(", ");
-            if(usCount > 0) stringBuilder.append("US: ").append(usCount).append(", ");
-            if(lbCount > 0) stringBuilder.append("LB: ").append(lbCount).append(", ");
-            if(bCount > 0) stringBuilder.append("B: ").append(bCount).append(", ");
+            if(snvCount > 0) stringBuilder.append(", SNV : ").append(snvCount);
+            if(indelCount > 0) stringBuilder.append(", Indel : ").append(indelCount);
+            if((pCount + lpCount + usCount + lbCount + bCount) > 0) stringBuilder.append(" | ");
+            if(pCount > 0) stringBuilder.append("P : ").append(pCount).append(", ");
+            if(lpCount > 0) stringBuilder.append("LP : ").append(lpCount).append(", ");
+            if(usCount > 0) stringBuilder.append("US : ").append(usCount).append(", ");
+            if(lbCount > 0) stringBuilder.append("LB : ").append(lbCount).append(", ");
+            if(bCount > 0) stringBuilder.append("B : ").append(bCount).append(", ");
             if((pCount + lpCount + usCount + lbCount + bCount) > 0) stringBuilder
                     .delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
             pathogenicityCountLabel.setText(stringBuilder.toString() + ")"
@@ -672,7 +670,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             } else if(gridObject instanceof DatePicker) {
                 DatePicker datePicker = (DatePicker)gridObject;
                 if(contentsMap.containsKey(datePicker.getId())) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonConstants.DEFAULT_DAY_FORMAT);
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
             } else if(gridObject instanceof ComboBox) {
@@ -862,7 +860,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     /*if((sample.getSampleStatus() != null) && sample.getSampleStatus().getReportFinishedAt() != null) {
                         contentsMap.put("reportingDate", sample.getSampleStatus().getReportFinishedAt());
                     }*/
-                    contentsMap.put("reportingDate", org.apache.commons.lang3.time.DateFormatUtils.format(new Date(), "yyyy-MM-dd"));
+                    contentsMap.put("reportingDate", org.apache.commons.lang3.time.DateFormatUtils.format(new Date(), CommonConstants.DEFAULT_DAY_FORMAT));
                 }
                 for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                     Object gridObject = customFieldGridPane.getChildren().get(i);

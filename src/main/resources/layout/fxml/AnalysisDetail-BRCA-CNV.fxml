@@ -101,7 +101,7 @@
             <TableColumn fx:id="warningTableColumn" prefWidth="75.0" style="-fx-alignment: center;" text="Warning" />
             <TableColumn fx:id="domainTableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Domain" />
             <TableColumn fx:id="totalTableColumn" prefWidth="135.0" style="-fx-alignment: center;" text="Total Amplicon" />
-            <TableColumn prefWidth="300.0" text="Number of amplicon copy">
+            <TableColumn prefWidth="300.0" text="Number of Amplicon Copy">
                <columns>
                   <TableColumn fx:id="copyNumber1TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Loss" />
                   <TableColumn fx:id="copyNumber2TableColumn" prefWidth="100.0" style="-fx-alignment: center;" text="Normal" />

@@ -111,6 +111,8 @@ public class CommonConstants {
 	
 	public static final String BIRTHDAY_PATTERN = "^(18|19|20|21)[0-9][0-9]-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";
 
+	public static final String DEFAULT_DAY_FORMAT = "yyyy-MM-dd";
+
 	public static final String EHCACHE_PATH =  "/config/ehcache.xml";
 
 	public static final String BRCA_ACCUTEST_DNA_PIPELINE = "BRCAaccuTest_DNA_Pipeline";

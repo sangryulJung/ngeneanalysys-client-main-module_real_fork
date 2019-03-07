@@ -243,9 +243,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                             if (type.equalsIgnoreCase("Date")) {
                                 DatePicker datePicker = new DatePicker();
                                 datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
-                                String dateType = "yyyy-MM-dd";
-                                datePicker.setPromptText(dateType);
-                                datePicker.setConverter(DatepickerConverter.getConverter(dateType));
+                                datePicker.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
+                                datePicker.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
                                 datePicker.setId(key);
                                 customFieldGridPane.add(datePicker, colIndex++, rowIndex);
                             } else if (type.equalsIgnoreCase("ComboBox")) {
@@ -593,7 +592,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             } else if(gridObject instanceof DatePicker) {
                 DatePicker datePicker = (DatePicker)gridObject;
                 if(contentsMap.containsKey(datePicker.getId())) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonConstants.DEFAULT_DAY_FORMAT);
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
             } else if(gridObject instanceof ComboBox) {

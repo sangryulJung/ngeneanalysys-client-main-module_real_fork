@@ -554,7 +554,7 @@
 }
 
 .normal_label {
-    -fx-background-color : #97a2be;
+    -fx-background-color : #7F7F7F;
     -fx-background-radius : 15 15;
     -fx-min-width : 8;
     -fx-min-height : 8;
@@ -571,7 +571,7 @@
     -fx-background-radius : 15;
     -fx-border-width : 0.5;
     -fx-border-radius : 15;
-    -fx-border-color : #97a2be;
+    -fx-border-color : #7F7F7F;
     -fx-min-width : 8;
     -fx-min-height : 8;
     -fx-pref-width : 8;
@@ -601,5 +601,4 @@
 	-fx-pref-width: 16;
 	-fx-min-height: 20;
 	-fx-pref-height: 20;
-
 }

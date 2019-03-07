@@ -310,7 +310,7 @@ public class HomeController extends SubPaneController{
 //        //noticeTitleLabel.setText(noticeView.getTitle());
 //
 //        dateLabel.setText(DateFormatUtils.format(
-//                noticeView.getCreatedAt().toDate(), "yyyy-MM-dd"));
+//                noticeView.getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
 //        noticeTitleLabel.setText(noticeView.getTitle());
 //        noticeContentsTextArea.setText(noticeView.getContents());
 //        return true;

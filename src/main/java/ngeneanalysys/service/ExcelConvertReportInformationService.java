@@ -6,6 +6,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -48,7 +49,7 @@ public class ExcelConvertReportInformationService {
             int i = 1;
             CellStyle dateCellStyle = hssfWorkbook.createCellStyle();
             CreationHelper createHelper = hssfWorkbook.getCreationHelper();
-            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat(CommonConstants.DEFAULT_DAY_FORMAT));
 
             curSheet.setColumnWidth(0, 3200);
 
@@ -100,7 +101,7 @@ public class ExcelConvertReportInformationService {
             int i = 1;
             CellStyle dateCellStyle = workbook.createCellStyle();
             CreationHelper createHelper = workbook.getCreationHelper();
-            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
+            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat(CommonConstants.DEFAULT_DAY_FORMAT));
 
             curSheet.setColumnWidth(0, 3200);
 
@@ -313,7 +314,7 @@ public class ExcelConvertReportInformationService {
                 case NUMERIC:
                     if (DateUtil.isCellDateFormatted(valueCell)) {
                         Date date = valueCell.getDateCellValue();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DEFAULT_DAY_FORMAT);
                         return sdf.format(date);
                     } else {
                         if(valueCell.getNumericCellValue() == (int)valueCell.getNumericCellValue()) {
@@ -345,7 +346,7 @@ public class ExcelConvertReportInformationService {
                 case NUMERIC:
                     if (DateUtil.isCellDateFormatted(valueCell)) {
                         Date date = valueCell.getDateCellValue();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        SimpleDateFormat sdf = new SimpleDateFormat(CommonConstants.DEFAULT_DAY_FORMAT);
                         return sdf.format(date);
                     } else {
                         if(valueCell.getNumericCellValue() == (int)valueCell.getNumericCellValue()) {

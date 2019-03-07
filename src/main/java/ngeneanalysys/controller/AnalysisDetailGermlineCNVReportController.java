@@ -189,8 +189,8 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
                 brca2Text = "BRCA2 Copy Gain : " + brca2AmplificationCount;
             }
 
-            countLabel.setText(brca1Text + (StringUtils.isNotEmpty(brca1Text) ? " | " : "")
-                    + brca2Text);
+            countLabel.setText("(" + brca1Text + (StringUtils.isNotEmpty(brca1Text) ? " | " : "")
+                    + brca2Text + ")");
         } else {
             countLabel.setText("");
         }

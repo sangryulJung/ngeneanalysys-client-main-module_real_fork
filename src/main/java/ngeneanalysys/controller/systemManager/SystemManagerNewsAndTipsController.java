@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.NoticeView;
@@ -38,8 +39,6 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
     private TextField titleTextField;
@@ -87,18 +86,18 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
         editTableColumn.setCellFactory(param -> new NewsAndTipsModifyButton());
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
+                item.getValue().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getUpdatedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getUpdatedAt().toDate(), DATE_FORMAT));
+                        item.getValue().getUpdatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), DATE_FORMAT));
+                        item.getValue().getDeletedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });

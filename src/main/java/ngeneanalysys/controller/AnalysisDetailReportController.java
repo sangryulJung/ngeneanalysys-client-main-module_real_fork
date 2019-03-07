@@ -546,7 +546,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                 if (type.equalsIgnoreCase("Date")) {
                                     DatePicker datePicker = new DatePicker();
                                     datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
-                                    String dateType = "yyyy-MM-dd";
+                                    String dateType = CommonConstants.DEFAULT_DAY_FORMAT;
                                     datePicker.setPromptText(dateType);
                                     datePicker.setConverter(DatepickerConverter.getConverter(dateType));
                                     datePicker.setId(key);
@@ -632,7 +632,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             } else if(gridObject instanceof DatePicker) {
                 DatePicker datePicker = (DatePicker)gridObject;
                 if(contentsMap.containsKey(datePicker.getId())) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonConstants.DEFAULT_DAY_FORMAT);
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
             } else if(gridObject instanceof ComboBox) {

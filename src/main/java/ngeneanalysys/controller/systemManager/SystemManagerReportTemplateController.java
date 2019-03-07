@@ -14,6 +14,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.paged.PagedReportTemplate;
@@ -173,21 +174,19 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         editReportTemplateTableColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         editReportTemplateTableColumn.setCellFactory(param -> new ReportTemplateModifyButton());
 
-        String dateFormat = "yyyy-MM-dd";
-
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), dateFormat)));
+                item.getValue().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getUpdatedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getUpdatedAt().toDate(), dateFormat));
+                        item.getValue().getUpdatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), dateFormat));
+                        item.getValue().getDeletedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
