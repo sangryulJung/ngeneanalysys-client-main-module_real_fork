@@ -99,7 +99,11 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier I" />
+                        <Label text="Tier I">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
@@ -148,7 +152,11 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier II" />
+                        <Label text="Tier II">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                </children>
@@ -182,7 +190,11 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier III" />
+                        <Label text="Tier III">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                </children>
@@ -216,7 +228,11 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier IV" />
+                        <Label text="Tier IV">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                </children>

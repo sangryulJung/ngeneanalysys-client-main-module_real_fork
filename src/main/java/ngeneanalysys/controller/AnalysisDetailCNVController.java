@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.VariantLevelCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -215,8 +216,8 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                     DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
                             ((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
                 } else {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), false);
                     e.printStackTrace();
                 }
             }

@@ -120,7 +120,7 @@ public class DialogUtil {
 			generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
 					stage, true);
 		} else {
-			DialogUtil.error("Unknown Error", e.getMessage(), stage, true);
+			DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), stage, true);
 		}
 	}
 }

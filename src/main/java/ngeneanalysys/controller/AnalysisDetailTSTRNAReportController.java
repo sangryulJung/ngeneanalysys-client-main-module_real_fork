@@ -263,7 +263,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                                 textField.setId(key);
                                 if (type.equalsIgnoreCase("Integer")) {
                                     textField.textProperty().addListener((observable, oldValue, newValue) -> {
-                                        if (!newValue.matches("[0-9]*")) textField.setText(oldValue);
+                                        if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) textField.setText(oldValue);
                                     });
                                 }
 
@@ -706,8 +706,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                 }
 
             } catch (Exception e) {
-                logger.error("Unknown Error", e);
-                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         } else {
             alert.close();
@@ -972,7 +972,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report_tst_rna.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report_tst_rna.vm", CommonConstants.ENCODING_TYPE_UTF, model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());
@@ -1074,7 +1074,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                         thread.setDaemon(true);
                         thread.start();
 
-                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", CommonConstants.ENCODING_TYPE_UTF, model);
                         task.setOnSucceeded(ev -> {
                             try {
                                 final boolean created1 = pdfCreateService.createPDF(file, contents1);

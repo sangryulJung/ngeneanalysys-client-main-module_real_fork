@@ -700,7 +700,7 @@ public class HomeController extends SubPaneController{
      */
     void resumeAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
-        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
+        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) / 2;
         // 기능 실행중인 상태인 경우 실행
         if(autoRefreshTimeline != null && isAutoRefreshOn) {
             logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),

@@ -297,11 +297,10 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         hBox.setAlignment(Pos.CENTER);
         String title = ConvertUtil.returnQCTitle(sampleQC.getQcType());
         Label titleLabel = new Label(title);
-        titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
+        titleLabel.getStyleClass().add("txt_white");
         Label descriptionLabel = new Label();
 
-        descriptionLabel.getStyleClass().add("help_tooltip_white");
-        descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
+        descriptionLabel.getStyleClass().addAll("help_tooltip_white", "cursor_hand");
         String value;
             if("uniformity_0.5".equals(sampleQC.getQcType())) {
                 value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()

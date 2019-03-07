@@ -71,7 +71,7 @@ public class FileUtil {
 
         File file = new File(path);
 
-        try(BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8"))) {
+        try(BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), CommonConstants.ENCODING_TYPE_UTF))) {
             fw.write(reportTemplate.getContents());
             fw.flush();
         } catch (IOException ioe) {

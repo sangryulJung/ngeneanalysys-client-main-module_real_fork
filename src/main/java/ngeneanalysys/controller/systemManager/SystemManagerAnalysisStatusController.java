@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -139,7 +140,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         restart.setCellFactory(param -> new UpdateButtonCreate());
 
         pageText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) pageText.setText(oldValue);
+            if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) pageText.setText(oldValue);
         });
 
 
@@ -200,8 +201,8 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
     }
@@ -301,8 +302,8 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     getMainApp().getPrimaryStage(), true);
             wae.printStackTrace();
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -341,7 +342,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-            img.setStyle("-fx-cursor:hand;");
+            img.getStyleClass().add("cursor_hand");
             box = new HBox();
             box.setAlignment(Pos.CENTER);
             box.getChildren().add(img);
@@ -403,7 +404,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-            img.setStyle("-fx-cursor:hand;");
+            img.getStyleClass().add("cursor_hand");
             box = new HBox();
             box.setAlignment(Pos.CENTER);
             box.getChildren().add(img);

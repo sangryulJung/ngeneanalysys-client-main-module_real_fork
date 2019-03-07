@@ -28,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
+import ngeneanalysys.code.constants.CommonConstants;
 import org.slf4j.Logger;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
@@ -235,8 +236,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 statisticsController.showVariantStatistics();
             }
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -249,8 +250,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 interpretationController.contentRefresh();
             }
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -263,8 +264,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 clinicalSignificantController.refresh();
             }
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -1039,9 +1040,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                             getMainApp().getPrimaryStage(), true);
                     wae.printStackTrace();
                 } catch (Exception e) {
-                    logger.error("Unknown Error", e);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
                     variantListTableView.setItems(null);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
             }
         };

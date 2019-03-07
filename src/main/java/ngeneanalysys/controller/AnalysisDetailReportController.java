@@ -567,7 +567,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                                     textField.setId(key);
                                     if (type.equalsIgnoreCase("Integer")) {
                                         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-                                            if (!newValue.matches("[0-9]*")) textField.setText(oldValue);
+                                            if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) textField.setText(oldValue);
                                         });
                                     }
                                     customFieldGridPane.add(textField, colIndex++, rowIndex);
@@ -1106,9 +1106,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
                     if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-                        contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", "UTF-8", model);
+                        contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", CommonConstants.ENCODING_TYPE_UTF, model);
                     } else {
-                        contents = velocityUtil.getContents("/layout/velocity/report.vm", "UTF-8", model);
+                        contents = velocityUtil.getContents("/layout/velocity/report.vm", CommonConstants.ENCODING_TYPE_UTF, model);
                     }
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
@@ -1210,7 +1210,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         thread.setDaemon(true);
                         thread.start();
 
-                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", CommonConstants.ENCODING_TYPE_UTF, model);
                         task.setOnSucceeded(ev -> {
                             try {
                                 if(reportContents.getReportTemplate().getOutputType() != null

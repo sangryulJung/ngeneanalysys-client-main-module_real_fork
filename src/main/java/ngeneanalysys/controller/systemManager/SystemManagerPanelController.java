@@ -279,7 +279,7 @@ public class SystemManagerPanelController extends SubPaneController {
         warningMAFTextField.setTextFormatter(returnFormatter());
 
         warningReadDepthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
+            if(!newValue.matches(CommonConstants.NUMBER_PATTERN)) warningReadDepthTextField.setText(oldValue);
         });
         brcaCnvAmpliconCnDuplicationCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(StringUtils.isNotEmpty(newValue) &&
@@ -732,8 +732,8 @@ public class SystemManagerPanelController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -1643,8 +1643,8 @@ public class SystemManagerPanelController extends SubPaneController {
             box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 
@@ -1788,7 +1788,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 box.setAlignment(Pos.CENTER);
 
                 box.setSpacing(10);
-                img.setStyle("-fx-cursor:hand;");
+                img.getStyleClass().add("cursor_hand");
                 box.getChildren().add(comboBox);
                 box.getChildren().add(img);
             }

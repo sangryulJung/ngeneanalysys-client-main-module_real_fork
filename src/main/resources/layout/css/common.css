@@ -80,6 +80,10 @@ Button {
 	-fx-max-height:26;
 }
 
+.cursor_hand {
+    -fx-cursor : hand;
+}
+
 .text-area {
 	-fx-background-color:#fff;
 	-fx-background-insets:0;

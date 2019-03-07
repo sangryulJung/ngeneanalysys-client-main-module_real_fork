@@ -48,7 +48,7 @@ public class VelocityUtil {
 		logger.debug(String.format("template [%s], encoding [%s]", templatePath, encoding));
 
 		if(engine == null) init();
-		if(StringUtils.isEmpty(encoding)) encoding = "UTF-8";
+		if(StringUtils.isEmpty(encoding)) encoding = CommonConstants.ENCODING_TYPE_UTF;
 
 		VelocityContext context = new VelocityContext(model);
 		StringWriter sw = new StringWriter();

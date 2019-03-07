@@ -427,7 +427,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                             textField.setId(key);
                             if(type.equalsIgnoreCase("Integer")) {
                                 textField.textProperty().addListener((observable, oldValue, newValue) -> {
-                                    if(!newValue.matches("[0-9]*")) textField.setText(oldValue);
+                                    if(!newValue.matches(CommonConstants.NUMBER_PATTERN)) textField.setText(oldValue);
                                 });
                             }
 
@@ -783,8 +783,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     }
                 }
             } catch (Exception e) {
-                logger.error("Unknown Error", e);
-                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         } else {
             alert.close();
@@ -1028,9 +1028,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 String contents = null;
                 if(panel.getReportTemplateId() == null) {
                     if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
-                        contents = velocityUtil.getContents("/layout/velocity/report_brca_cnv.vm", "UTF-8", model);
+                        contents = velocityUtil.getContents("/layout/velocity/report_brca_cnv.vm", CommonConstants.ENCODING_TYPE_UTF, model);
                     } else {
-                        contents = velocityUtil.getContents("/layout/velocity/report_brca.vm", "UTF-8", model);
+                        contents = velocityUtil.getContents("/layout/velocity/report_brca.vm", CommonConstants.ENCODING_TYPE_UTF, model);
                     }
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
@@ -1115,7 +1115,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                         thread.setDaemon(true);
                         thread.start();
 
-                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", CommonConstants.ENCODING_TYPE_UTF, model);
 
                         task.setOnSucceeded(ev -> {
                             try {

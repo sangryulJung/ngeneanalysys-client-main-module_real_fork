@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.UserTypeCode;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
@@ -196,7 +197,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     public void setSampleSheet(String path) {
         if(!sampleArrayList.isEmpty()) sampleArrayList.clear();
-        try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path), "UTF-8"))) {
+        try(CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path), CommonConstants.ENCODING_TYPE_UTF))) {
             String[] s;
             boolean tableData = false;
             while((s = csvReader.readNext()) != null) {
@@ -729,8 +730,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getMessage(), getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -924,8 +925,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             DialogUtil.warning(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
             logger.warn("Analysis request warning : ", e.getMessage());
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -1001,8 +1002,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 } catch (WebAPIException e) {
                     DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
                 } catch (IOException e) {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
             }
@@ -1028,8 +1029,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 } catch (WebAPIException e) {
                     DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
                 } catch (IOException e) {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
             }

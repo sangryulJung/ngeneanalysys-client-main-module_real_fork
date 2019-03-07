@@ -190,7 +190,7 @@ public class PublicDatabaseController extends SubPaneController {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
                 } else {
                     e.printStackTrace();
-                    DialogUtil.error("Unknown Error", e.getMessage(), dialogStage, true);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), dialogStage, true);
                 }
             }
         };
@@ -297,7 +297,7 @@ public class PublicDatabaseController extends SubPaneController {
                     WebAPIException wae = (WebAPIException)e;
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
                 } else {
-                    DialogUtil.error("Unknown Error", e.getMessage(), dialogStage, true);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), dialogStage, true);
                 }
             }
         };

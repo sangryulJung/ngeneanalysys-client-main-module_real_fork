@@ -10,6 +10,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.VariantLevelCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -81,7 +82,7 @@ public class AnalysisDetailOverviewSolidCNVController extends AnalysisDetailComm
                     DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
                             ((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
                 } else {
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), false);
                     e.printStackTrace();
                 }
             }

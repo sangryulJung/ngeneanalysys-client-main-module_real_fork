@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -90,7 +91,7 @@
                   <Insets left="25.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" maxWidth="130.0" minWidth="130.0" onMouseClicked="#openSettingURLDialog" prefWidth="130.0" style="-fx-cursor: hand;">
+            <HBox alignment="CENTER" maxWidth="130.0" minWidth="130.0" onMouseClicked="#openSettingURLDialog" prefWidth="130.0" styleClass="cursor_hand">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
@@ -100,11 +101,19 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Label style="-fx-text-fill: #FFFFFF;" text="Service Setting" />
+                  <Label styleClass="txt_white" text="Service Setting" />
                </children>
             </HBox>
-            <Label style="-fx-text-fill: #FFFFFF;" styleClass="font_size_10" text="All content ⓒ 2018 NGeneBio, Inc." />
-            <Label fx:id="versionLabel" style="-fx-text-fill: #ffffff;" styleClass="font_size_10" text="v. 1.4.0.0" />
+            <Label text="All content ⓒ 2018 NGeneBio, Inc.">
+               <styleClass>
+                  <String fx:value="font_size_10" />
+                  <String fx:value="txt_white" />
+               </styleClass></Label>
+            <Label fx:id="versionLabel" text="v. 1.4.0.0">
+               <styleClass>
+                  <String fx:value="font_size_10" />
+                  <String fx:value="txt_white" />
+               </styleClass></Label>
          </children>
          <GridPane.margin>
             <Insets />

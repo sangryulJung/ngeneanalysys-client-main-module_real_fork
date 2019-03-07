@@ -78,7 +78,7 @@ public class CommonConstants {
 	public static final String HOMEPAGE_URL = "http://www.ngenebio.com";
 	
 	/** 시스템 사용 메뉴얼 문서 경로 */
-	public static final String MANUAL_DOC_PATH_OPERATION = "NGene_AnalySys_User_Manual_v1.4.1.0.pdf";
+	public static final String MANUAL_DOC_PATH_OPERATION = "NGene_AnalySys_User_Manual_v1.4.2.0.pdf";
 	
 	/** 프로그램 릴리즈 노트 페이지 url */
 	public static final String RELEASE_NOTE_URL = "http://ngenebio.com/releasenote";
@@ -112,6 +112,12 @@ public class CommonConstants {
 	public static final String BIRTHDAY_PATTERN = "^(18|19|20|21)[0-9][0-9]-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";
 
 	public static final String DEFAULT_DAY_FORMAT = "yyyy-MM-dd";
+
+	public static final String NUMBER_PATTERN = "[0-9]*";
+
+	public static final String DEFAULT_WARNING_MGS = "Unknown Error";
+
+	public static final String ENCODING_TYPE_UTF = "UTF-8";
 
 	public static final String EHCACHE_PATH =  "/config/ehcache.xml";
 

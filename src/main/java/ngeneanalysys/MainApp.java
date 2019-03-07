@@ -218,7 +218,7 @@ public class MainApp extends Application {
 			return false;
 		}
 
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))){
 			Properties props = new Properties();
 			props.load(reader);
 
@@ -236,7 +236,7 @@ public class MainApp extends Application {
 	public void addProperty() {
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
 
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))) {
 			Properties props = new Properties();
 			props.load(reader);
 

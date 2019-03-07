@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.PredictionTypeCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -91,8 +92,8 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
                     DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
                             ((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
                 } else {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), false);
                     e.printStackTrace();
                 }
             }

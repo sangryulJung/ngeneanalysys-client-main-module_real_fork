@@ -220,8 +220,8 @@ public class UserAccountController extends SubPaneController {
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
-                logger.error("Unknown Error", e);
-                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         }
     }
@@ -278,8 +278,8 @@ public class UserAccountController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 

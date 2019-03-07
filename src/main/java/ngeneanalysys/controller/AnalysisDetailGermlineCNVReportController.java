@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.BrcaCNVCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.BrcaCnvExon;
@@ -54,7 +55,7 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
             brcaCnvResultTable.getItems().removeAll(brcaCnvResultTable.getItems());
         }
         this.brcaCnvExonList = brcaCnvExonList.stream()
-                .filter(item -> item.getExon().matches("[0-9]*"))
+                .filter(item -> item.getExon().matches(CommonConstants.NUMBER_PATTERN))
                 .sorted((a, b) -> {
                     if(a.getExon().matches("[a-zA-Z]*")) {
                         return -1;
@@ -140,14 +141,11 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
         long brca1AmplificationCount = 0;
         long brca2DeletionCount = 0;
         long brca2AmplificationCount = 0;
-        long brca1TotalCount = 0;
-        long brca2TotalCount = 0;
 
         if(brcaCnvExonList != null) {
             List<BrcaCnvExon> brcaCnvExons = brcaCnvExonList.stream()
                     .filter(item -> item.getIncludedInReport().equals("Y"))
                     .collect(Collectors.toList());
-
 
             brca1DeletionCount = brcaCnvExons.stream().filter(item ->
                             item.getGene().equals("BRCA1") &&
@@ -166,10 +164,8 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
                                     (checkCnv(item, BrcaCNVCode.COPY_GAIN.getCode()))).count();
         }
 
-        brca1TotalCount = brca1DeletionCount + brca1AmplificationCount;
-        brca2TotalCount = brca2DeletionCount + brca2AmplificationCount;
-
-        if(brca1TotalCount > 0 || brca2TotalCount > 0) {
+        if((brca1DeletionCount + brca1AmplificationCount) > 0
+                || (brca2DeletionCount + brca2AmplificationCount) > 0) {
             String brca1Text = "";
             String brca2Text = "";
 
@@ -183,13 +179,14 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
 
             if(brca2DeletionCount > 0 && brca2AmplificationCount > 0) {
                 brca2Text = "BRCA2 Copy Loss : " + brca2DeletionCount + ", Copy Gain : " + brca2AmplificationCount;
-            } else if(brca1DeletionCount > 0) {
+            } else if(brca2DeletionCount > 0) {
                 brca2Text = "BRCA2 Copy Loss : " + brca2DeletionCount;
-            } else if(brca1AmplificationCount > 0) {
+            } else if(brca2AmplificationCount > 0) {
                 brca2Text = "BRCA2 Copy Gain : " + brca2AmplificationCount;
             }
 
-            countLabel.setText("(" + brca1Text + (StringUtils.isNotEmpty(brca1Text) ? " | " : "")
+            countLabel.setText("(" + brca1Text +
+                    ((StringUtils.isNotEmpty(brca1Text) && (StringUtils.isNotEmpty(brca2Text))) ? " | " : "")
                     + brca2Text + ")");
         } else {
             countLabel.setText("");

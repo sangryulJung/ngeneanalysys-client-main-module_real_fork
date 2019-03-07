@@ -301,7 +301,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
 
         if(file != null && (file.getName().toLowerCase().endsWith(".vm"))) {
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))){
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), CommonConstants.ENCODING_TYPE_UTF))){
                 final StringBuilder sb = new StringBuilder();
                 in.lines().forEach(s -> sb.append(s).append("\n"));
                 if(sb.length() > 0) contents = sb.toString();
@@ -735,8 +735,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
             box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 

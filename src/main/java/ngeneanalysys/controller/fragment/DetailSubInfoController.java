@@ -129,19 +129,20 @@ public class DetailSubInfoController extends SubPaneController {
         Integer gPos = (genomicCoordinateMap != null && genomicCoordinateMap.containsKey("g.pos"))
                 ? (Integer) genomicCoordinateMap.get("g.pos") : null;
 
+        String cursorHand = "cursor_hand";
+        String titleCss = "title2";
+
         if (variationId != null) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("ClinVar(" + variationId + ")", "ClinVar");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
         if (!StringUtils.isEmpty(rsId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("dbSNP(" + rsId + ")", "dbSNP");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
@@ -149,8 +150,7 @@ public class DetailSubInfoController extends SubPaneController {
                 !StringUtils.isEmpty(rsId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("1000G(" + rsId + ")", "1000G");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
@@ -158,40 +158,35 @@ public class DetailSubInfoController extends SubPaneController {
                 !StringUtils.isEmpty(rsId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("KoEXID(" + rsId + ")", "KoEXID");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
         if (!StringUtils.isEmpty(geneId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("NCBI(" + geneId + ")", "NCBI");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
         if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getExac() != null &&
                 !StringUtils.isEmpty(exacFormat)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("ExAC(" + exacFormat + ")", "ExAC");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
         if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getGnomAD().getAll() != null &&
                 !StringUtils.isEmpty(exacFormat)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("gnomAD(" + exacFormat + ")", "gnomAD");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
         if (start != null && end != null) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("UCSC(" + start + "-" + end + ")", "UCSC");
-            dbContentLabel.getStyleClass().add("title2");
-            dbContentLabel.setStyle("-fx-cursor: hand;");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
@@ -199,8 +194,7 @@ public class DetailSubInfoController extends SubPaneController {
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
                 Label dbContentLabel = createLinkLabel("COSMIC", "COSMIC");
-                dbContentLabel.getStyleClass().add("title2");
-                dbContentLabel.setStyle("-fx-cursor: hand;");
+                dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
                 dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
 
@@ -209,8 +203,7 @@ public class DetailSubInfoController extends SubPaneController {
                     && !PipelineCode.isHeredPipeline(panel.getCode())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
                 Label dbContentLabel = createLinkLabel("BRCA Exchange", "BRCA Exchange");
-                dbContentLabel.getStyleClass().add("title2");
-                dbContentLabel.setStyle("-fx-cursor: hand;");
+                dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
                 dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             Map<String, Object> geneMap = returnResultsAfterSearch("gene");
@@ -219,8 +212,7 @@ public class DetailSubInfoController extends SubPaneController {
                 if (!transcriptDataMap.isEmpty()) {
                     dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
                     Label dbContentLabel = createLinkLabel("ALAMUT", "ALAMUT");
-                    dbContentLabel.getStyleClass().add("title2");
-                    dbContentLabel.setStyle("-fx-cursor: hand;");
+                    dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
                     dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
                 }
             }

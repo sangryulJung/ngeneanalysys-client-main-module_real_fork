@@ -348,6 +348,10 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
+    private boolean txtCheck(String radar, Map<String,Object> map) {
+        return map != null && map.containsKey(radar) && StringUtils.isNotEmpty((String)map.get(radar));
+    }
+
     /**
      * SIGNIFICANT 레이더 차트 화면 출력
      */
@@ -372,29 +376,30 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         String mtText = "";
         String siftScore = null;
         String polyphenScore = null;
-
+        String radar = "radar";
         // BIC
-        if(breastCancerInformationCoreMap != null) {
-            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", (String) breastCancerInformationCoreMap.get("radar"));
+        if(txtCheck(radar, breastCancerInformationCoreMap)) {
+            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", (String) breastCancerInformationCoreMap.get(radar));
         } else {
             renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", null);
         }
         // CLINVAR
-        if(clinicalMap != null) {
+        if(txtCheck("variation_radar", clinicalMap)) {
             renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", (String) clinicalMap.get("variation_radar"));
         } else {
             renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", null);
         }
         // ENIGMA
-        if(enigmaMap != null) {
-            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", (String) enigmaMap.get("radar"));
+        if(txtCheck(radar, enigmaMap)) {
+            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", (String) enigmaMap.get(radar));
+            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", (String) enigmaMap.get(radar));
         } else {
             renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", null);
         }
         // PREDICTION
-        if(variantClassifierMap != null) {
-            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", (String) variantClassifierMap.get("radar"));
-        } else {
+        if(!txtCheck(radar, enigmaMap) && txtCheck(radar, variantClassifierMap)) {
+            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", (String) variantClassifierMap.get(radar));
+        } else if(enigmaMap == null && variantClassifierMap == null){
             renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", null);
         }
         // SIFT
@@ -413,8 +418,8 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     logger.debug("sift score value is null");
                     siftValue = -1.0;
                 }
-            } else if (siftMap.containsKey("radar")) {
-                siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get("radar"))) / 100.0;
+            } else if (siftMap.containsKey(radar)) {
+                siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get(radar))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
@@ -540,7 +545,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             if(!orgMap.isEmpty() && orgMap.containsKey(location)) {
                 Map<String,Object> locationMap = (Map<String,Object>) orgMap.get(location);
                 if(!locationMap.isEmpty() && locationMap.containsKey(alleleFrequency)) {
-                    if(!StringUtils.isEmpty(locationMap.get(alleleFrequency).toString())) {
+                    if(StringUtils.isNotEmpty(locationMap.get(alleleFrequency).toString())) {
                         if(locationMap.get(alleleFrequency) instanceof String) {
                             percentage = Double.parseDouble((String)locationMap.get(alleleFrequency));
                         } else if(locationMap.get(alleleFrequency) instanceof Double){
@@ -589,7 +594,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     private void renderClinicalPathogenicityData(HBox node, String text, String value) {
         int level = 0;
-        if (!StringUtils.isEmpty(value) && !"None".equals(value)) {
+        if (StringUtils.isNotEmpty(value) && !"None".equals(value)) {
             try {
                 level = Integer.valueOf(value);
             } catch(NumberFormatException nfe){

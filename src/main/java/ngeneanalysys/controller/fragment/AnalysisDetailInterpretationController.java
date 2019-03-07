@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
@@ -488,7 +489,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-            img.setStyle("-fx-cursor:hand;");
+            img.getStyleClass().add("cursor_hand");
             box = new HBox();
             box.setAlignment(Pos.CENTER);
             box.getChildren().add(img);
@@ -528,8 +529,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
                 Collections.sort(list, Collections.reverseOrder(Comparator.comparing(SnpInDelEvidence::getId)));
 
-                List<SnpInDelEvidence> interpretationList = new ArrayList<>();
-                interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
+                List<SnpInDelEvidence> interpretationList = list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList());
 
                 if (StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) {
                         returnTierClass(returnTier(selectedAnalysisResultVariant.getSnpInDel().getExpertTier()), userTierLabel ,2);
@@ -549,8 +549,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -580,8 +580,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -608,17 +608,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     private void checkBoxSetting(CheckBox checkBox, String symbol) {
-        if("Y".equals(symbol)) {
-            checkBox.setSelected(true);
-        } else {
-            checkBox.setSelected(false);
-        }
+        checkBox.setSelected("Y".equals(symbol));
     }
 
     private void returnTierClass(String tier, Label label, Integer userTier) {
         label.setAlignment(Pos.CENTER);
-        logger.debug("+++++++++++++++");
-        logger.debug(userTierLabel.getText()+" "+tier+" "+userTier);
         if(userTier == 2 && tier != null) {arrow.setVisible(true);}
 
         label.getStyleClass().removeAll(label.getStyleClass());
@@ -680,7 +674,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
                 } catch (Exception e) {
-                    DialogUtil.warning("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    DialogUtil.warning(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
             } else {
                 DialogUtil.warning("", "Make sure you have selected primary evidence.", getMainApp().getPrimaryStage(), true);

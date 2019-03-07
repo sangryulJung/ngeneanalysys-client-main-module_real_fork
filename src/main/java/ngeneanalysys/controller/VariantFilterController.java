@@ -508,7 +508,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void integerCheck(TextField textField, String oValue, String nValue) {
-        if (!nValue.matches("[0-9]*")) textField.setText(oValue);
+        if (!nValue.matches(CommonConstants.NUMBER_PATTERN)) textField.setText(oValue);
     }
 
     private boolean checkNotEmptyTextField(TextField textField1, TextField textField2) {

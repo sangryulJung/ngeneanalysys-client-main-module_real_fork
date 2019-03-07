@@ -347,7 +347,6 @@
     -fx-pref-height : 16;
     -fx-min-width : 16;
     -fx-min-height : 16;
-    -fx-cursor:hand;
 }
 
 #brcaCnvResultTable .table-cell {

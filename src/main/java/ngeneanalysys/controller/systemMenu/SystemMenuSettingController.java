@@ -222,7 +222,7 @@ public class SystemMenuSettingController extends SubPaneController {
            
 
             // 현재 설정된 프로퍼티 설정 갱신
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))){
                 Properties properties = new Properties();
                 properties.load(reader);
                 for (Map.Entry<Object, Object> entry : properties.entrySet()) {

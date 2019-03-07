@@ -345,7 +345,7 @@ public class PastResultsController extends SubPaneController {
 	 */
 	void resumeAutoRefresh() {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
-        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
+        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) / 2;
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
 			logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),
@@ -441,8 +441,8 @@ public class PastResultsController extends SubPaneController {
 					DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
 							((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
 				} else {
-					logger.error("Unknown Error", e);
-					DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+					logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+					DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), false);
 					e.printStackTrace();
 				}
 			}
@@ -577,12 +577,12 @@ public class PastResultsController extends SubPaneController {
 
 	private void addDateLabel(final String startDate, final String endDate, final HBox hBox) {
 		Label startLabel = new Label(startDate);
-		String textFill = "-fx-text-fill : #FFFFFF;";
-		startLabel.setStyle(startLabel.getStyle() + textFill);
+		String textFill = "txt_white";
+		startLabel.getStyleClass().add(textFill);
 		Label label = new Label(" ~ ");
-		label.setStyle(label.getStyle() + textFill);
+		label.getStyleClass().add(textFill);
 		Label endLabel = new Label(endDate);
-		endLabel.setStyle(endLabel.getStyle() + textFill);
+		endLabel.getStyleClass().add(textFill);
 		if(startDate != null && endDate != null) {
 			hBox.getChildren().addAll(startLabel, label, endLabel);
 		} else if(startDate != null) {
@@ -610,7 +610,7 @@ public class PastResultsController extends SubPaneController {
 		flowPane.setVgap(10);
 		HBox hBox = createItemHBox(textField.getText());
 		Label label = new Label(textField.getText());
-		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
+		label.getStyleClass().add("txt_white");
 		Label xLabel = createRemoveBtn(flowPane, hBox, box);
 		hBox.getChildren().addAll(label, xLabel);
 		addItemSearchArea(hBox, box, flowPane);
@@ -793,7 +793,7 @@ public class PastResultsController extends SubPaneController {
 		private void setSampleList(List<SampleView> sampleList) {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
-				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
+				itemHBox.getStyleClass().add("cursor_hand");
 				if((sampleView.getSampleStatus().getStep()
 						.equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 						(sampleView.getSampleStatus().getStatus()
@@ -819,7 +819,7 @@ public class PastResultsController extends SubPaneController {
 					itemHBox.getChildren().get(1).setStyle(itemHBox.getStyle() + textFillStyle);
 					itemHBox.getChildren().get(4).setStyle(itemHBox.getStyle() + textFillStyle);
 
-					for(int i = 1; i < variantsSize ; i+=2) {
+					for(int i = 1; i < variantsSize ; i+= 2) {
 						currentVariants.getChildren().get(i).setStyle(itemHBox.getStyle() + textFillStyle);
 					}
 			

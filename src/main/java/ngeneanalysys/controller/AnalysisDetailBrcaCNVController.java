@@ -20,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.code.enums.BrcaCNVCode;
@@ -634,7 +635,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             brcaCnvTable.getItems().removeAll(brcaCnvTable.getItems());
         }
 
-        List<BrcaCnvExon> list = brcaCnvExonList.stream().filter(item -> item.getExon().matches("[0-9]*"))
+        List<BrcaCnvExon> list = brcaCnvExonList.stream().filter(item -> item.getExon().matches(CommonConstants.NUMBER_PATTERN))
                 .collect(Collectors.toList());
 
         if(!list.isEmpty()) {
@@ -676,7 +677,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 }
             }).collect(Collectors.toList());
             List<BrcaCnvExon> countList = brcaCnvExonList.stream()
-                    .filter(item -> item.getExon().matches("[0-9]*")).collect(Collectors.toList());
+                    .filter(item -> item.getExon().matches(CommonConstants.NUMBER_PATTERN)).collect(Collectors.toList());
             long brca1LossCount = countList.stream().filter(item -> item.getGene().equals(BRCA1)
                     && checkCnv(item, BrcaCNVCode.COPY_LOSS.getCode())).count();
             long brca1GainCount = countList.stream().filter(item -> item.getGene().equals(BRCA1)

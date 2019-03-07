@@ -69,13 +69,12 @@ public class PropertiesUtil {
 	 * @param map Map<String,String>
 	 */
 	public static void saveProperties(File propertiesFile, Map<String,String> map) {
-		String encoding = "UTF-8";
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), encoding))){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), CommonConstants.ENCODING_TYPE_UTF))){
 			// 기존 설정 파일 내용
 			String fileContent = FileUtils.readFileToString(propertiesFile);
 			
 			if(StringUtils.isEmpty(fileContent)) {
-				FileUtils.write(propertiesFile, "", encoding);
+				FileUtils.write(propertiesFile, "", CommonConstants.ENCODING_TYPE_UTF);
 			}	
 			Properties properties = new Properties();
 			properties.load(reader);
@@ -84,7 +83,7 @@ public class PropertiesUtil {
 				properties.setProperty(entry.getKey(), entry.getValue());
 			}
 				
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), encoding));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), CommonConstants.ENCODING_TYPE_UTF));
 			properties.store(writer, "Update Settings");
 			writer.close();
 		} catch (UnsupportedEncodingException e) {
@@ -105,7 +104,7 @@ public class PropertiesUtil {
 	public static Properties getSystemDefaultProperties() {
 		Properties config = getPropertiesByPath(CommonConstants.BASE_PROPERTIES_PATH);
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))){
 			// 서버 정보 설정 파일에 입력 받은 내용을 기록
 			Properties properties = new Properties();
 			properties.load(reader);

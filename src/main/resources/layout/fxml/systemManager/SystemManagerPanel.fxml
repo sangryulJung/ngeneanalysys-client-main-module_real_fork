@@ -116,12 +116,6 @@
                                                 <TextField fx:id="brcaCnvAmpliconCnDuplicationCutoffTextField" prefWidth="60.0" text="0.2" />
                                              </children>
                                           </HBox>
-                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                             <children>
-                                                <TextField fx:id="exonCnpThresholdTextField" prefWidth="60.0" text="0.15" />
-                                                <Label text="\%" />
-                                             </children>
-                                          </HBox>
                                           <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="1">
                                              <children>
@@ -139,7 +133,7 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <children>
-                                                <RadioButton fx:id="simpleCutoffAmpliconCnpAlgorithmRadioButton" mnemonicParsing="false" text="Simple Cut-off" toggleGroup="$ampliconCopyNumberPredictionAlgorihtmToggleGroup" />
+                                                <RadioButton fx:id="simpleCutoffAmpliconCnpAlgorithmRadioButton" mnemonicParsing="false" text="User Cut-off" toggleGroup="$ampliconCopyNumberPredictionAlgorihtmToggleGroup" />
                                                 <Label fx:id="cutOffToolTip" styleClass="help_tooltip">
                                                    <cursor>
                                                       <Cursor fx:constant="HAND" />
@@ -148,11 +142,16 @@
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="5">
                                              <children>
-                                                <Label text="Exon Copy Number Prediction Threshold" />
+                                                <Label text="Exon CNV Threshold" />
                                                 <Label fx:id="predictionThresholdToolTip" styleClass="help_tooltip">
                                                    <cursor>
                                                       <Cursor fx:constant="HAND" />
-                                                   </cursor></Label>
+                                                   </cursor>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin></Label>
+                                                <TextField fx:id="exonCnpThresholdTextField" prefWidth="60.0" text="0.15" />
+                                                <Label text="\%" />
                                              </children>
                                           </HBox>
                                           <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">

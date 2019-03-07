@@ -84,7 +84,7 @@ public class ExcelConvertReportInformationService {
         } catch (IOException ioe) {
             DialogUtil.error("File Save Error", ioe.getMessage(), primaryStage, true);
         } catch (Exception e) {
-            DialogUtil.error("Unknown Error", e.getMessage(), primaryStage, true);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), primaryStage, true);
         }
     }
 
@@ -136,7 +136,7 @@ public class ExcelConvertReportInformationService {
         } catch (IOException ioe) {
             DialogUtil.error("File Save Error", ioe.getMessage(), primaryStage, true);
         } catch (Exception e) {
-            DialogUtil.error("Unknown Error", e.getMessage(), primaryStage, true);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), primaryStage, true);
         }
     }
 

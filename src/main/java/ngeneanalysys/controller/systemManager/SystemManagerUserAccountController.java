@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.GroupAddController;
 import ngeneanalysys.controller.UserAccountController;
@@ -292,8 +293,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -348,8 +349,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
     }
@@ -398,8 +399,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -444,8 +445,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -504,8 +505,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 
@@ -564,8 +565,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
                 DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                         getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
-                logger.error("Unknown Error", e);
-                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         }
         @Override
@@ -580,8 +581,8 @@ public class SystemManagerUserAccountController extends SubPaneController{
 
             box.setAlignment(Pos.CENTER);
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 

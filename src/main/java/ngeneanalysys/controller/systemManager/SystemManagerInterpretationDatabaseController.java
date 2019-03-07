@@ -181,11 +181,11 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         });
 
         endPosTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endPosTextField.setText(oldValue);
+            if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) endPosTextField.setText(oldValue);
         });
 
         startPosTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) startPosTextField.setText(oldValue);
+            if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) startPosTextField.setText(oldValue);
         });
 
         diseaseIdTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDiseaseId()));

@@ -22,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.CnvPredictionCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -255,8 +256,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                     DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
                             ((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
                 } else {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), false);
                     e.printStackTrace();
                 }
             }
@@ -299,8 +300,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                     DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
                             ((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
                 } else {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), false);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), false);
                     e.printStackTrace();
                 }
             }

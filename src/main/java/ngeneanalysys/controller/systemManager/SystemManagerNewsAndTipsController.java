@@ -263,8 +263,8 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
             box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 

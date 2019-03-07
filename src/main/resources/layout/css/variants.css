@@ -155,7 +155,6 @@
     -fx-pref-height : 16;
     -fx-min-width : 16;
     -fx-min-height : 16;
-    -fx-cursor:hand;
 }
 
 #csv_download_image {
@@ -165,7 +164,6 @@
     -fx-pref-height : 16;
     -fx-min-width : 16;
     -fx-min-height : 16;
-    -fx-cursor:hand;
 }
 
 #filterComboBox {
