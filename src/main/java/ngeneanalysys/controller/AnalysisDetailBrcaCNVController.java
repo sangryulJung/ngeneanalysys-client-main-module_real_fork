@@ -56,12 +56,6 @@ import java.util.stream.Collectors;
 public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonController {
     private static Logger logger = LoggerUtil.getLogger();
 
-    private static final double AMPLIFICATION_HEIGHT = 16;
-
-    private static final double NORMAL_HEIGHT = 36;
-
-    private static final double DELETION_HEIGHT = 56;
-
     private static final double LABEL_CENTER_FIX = 0;
 
     private static final double LABEL_HEIGHT = 8;
@@ -70,18 +64,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private static final String BRCA2 = "BRCA2";
 
+    private static final String CHAR_PATTERN = "[a-zA-Z]*";
+
     private CheckBox tableCheckBox;
-
-    private final String[] brcaExonThinArea = new String[]{"BRCA1_1", "BRCA1_2", "BRCA1_24", "BRCA2_1", "BRCA2_2",
-            "BRCA2_27"};
-
-    private final String[] brcaCmcNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
-
-    private final String[] brcaMlpaNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
-
-    private final String[] brcaV2NoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
-
-    private final String[] brcaAndPlusNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
 
     @FXML
     private Label totalCountLabel;
@@ -193,6 +178,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         geneComboBox.valueProperty().addListener((ob, ov, nv) -> {
             if(nv != null) {
                 setTableItem(nv.getValue());
+                if(tableCheckBox.isSelected()) tableCheckBox.setSelected(false);
                 if(nv.getValue().equals(BRCA1)) {
                     brca1ScrollPane.setVisible(true);
                     brca2ScrollPane.setVisible(false);
@@ -424,7 +410,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                         } else {
                             BrcaCnvExon brcaCnvExon = getTableView().getItems().get(getIndex());
                             if(bicNomenclatureRadioButton.isSelected() && brcaCnvExon.getGene().equals(BRCA1)) {
-                                if(brcaCnvExon.getExon().matches("[a-zA-Z]*")) {
+                                if(brcaCnvExon.getExon().matches(CHAR_PATTERN)) {
                                     setText(item);
                                 } else {
                                     int a = Integer.parseInt(item);
@@ -442,9 +428,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 }
         );
         exonTableColumn.setComparator((a,  b) -> {
-            if(a.matches("[a-zA-Z]*")) {
+            if(a.matches(CHAR_PATTERN)) {
                 return -1;
-            } else if(b.matches("[a-zA-Z]*")) {
+            } else if(b.matches(CHAR_PATTERN)) {
                 return 1;
             }else {
                 int intA = Integer.parseInt(a);
@@ -574,7 +560,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             hBox.getChildren().add(tableView);
             popOver.getRoot().setAlignment(Pos.CENTER);
             popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
-            //popOver.getRoot().setOpaqueInsets(new Insets(5, 5, 5, 5));
             popOver.setHeaderAlwaysVisible(true);
             popOver.setAutoHide(true);
             popOver.setAutoFix(true);
@@ -647,13 +632,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     public void setList() {
+        if(tableCheckBox.isSelected()) tableCheckBox.setSelected(false);
         try {
             HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, false);
             PagedBrcaCNV pagedBrcaCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
             brcaCnvAmpliconList = pagedBrcaCNV.getResult().stream().sorted((a, b) -> {
-                if(a.getAmplicon().matches("[a-zA-Z]*")){
+                if(a.getAmplicon().matches(CHAR_PATTERN)){
                     return 1;
-                } else if(b.getAmplicon().matches("[a-zA-Z]*")) {
+                } else if(b.getAmplicon().matches(CHAR_PATTERN)) {
                     return -1;
                 } else {
                     int intA = Integer.parseInt(a.getAmplicon());
@@ -666,9 +652,9 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             PagedBrcaCNVExon pagedBrcaCNVExon = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
             brcaCnvExonList = pagedBrcaCNVExon.getResult().stream().sorted((a, b) ->
             {
-                if(a.getExon().matches("[a-zA-Z]*")) {
+                if(a.getExon().matches(CHAR_PATTERN)) {
                     return -1;
-                } else if(b.getExon().matches("[a-zA-Z]*")) {
+                } else if(b.getExon().matches(CHAR_PATTERN)) {
                     return 1;
                 } else {
                     int intA = Integer.parseInt(a.getExon());
@@ -803,12 +789,19 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 size += amplicons.size();
             }
         }
+        if(StringUtils.isNotEmpty(domain) && size > 0) {
+            if(nodeTextTest(box.getChildren().get(idx))) {
+                reSizeNodeWidth(box.getChildren().get(idx), lineWidth);
+            }
+            reSizeNodeWidth(box.getChildren().get(idx + 1), boxWidth * size - lineWidth);
+        }
     }
 
     private void drawDomainArea(String gene, HBox box) {
         List<BrcaCnvExon> list = getBrcaCnvExons(gene);
         String domain = null;
         int size = 0;
+
         for(BrcaCnvExon brcaCnvExon : list) {
             List<BrcaCnvAmplicon> amplicons = getBrcaCnvAmpliconsByExon(gene, brcaCnvExon.getExon());
             if((StringUtils.isNotEmpty(brcaCnvExon.getDomain()) && StringUtils.isNotEmpty(domain)) ||
@@ -841,6 +834,15 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             } else {
                 size += amplicons.size();
             }
+        }
+        if(StringUtils.isNotEmpty(domain) && size > 0) {
+            if(!box.getChildren().isEmpty()) {
+                addLineInHBox(gene, box, "");
+            }
+            Label label = new Label(domain);
+            label.getStyleClass().add("domain_label");
+            label.setMinWidth((size * calcOneBoxSize(getTotalAmpliconCountInGene(gene))) - calcOneLineSize(getTotalAmpliconCountInGene(gene)));
+            box.getChildren().add(label);
         }
     }
 
@@ -895,7 +897,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
                 addLineInHBox(gene, box, "");
             }
             List<BrcaCnvAmplicon> amplicons = getBrcaCnvAmpliconsByExon(gene, brcaCnvExon.getExon());
-            if(brcaCnvExon.getExon().matches("[a-zA-Z]*")) {
+            if(brcaCnvExon.getExon().matches(CHAR_PATTERN)) {
                 addChildrenInHBox(gene, box, amplicons.size());
             } else {
                 Label label = new Label(brcaCnvExon.getExon());
@@ -922,7 +924,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             }
             List<BrcaCnvAmplicon> amplicons = getBrcaCnvAmpliconsByExon(gene, brcaCnvExon.getExon());
             double boxSize = oneBoxSize * amplicons.size() - oneLineSize;
-            if(brcaCnvExon.getExon().matches("[a-zA-Z]*")) {
+            if(brcaCnvExon.getExon().matches(CHAR_PATTERN)) {
                 HBox line = new HBox();
                 line.setId(gene + "_" + brcaCnvExon.getExon());
                 line.setMinSize(boxSize, 0.1);
@@ -957,6 +959,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private String[] getNoneTargetArea() {
+        final String[] brcaCmcNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
+
+        final String[] brcaMlpaNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
+
+        final String[] brcaV2NoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
+
+        final String[] brcaAndPlusNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
+
         if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
             return brcaMlpaNoneTargetArea;
         } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
@@ -992,28 +1002,31 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         HBox box = new HBox();
         String boxId = brcaCnvExon.getGene() + "_" + brcaCnvExon.getExon();
         box.setId(boxId);
+        int thinHeight = 6;
+        int height = 12;
         double boxSize = (size * calcOneBoxSize(getTotalAmpliconCountInGene(brcaCnvExon.getGene()))) - lineSize;
         String[] noneTargetArea = getNoneTargetArea();
+        final String[] brcaExonThinArea = new String[]{"BRCA1_1", "BRCA1_2", "BRCA1_24", "BRCA2_1", "BRCA2_2", "BRCA2_27"};
         if(Arrays.stream(brcaExonThinArea).anyMatch(item -> item.equals(boxId)) &&
                 Arrays.stream(noneTargetArea).noneMatch(item -> item.equals(boxId))) {
             if(brcaCnvExon.getExon().equals("1")) {
                 Label label = new Label();
                 label.setMinWidth(boxSize);
-                label.setMinHeight(6);
-                label.setPrefHeight(6);
-                label.setMaxHeight(6);
+                label.setMinHeight(thinHeight);
+                label.setPrefHeight(thinHeight);
+                label.setMaxHeight(thinHeight);
                 box.getChildren().add(label);
             } else {
                 Label label = new Label();
                 label.setMinWidth(4);
-                label.setMinHeight(6);
-                label.setPrefHeight(6);
-                label.setMaxHeight(6);
+                label.setMinHeight(thinHeight);
+                label.setPrefHeight(thinHeight);
+                label.setMaxHeight(thinHeight);
                 Label label2 = new Label();
                 label2.setMinWidth(boxSize - 4);
-                label2.setMinHeight(12);
-                label2.setPrefHeight(12);
-                label2.setMaxHeight(12);
+                label2.setMinHeight(height);
+                label2.setPrefHeight(height);
+                label2.setMaxHeight(height);
                 if(brcaCnvExon.getExon().equals("24") || brcaCnvExon.getExon().equals("27")) {
                     box.getChildren().addAll(label2, label);
                 } else {
@@ -1023,14 +1036,14 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         } else {
             Label label = new Label();
             label.setMinWidth(boxSize);
-            label.setMinHeight(12);
-            label.setPrefHeight(12);
-            label.setMaxHeight(12);
+            label.setMinHeight(height);
+            label.setPrefHeight(height);
+            label.setMaxHeight(height);
             box.getChildren().add(label);
         }
-        box.setMinHeight(12);
-        box.setPrefHeight(12);
-        box.setMaxHeight(12);
+        box.setMinHeight(height);
+        box.setPrefHeight(height);
+        box.setMaxHeight(height);
         box.setAlignment(Pos.CENTER);
         paintPlotBox(box, brcaCnvExon);
         box.setMinWidth(boxSize);
@@ -1065,6 +1078,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
     }
 
     private void sampleRatioPopOver(Label label, BrcaCnvAmplicon amplicon, long size) {
+        String fontSize10 = "font_size_10";
         PopOver popOver = new PopOver();
         popOver.setMinWidth(200);
         popOver.setHeight(50);
@@ -1085,12 +1099,12 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         legendBox.setSpacing(55);
         VBox.setMargin(legendBox, new Insets(5, 0, 0, 0));
         Label deletionLabel = new Label("Loss");
-        deletionLabel.getStyleClass().add("font_size_10");
+        deletionLabel.getStyleClass().add(fontSize10);
         Label normalLabel = new Label("Normal");
         normalLabel.setAlignment(Pos.CENTER);
-        normalLabel.getStyleClass().add("font_size_10");
+        normalLabel.getStyleClass().add(fontSize10);
         Label amplificationLabel = new Label("Gain");
-        amplificationLabel.getStyleClass().add("font_size_10");
+        amplificationLabel.getStyleClass().add(fontSize10);
 
         legendBox.getChildren().addAll(deletionLabel, normalLabel, amplificationLabel);
 
@@ -1120,7 +1134,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         }
         reSizeNodeWidth(warningLabel, 200);
         warningLabel.setAlignment(Pos.CENTER);
-        warningLabel.getStyleClass().addAll("font_size_10","txt_red", "bold");
+        warningLabel.getStyleClass().addAll(fontSize10,"txt_red", "bold");
 
         anchorPane.getChildren().add(box);
 
@@ -1209,11 +1223,11 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
     private Double getLabelHeight(Integer prediction) {
         if(prediction == 1) {
-            return DELETION_HEIGHT;
+            return 56d;
         } else if(prediction == 2) {
-            return NORMAL_HEIGHT;
+            return 36d;
         }
-        return AMPLIFICATION_HEIGHT;
+        return 16d;
     }
 
     private Integer getAmpliconCnvLevel(BrcaCnvAmplicon brcaCnvAmplicon) {

@@ -285,11 +285,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             }
             response = apiService.get("/panels", params, null, false);
             final PagedPanel pagedPanel = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-            this.panels = pagedPanel.getResult();
+            this.panels = pagedPanel.getResult().stream().sorted(Comparator.comparing(Panel::getName))
+                    .collect(Collectors.toList());
 
             response = apiService.get("/diseases", null, null, false);
             List<Diseases> diseasesList = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
-            this.diseases = diseasesList;
+            this.diseases = diseasesList.stream().sorted(Comparator.comparing(Diseases::getName))
+                    .collect(Collectors.toList());
 
         } catch (WebAPIException e) {
             DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(),

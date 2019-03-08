@@ -208,7 +208,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
                             sortedKeyList.remove("conclusions");
-                            //conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
 
 
@@ -558,25 +557,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         return null;
     }
 
-    public SimpleStringProperty returnTherapeutic(SnpInDelInterpretation snpInDelInterpretation) {
-        String text = "";
-        if(snpInDelInterpretation != null) {
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
-        }
-        if(!"".equals(text)) {
-            text = text.substring(0, text.length() - 2);
-        }
-
-        return new SimpleStringProperty(text);
-    }
-
     private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
@@ -611,8 +591,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         String conclusionsText = conclusionsTextArea.getText();
 
         Map<String, Object> params = new HashMap<>();
-
-        //params.put("sampleId", sample.getId());
 
         Map<String, Object> contentsMap = new HashMap<>();
 
@@ -719,7 +697,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         createPDF(false);
     }
 
-    public void convertPDFtoImage(File file, String baseFileName) {
+    /*public void convertPDFtoImage(File file, String baseFileName) {
         String path = file.getParentFile().getAbsolutePath();
         try {
         PDDocument document = PDDocument.load(file);
@@ -733,7 +711,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
@@ -1103,12 +1081,10 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     @SuppressWarnings("unchecked")
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        URLClassLoader classLoader = null;
-        try {
-            classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
+
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
-            // Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
@@ -1121,12 +1097,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-        } finally {
-            try {
-                if(classLoader != null) classLoader.close();
-            } catch (IOException e) {
-                DialogUtil.error("close error", e.getMessage(), getMainApp().getPrimaryStage(), false);
-            }
+            e.printStackTrace();
         }
     }
 
@@ -1160,15 +1131,15 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         if(qcList != null && !qcList.isEmpty()) {
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
-                    SampleQC qcData = findQC.get();
-                    String number = findQC.get().getQcValue().toString();
-                    Long value = Math.round(Double.parseDouble(number));
+                SampleQC qcData = findQC.get();
+                String number = findQC.get().getQcValue().toString();
+                double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_FLOOR));
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_FLOOR));
                 return qcData;
             }
         }

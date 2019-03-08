@@ -68,7 +68,6 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
     public void show(Parent root) throws IOException {
 
         Panel panel = (Panel)paramMap.get("panel");
-        SampleView sample = (SampleView)paramMap.get("sampleView");
 
         if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
             TableColumn<Cnv, String> tierColumn = new TableColumn<>("Tier");
@@ -201,7 +200,6 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
             protected void succeeded() {
                 if(inputStream != null) {
                     cnvPlotImageView.setImage(new Image(inputStream));
-                    //plotImageView.fitWidthProperty().bind(imageHBox.widthProperty());
                     cnvPlotImageView.setFitHeight(imageScrollPane.getHeight() - 10);
                     imageScrollPane.heightProperty().addListener((observable, oldValue, newValue) ->
                             cnvPlotImageView.setFitHeight((Double) newValue - 10));

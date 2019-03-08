@@ -375,8 +375,7 @@ public class DetailSubInfoController extends SubPaneController {
     private Label createLinkLabel(final String title, final String link) {
         Label label = new Label();
         label.setText(title);
-        label.getStyleClass().add("title1");
-        label.setCursor(Cursor.HAND);
+        label.getStyleClass().addAll("title1", "cursor_hand");
         label.setOnMouseClicked(event -> showBrowser(link));
 
         return label;

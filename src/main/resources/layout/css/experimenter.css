@@ -95,6 +95,7 @@
     -fx-pref-width : 32;
     -fx-alignment : center-left;
     -fx-pref-height : 18;
+    -fx-text-fill : gray;
     /*-fx-font-family: "Noto Sans CJK KR Regular";*/
     -fx-font-weight : 100;
 }

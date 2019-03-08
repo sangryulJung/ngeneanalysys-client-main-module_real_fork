@@ -272,15 +272,12 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     region.getStyleClass().add("region-big");
                     menuName.getStyleClass().add("label-big");
                 } else {*/
-                    menu.getStyleClass().add("group-small");
-                    region.getStyleClass().add("region-small");
-                    menuName.getStyleClass().add("label-small");
+                menu.getStyleClass().add("group-small");
+                region.getStyleClass().add("region-small");
+                menuName.getStyleClass().add("label-small");
                 //}
-                menuName.getStyleClass().add("bold");
+                menuName.getStyleClass().addAll("bold", "cursor_hand");
                 menu.getChildren().setAll(region, menuName);
-
-                // 마우스 커서 타입 설정
-                menu.setCursor(Cursor.HAND);
                 menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, selectIdx));
 
                 topMenuGroups[idx] = menu;

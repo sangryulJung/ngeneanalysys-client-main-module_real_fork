@@ -89,7 +89,7 @@ public class PastResultsController extends SubPaneController {
 
 	private int itemCountPerPage;
 
-	private List<RunStatusGirdPane> runStatusGirdPanes;
+	//private List<RunStatusGirdPane> runStatusGirdPanes;
 
 	private boolean oneItem = false;
 
@@ -118,7 +118,7 @@ public class PastResultsController extends SubPaneController {
 		apiService = APIService.getInstance();
 		apiService.setStage(getMainController().getPrimaryStage());
 
-		runStatusGirdPanes = new ArrayList<>();
+		//runStatusGirdPanes = new ArrayList<>();
 
 		// masker pane init
 		experimentPastResultsWrapper.add(maskerPane, 0, 0, 6, 6);
@@ -510,7 +510,7 @@ public class PastResultsController extends SubPaneController {
 		if (list != null && !list.isEmpty()) {
 			for(RunSampleView runSampleView : list) {
 				RunStatusGirdPane gridPane = new RunStatusGirdPane();
-				runStatusGirdPanes.add(gridPane);
+				//runStatusGirdPanes.add(gridPane);
 				resultVBox.getChildren().add(gridPane);
 				gridPane.setLabel(runSampleView);
 				setVBoxPrefSize(gridPane);
@@ -552,7 +552,7 @@ public class PastResultsController extends SubPaneController {
 
 	private HBox createItemHBox(String id) {
 		HBox hBox = new HBox();
-		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
+		hBox.getStyleClass().add("search_item_box");
 		hBox.setAlignment(Pos.CENTER);
 		hBox.setId(id);
 
@@ -561,7 +561,6 @@ public class PastResultsController extends SubPaneController {
 
 	private Label createRemoveBtn(final FlowPane flowPane, final HBox hBox, final VBox box) {
 		Label xLabel = new Label("X");
-		xLabel.setCursor(Cursor.HAND);
 		xLabel.setOnMouseClicked(ev -> {
 			if(flowPane.getChildren().size() == 1) {
 				searchListVBox.getChildren().remove(box);
@@ -570,7 +569,7 @@ public class PastResultsController extends SubPaneController {
 			}
 			setList(1);
 		});
-		xLabel.getStyleClass().add("remove_btn");
+		xLabel.getStyleClass().addAll("remove_btn");
 
 		return xLabel;
 	}
@@ -808,9 +807,6 @@ public class PastResultsController extends SubPaneController {
 				final SampleView sample = sampleView;
 				
 				itemHBox.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-					//itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034; -fx-font-size: 13px; -fx-font-family:  Noto Sans KR Bold; ");
-					//itemHBox.getChildren().clear();
-
 					HBox currentVariants = (HBox)itemHBox.getChildren().get(3);
 					int variantsSize = currentVariants.getChildren().size();
 					String textFillStyle = "-fx-text-fill: #CD0034;";
@@ -955,28 +951,21 @@ public class PastResultsController extends SubPaneController {
 			if (summary == null) {
 				return;
 			}
-			final String countLabelStyleClass = "count_label";
-			final String countLabelStyle = "-fx-text-fill : gray;";
 			if(sample.getPanel().getAnalysisType().equalsIgnoreCase("GERMLINE")) {
 				Label lv1Icon = createIconLabel("P", "lv_i_icon");
-				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString());
 
 				Label lv2Icon = createIconLabel("LP", "lv_ii_icon");
-				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString());
 
 				Label lv3Icon = createIconLabel("US", "lv_iii_icon");
-				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString());
 
 				Label lv4Icon = createIconLabel("LB", "lv_iv_icon");
-				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString());
 
 				Label lv5Icon = createIconLabel("B", "lv_v_icon");
-				Label lv5Value = createValueLabel(summary.getLevel5VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv5Value = createValueLabel(summary.getLevel5VariantCount().toString());
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,
@@ -987,20 +976,16 @@ public class PastResultsController extends SubPaneController {
 
 			} else if (AnalysisTypeCode.SOMATIC.getDescription().equals(sample.getPanel().getAnalysisType())) {
 				Label lv1Icon = createIconLabel("T1", "lv_i_icon");
-				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString());
 
 				Label lv2Icon = createIconLabel("T2", "lv_ii_icon");
-				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString());
 
 				Label lv3Icon = createIconLabel("T3", "lv_iii_icon");
-				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString());
 
 				Label lv4Icon = createIconLabel("T4", "lv_iv_icon");
-				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString());
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,
@@ -1017,10 +1002,9 @@ public class PastResultsController extends SubPaneController {
 			return label;
 		}
 
-		private Label createValueLabel(String text, String styleClass, String style) {
+		private Label createValueLabel(String text) {
 			Label label = new Label(text);
-			label.getStyleClass().add(styleClass);
-			label.setStyle(style);
+			label.getStyleClass().add("count_label");
 			return label;
 		}
 

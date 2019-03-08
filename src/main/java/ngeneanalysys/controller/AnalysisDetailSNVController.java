@@ -493,7 +493,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void eventRegistration() {
-        addToReportButton.setCursor(Cursor.HAND);
         addToReportButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
@@ -514,7 +513,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
-            changeTierButton.setCursor(Cursor.HAND);
             changeTierButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                 List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
                 if (!selectList.isEmpty()) {
@@ -557,7 +555,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         }
-        falsePositiveButton.setCursor(Cursor.HAND);
         falsePositiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
@@ -576,7 +573,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 viewCheckAlert();
             }
         });
-        showIGVButton.setCursor(Cursor.HAND);
         showIGVButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             if(variantListTableView.getSelectionModel() != null
                     && variantListTableView.getSelectionModel().getSelectedItem() != null) {

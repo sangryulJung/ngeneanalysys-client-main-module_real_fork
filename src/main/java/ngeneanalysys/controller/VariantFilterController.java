@@ -489,8 +489,6 @@ public class VariantFilterController extends SubPaneController {
             }
         });
 
-        //newFilterNameLabel.setVisible(false);
-        //filterNameTextField.setVisible(false);
         saveBtn.setDisable(true);
 
         filterNameTextField.textProperty().addListener((ev, oldV, newV) -> {

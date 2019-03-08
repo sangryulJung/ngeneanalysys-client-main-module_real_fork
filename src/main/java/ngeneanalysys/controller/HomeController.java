@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
+import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.controller.systemMenu.SystemMenuPublicDatabasesController;
@@ -556,23 +557,24 @@ public class HomeController extends SubPaneController{
             runName.setText(run.getName());
             /////////////run status 설정
             statusLabel.setText("");
+            String commonLabelStyleClass = "label";
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
             //statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
             switch (run.getRunStatus().getStatus().toUpperCase()) {
-                case "QUEUED":
-                    statusLabel.getStyleClass().addAll("label", "queued_icon");
+                case AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED:
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "queued_icon");
                     statusLabel.setText("Q");
                     break;
-                case "RUNNING":
-                    statusLabel.getStyleClass().addAll("label", "run_icon");
+                case AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_RUNNING:
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "run_icon");
                     statusLabel.setText("R");
                     break;
-                case "COMPLETE":
-                    statusLabel.getStyleClass().addAll("label", "complete_icon");
+                case AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE:
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "complete_icon");
                     statusLabel.setText("C");
                     break;
                 default:
-                    statusLabel.getStyleClass().addAll("label", "failed_icon");
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "failed_icon");
                     statusLabel.setText("F");
                     break;
             }

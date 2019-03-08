@@ -337,7 +337,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private void autoTableSelectEvent(MouseEvent mouseEvent) {
         String id = ((Node)mouseEvent.getSource()).getParent().getId();
         if(StringUtils.isNotEmpty(id)) {
-            Integer number = Integer.parseInt(id.replaceAll("exon_", ""));
+            int number = Integer.parseInt(id.replaceAll("exon_", ""));
             if(snpVariantAlleleFractionTable.getItems() != null) {
                 snpVariantAlleleFractionTable.getSelectionModel().select(number - 1);
                 snpVariantAlleleFractionTable.scrollTo(number - 1);
@@ -352,7 +352,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
 
     private void setHBoxColor(Node item, List<SnpVariantAlleleFraction> list) {
         if(StringUtils.isNotEmpty(item.getId()) && item.getId().startsWith("exon_")) {
-            Integer number = Integer.parseInt(item.getId().replaceAll("exon_", ""));
+            int number = Integer.parseInt(item.getId().replaceAll("exon_", ""));
             Optional<SnpVariantAlleleFraction> optionalSnpVariantAlleleFaction =
                     list.stream().filter(snpVaf -> snpVaf.getNumber() == number).findFirst();
 
@@ -364,13 +364,13 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                 Canvas canvas = new Canvas(18, 18);
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 gc.setFill(Color.rgb(45, 112, 232));
-                if(snpVariantAlleleFraction.getVaf().compareTo(new BigDecimal("0.9")) == 1) {
+                if(snpVariantAlleleFraction.getVaf().compareTo(new BigDecimal("0.9")) > 0) {
                     gc.fillArc(0, 0, 18, 18, 45, 360, ArcType.CHORD);
-                } else if(snpVariantAlleleFraction.getVaf().compareTo(new BigDecimal("0.1")) == -1) {
+                } else if(snpVariantAlleleFraction.getVaf().compareTo(new BigDecimal("0.1")) < 0) {
                     gc.fillArc(0, 0, 18, 18, 0, 0, ArcType.CHORD);
-                } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMaxReferenceHeteroRange()) == 1) {
+                } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMaxReferenceHeteroRange()) > 0) {
                     gc.fillArc(0, 0, 18, 18, 240, 240, ArcType.CHORD);
-                } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMinReferenceHeteroRange()) == -1) {
+                } else if(snpVariantAlleleFraction.getVaf().compareTo(snpVariantAlleleFraction.getMinReferenceHeteroRange()) < 0) {
                     gc.fillArc(0, 0, 18, 18, 305, 110, ArcType.CHORD);
                 } else {
                     gc.fillArc(0, 0, 18, 18, 270, 180, ArcType.CHORD);
@@ -384,11 +384,8 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
 
     private void setPredictionArea(CompositeCmtCnvResult compositeCmtCnvResult) {
         if(compositeCmtCnvResult != null) {
-            if(compositeCmtCnvResult.getIncludedInReport().equals("Y")) {
-                reportCheckBox.setSelected(true);
-            } else {
-                reportCheckBox.setSelected(false);
-            }
+            reportCheckBox.setSelected(compositeCmtCnvResult.getIncludedInReport().equals("Y"));
+
             Optional<ComboBoxItem> optionalComboBoxItem = predictionComboBox.getItems().stream()
                     .filter(item -> item.getValue().equals(compositeCmtCnvResult.getPrediction())).findFirst();
             optionalComboBoxItem.ifPresent(item -> predictionComboBox.getSelectionModel().select(item));
@@ -425,7 +422,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         popOver.show((Node)event.getSource());
     }
 
-    private HBox createTitleBox(String title, String contents) {
+    /*private HBox createTitleBox(String title, String contents) {
         HBox box = new HBox();
         box.setPrefWidth(400);
         Label titleLabel = new Label(title);
@@ -440,7 +437,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         box.getChildren().addAll(titleLabel, contentsLabel);
 
         return box;
-    }
+    }*/
 
     private HBox createContentsBox(double startAngle, double arcExtent, String contents) {
         HBox box = new HBox();

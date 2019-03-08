@@ -1300,7 +1300,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             if(findQC.isPresent()) {
                     SampleQC qcData = findQC.get();
                     String number = findQC.get().getQcValue().toString();
-                    Double value = Double.parseDouble(number);
+                    double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
                     qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_FLOOR));

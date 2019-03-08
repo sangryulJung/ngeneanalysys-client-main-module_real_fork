@@ -684,7 +684,6 @@ public class MainController extends BaseStageController {
         }
 
         setAuto(isFirstShow);
-
     }
 
     /**

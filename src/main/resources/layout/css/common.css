@@ -2017,3 +2017,9 @@ Button {
     -fx-text-fill : black;
     -fx-text-background-color : black;
 }
+
+.search_item_box {
+    -fx-background-color : #273e5e;
+    -fx-background-radius : 20;
+    -fx-padding : 2 5 2 5;
+}
