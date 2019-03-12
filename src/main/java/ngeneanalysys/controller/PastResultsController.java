@@ -12,7 +12,6 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -793,12 +792,12 @@ public class PastResultsController extends SubPaneController {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
 				itemHBox.getStyleClass().add("cursor_hand");
-				if((sampleView.getSampleStatus().getStep()
+				if(sampleView.getSampleStatus().getStep()
 						.equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 						(sampleView.getSampleStatus().getStatus()
 								.equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) ||
 						sampleView.getSampleStatus().getStatus()
-								.equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL))) {
+								.equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
 					itemHBox.setDisable(false);
 				} else {
 					itemHBox.setDisable(true);

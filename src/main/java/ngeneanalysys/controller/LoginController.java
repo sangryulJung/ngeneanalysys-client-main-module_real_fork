@@ -75,8 +75,8 @@ public class LoginController extends BaseStageController {
 	private Label labelPassword;
 
 	/** 서버 URL 변경 창 출력 버튼 */
-	@FXML
-	private Button settingURLButton;
+	/*@FXML
+	private Button settingURLButton;*/
 
 	/** 처리진행중 표시 객체 */
 	@FXML
@@ -215,7 +215,7 @@ public class LoginController extends BaseStageController {
 			}
 		});
 
-		settingURLButton.setVisible(true);
+		/*settingURLButton.setVisible(true);*/
 
 		primaryStage.setScene(scene);
 		

@@ -1,6 +1,7 @@
 package ngeneanalysys.controller;
 
 import com.opencsv.CSVReader;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -107,6 +108,8 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private boolean isServerFastq = false;
 
     private String runPath = "";
+
+    private List<PanelView> panelViewList;
 
     void setServerFASTQ(String path, List<ServerFile> serverFiles) {
         isServerItem = true;
@@ -257,6 +260,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         fileMap = sampleUploadController.getFileMap();
         uploadFileList = sampleUploadController.getUploadFileList();
         uploadFileData= sampleUploadController.getUploadFileData();
+        panelViewList = new ArrayList<>();
 
         settingPanelAndDiseases();
 
@@ -265,7 +269,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         if(sampleUploadController.getSamples() != null) {
             sampleArrayList = sampleUploadController.getSamples();
-            tableEdit();
+            Platform.runLater(this::tableEdit);
         }
     }
 
@@ -576,7 +580,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
     @SuppressWarnings("unchecked")
     private void createRow(int row) {
-        standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 28);
+        standardDataGridPane.setPrefHeight(standardDataGridPane.getPrefHeight() + 30);
         if(!sampleNameTextFieldList.isEmpty() && sampleNameTextFieldList.size() > row) {
             if(!panelComboBoxList.get(row).isDisable()) panelSetting(panelComboBoxList.get(row));
             standardDataGridPane.addRow(row, sampleNameTextFieldList.get(row), panelComboBoxList.get(row)
@@ -672,9 +676,18 @@ public class SampleUploadScreenFirstController extends BaseStageController{
     private void settingDiseaseComboBox(int panelId, int index) {
         //질병명 추가
         HttpClientResponse response;
+        PanelView panelDetail = null;
         try {
-            response = apiService.get("panels/" + panelId, null, null, false);
-            PanelView panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
+            if(panelViewList == null || panelViewList.isEmpty() || panelViewList.stream().noneMatch(panel -> panel.getId() == panelId)) {
+                response = apiService.get("panels/" + panelId, null, null, false);
+                panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
+                if(panelViewList == null) panelViewList = new ArrayList<>();
+                panelViewList.add(panelDetail);
+            } else {
+                Optional<PanelView> optionalPanelView = panelViewList.stream()
+                        .filter(panel -> panel.getId() == panelId).findFirst();
+                if(optionalPanelView.isPresent()) panelDetail = optionalPanelView.get();
+            }
 
             ComboBox<ComboBoxItem> diseaseComboBox = diseaseComboBoxList.get(index);
 
@@ -683,7 +696,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             for(Diseases disease : diseases) {
                 List<Integer> diseaseIds = panelDetail.getDiseaseIds();
                 if(diseaseIds != null && !diseaseIds.isEmpty() &&
-                        //diseaseIds.stream().filter(diseaseId -> diseaseId.equals(diseases.getId())).findFirst().isPresent())
                         diseaseIds.stream().anyMatch(diseaseId -> diseaseId.equals(disease.getId())))
                     diseaseComboBox.getItems().add(new ComboBoxItem(disease.getId().toString(), disease.getName()));
             }
@@ -701,12 +713,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 sampleSourceComboBoxList.get(index).getItems().add(sampleSourceCode.getDescription());
             }
 
-            if(panelDetail.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode()) ||
-                    panelDetail.getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
-                sampleIsControlList.get(index).setVisible(true);
-            } else {
-                sampleIsControlList.get(index).setVisible(false);
-            }
+            sampleIsControlList.get(index).setVisible(panelDetail.getCode().equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode()) ||
+                    panelDetail.getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode()));
+
 
             if(panelDetail.getDefaultSampleSource() != null) {
                 if(sampleSourceComboBoxList.get(index).getItems().contains(panelDetail.getDefaultSampleSource()))
@@ -718,8 +727,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             controlLabel.setVisible(sampleIsControlList.stream().anyMatch(RadioButton::isVisible));
 
             if(panelDetail.getDefaultDiseaseId() != null) {
+                Integer defaultDiseaseId = panelDetail.getDefaultDiseaseId();
                 Optional<ComboBoxItem> defaultDiseaseItem = diseaseComboBox.getItems().stream().filter(
-                        item -> item.getValue().equals(panelDetail.getDefaultDiseaseId().toString())).findFirst();
+                        item -> item.getValue().equals(defaultDiseaseId.toString())).findFirst();
                 if (defaultDiseaseItem.isPresent()) {
                     diseaseComboBox.getSelectionModel().select(defaultDiseaseItem.get());
                 } else {
@@ -828,30 +838,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
 
         boolean isNotCnvPanel = sampleArrayList.stream().allMatch(sample ->
                 PipelineCode.isNotCnvPanel(sample.getPanel().getCode()));
-
-        /*boolean isHemeInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.HEME_ACCUTEST_CNV_DNA.getCode()));
-
-        boolean isHeredInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.HERED_ACCUTEST_CNV_DNA.getCode()));
-
-        boolean isHeredAmcInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode()));
-
-        boolean isSolidInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode()));
-
-        boolean isBrcaCMCInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode()));
-
-        boolean isBrcaV2Include = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode()));
-
-        boolean isBrcaCnvInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.BRCA_ACCUTEST_CNV_DNA.getCode()));
-
-        boolean isBrcaPlusCnvInclude = sampleArrayList.stream().allMatch(sample -> sample.getPanel().getCode()
-                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA.getCode()));*/
 
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
         if(!(isNotCnvPanel || size == 1)) {

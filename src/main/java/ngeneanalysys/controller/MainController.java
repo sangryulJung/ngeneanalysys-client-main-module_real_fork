@@ -261,8 +261,6 @@ public class MainController extends BaseStageController {
         // 하단 빌드 정보 출력
         getSoftwareVersionInfo();
 
-        // 중단된 분석 요청 작업이 있는지 체크
-
         dashBoardBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(0));
         resultsBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(1));
         managerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(3));
@@ -322,8 +320,6 @@ public class MainController extends BaseStageController {
                     Button btn = new Button("X");
                     btn.getStyleClass().removeAll(btn.getStyleClass());
                     btn.getStyleClass().add("remove_btn");
-                    /*btn.setPrefWidth(6);
-                    btn.setPrefHeight(6);*/
                     btn.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> {
                         ComboBoxItem item = getItem();
 
@@ -369,7 +365,6 @@ public class MainController extends BaseStageController {
                         setGraphic(null);
                     } else {
                         if(item.getValue().equals("clear")) {
-                            //setGraphic(clearLabel);
                             setGraphic(clearBox);
                         } else {
                             setGraphic(graphic);

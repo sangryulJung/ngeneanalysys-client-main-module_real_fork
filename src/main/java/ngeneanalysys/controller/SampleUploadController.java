@@ -196,7 +196,6 @@ public class SampleUploadController extends BaseStageController{
                 "Choose sequencing instrument platform");
     }
 
-
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("init upload Controller");
@@ -214,7 +213,7 @@ public class SampleUploadController extends BaseStageController{
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         currentStage.initOwner(getMainApp().getPrimaryStage());
-        pageSetting(1);
+        pageSetting();
 
         if(run != null) runInfoEdit();
 
@@ -276,7 +275,7 @@ public class SampleUploadController extends BaseStageController{
 
     }
 
-    void pageSetting(int scene) throws IOException {
+    private void pageSetting() throws IOException {
         tableRegion.getChildren().clear();
         FXMLLoader loader;
         VBox box;
@@ -287,19 +286,14 @@ public class SampleUploadController extends BaseStageController{
 
         nextSeqDxRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.NEXTSEQ_DX.getDescription()));
 
-        switch (scene) {
-            case 1 :
-                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
-                box = loader.load();
-                sampleUploadScreenFirstController = loader.getController();
-                sampleUploadScreenFirstController.setMainController(mainController);
-                sampleUploadScreenFirstController.setSampleUploadController(this);
-                sampleUploadScreenFirstController.show(box);
-                tableRegion.getChildren().add(box);
-                break;
-            default:
-                break;
-        }
+        loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
+        box = loader.load();
+        sampleUploadScreenFirstController = loader.getController();
+        sampleUploadScreenFirstController.setMainController(mainController);
+        sampleUploadScreenFirstController.setSampleUploadController(this);
+        sampleUploadScreenFirstController.show(box);
+        tableRegion.getChildren().add(box);
+
     }
 
 

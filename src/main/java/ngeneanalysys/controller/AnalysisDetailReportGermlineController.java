@@ -36,7 +36,6 @@ import ngeneanalysys.task.JarDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -192,6 +191,17 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                     list.addAll(Arrays.stream(essentialGenes.split(",")).collect(Collectors.toSet()));
 
+                }
+
+                if(PipelineCode.isBRCAPipeline(panel.getCode()) && variantCountByGenes.size() == 1) {
+                    if(variantCountByGenes.get(0).getGeneSymbol().equals("BRCA1")) {
+                        variantCountByGenes.add(new VariantCountByGeneForGermlineDNA("BRCA2"));
+                    } else {
+                        variantCountByGenes.add(new VariantCountByGeneForGermlineDNA("BRCA1"));
+                    }
+                    variantCountByGenes = variantCountByGenes.stream()
+                            .sorted(Comparator.comparing(VariantCountByGeneForGermlineDNA::getGeneSymbol))
+                            .collect(Collectors.toList());
                 }
 
                 for(VariantCountByGeneForGermlineDNA gene : variantCountByGenes) {
