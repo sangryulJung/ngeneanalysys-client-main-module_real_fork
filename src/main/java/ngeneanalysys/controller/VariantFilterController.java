@@ -1161,32 +1161,31 @@ public class VariantFilterController extends SubPaneController {
             setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
-        if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
-            if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
-                setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
-            }
-            if (StringUtils.isNotEmpty(gnomADmaTextField.getText())) {
-                setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
-            }
-            if (StringUtils.isNotEmpty(gnomADaaaTextField.getText())) {
-                setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
-            }
-            if (StringUtils.isNotEmpty(gnomADeaTextField.getText())) {
-                setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
-            }
-            if (StringUtils.isNotEmpty(gnomADfinTextField.getText())) {
-                setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
-            }
-            if (StringUtils.isNotEmpty(gnomADnfeTextField.getText())) {
-                setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
-            }
-            if (StringUtils.isNotEmpty(gnomADotherTextField.getText())) {
-                setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
-            }
-            if (StringUtils.isNotEmpty(gnomADsaTextField.getText())) {
-                setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
-            }
+        if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
+            setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
         }
+        if (StringUtils.isNotEmpty(gnomADmaTextField.getText())) {
+            setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
+        }
+        if (StringUtils.isNotEmpty(gnomADaaaTextField.getText())) {
+            setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
+        }
+        if (StringUtils.isNotEmpty(gnomADeaTextField.getText())) {
+            setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
+        }
+        if (StringUtils.isNotEmpty(gnomADfinTextField.getText())) {
+            setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
+        }
+        if (StringUtils.isNotEmpty(gnomADnfeTextField.getText())) {
+            setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
+        }
+        if (StringUtils.isNotEmpty(gnomADotherTextField.getText())) {
+            setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
+        }
+        if (StringUtils.isNotEmpty(gnomADsaTextField.getText())) {
+            setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
+        }
+
     }
 
     private void setFrequency(List<Object> list, String text,String operator , String key) {
