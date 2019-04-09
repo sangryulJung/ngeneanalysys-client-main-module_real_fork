@@ -172,7 +172,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                     totalList.removeAll(files);
                 }
                 List<AnalysisFile> files = totalList.stream().filter(item -> item.getName().contains("png") ||
-                        /*item.getName().contains("txt") || */item.getName().contains("json")).collect(Collectors.toList());
+                        item.getName().contains("txt") || item.getName().contains("json")).collect(Collectors.toList());
                 totalList.removeAll(files);
                 totalList = totalList.stream().sorted(Comparator.comparing(AnalysisFile::getName)).collect(Collectors.toList());
 
