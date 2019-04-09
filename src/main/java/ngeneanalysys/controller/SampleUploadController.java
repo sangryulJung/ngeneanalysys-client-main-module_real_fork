@@ -309,7 +309,7 @@ public class SampleUploadController extends BaseStageController{
             APIService apiService = APIService.getInstance();
             params.clear();
             params.put("runId", run.getId());
-            params.put("limit", 23);
+            params.put("limit", 24);
             params.put("offset", 0);
             HttpClientResponse response = apiService.get("/samples", params, null, false);
 

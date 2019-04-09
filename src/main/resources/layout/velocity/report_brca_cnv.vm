@@ -226,7 +226,7 @@
 									<fo:block padding="2mm">Clinically significant SNV/Indel unidentified.</fo:block>
 								#end
 									<fo:block padding="2mm"></fo:block>
-								#if($contents.brcaCnvResults)
+								#if($contents.brcaCnvResults && $contents.brcaCnvResults.size > 0)
 									<fo:block padding="2mm">Positively, clinically significant CNV identified.</fo:block>
 									#foreach($cnv in $contents.brcaCnvResults)
 										<fo:block padding="1mm">

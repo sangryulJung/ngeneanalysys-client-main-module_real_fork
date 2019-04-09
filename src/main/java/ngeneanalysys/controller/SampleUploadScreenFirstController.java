@@ -178,7 +178,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 sampleArrayList.add(createSampleView(fastqFilePairName));
             }
 
-            if(sampleArrayList.size() == 23) break;
+            if(sampleArrayList.size() == 25) break;
 
             serverFiles.removeAll(pairFileList);
         }
@@ -204,7 +204,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             String[] s;
             boolean tableData = false;
             while((s = csvReader.readNext()) != null) {
-                if (tableData && sampleArrayList.size() < 23) {
+                if (tableData && sampleArrayList.size() < 25) {
                     final String sampleName = s[0];
                     logger.debug(s[0]);
                     SampleView sample = createSampleView(sampleName);
@@ -368,6 +368,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                         continue;
                     }
 
+
                     List<File> pairFileList = fileList.stream().filter(file ->
                             file.getName().startsWith(fastqFilePairName + "_")).collect(Collectors.toList());
 
@@ -408,6 +409,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     }
 
                     fileList.removeAll(pairFileList);
+                    if(sampleArrayList.size() > 24) break;
                 }
                 tableEdit();
             } else {
@@ -429,7 +431,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             controller.setSampleUploadController(this.sampleUploadController);
             controller.setSampleUploadScreenFirstController(this);
             controller.show(page);
-        } catch (IOException e) {
+        } catch (Exception e) {
             DialogUtil.error("FXML Load Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -445,7 +447,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             controller.setSampleUploadScreenFirstController(this);
             controller.setRun(true);
             controller.show(page);
-        } catch (IOException e) {
+        } catch (Exception e) {
             DialogUtil.error("FXML Load Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
@@ -460,7 +462,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
 
         for(SampleView sample : sampleArrayList) {
-            if(row > 23) break;
+            if(row > 24) break;
             if(sampleNameTextFieldList.get(row).isDisable()) {
                 row++;
                 continue;

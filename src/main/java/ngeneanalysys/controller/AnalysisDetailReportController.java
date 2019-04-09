@@ -654,8 +654,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         Map<String, Object> params = new HashMap<>();
 
-        //params.put("sampleId", sample.getId());
-
         Map<String, Object> contentsMap = new HashMap<>();
 
         if(!StringUtils.isEmpty(conclusionsText)) contentsMap.put("contents", conclusionsText);
@@ -815,6 +813,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         if(negativeList != null && !negativeList.isEmpty()) {
             negativeResult.addAll(negativeList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
         }
+
         //리포트에서 제외된 variant를 제거
         if(!variantList.isEmpty()) {
             variantList = variantList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList());
@@ -824,9 +823,11 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         clinicalVariantList.addAll(variantList);
 
-        //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
         if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree.stream().filter(tierThree ->
                 tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
+
+        if(tierFour != null && !tierFour.isEmpty()) variantList.addAll(tierFour.stream().filter(tierFour ->
+                tierFour.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
 
         for(VariantAndInterpretationEvidence variant : variantList) {
             variant.getSnpInDel().getSnpInDelExpression().setTranscript(ConvertUtil.insertTextAtFixedPosition(variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession(), 15, "\n"));
@@ -859,8 +860,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             break;
                         default:
                     }
-                    /*if("T2".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;*/
                 }
             }
         }
@@ -885,8 +884,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                             break;
                         default:
                     }
-                    /*if("T1".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;*/
                 }
             }
         }
@@ -986,8 +983,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             }
 
             if(sample.getPipelineVersion() != null) {
-                //response = apiService.get("/pipelineVersions/" + sample.getPipelineVersionId(), null, null, false);
-                //PipelineVersion pipelineVersion = response.getObjectBeforeConvertResponseToJSON(PipelineVersion.class);
                 contentsMap.put("pipelineVersion", sample.getPipelineVersion());
             }
 
@@ -1070,7 +1065,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             // Show save bedFile dialog
             FileChooser fileChooser = new FileChooser();
             if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
-                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("WORD (*.docx)", "*.docx"));
             } else if(outputType != null && outputType.equalsIgnoreCase("PDF")){
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
             } else if(outputType != null && outputType.equalsIgnoreCase("IMG")){
@@ -1093,7 +1088,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 String dataQcText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/data_qc.png"));
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);
-                //model.put("qcResult", sample.getQc());
                 model.put("draftImageURL", draftImageStr);
                 model.put("ngenebioLogo", ngenebioLogo);
                 model.put("testInformationText", testInformationText);
@@ -1112,7 +1106,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     }
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
-                    //convertPDFtoImage(file, sample.getName());
                 } else {
                     for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                         Object gridObject = customFieldGridPane.getChildren().get(i);

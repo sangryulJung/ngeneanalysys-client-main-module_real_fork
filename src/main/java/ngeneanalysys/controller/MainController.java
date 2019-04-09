@@ -326,6 +326,9 @@ public class MainController extends BaseStageController {
                         removeTopMenu(item.getValue());
                         sampleList.getItems().remove(item);
                         sampleList.hide();
+                        if(sampleList.getItems().size() > 1) {
+                            sampleList.show();
+                        }
                         Platform.runLater(() -> sampleList.getSelectionModel().select(null));
                     });
 

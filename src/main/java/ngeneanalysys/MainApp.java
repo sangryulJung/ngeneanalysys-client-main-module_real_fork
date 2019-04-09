@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.*;
-import javafx.scene.control.*;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.MainController;
 import ngeneanalysys.controller.ServerURLSettingController;
@@ -15,15 +14,12 @@ import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.LoginController;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 
 
 public class MainApp extends Application {
@@ -106,63 +102,12 @@ public class MainApp extends Application {
 	}
 	
 	private boolean isProxyServerRunning() {
-		try (Socket socket = new Socket()){
+		try (Socket socket = new Socket()) {
 			socket.connect(new InetSocketAddress("localhost", CommonConstants.HTTP_PROXY_SERVER_PORT), 500);
 		} catch (IOException e) {
 			return false;
 		}
 		return true;
-	}
-	
-	/**
-	 * 예외상황 메시지 출력
-	 * @param t Thread
-	 * @param e Throwable
-	 */
-	@SuppressWarnings("unused")
-	private static void showError(Thread t, Throwable e) {
-		logger.error("***Default exception handler***");
-		if (Platform.isFxApplicationThread()) {
-			showErrorDialog(e);
-		} else {
-			logger.error("An unexpected error occurred in " + t);
-		}
-	}
-	
-	/**
-	 * 예외상황 메시지 Dialog 출력
-	 * @param e Throwable
-	 */
-	private static void showErrorDialog(Throwable e) {
-		StringWriter errorMsg = new StringWriter();
-		e.printStackTrace(new PrintWriter(errorMsg));
-		
-		Alert alert = new Alert(AlertType.ERROR);
-		DialogUtil.setIcon(alert);
-		alert.setTitle("Exception Dialog");
-		alert.setHeaderText("Look, an Exception Dialog");
-		
-		// Create expandable Exception.
-		String exceptionText = errorMsg.toString();
-
-		Label label = new Label("The exception stacktrace was:");
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		// Set expandable Exception into the dialog pane.
-		alert.getDialogPane().setExpandableContent(expContent);
-		alert.showAndWait();
 	}
 	
 	/* (non-Javadoc)

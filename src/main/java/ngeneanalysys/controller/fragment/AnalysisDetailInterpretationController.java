@@ -674,7 +674,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
                 } catch (Exception e) {
-                    DialogUtil.warning(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    DialogUtil.warning("", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
             } else {
                 DialogUtil.warning("", "Make sure you have selected primary evidence.", getMainApp().getPrimaryStage(), true);

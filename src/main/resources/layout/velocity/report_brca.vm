@@ -209,7 +209,7 @@
 							<fo:table-cell padding="2mm" border-width="0.5pt" border-style="solid" number-columns-spanned="4">
 								<fo:block font-family="Noto Sans CJK KR Regular" font-size="9pt">
 								#if($contents.isExistReportedVariant == "Y")
-									<fo:block padding="2mm">Positive-clinically significant mutation identified.</fo:block>
+									<fo:block padding="2mm">Positively, clinically significant SNV/Indel identified.</fo:block>
 									#foreach($variant in $contents.variantList)
 										#if($variant.snpInDel.includedInReport == 'Y')
 											<fo:block padding="1mm">
@@ -223,7 +223,7 @@
 										#end	
 									#end
 								#else
-									<fo:block padding="2mm">No mutations were identified.</fo:block>
+									<fo:block padding="2mm">Clinically significant SNV/Indel unidentified.</fo:block>
 								#end
 								</fo:block>
 							</fo:table-cell>

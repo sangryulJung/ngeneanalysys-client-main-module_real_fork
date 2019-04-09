@@ -426,6 +426,7 @@ Button {
 .pagination>.pagination-control>.control-box>.number-button:selected>.text {
 	-fx-font-size:12px;
 	-fx-fill:#0469b0;
+	-fx-font-family: "Noto Sans KR Bold";
 	-fx-padding:0 10;
 }
 

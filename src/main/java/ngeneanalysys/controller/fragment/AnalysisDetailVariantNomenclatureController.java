@@ -139,12 +139,8 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         setTextField(grch37TextField, genomicDNA, textLength);
                         Optional<Integer> maxTextLengthOptional = textLength.stream().max(Integer::compare);
                         maxTextLengthOptional.ifPresent(value -> {
-                            if(value > 29) {
-                                transcriptDetailGrid.setPrefWidth(value * 10);
-                                geneSymbolTextField.setMinWidth(value * 10);
-                                hgvspTextField.setMinWidth(value * 10);
-                                hgvscTextField.setMinWidth(value * 10);
-                                grch37TextField.setMinWidth(value * 10);
+                            if(value > 24) {
+                                transcriptDetailGrid.setPrefWidth(95 + (8 + value * 7.4));
                                 transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                                 transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
                             }

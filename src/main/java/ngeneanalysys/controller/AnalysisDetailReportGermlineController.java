@@ -701,8 +701,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
         Map<String, Object> params = new HashMap<>();
 
-        //params.put("sampleId", sample.getId());
-
         Map<String, Object> contentsMap = new HashMap<>();
 
         if(!StringUtils.isEmpty(conclusionsText)) contentsMap.put("contents", conclusionsText);
@@ -827,7 +825,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
             // Show save file dialog
             FileChooser fileChooser = new FileChooser();
             if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
-                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("WORD (*.docx)", "*.docx"));
             } else {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
             }
@@ -867,9 +865,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     }
                     contentsMap.put("inspectorName", user.getName());
                     contentsMap.put("inspectorContact", user.getPhone());
-                    /*if((sample.getSampleStatus() != null) && sample.getSampleStatus().getReportFinishedAt() != null) {
-                        contentsMap.put("reportingDate", sample.getSampleStatus().getReportFinishedAt());
-                    }*/
                     contentsMap.put("reportingDate", org.apache.commons.lang3.time.DateFormatUtils.format(new Date(), CommonConstants.DEFAULT_DAY_FORMAT));
                 }
                 for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
@@ -901,9 +896,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 for(VariantAndInterpretationEvidence variantAndInterpretationEvidence : list) {
                     variantAndInterpretationEvidence.getSnpInDel().setNtChangeBRCA();
                 }
-
-                /*if(!list.isEmpty())
-                    list = list.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList());*/
 
                 if(list.stream().anyMatch(item -> "Y".equalsIgnoreCase(item.getSnpInDel().getIncludedInReport()))) contentsMap.put("isExistReportedVariant", "Y");
 
@@ -939,6 +931,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
                 if(analysisDetailGermlineCNVReportController != null) {
                     List<BrcaCnvExon> brcaCnvExons = analysisDetailGermlineCNVReportController.getBrcaCnvExonList();
+                    contentsMap.put("brcaCnvExons", brcaCnvExons);
                     contentsMap.put("brcaCnvResults", analysisDetailGermlineCNVReportController.getBrcaCnvResultList());
                     if(brcaCnvExons != null && !brcaCnvExons.isEmpty()) {
                         contentsMap.put("brca1CnvList",
@@ -1016,7 +1009,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
                 if(PipelineCode.isHeredPipeline(panel.getCode())) {
-
                     contentsMap.put("mappingQuality", findQCResult(qcList, "mapping_quality_60"));
                     contentsMap.put("uniformity", findQCResult(qcList, "uniformity_0.2"));
                     contentsMap.put("totalBase", findQCResult(qcList, "total_base"));
@@ -1031,6 +1023,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 } else if(PipelineCode.isBRCAPipeline(panel.getCode())){
                     contentsMap.put("uniformity", findQCResult(qcList, "coverage_uniformity"));
                     contentsMap.put("roiCoverage", findQCResult(qcList, "roi_coverage"));
+                    contentsMap.put("meanThroughput", findQCResult(qcList, "mean_throughput"));
                 }
 
 
