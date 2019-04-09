@@ -95,12 +95,6 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     private void showVariantIdentification() {
         List<SnpInDelTranscript> transcriptDataList = getTranscript();
 
-        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
-        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
-        String left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
-        String right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
-        String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
-        String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
         String defaultTranscript = null;
         // transcript 콤보박스 설정
         // variant identification transcript data map
@@ -151,30 +145,19 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
             // 첫번째 아이템 선택 처리
             transcriptComboBox.getSelectionModel().select(defaultTranscript);
+        } else {
+            defaultNomenclature();
         }
 
-        // 레퍼런스 앞문자열 끝에서부터 9글자만 출력함.
-        //int displayLeft22Bplength = 9;
-        String displayLeft22Bp = left22Bp;
-        /*if(!StringUtils.isEmpty(left22Bp) && left22Bp.length() > displayLeft22Bplength) {
-            for(int i = 0; i < left22Bp.length(); i++) {
-                if( i >= (left22Bp.length() - displayLeft22Bplength)) {
-                    displayLeft22Bp += left22Bp.substring(i, i + 1);
-                }
-            }
-        }*/
+    }
 
-        // 레퍼런스 뒷문자열 9글자만 출력 : 레퍼런스 문자열이 1보다 큰 경우 1보다 늘어난 숫자만큼 출력 문자열 수 가감함.
-        //int displayRight22BpLength = 9;
-        String displayRight22Bp = right22Bp;
-        // 처음부터 지정글자수까지 출력
-        /*if(!StringUtils.isEmpty(right22Bp) && right22Bp.length() > displayRight22BpLength) {
-            for(int i = 0; i < right22Bp.length(); i++) {
-                if( i <= (displayRight22BpLength - 1)) {
-                    displayRight22Bp += right22Bp.substring(i, i + 1);
-                }
-            }
-        }*/
+    private void defaultNomenclature() {
+        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
+        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
+        String left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
+        String right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
+        String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
+        String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
 
         // 변이 유형이 "deletion"인 경우 삭제된 염기서열 문자열 분리
         String notDeletionRef = "";
@@ -188,22 +171,21 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
             notDeletionRef = ref;
         }
 
-        if(!StringUtils.isEmpty(displayLeft22Bp)) {
+        if(!StringUtils.isEmpty(left22Bp)) {
             leftVbox.setPrefWidth(170);
         }
 
         // 값 화면 출력
         genePositionStartLabel.setText(genePositionStart);
-        left22BpLabel.setText(displayLeft22Bp.toUpperCase());
+        left22BpLabel.setText(left22Bp.toUpperCase());
         transcriptRefLabel.setText(notDeletionRef);
         deletionRefLabel.setText(deletionRef);
-        right22BpLabel.setText(displayRight22Bp.toUpperCase());
+        right22BpLabel.setText(right22Bp.toUpperCase());
 
-        double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
+        double textLength = (double)(left22Bp.length() + ref.length() + right22Bp.length());
         logger.debug("text length : " + textLength);
 
-
-        if(alt.length() > 21 && (textLength - displayLeft22Bp.length()) < alt.length()){
+        if(alt.length() > 21 && (textLength - left22Bp.length()) < alt.length()){
             setScrollBoxSize(alt.length());
         } else if(textLength > 31) {
             setScrollBoxSize(textLength);

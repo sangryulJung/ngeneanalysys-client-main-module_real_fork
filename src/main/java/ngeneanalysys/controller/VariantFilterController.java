@@ -687,22 +687,7 @@ public class VariantFilterController extends SubPaneController {
                 kohbraComboBox.setDisable(true);
                 kohbraTextField.setDisable(true);
             } else if(PipelineCode.isBRCAPipeline(panel.getCode())){
-                gnomADaaaComboBox.setDisable(true);
-                gnomADaaaTextField.setDisable(true);
-                gnomADAllComboBox.setDisable(true);
-                gnomADAllTextField.setDisable(true);
-                gnomADeaComboBox.setDisable(true);
-                gnomADeaTextField.setDisable(true);
-                gnomADfinComboBox.setDisable(true);
-                gnomADfinTextField.setDisable(true);
-                gnomADmaComboBox.setDisable(true);
-                gnomADmaTextField.setDisable(true);
-                gnomADnfeComboBox.setDisable(true);
-                gnomADnfeTextField.setDisable(true);
-                gnomADotherComboBox.setDisable(true);
-                gnomADotherTextField.setDisable(true);
-                gnomADsaComboBox.setDisable(true);
-                gnomADsaTextField.setDisable(true);
+                
             }
         }
 
