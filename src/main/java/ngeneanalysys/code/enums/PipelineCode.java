@@ -24,6 +24,7 @@ public enum PipelineCode {
 	BRCA_ACCUTEST_PLUS_CMC_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE, "BRCAaccuTest PLUS CMC DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_MLPA_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE, "BRCAaccuTest PLUS MLPA DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_DNA_V2(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE, "BRCAaccuTest PLUS DNA V2", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_PLUS_CNV_DNA_V2(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE, "BRCAaccuTest PLUS DNA CNV V2", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_CNV_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE, "BRCAaccuTest PLUS CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_CNV_DNA(CommonConstants.BRCA_ACCUTEST_DNA_CNV_PIPELINE, "BRCAaccuTest CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_DNA(CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE, "BRCAaccuTest DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
@@ -80,6 +81,7 @@ public enum PipelineCode {
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_DNA_CNV_PIPELINE:
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE:
 				list.add(SampleSourceCode.BLOOD);
 				list.add(SampleSourceCode.FFPE);
@@ -168,6 +170,9 @@ public enum PipelineCode {
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE:
 				returnPipeline = BRCA_ACCUTEST_PLUS_CNV_DNA;
 				break;
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE:
+				returnPipeline = BRCA_ACCUTEST_PLUS_CNV_DNA_V2;
+				break;
 			default:
 				returnPipeline = null;
 		}
@@ -211,7 +216,8 @@ public enum PipelineCode {
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())
-				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V2.getCode()));
+				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V2.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_CNV_DNA_V2.getCode()));
 	}
 
 	public static boolean isBRCACNVPipeline(String code) {
@@ -219,7 +225,7 @@ public enum PipelineCode {
 				|| code.equals(BRCA_ACCUTEST_CNV_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())
-				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V2.getCode()));
+				|| code.equals(BRCA_ACCUTEST_PLUS_CNV_DNA_V2.getCode()));
 	}
 
 	public static boolean isHeredPipeline(String code) {
@@ -244,6 +250,7 @@ public enum PipelineCode {
 				|| code.equals(HERED_ACCUTEST_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_DNA.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V2.getCode())
 				|| code.equals(TST170_DNA.getCode())
 				|| code.equals(TST170_RNA.getCode()));
 	}

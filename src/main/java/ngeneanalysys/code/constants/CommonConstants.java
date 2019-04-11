@@ -126,6 +126,7 @@ public class CommonConstants {
 	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE = "BRCAaccuTest_PLUS_DNA_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE = "BRCAaccuTest_PLUS_DNA_CNV_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE = "BRCAaccuTest_PLUS_DNA_V2_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE = "BRCAaccuTest_PLUS_DNA_CNV_V2_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE = "BRCAaccuTest_PLUS_DNA_CMC_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_MLPA_PIPELINE = "BRCAaccuTest_PLUS_DNA_MLPA_Pipeline";
 	public static final String HEME_ACCUTEST_DNA_PIPELINE = "HEMEaccuTest_DNA_Pipeline";

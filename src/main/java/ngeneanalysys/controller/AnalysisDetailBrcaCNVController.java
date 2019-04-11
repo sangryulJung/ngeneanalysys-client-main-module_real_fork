@@ -971,7 +971,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             return brcaMlpaNoneTargetArea;
         } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
             return brcaCmcNoneTargetArea;
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V2.getCode())) {
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2.getCode())) {
             return brcaV2NoneTargetArea;
         }
         return brcaAndPlusNoneTargetArea;

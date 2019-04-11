@@ -124,7 +124,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         String codingDNA = (!StringUtils.isEmpty(transcript.getCodingDna())) ? transcript.getCodingDna() : "N/A";
                         String protein = (!StringUtils.isEmpty(transcript.getProtein())) ? transcript.getProtein() : "N/A";
                         String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
-
+                        initNomenclature(transcript);
                         logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
                         setTextField(geneSymbolTextField, geneSymbol, textLength);
@@ -139,6 +139,8 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                                 transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
                             }
                         });
+                    } else {
+                        initNomenclature(null);
                     }
                 }
             });
@@ -146,16 +148,27 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
             // 첫번째 아이템 선택 처리
             transcriptComboBox.getSelectionModel().select(defaultTranscript);
         } else {
-            defaultNomenclature();
+            initNomenclature(null);
         }
-
     }
 
-    private void defaultNomenclature() {
-        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
-        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
-        String left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
-        String right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
+    private void initNomenclature(SnpInDelTranscript snpInDelTranscript) {
+        String ref;
+        String alt;
+        String left22Bp;
+        String right22Bp;
+        if(snpInDelTranscript == null || snpInDelTranscript.getLeftSequence() == null) {
+            ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
+            alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
+            left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
+            right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
+        } else {
+            ref = snpInDelTranscript.getRefSequence();
+            alt = snpInDelTranscript.getAltSequence();
+            left22Bp = snpInDelTranscript.getLeftSequence();
+            right22Bp = snpInDelTranscript.getRightSequence();
+        }
+
         String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
         String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
 
@@ -177,18 +190,18 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
 
         // 값 화면 출력
         genePositionStartLabel.setText(genePositionStart);
-        left22BpLabel.setText(left22Bp.toUpperCase());
+        left22BpLabel.setText(left22Bp);
         transcriptRefLabel.setText(notDeletionRef);
         deletionRefLabel.setText(deletionRef);
-        right22BpLabel.setText(right22Bp.toUpperCase());
+        right22BpLabel.setText(right22Bp);
 
         double textLength = (double)(left22Bp.length() + ref.length() + right22Bp.length());
         logger.debug("text length : " + textLength);
 
         if(alt.length() > 21 && (textLength - left22Bp.length()) < alt.length()){
-            setScrollBoxSize(alt.length());
+            setScrollBoxSize(alt.length() - 21);
         } else if(textLength > 31) {
-            setScrollBoxSize(textLength);
+            setScrollBoxSize(textLength - 31);
         }
 
         transcriptAltLabel.setText(alt);
@@ -196,7 +209,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     }
 
     private void setScrollBoxSize(double size) {
-        gridBox.setPrefWidth(size * 12);
+        gridBox.setPrefWidth(275 + size * 8);
         sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
         scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     }

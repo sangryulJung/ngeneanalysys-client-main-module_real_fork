@@ -686,8 +686,6 @@ public class VariantFilterController extends SubPaneController {
             if(PipelineCode.isHeredPipeline(panel.getCode())) {
                 kohbraComboBox.setDisable(true);
                 kohbraTextField.setDisable(true);
-            } else if(PipelineCode.isBRCAPipeline(panel.getCode())){
-                
             }
         }
 
