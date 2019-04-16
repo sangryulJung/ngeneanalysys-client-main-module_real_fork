@@ -135,7 +135,7 @@ public class MainApp extends Application {
 			// proxy 서버 기동
 			startProxyServer();
 		}
-		
+
 		this.primaryStage = primaryStage;
 		this.primaryStage.initStyle(StageStyle.DECORATED);
 
