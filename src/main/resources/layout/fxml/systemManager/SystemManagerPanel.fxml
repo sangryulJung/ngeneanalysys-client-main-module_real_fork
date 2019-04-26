@@ -456,13 +456,9 @@
                         <TableColumn fx:id="analysisTypeTableColumn" prefWidth="92.0" text="Analysis Type" visible="false" />
                         <TableColumn fx:id="libraryTypeTableColumn" prefWidth="97.0" text="Library Type" visible="false" />
                         <TableColumn fx:id="sampleSourceTableColumn" prefWidth="97.0" text="Sample Source" visible="false" />
-                        <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted" visible="false" />
-                        <TableColumn prefWidth="75.0" text="Date" visible="false">
-                           <columns>
-                              <TableColumn fx:id="createdAtTableColumn" prefWidth="90.0" text="Create" />
-                              <TableColumn fx:id="updatedAtTableColumn" prefWidth="90.0" text="Update" />
-                           </columns>
-                        </TableColumn>
+                        <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
+                        <TableColumn fx:id="createdAtTableColumn" prefWidth="90.0" text="Create At" visible="false" />
+                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="90.0" text="Update At" visible="false" />
                         <TableColumn fx:id="deletedTableColumn" prefWidth="55.0" style="-fx-alignment: center;" text="Deleted" />
                     </columns>
                   </TableView>

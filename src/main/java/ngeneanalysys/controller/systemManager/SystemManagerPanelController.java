@@ -170,6 +170,9 @@ public class SystemManagerPanelController extends SubPaneController {
     private TableColumn<PanelView, String> updatedAtTableColumn;
 
     @FXML
+    private TableColumn<PanelView, String> sampleSourceTableColumn;
+
+    @FXML
     private TableColumn<PanelView, String> deletedAtTableColumn;
 
     @FXML
@@ -275,6 +278,7 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
+        sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDefaultSampleSource()));
 
         warningMAFTextField.setTextFormatter(returnFormatter());
 
