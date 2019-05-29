@@ -967,7 +967,7 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
 
         final String[] brcaAndPlusNoneTargetArea = new String[]{"BRCA1_24", "BRCA2_2", "BRCA2_27"};
 
-        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_MLPA_DNA.getCode())) {
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA_V3.getCode())) {
             return brcaMlpaNoneTargetArea;
         } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
             return brcaCmcNoneTargetArea;
