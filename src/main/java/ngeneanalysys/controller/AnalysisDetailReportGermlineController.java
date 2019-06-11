@@ -326,8 +326,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         } else {
             setVirtualPanel();
         }
-
-        if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
+        Integer sampleSize = (Integer)paramMap.get("sampleSize");
+        if(PipelineCode.isBRCACNVPipeline(panel.getCode()) && sampleSize > 5) {
             mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 170);
             contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 170);
 
@@ -799,11 +799,6 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
         }
     }
 
-    @FXML
-    public void confirmPDFAsFinal() {
-
-    }
-
     @SuppressWarnings("unchecked")
     private boolean createPDF(boolean isDraft) {
         boolean created = true;
@@ -843,6 +838,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 contentsMap.put("panelName", panel.getName());
                 contentsMap.put("panelCode", panel.getCode());
                 contentsMap.put("sampleSource", sample.getSampleSource());
+                Integer sampleSize = (Integer)paramMap.get("sampleSize");
+                contentsMap.put("sampleSize", sampleSize);
                 //리포트를 생성할 때마다 고유 ID 부여 report ID + random Int
                 contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
 
@@ -1030,7 +1027,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 // 템플릿에 데이터 바인딩하여 pdf 생성 스크립트 생성
                 String contents = null;
                 if(panel.getReportTemplateId() == null) {
-                    if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
+                    if(analysisDetailGermlineCNVReportController != null) {
                         contents = velocityUtil.getContents("/layout/velocity/report_brca_cnv.vm", CommonConstants.ENCODING_TYPE_UTF, model);
                     } else {
                         contents = velocityUtil.getContents("/layout/velocity/report_brca.vm", CommonConstants.ENCODING_TYPE_UTF, model);

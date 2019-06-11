@@ -55,7 +55,7 @@ public class SampleUploadController extends BaseStageController{
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-    private List<SampleView> samples = new ArrayList<>(23);
+    private List<SampleView> samples = new ArrayList<>(25);
 
     @FXML
     private Label runNameToolTip;

@@ -1597,6 +1597,24 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>("ClinVar Review Status");
         createTableHeader(clinVarReviewStatus, "ClinVar Review Status", null ,150d, "clinVarReviewStatus");
         clinVarReviewStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarReviewStatus()));
+        clinVarReviewStatus.setCellFactory(cell -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item == null || empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    String[] text = item.split(":");
+                    if(text.length >= 2) {
+                        setText(text[0]);
+                        setText(text[1]);
+                    } else {
+                        setText(item);
+                    }
+                }
+            }
+        });
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Submitted Disease");
         createTableHeader(clinVarDisease, "ClinVar Submitted Disease", null ,150d, "clinVarSubmittedDisease");

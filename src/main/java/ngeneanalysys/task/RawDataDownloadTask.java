@@ -15,10 +15,7 @@ import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -87,15 +84,24 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
         try {
 
-
             List<SampleView> completeSamples = new ArrayList<>();
 
             updateCurrentDownloadGroupInfo();
 
             currentDownloadGroupId = runSampleView.getRun().getId();
             currentDownloadGroupRefName = runSampleView.getRun().getName();
+            List<SampleView> sampleViewList;
+            if(type != null && type.size() == 1 && type.get(0).equalsIgnoreCase("xlsx")) {
+                sampleViewList = new ArrayList<>();
+                sampleViewList
+                        .add(runSampleView.getSampleViews().stream()
+                                .min(Comparator.comparing(SampleView::getId))
+                                .orElse(null));
+            } else {
+                sampleViewList = runSampleView.getSampleViews();
+            }
 
-            for (SampleView sampleView : runSampleView.getSampleViews()) {
+            for (SampleView sampleView : sampleViewList) {
 
                 if(type == null || type.isEmpty()) break;
 

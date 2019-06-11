@@ -68,7 +68,7 @@
 				</Label>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="3">
                <children>
-                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeqDX">
+                  <RadioButton fx:id="sequencerMiSeqDXRadioButton" mnemonicParsing="false" selected="true" text="Illumina MiSeqDx">
                      <toggleGroup>
                         <ToggleGroup fx:id="sequencerType" />
                      </toggleGroup>

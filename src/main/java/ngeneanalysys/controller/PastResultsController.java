@@ -770,12 +770,12 @@ public class PastResultsController extends SubPaneController {
 			if(style != null) label.getStyleClass().add(style);
 		}
 
-		private void openSampleTab(final SampleView sample) {
+		private void openSampleTab(final SampleView sample, final Integer size) {
 			if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 					sample.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 				Map<String, Object> detailViewParamMap = new HashMap<>();
 				detailViewParamMap.put("id", sample.getId());
-
+				detailViewParamMap.put("sampleSize", size);
 				TopMenu menu = new TopMenu();
 				menu.setId("sample_" + sample.getId());
 				menu.setMenuName(sample.getName());
@@ -892,11 +892,11 @@ public class PastResultsController extends SubPaneController {
 				Label restart = new Label();
 				labelSize(restart, 20., "sample_restart_button");
 
-				name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				panel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
+				name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
+				panel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
+				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
+				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
+				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
 
                 if(sampleView.getPanel().getName().contains("TruSight Tumor")) {
                     restart.setVisible(false);

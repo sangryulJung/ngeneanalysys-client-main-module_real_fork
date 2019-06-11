@@ -15,8 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.*;
-import ngeneanalysys.model.LoginSession;
-import ngeneanalysys.util.LoginSessionUtil;
+import ngeneanalysys.code.enums.PipelineCode;
 import org.controlsfx.tools.Borders;
 import org.slf4j.Logger;
 import ngeneanalysys.code.constants.CommonConstants;
@@ -72,27 +71,19 @@ public class RunRawDataDownloadController extends SubPaneController {
     }
 
     private void createCheckComboBox() {
-        LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
-        String userName = "@ngenebio.com";
+
         checkBoxes = new ArrayList<>();
-        checkBoxes.add(new CheckBox("bai"));
         checkBoxes.add(new CheckBox("bam"));
+        checkBoxes.add(new CheckBox("xlsx"));
         checkBoxes.add(new CheckBox("vcf"));
         checkBoxes.add(new CheckBox("fastq.gz"));
-        if(loginSession.getLoginId().contains(userName)) {
-            checkBoxes.add(new CheckBox("xlsx"));
-        }
+
         GridPane grid = new GridPane();
         grid.setVgap(10.0);
         grid.setHgap(10.0);
-        if(loginSession.getLoginId().contains(userName)) {
-            grid.getRowConstraints().add(new RowConstraints(18));
-            grid.getRowConstraints().add(new RowConstraints(18));
-            grid.getRowConstraints().add(new RowConstraints(18));
-        } else {
-            grid.getRowConstraints().add(new RowConstraints(30));
-            grid.getRowConstraints().add(new RowConstraints(30));
-        }
+
+        grid.getRowConstraints().add(new RowConstraints(30));
+        grid.getRowConstraints().add(new RowConstraints(30));
 
         grid.getColumnConstraints().add(new ColumnConstraints(100));
         grid.getColumnConstraints().add(new ColumnConstraints(100));
@@ -100,9 +91,11 @@ public class RunRawDataDownloadController extends SubPaneController {
         grid.add(checkBoxes.get(1), 0, 1);
         grid.add(checkBoxes.get(2), 1, 0);
         grid.add(checkBoxes.get(3), 1, 1);
-        if(loginSession.getLoginId().contains(userName)) {
-            grid.add(checkBoxes.get(4), 0, 2);
+        if(runSampleView.getSampleViews().stream()
+                .anyMatch(item -> !PipelineCode.isBRCAPipeline(item.getPanel().getCode()))) {
+            checkBoxes.get(1).setDisable(true);
         }
+
         grid.setPrefSize(210, 70);
         Node wrappedCheckBox = Borders.wrap(grid)
                 .lineBorder().title("File Types").thickness(1).radius(0, 5, 5, 0).build()
@@ -114,6 +107,8 @@ public class RunRawDataDownloadController extends SubPaneController {
     public void rawDataDownload() {
         List<String> selectedFileTypes = checkBoxes.stream().filter(CheckBox::isSelected).map(CheckBox::getText)
                 .collect(Collectors.toList());
+
+        if(selectedFileTypes.contains("bam")) selectedFileTypes.add("bai");
 
         if(!selectedFileTypes.isEmpty()) {
             downloadTask(selectedFileTypes);

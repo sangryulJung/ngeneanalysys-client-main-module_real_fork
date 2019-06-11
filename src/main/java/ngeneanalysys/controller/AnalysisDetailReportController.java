@@ -783,11 +783,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         }
     }
 
-    @FXML
-    public void confirmPDFAsFinal() {
-        createPDF(false);
-    }
-
     @SuppressWarnings("unchecked")
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();

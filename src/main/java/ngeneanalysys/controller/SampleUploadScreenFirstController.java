@@ -841,6 +841,9 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         boolean isNotCnvPanel = sampleArrayList.stream().allMatch(sample ->
                 PipelineCode.isNotCnvPanel(sample.getPanel().getCode()));
 
+        boolean isBrcaCnvPanel = sampleArrayList.stream().allMatch(sample ->
+                PipelineCode.isBRCACNVPipeline(sample.getPanel().getCode()));
+
         //heme_cnv, hered_cnv, solid_cnv 중 하나가 존재한다면 해당 Run은 동일한 패널을 사용해야함
         if(!(isNotCnvPanel || size == 1)) {
             DialogUtil.warning("", "CNV analysis must select all samples in the same panel.",
@@ -848,7 +851,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             return;
         }
 
-        if(!isNotCnvPanel && sampleArrayList.size() == 1) {
+        if(!isNotCnvPanel && sampleArrayList.size() == 1 && !isBrcaCnvPanel) {
             DialogUtil.warning("Warning", "CNV panels require two or more samples.",
                     sampleUploadController.getCurrentStage(), true);
             return;
