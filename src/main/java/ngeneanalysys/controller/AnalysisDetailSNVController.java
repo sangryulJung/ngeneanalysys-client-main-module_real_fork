@@ -359,8 +359,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("tstDNAFilter");
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
-            falsePositiveButton.setDisable(true);
-            falsePositiveButton.setVisible(false);
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
@@ -1302,51 +1300,45 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic((StringUtils.isNotEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
             }
         });
-        if(panel != null && (AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) ||
-                (AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType()) &&
-                        LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription().equalsIgnoreCase(panel.getLibraryType()))) {
-            TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
-            createTableHeader(falsePositive, "False", "",55., "falseReason");
-            falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
-            falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    Label label = null;
-                    getStyleClass().add(centerStyleClass);
-                    if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                        VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
-                        label = new Label("F");
-                        label.getStyleClass().remove("label");
-                        label.getStyleClass().add("tier_FP");
-                        label.setCursor(Cursor.HAND);
-                        PopOverUtil.openFalsePopOver(label, variant.getSnpInDel().getFalseReason());
-                    }
-                    setGraphic(label);
-                }
-            });
-            //falsePositive.setVisible(false);
-            showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-                //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
-                if(showFalseVariantsCheckBox.isSelected()) {
-                    falsePositive.setMinWidth(40);
-                    falsePositive.setMaxWidth(40);
-                    falsePositive.setPrefWidth(40);
-                } else {
-                    falsePositive.setMinWidth(0);
-                    falsePositive.setMaxWidth(0);
-                    falsePositive.setPrefWidth(0);
-                }
-                Platform.runLater(() -> showVariantList(0));
-            });
 
+        TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
+        createTableHeader(falsePositive, "False", "",55., "falseReason");
+        falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
+        falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                Label label = null;
+                getStyleClass().add(centerStyleClass);
+                if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                    VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
+                    label = new Label("F");
+                    label.getStyleClass().remove("label");
+                    label.getStyleClass().add("tier_FP");
+                    label.setCursor(Cursor.HAND);
+                    PopOverUtil.openFalsePopOver(label, variant.getSnpInDel().getFalseReason());
+                }
+                setGraphic(label);
+            }
+        });
+        //falsePositive.setVisible(false);
+        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
             //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
-            falsePositive.setPrefWidth(0);
-            falsePositive.setMinWidth(0);
-            falsePositive.setMaxWidth(0);
-        } else {
-            showFalseVariantsCheckBox.setVisible(false);
-            //falsePositiveButton.setVisible(false);
-        }
+            if(showFalseVariantsCheckBox.isSelected()) {
+                falsePositive.setMinWidth(40);
+                falsePositive.setMaxWidth(40);
+                falsePositive.setPrefWidth(40);
+            } else {
+                falsePositive.setMinWidth(0);
+                falsePositive.setMaxWidth(0);
+                falsePositive.setPrefWidth(0);
+            }
+            Platform.runLater(() -> showVariantList(0));
+        });
+
+        //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+        falsePositive.setPrefWidth(0);
+        falsePositive.setMinWidth(0);
+        falsePositive.setMaxWidth(0);
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
         createTableHeader(reportTest, "Report", "Report", 30., "includedInReport");
@@ -1608,7 +1600,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     String[] text = item.split(":");
                     if(text.length >= 2) {
                         setText(text[0]);
-                        setText(text[1]);
+                        setTooltip(new Tooltip(text[1]));
                     } else {
                         setText(item);
                     }
