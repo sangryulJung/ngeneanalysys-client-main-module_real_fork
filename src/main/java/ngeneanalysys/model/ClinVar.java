@@ -12,6 +12,7 @@ public class ClinVar {
     private String clinVarReviewStatus;
     private Integer clinVarVariationId;
     private String clinVarInterpretation;
+    private String clinVarDrugResponse;
 
     /**
      * @return clinVarVariationId
@@ -81,6 +82,13 @@ public class ClinVar {
         return clinVarReviewStatus;
     }
 
+    /**
+     * @return clinVarDrugResponse
+     */
+    public String getClinVarDrugResponse() {
+        return clinVarDrugResponse;
+    }
+
     @Override
     public String toString() {
         return "ClinVar{" +
@@ -91,6 +99,7 @@ public class ClinVar {
                 ", clinVarReviewStatus='" + clinVarReviewStatus + '\'' +
                 ", clinVarVariationId=" + clinVarVariationId +
                 ", clinVarInterpretation='" + clinVarInterpretation + '\'' +
+                ", clinVarDrugResponse='" + clinVarDrugResponse + '\'' +
                 '}';
     }
 }

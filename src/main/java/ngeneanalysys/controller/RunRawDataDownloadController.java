@@ -70,13 +70,19 @@ public class RunRawDataDownloadController extends SubPaneController {
         dialogStage.showAndWait();
     }
 
+    private CheckBox createCheckBox(String name, String id) {
+        CheckBox checkBox = new CheckBox(name);
+        checkBox.setId(id);
+        return checkBox;
+    }
+
     private void createCheckComboBox() {
 
         checkBoxes = new ArrayList<>();
-        checkBoxes.add(new CheckBox("bam"));
-        checkBoxes.add(new CheckBox("xlsx"));
-        checkBoxes.add(new CheckBox("vcf"));
-        checkBoxes.add(new CheckBox("fastq.gz"));
+        checkBoxes.add(createCheckBox("BAM", "bam"));
+        checkBoxes.add(createCheckBox("QC SUMMARY", "xlsx"));
+        checkBoxes.add(createCheckBox("VCF", "vcf"));
+        checkBoxes.add(createCheckBox("FASTQ", "fastq.gz"));
 
         GridPane grid = new GridPane();
         grid.setVgap(10.0);
@@ -105,7 +111,7 @@ public class RunRawDataDownloadController extends SubPaneController {
 
     @FXML
     public void rawDataDownload() {
-        List<String> selectedFileTypes = checkBoxes.stream().filter(CheckBox::isSelected).map(CheckBox::getText)
+        List<String> selectedFileTypes = checkBoxes.stream().filter(CheckBox::isSelected).map(CheckBox::getId)
                 .collect(Collectors.toList());
 
         if(selectedFileTypes.contains("bam")) selectedFileTypes.add("bai");

@@ -21,6 +21,7 @@ import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedCnv;
+import ngeneanalysys.model.paged.PagedExonMeanCoverage;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
 import ngeneanalysys.model.paged.PagedVirtualPanel;
 import ngeneanalysys.model.render.ComboBoxConverter;
@@ -1017,6 +1018,16 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     logger.debug(wae.getMessage());
                 }
             }
+
+            response = apiService.get("/analysisResults/exonMeanCoverage/" + sample.getId(),
+                    null, null, false);
+
+            PagedExonMeanCoverage pagedExonMeanCoverage =
+                    response.getObjectBeforeConvertResponseToJSON(PagedExonMeanCoverage.class);
+
+            if(pagedExonMeanCoverage != null && pagedExonMeanCoverage.getCount() > 0)
+                contentsMap.put("exonMeanCoverage", pagedExonMeanCoverage.getResult());
+
         }
 
         return contentsMap;

@@ -1603,6 +1603,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         setTooltip(new Tooltip(text[1]));
                     } else {
                         setText(item);
+                        setTooltip(null);
                     }
                 }
             }
