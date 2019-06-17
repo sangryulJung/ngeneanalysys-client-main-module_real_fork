@@ -863,12 +863,13 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
 
         if(isBrcaCnvPanel && sampleArrayList.size() < 6) {
-            String alertContentText = "More than 6 samples are required for running appropriate CNV analysis. Press \"Okay\" to proceed SNV/INDEL analysis. Press \"Cancel\" to add more samples for SNV/INDEL & CNV analysis.";
+            String alertContentText = "More than 6 samples are required for running appropriate CNV analysis. Would you like to continue to proceed?";
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             DialogUtil.setIcon(alert);
+            alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
             alert.initOwner(this.mainController.getPrimaryStage());
-            alert.setTitle("");
+            alert.setTitle("CNV Warning");
             alert.setHeaderText("");
             alert.setContentText(alertContentText);
 

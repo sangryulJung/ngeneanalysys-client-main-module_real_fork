@@ -54,7 +54,7 @@ public class RunRawDataDownloadController extends SubPaneController {
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
 
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Raw Data Download");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Run Data Download");
 
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
