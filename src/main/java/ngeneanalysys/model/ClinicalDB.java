@@ -12,6 +12,14 @@ public class ClinicalDB {
     private String enigma;
     private BrcaExchange be;
     private DBNSFP dbNSFP;
+    private String customDatabase;
+
+    /**
+     * @return customDatabase
+     */
+    public String getCustomDatabase() {
+        return customDatabase;
+    }
 
     /**
      * @return cosmic

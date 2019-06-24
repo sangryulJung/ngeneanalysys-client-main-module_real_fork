@@ -1320,9 +1320,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic(label);
             }
         });
-        //falsePositive.setVisible(false);
+
         showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+
             if(showFalseVariantsCheckBox.isSelected()) {
                 falsePositive.setMinWidth(40);
                 falsePositive.setMaxWidth(40);
@@ -1335,7 +1335,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Platform.runLater(() -> showVariantList(0));
         });
 
-        //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
         falsePositive.setPrefWidth(0);
         falsePositive.setMinWidth(0);
         falsePositive.setMaxWidth(0);
