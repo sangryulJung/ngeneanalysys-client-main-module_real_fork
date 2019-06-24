@@ -248,9 +248,9 @@ public enum PipelineCode {
 		return StringUtils.isNotEmpty(code) && (code.equals(SOLID_ACCUTEST_DNA.getCode())
 				|| code.equals(HEME_ACCUTEST_DNA.getCode())
 				|| code.equals(HERED_ACCUTEST_DNA.getCode())
-				/*|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_DNA.getCode())
-				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V2.getCode())*/
+				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V2.getCode())
 				|| code.equals(TST170_DNA.getCode())
 				|| code.equals(TST170_RNA.getCode()));
 	}

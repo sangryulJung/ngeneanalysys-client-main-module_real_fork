@@ -172,15 +172,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private final ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>> tableColumnListChangeListener =
             c -> Platform.runLater(this::saveColumnInfoToServer);
-//    private final ChangeListener<Boolean> tableColumnVisibilityChangeListener = (observable, oldValue, newValue) -> {
-//        if(!oldValue.equals(newValue)) Platform.runLater(this::saveColumnInfoToServer);
-//    };
+
     private ChangeListener<ComboBoxItem> filterComboBoxValuePropertyChangeListener = (ob, ov, nv) -> {
         if (!nv.equals(ov)) {
             Platform.runLater(() -> showVariantList(0));
         }
-        /*String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-                "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};*/
+
         viewAppliedFiltersLabel.setDisable(nv.getValue().equalsIgnoreCase("All"));
         if (nv.getValue().equalsIgnoreCase("All")) {
             viewAppliedFiltersLabel.setOpacity(0);
@@ -922,15 +919,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    /*private void setSortItem(Map<String, List<Object>> list) {
-        Set<Map.Entry<String, String>> entrySet = sortMap.entrySet();
-        List<Object> sortList = new ArrayList<>();
-        for(Map.Entry<String, String> entry : entrySet) {
-            sortList.add(entry.getKey() + " " + entry.getValue());
-        }
-        if(!sortList.isEmpty()) list.put("sort", sortList);
-    }*/
-
     private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
         if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
@@ -971,7 +959,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, Object> params = new HashMap<>();
         Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-        //setSortItem(sortAndSearchItem);
         setFilterItem(sortAndSearchItem);
         Task<Void> task = new Task<Void>() {
 
