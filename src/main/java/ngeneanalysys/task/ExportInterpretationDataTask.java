@@ -6,9 +6,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import ngeneanalysys.MainApp;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.SSLConnectService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -86,7 +86,7 @@ public class ExportInterpretationDataTask extends Task<Void> {
 				}
 			}
 
-			httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
 			if (httpclient != null)
 				response = httpclient.execute(get);
 			if (response == null){

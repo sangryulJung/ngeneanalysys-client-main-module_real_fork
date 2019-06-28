@@ -1,23 +1,17 @@
 package ngeneanalysys.util.httpclient;
 
 import java.io.*;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.util.*;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import java.util.*;
 
 import javafx.scene.control.Alert;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.ErrorMessage;
+import ngeneanalysys.service.SSLConnectService;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -39,39 +33,9 @@ public class HttpClientUtil {
 
 	private static final String DEFAULT_ENCODING = "UTF-8";
 
+	private static final SSLConnectService sslConnectService = SSLConnectService.getInstance();
+
 	private HttpClientUtil() {}
-
-	/**
-	 * SSL 연결 커넥션 설정 반환
-	 * @return SSLConnectionSocketFactory
-	 */
-	public static SSLConnectionSocketFactory getSSLSocketFactory() {
-		SSLConnectionSocketFactory factory = null;
-		try {
-			TrustManager[] trustAllCerts = new TrustManager[] {
-					new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
-                        }
-
-                        @Override
-                        public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
-                        }
-
-                        @Override
-                        public X509Certificate[] getAcceptedIssuers() {
-                            return new X509Certificate[]{};
-                        }
-                    } };
-
-                    SSLContext sc = SSLContext.getInstance("SSL");
-                    sc.init(null, trustAllCerts, new SecureRandom());
-			factory = new SSLConnectionSocketFactory(sc, NoopHostnameVerifier.INSTANCE);
-		} catch (Exception e) {
-			logger.error("HttpClient SSL Connection Socket Factory Create Fail!!!");
-		}
-		return factory;
-	}
 
 	/**
 	 * post 설정 반환
@@ -126,7 +90,7 @@ public class HttpClientUtil {
 
 		try {
 			HttpPost post = initPost(url, params, headers, encoding, isJsonRequest);
-			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
 			try {
 				response = httpclient.execute(post);
 			} catch (IOException e) {
@@ -254,7 +218,7 @@ public class HttpClientUtil {
 
 		try {
 			HttpGet get = initGet(url, params, headers, encoding, isJsonRequest);
-			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
 			try {
 				response = httpclient.execute(get);
 			} catch (IOException e) {
@@ -299,7 +263,7 @@ public class HttpClientUtil {
 
 		try {
 			HttpGet get = initGet(url, params, headers, encoding, searchParam);
-			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
 			try {
 				response = httpclient.execute(get);
 			} catch (IOException e) {
@@ -457,7 +421,7 @@ public class HttpClientUtil {
 
 		try {
 			HttpPut httpPut = initPut(url, params, headers, encoding, isJsonRequest);
-			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
 			try {
 				response = httpclient.execute(httpPut);
 			} catch (IOException e) {
@@ -552,7 +516,7 @@ public class HttpClientUtil {
 
 		try {
 			HttpPatch httpPatch = initPatch(url, params, headers, encoding, isJsonRequest);
-			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
 			try {
 				response = httpclient.execute(httpPatch);
 			} catch (IOException e) {
@@ -617,7 +581,7 @@ public class HttpClientUtil {
 
 		try {
 			HttpDelete delete = initDelete(url, headers);
-			httpclient = HttpClients.custom().setSSLSocketFactory(getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
 			try {
 				response = httpclient.execute(delete);
 			} catch (IOException e) {

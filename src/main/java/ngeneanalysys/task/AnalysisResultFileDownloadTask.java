@@ -4,9 +4,9 @@ import javafx.concurrent.Task;
 import ngeneanalysys.controller.AnalysisDetailRawDataController;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.SSLConnectService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -50,6 +50,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
     protected Void call() throws Exception {
         if(analysisResultFiles != null && !analysisResultFiles.isEmpty() && downloadDirectory != null) {
             APIService apiService = APIService.getInstance();
+            SSLConnectService sslConnectService = SSLConnectService.getInstance();
             apiService.setStage(controller.getMainController().getPrimaryStage());
             double downloadFileIndex = 0;
             double totalDownlodFileCount = analysisResultFiles.size();
@@ -76,7 +77,7 @@ public class AnalysisResultFileDownloadTask extends Task<Void> {
                         }
                     }
 
-                    httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+                    httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
                     if (httpclient != null)
                         response = httpclient.execute(get);
                     if (response == null){

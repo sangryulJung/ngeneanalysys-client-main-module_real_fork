@@ -6,7 +6,6 @@ import ngeneanalysys.model.ReportImage;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
@@ -93,7 +92,7 @@ public class ImageUploadService {
 
             put.setEntity(reqEntity);
 
-            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
             if (httpclient != null) response = httpclient.execute(put);
             if (response == null) throw new Exception();
 

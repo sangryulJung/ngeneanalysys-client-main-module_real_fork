@@ -4,7 +4,6 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.task.RawDataDownloadTask;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -26,7 +25,12 @@ public class RawDataDownloadService {
 
     private APIService apiService;
 
-    private RawDataDownloadService() { apiService = APIService.getInstance(); }
+    private SSLConnectService sslConnectService;
+
+    private RawDataDownloadService() {
+        apiService = APIService.getInstance();
+        sslConnectService = SSLConnectService.getInstance();
+    }
 
     private static class RawDataDownloadServiceHelper{
         private RawDataDownloadServiceHelper() {}
@@ -65,7 +69,7 @@ public class RawDataDownloadService {
                     }
                 }
 
-                httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+                httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
                 if (httpclient != null)
                     response = httpclient.execute(get);
                 if (response == null){
@@ -138,7 +142,7 @@ public class RawDataDownloadService {
                     }
                 }
 
-                httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+                httpclient = HttpClients.custom().setSSLSocketFactory(sslConnectService.getSSLFactory()).build();
                 if (httpclient != null)
                     response = httpclient.execute(get);
                 if (response == null){

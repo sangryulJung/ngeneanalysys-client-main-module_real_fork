@@ -6,9 +6,7 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import ngeneanalysys.util.httpclient.ProgressFileBody;
-import ngeneanalysys.util.httpclient.ProgressInputStreamEntity;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -91,7 +89,7 @@ public class AnalysisRequestService {
 
             put.setEntity(reqEntity);
 
-            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
             if(httpclient != null) response = httpclient.execute(put);
             if(response == null) return null;
             result = HttpClientUtil.getHttpClientResponse(response);
