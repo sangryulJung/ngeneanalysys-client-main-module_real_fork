@@ -1613,8 +1613,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(clinVarDisease, "ClinVar Submitted Disease", null ,150d, "clinVarSubmittedDisease");
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarDrugResponse = new TableColumn<>("ClinVar Drug Response");
-        createTableHeader(clinVarDrugResponse, "ClinVar Drug Response", null ,150d, "clinVarDrugResponse");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDrugResponse = new TableColumn<>("ClinVar Condition");
+        createTableHeader(clinVarDrugResponse, "ClinVar Condition", null ,150d, "clinVarDrugResponse");
         clinVarDrugResponse.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDrugResponse()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar Submitted OMIM");
