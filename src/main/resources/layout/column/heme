@@ -33,7 +33,7 @@
     {"order":32,"columnName":"ClinVar Condition","visible":true},
     {"order":33,"columnName":"ClinVar Submitted Accession","visible":true},
     {"order":34,"columnName":"ClinVar Submitted Class","visible":true},
-    {"order":35,"columnName":"ClinVar Submitted Disease","visib  le":true},
+    {"order":35,"columnName":"ClinVar Submitted Disease","visible":true},
     {"order":36,"columnName":"ClinVar Submitted OMIM","visible":true},
     {"order":37,"columnName":"SIFT Prediction","visible":true},
     {"order":38,"columnName":"Mutation Taster Prediction","visible":true},
