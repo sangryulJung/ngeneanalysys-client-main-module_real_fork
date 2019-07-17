@@ -515,7 +515,7 @@ public class PastResultsController extends SubPaneController {
 				setVBoxPrefSize(gridPane);
 
 				SampleInfoVBox vBox = new SampleInfoVBox();
-				vBox.setSampleList(runSampleView.getSampleViews());
+				vBox.setSampleList(runSampleView.getSampleViews(), runSampleView.getRun().getRunStatus().getSampleCount());
 				resultVBox.getChildren().add(vBox);
 				setVBoxPrefSize(vBox);
 				if(list.indexOf(runSampleView) < list.size() - 1) {
@@ -788,7 +788,7 @@ public class PastResultsController extends SubPaneController {
 			}
 		}
 
-		private void setSampleList(List<SampleView> sampleList) {
+		private void setSampleList(List<SampleView> sampleList, Integer sampleSize) {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
 				itemHBox.getStyleClass().add("cursor_hand");
@@ -892,11 +892,11 @@ public class PastResultsController extends SubPaneController {
 				Label restart = new Label();
 				labelSize(restart, 20., "sample_restart_button");
 
-				name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
-				panel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
-				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
-				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
-				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleList.size()));
+				name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				panel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
 
                 if(sampleView.getPanel().getName().contains("TruSight Tumor")) {
                     restart.setVisible(false);
