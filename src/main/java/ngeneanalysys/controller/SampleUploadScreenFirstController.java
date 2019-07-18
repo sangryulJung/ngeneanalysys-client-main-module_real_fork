@@ -132,7 +132,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         isServerItem = true;
         isServerFastq = false;
         logger.debug(path);
-        if(sampleArrayList.isEmpty()) sampleArrayList.clear();
+        if(!sampleArrayList.isEmpty()) sampleArrayList.clear();
         if(!fileMap.isEmpty()) {
             fileMap.clear();
             uploadFileList.clear();
@@ -178,8 +178,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                 sampleArrayList.add(createSampleView(fastqFilePairName));
             }
 
-            if(sampleArrayList.size() == 25) break;
-
             serverFiles.removeAll(pairFileList);
         }
 
@@ -204,7 +202,7 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             String[] s;
             boolean tableData = false;
             while((s = csvReader.readNext()) != null) {
-                if (tableData && sampleArrayList.size() < 25) {
+                if (tableData) {
                     final String sampleName = s[0];
                     logger.debug(s[0]);
                     SampleView sample = createSampleView(sampleName);
@@ -409,7 +407,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     }
 
                     fileList.removeAll(pairFileList);
-                    if(sampleArrayList.size() > 24) break;
                 }
                 tableEdit();
             } else {
@@ -462,7 +459,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
         }
 
         for(SampleView sample : sampleArrayList) {
-            if(row > 24) break;
             if(sampleNameTextFieldList.get(row).isDisable()) {
                 row++;
                 continue;

@@ -55,7 +55,7 @@ public class SampleUploadController extends BaseStageController{
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-    private List<SampleView> samples = new ArrayList<>(25);
+    private List<SampleView> samples = new ArrayList<>();
 
     @FXML
     private Label runNameToolTip;
@@ -309,8 +309,6 @@ public class SampleUploadController extends BaseStageController{
             APIService apiService = APIService.getInstance();
             params.clear();
             params.put("runId", run.getId());
-            params.put("limit", 24);
-            params.put("offset", 0);
             HttpClientResponse response = apiService.get("/samples", params, null, false);
 
             PagedSample pagedSample = response.getObjectBeforeConvertResponseToJSON(PagedSample.class);
