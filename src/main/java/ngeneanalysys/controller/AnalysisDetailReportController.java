@@ -32,18 +32,14 @@ import ngeneanalysys.service.ExcelConvertReportInformationService;
 import ngeneanalysys.service.ImageService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
-import ngeneanalysys.task.JarDownloadTask;
+import ngeneanalysys.task.WordDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
 import java.io.*;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.math.RoundingMode;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -1081,7 +1077,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
 
             if(file != null) {
-
+                mainController.setMainMaskerPane(true);
                 Map<String, Object> contentsMap = contents();
                 contentsMap.put("isDraft", isDraft);
 
@@ -1143,51 +1139,13 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         if(components == null || components.isEmpty()) throw new Exception();
                         final Comparator<ReportComponent> comp = (p1, p2) -> Integer.compare( p1.getId(), p2.getId());
                         final ReportComponent component = components.stream().max(comp).get();
-                        final String filePath = CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + component.getId();
-                        File jarFile = new File(filePath, component.getName());
 
-                        components.remove(component);
+                        String test = JsonUtil.toJsonIncludeNullValue(contentsMap);
 
-                        if(!components.isEmpty()) {
-                            for (ReportComponent cmp : components) {
-                                File oldVersionFolder = new File(CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + cmp.getId());
-                                if(oldVersionFolder.exists()) {
-                                    FileUtils.deleteQuietly(oldVersionFolder);
-                                }
-                            }
-                        }
-
-                        if(!jarFile.exists()) {
-                            File folder = new File(filePath);
-                            if (!folder.exists()){
-                                if(!folder.mkdirs()) {
-                                    throw new Exception("Fail to make jarFile directory");
-                                }
-                            }
-
-                            Task task = new JarDownloadTask(this, component);
-
-                            Thread thread = new Thread(task);
-                            thread.setDaemon(true);
-                            thread.start();
-
-                            task.setOnSucceeded(ev -> {
-                                try {
-                                    final File jarFile1 = new File(filePath, component.getName());
-                                    URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
-                                    createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
-                                } catch (MalformedURLException murle) {
-                                    DialogUtil.error("Report Generation Fail", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
-                                    murle.printStackTrace();
-                                }
-                            });
-                            task.exceptionProperty().addListener((observable, oldValue, newValue) ->
-                                DialogUtil.error("Report Generation Fail",
-                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false));
-                        } else {
-                            URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
-                            createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
-                        }
+                        Task<Void> task = new WordDownloadTask(this, component, test, file);
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
 
                     } else {
                         List<ReportImage> images = reportContents.getReportImages();
@@ -1245,29 +1203,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         return created;
     }
 
-    @SuppressWarnings("unchecked")
-    private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-
-        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
-            Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.debug("application init..");
-            Method setParams = classToLoad.getMethod("setParams", Map.class);
-            Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
-            Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
-            Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
-            Object application = classToLoad.newInstance();
-            setParams.invoke(application, contentsMap);
-            setWriteFilePath.invoke(application, file.getPath());
-            updateEmbeddedDoc.invoke(application);
-            updateWordFile.invoke(application);
-            createdCheck(true, file);
-        } catch (Exception e) {
-            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-            e.printStackTrace();
-        }
-    }
-
-    private void createdCheck(boolean created, File file) {
+    public void createdCheck(boolean created, File file) {
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1291,6 +1227,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
                     getMainApp().getPrimaryStage(), false);
         }
+        mainController.setMainMaskerPane(false);
     }
 
     private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
@@ -1302,10 +1239,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_FLOOR));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, RoundingMode.FLOOR));
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_FLOOR));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, RoundingMode.FLOOR));
                 return qcData;
             }
         }

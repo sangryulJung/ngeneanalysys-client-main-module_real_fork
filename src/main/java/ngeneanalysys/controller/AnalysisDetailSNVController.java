@@ -604,38 +604,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Platform.runLater(() -> showVariantList(0));
     }
 
-    /*void setSNVTabName() {
-        if(variantListTableView.getItems() != null) {
-            VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
-                    .getSelectedItem();
-            String title;
-            String conSeq = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence()) ?
-                    variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] : "";
-            if (AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
-                title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
-                        + conSeq + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession() + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getNtChange() + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
-            } else {
-                String ntChange = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getNtChange()) ?
-                        variant.getSnpInDel().getSnpInDelExpression().getNtChange() : "";
-                String aaChange = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter()) ?
-                        variant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter() : "";
-                String[] ntChangeArray = ntChange.split(":");
-                String[] aaChangeConversionArray = aaChange.split(":");
-                title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
-                        + conSeq + " "
-                        + variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession() + " "
-                        + ntChangeArray[ntChangeArray.length - 1] + " "
-                        + aaChangeConversionArray[aaChangeConversionArray.length - 1];
-            }
-            variantsController.setSNVTabName(title);
-        } else {
-            variantsController.setSNVTabName(null);
-        }
-    }
-*/
     private void setDefaultFilter() {
         totalLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
         filterComboBox.setConverter(new ComboBoxConverter());
@@ -861,16 +829,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
             @Override
             protected Void call() throws Exception {
-                // Detail 데이터 API 요청
-                //HttpClientResponse responseDetail = apiService.get(
-                //        "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
-                // 상세 데이터 요청이 정상 요청된 경우 진행.
-                //SnpInDel snpInDel
-                //        = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
-                // VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
-
-                // variantAndInterpretationEvidence.setSnpInDel(snpInDel);
-                // variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
 
                 paramMap.put("variant", analysisResultVariant);
 
@@ -921,15 +879,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             e.printStackTrace();
         }
     }
-
-    /*private void setSortItem(Map<String, List<Object>> list) {
-        Set<Map.Entry<String, String>> entrySet = sortMap.entrySet();
-        List<Object> sortList = new ArrayList<>();
-        for(Map.Entry<String, String> entry : entrySet) {
-            sortList.add(entry.getKey() + " " + entry.getValue());
-        }
-        if(!sortList.isEmpty()) list.put("sort", sortList);
-    }*/
 
     private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
@@ -1048,22 +997,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     void comboBoxSetAll() {
         filterComboBox.getSelectionModel().selectFirst();
     }
-
-    /*private void sortTable(String column) {
-        if(sortMap.size() == 1 && sortMap.containsKey(column)) {
-            if(sortMap.get(column).equalsIgnoreCase("ASC")) {
-                sortMap.put(column, "DESC");
-            } else {
-                sortMap.remove(column);
-            }
-        } else if(sortMap.isEmpty()){
-            sortMap.put(column, "ASC");
-        } else if(sortMap.size() == 1) {
-            sortMap.clear();
-            sortMap.put(column, "ASC");
-         }
-        Platform.runLater(() -> showVariantList(0));
-    }*/
 
     @FXML
     public void resetTableColumnOrder() {
