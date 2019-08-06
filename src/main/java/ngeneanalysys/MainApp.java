@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.*;
-import javafx.scene.control.*;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.MainController;
 import ngeneanalysys.controller.ServerURLSettingController;
@@ -15,15 +14,12 @@ import ngeneanalysys.util.*;
 import org.slf4j.Logger;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.LoginController;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 
 
 public class MainApp extends Application {
@@ -37,9 +33,6 @@ public class MainApp extends Application {
 	
 	// Properties Config
 	protected Properties config;
-	
-	// Resource Util
-	//protected ResourceUtil resourceUtil = new ResourceUtil();
 	
 	// 메인 Stage
 	private Stage primaryStage;
@@ -107,70 +100,14 @@ public class MainApp extends Application {
 	public FXMLLoader load(String fxmlPath) {
 		return FXMLLoadUtil.load(fxmlPath);
 	}
-
-	
-	private boolean checkExistsDatabasePathAndCreate() {
-		return false;
-	}
 	
 	private boolean isProxyServerRunning() {
-		try (Socket socket = new Socket()){
+		try (Socket socket = new Socket()) {
 			socket.connect(new InetSocketAddress("localhost", CommonConstants.HTTP_PROXY_SERVER_PORT), 500);
 		} catch (IOException e) {
 			return false;
 		}
 		return true;
-	}
-	
-	/**
-	 * 예외상황 메시지 출력
-	 * @param t Thread
-	 * @param e Throwable
-	 */
-	@SuppressWarnings("unused")
-	private static void showError(Thread t, Throwable e) {
-		logger.error("***Default exception handler***");
-		if (Platform.isFxApplicationThread()) {
-			showErrorDialog(e);
-		} else {
-			logger.error("An unexpected error occurred in " + t);
-		}
-	}
-	
-	/**
-	 * 예외상황 메시지 Dialog 출력
-	 * @param e Throwable
-	 */
-	private static void showErrorDialog(Throwable e) {
-		StringWriter errorMsg = new StringWriter();
-		e.printStackTrace(new PrintWriter(errorMsg));
-		
-		Alert alert = new Alert(AlertType.ERROR);
-		DialogUtil.setIcon(alert);
-		alert.setTitle("Exception Dialog");
-		alert.setHeaderText("Look, an Exception Dialog");
-		
-		// Create expandable Exception.
-		String exceptionText = errorMsg.toString();
-
-		Label label = new Label("The exception stacktrace was:");
-		TextArea textArea = new TextArea(exceptionText);
-		textArea.setEditable(false);
-		textArea.setWrapText(true);
-
-		textArea.setMaxWidth(Double.MAX_VALUE);
-		textArea.setMaxHeight(Double.MAX_VALUE);
-		GridPane.setVgrow(textArea, Priority.ALWAYS);
-		GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-		GridPane expContent = new GridPane();
-		expContent.setMaxWidth(Double.MAX_VALUE);
-		expContent.add(label, 0, 0);
-		expContent.add(textArea, 0, 1);
-
-		// Set expandable Exception into the dialog pane.
-		alert.getDialogPane().setExpandableContent(expContent);
-		alert.showAndWait();
 	}
 	
 	/* (non-Javadoc)
@@ -183,9 +120,6 @@ public class MainApp extends Application {
 		logger.debug(String.format("# already running application : %s", isAlreadyRunning));
 		
 		if(!isAlreadyRunning) {
-			boolean checkDB = checkExistsDatabasePathAndCreate();
-			logger.debug("check local db : " + checkDB);
-
 			config = PropertiesService.getInstance().getConfig();
 			logger.debug(String.format("application name : %s", getProperty("application.name")));
 		}
@@ -195,16 +129,16 @@ public class MainApp extends Application {
 	public void start(Stage primaryStage) throws Exception{
 		if(isAlreadyRunning) {
 			logger.warn("Requested applications are currently running and newly requested one will be shut down.");
-			DialogUtil.warning("Requested application is running already.", "Requested applications are currently running and newly requested one will be shut down.", null, true);
+			DialogUtil.warning("", "Requested applications are currently running and newly requested one will be shut down.", null, true);
 			throw new RuntimeException();
 		} else {
 			// proxy 서버 기동
 			startProxyServer();
 		}
-		
+
 		this.primaryStage = primaryStage;
 		this.primaryStage.initStyle(StageStyle.DECORATED);
-		
+
 		boolean isContainsServerURL = containsServerURL();
 		logger.debug(String.format("server url is contains : %s", isContainsServerURL));
 		
@@ -229,7 +163,7 @@ public class MainApp extends Application {
 			return false;
 		}
 
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))){
 			Properties props = new Properties();
 			props.load(reader);
 
@@ -247,7 +181,7 @@ public class MainApp extends Application {
 	public void addProperty() {
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
 
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))) {
 			Properties props = new Properties();
 			props.load(reader);
 

@@ -113,13 +113,11 @@ public class SystemMenuEditController extends SubPaneController {
             phoneTextField.setText(user.getPhone());
             emailTextField.setText(user.getEmail());
         } catch (WebAPIException wae) {
-            // DialogUtil.error("Error Search User Information", "An error
-            // occurred during search.", dialogStage, true);
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
         // Scene Init
@@ -131,7 +129,7 @@ public class SystemMenuEditController extends SubPaneController {
      * 새 비밀번호 입력폼 유효성 체크
      * @return boolean
      */
-    public boolean validNewPwdInput() {
+    private boolean validNewPwdInput() {
         if(ValidationUtil.text(newPasswordField.getText(), "password", 7, -1, "([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])", null, false, dialogStage) > 0) {
             DialogUtil.warning("Incorrect password combination.", "Please enter at least 8 characters with a combination of English, numbers and special characters.", dialogStage, true);
             // 입력 내용 삭제
@@ -146,11 +144,11 @@ public class SystemMenuEditController extends SubPaneController {
 
     /**
      * 새 비밀번호 확인 입력폼 유효성 체크
-     * @return
+     * @return boolean
      */
-    public boolean validConfirmPwdInput() {
+    private boolean validConfirmPwdInput() {
         if(!newPasswordField.getText().equals(confirmPasswordField.getText())) {
-            DialogUtil.warning("Mismatch Confirm Password", "The new password does not match the new confirm password.", dialogStage, true);
+            DialogUtil.warning("", "The new password does not match the new confirm password.", dialogStage, true);
             // 입력 내용 삭제
             confirmPasswordField.setText(null);
             // 포커스 이동
@@ -207,12 +205,12 @@ public class SystemMenuEditController extends SubPaneController {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
                 } catch (Exception e) {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
             } else {
-                DialogUtil.alert("Input Error", "Please enter the current password",
+                DialogUtil.alert("", "Please enter the current password",
                         dialogStage, true);
                 currentPasswordField.requestFocus();
             }

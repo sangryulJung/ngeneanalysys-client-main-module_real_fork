@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailVariantsController">
+<GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailVariantsController">
   <columnConstraints>
     <ColumnConstraints hgrow="ALWAYS" minWidth="1140.0" prefWidth="1140.0" />
   </columnConstraints>
@@ -17,10 +17,13 @@
     <RowConstraints minHeight="10.0" prefHeight="374.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <BorderPane fx:id="detailContents" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="374.0" prefWidth="1140.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-      <HBox fx:id="tabMenuHBox" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="600.0">
+      <BorderPane fx:id="detailContents" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="374.0" prefWidth="1140.0" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
-            <Insets top="30.0" />
+            <Insets top="20.0" />
+         </GridPane.margin></BorderPane>
+      <HBox fx:id="tabMenuHBox" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="600.0">
+         <GridPane.margin>
+            <Insets top="10.0" />
          </GridPane.margin>
          <opaqueInsets>
             <Insets left="-10.0" />

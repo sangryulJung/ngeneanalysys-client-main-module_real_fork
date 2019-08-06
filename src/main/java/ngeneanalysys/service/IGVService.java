@@ -53,10 +53,6 @@ public class IGVService {
 
     /** 분석 샘플 ID */
     private String sampleId;
-    /** 분석 샘픔명 */
-    private String sampleName;
-    /** 변이 ID*/
-    private String variantId;
     /** 분석 샘플의 BAM 파일명 */
     private String bamFileName;
     /** Gene */
@@ -65,7 +61,6 @@ public class IGVService {
     private String locus;
     /** 분석 Human Reference Version */
     private String genome;
-    private APIService apiService = null;
 
     private IGVService() {}
 
@@ -260,7 +255,7 @@ public class IGVService {
         long normalBamFileCount;
         // Check whether Mutec2 or HaplotypeCaller Bam file exists.
         try {
-            apiService = APIService.getInstance();
+            APIService apiService = APIService.getInstance();
             Map<String,Object> paramMap = new HashMap<>();
             paramMap.put("sampleId", this.sampleId);
             response = apiService.get("/analysisFiles", paramMap, null, false);
@@ -345,14 +340,12 @@ public class IGVService {
      * @param genome String
      * @throws WebAPIException
      */
-    public void load(String sampleId, String sampleName, String variantId, String gene, String locus, String genome) throws Exception {
+    public void load(String sampleId, String sampleName, String gene, String locus, String genome) throws Exception {
         // 현재 IGV 연동중이지 않은 경우 연동 시작함.
         if(!isStartOfIGV) {
             isStartOfIGV = true;
             logger.debug(String.format("jre binary path : %s", jreBinPath.getAbsolutePath()));
             this.sampleId = sampleId;
-            this.sampleName = sampleName;
-            this.variantId = variantId;
             //this.bamFileName = sampleName + "_final.bam";
             this.bamFileName = sampleName;
             this.gene = gene;

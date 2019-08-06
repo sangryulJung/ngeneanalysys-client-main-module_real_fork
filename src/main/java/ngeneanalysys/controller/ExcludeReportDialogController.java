@@ -45,7 +45,7 @@ public class ExcludeReportDialogController extends SubPaneController {
     private Stage dialogStage;
 
     /**
-     * @param snvController
+     * @param snvController AnalysisDetailSNVController
      */
     public void setSnvController(AnalysisDetailSNVController snvController) {
         this.snvController = snvController;
@@ -89,7 +89,7 @@ public class ExcludeReportDialogController extends SubPaneController {
             Map<String, Object> params = new HashMap<>();
             params.put("sampleId", sampleView.getId());
             params.put("snpInDelIds", selectedItem.getSnpInDel().getId().toString());
-            params.put("comment", StringUtils.isEmpty(comment) ? "N/A" : comment);
+            params.put("comment", StringUtils.isEmpty(comment) ? "Not applicable" : comment);
             params.put("includeInReport", symbol);
             apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
             if(snvController != null) snvController.setrFlag(true);
@@ -103,11 +103,7 @@ public class ExcludeReportDialogController extends SubPaneController {
 
     @FXML
     public void cancel() {
-        if(checkBox.isSelected()) {
-            checkBox.setSelected(false);
-        } else {
-            checkBox.setSelected(true);
-        }
+        checkBox.setSelected(!checkBox.isSelected());
         dialogStage.close();
     }
 }

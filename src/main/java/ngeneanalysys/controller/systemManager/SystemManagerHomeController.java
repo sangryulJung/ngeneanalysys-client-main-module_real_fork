@@ -33,7 +33,7 @@ public class SystemManagerHomeController extends SubPaneController {
 
     /** tab */
     @FXML
-    private TabPane topTabPane;
+    private TabPane topTabPaneManager;
 
     private SystemManagerAnalysisStatusController systemManagerAnalysisStatusController;
 
@@ -66,11 +66,11 @@ public class SystemManagerHomeController extends SubPaneController {
             if(idx == 0) {
                 setTabContent(tab);
             }
-            topTabPane.getTabs().add(tab);
+            topTabPaneManager.getTabs().add(tab);
             idx++;
         }
 
-        topTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        topTabPaneManager.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != newValue) {
                 setTabContent(newValue);
             }

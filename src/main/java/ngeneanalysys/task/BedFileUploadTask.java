@@ -20,9 +20,6 @@ public class BedFileUploadTask extends Task {
     /** 컨트롤러 클래스 */
     private MainController controller;
 
-    /** 프로세스 정상 실행 여부 */
-    private boolean isExecute = true;
-
     private BedFileService bedFileService;
 
     private int panelId;

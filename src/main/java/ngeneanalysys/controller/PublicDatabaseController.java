@@ -1,6 +1,6 @@
 package ngeneanalysys.controller;
 
-import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -96,21 +96,20 @@ public class PublicDatabaseController extends SubPaneController {
         dialogStage.setMinHeight(566);
 
         versionComboBox.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> {
-            logger.debug("test");
-            Optional<PipelineVersionView> optionalPipelineVersionView =
-                    list.stream().filter(item -> item.getId().equals(Integer.parseInt(nv.getValue()))).findFirst();
-
-            if(optionalPipelineVersionView.isPresent()) {
-                if (optionalPipelineVersionView.get().getReleaseNote().isEmpty()) {
-                	releaseNoteLabel.setText("There is no release notes.");
-                	releaseNoteScrollPane.setPrefHeight(30);
-                }else {
-                	releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
+            if(ov != nv) {
+                Optional<PipelineVersionView> optionalPipelineVersionView =
+                        list.stream().filter(item -> item.getId().equals(Integer.parseInt(nv.getValue()))).findFirst();
+                if(optionalPipelineVersionView.isPresent()) {
+                    if (optionalPipelineVersionView.get().getReleaseNote().isEmpty()) {
+                        releaseNoteLabel.setText("There is no release notes.");
+                        releaseNoteScrollPane.setPrefHeight(30);
+                    }else {
+                        releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
+                    }
+                    releaseDateLabel.setText(optionalPipelineVersionView.get().getReleaseDate());
                 }
-                releaseDateLabel.setText(optionalPipelineVersionView.get().getReleaseDate());
+                setList(nv.getValue());
             }
-
-            setList(nv.getValue());
         });
 
         setVersionComboBox();
@@ -135,16 +134,31 @@ public class PublicDatabaseController extends SubPaneController {
                 databaseContentsGridPane.getRowConstraints().remove(0);
             }
         }
-        Platform.runLater(() -> {
-            try {
-                HttpClientResponse response = apiService
+        Task task = new Task() {
+            List<PipelineAnnotationDatabase> dbList;
+            List<PipelineTool> toolList;
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response;
+                response = apiService
                         .get("/pipelineVersions/" + id + "/annotationDatabases", null, null, null);
-
-                List<PipelineAnnotationDatabase> dbList = (List<PipelineAnnotationDatabase>)response
+                dbList = (List<PipelineAnnotationDatabase>)response
                         .getMultiObjectBeforeConvertResponseToJSON(PipelineAnnotationDatabase.class, false);
-
                 if(dbList != null && !dbList.isEmpty()) {
                     dbList.sort(Comparator.comparing(PipelineAnnotationDatabase::getCategory));
+                }
+                response = apiService.get("/pipelineVersions/" + id + "/tools", null, null, null);
+                toolList = (List<PipelineTool>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineTool.class, false);
+                if(toolList != null && !toolList.isEmpty()) {
+                    toolList.sort(Comparator.comparing(PipelineTool::getName));
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                if(dbList != null && !dbList.isEmpty()) {
                     createGridRow("Category", "Database", "Version",
                             "Release", "Description", "Source" ,"Sample Count", false, true);
                     for(PipelineAnnotationDatabase pipelineAnnotationDatabase : dbList) {
@@ -154,18 +168,8 @@ public class PublicDatabaseController extends SubPaneController {
                                 pipelineAnnotationDatabase.getSampleCount(), false, false);
                     }
                 }
-            } catch (WebAPIException wae) {
-                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
-            }
-        });
-        Platform.runLater(() -> {
-            try {
-                HttpClientResponse response = apiService.get("/pipelineVersions/" + id + "/tools", null, null, null);
-
-                List<PipelineTool> toolList = (List<PipelineTool>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineTool.class, false);
-
+                dbList = null;
                 if(toolList != null && !toolList.isEmpty()) {
-                    toolList.sort(Comparator.comparing(PipelineTool::getName));
                     createGridRow("Software", "License", "Version", "Release",
                             "Description", "Source", null, true, true);
                     for(PipelineTool pipelineTool : toolList) {
@@ -174,11 +178,24 @@ public class PublicDatabaseController extends SubPaneController {
                                 pipelineTool.getSource(), null, true, false);
                     }
                 }
-            } catch (WebAPIException wae) {
-                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
+                toolList = null;
             }
-        });
 
+            @Override
+            protected void failed() {
+                super.failed();
+                Exception e = new Exception(getException());
+                if (e instanceof WebAPIException){
+                    WebAPIException wae = (WebAPIException)e;
+                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
+                } else {
+                    e.printStackTrace();
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), dialogStage, true);
+                }
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void createGridRow(final String column1, final String column2, final String column3, final String column4,
@@ -253,20 +270,38 @@ public class PublicDatabaseController extends SubPaneController {
     @SuppressWarnings("unchecked")
     private void setVersionComboBox() {
         versionComboBox.setConverter(new ComboBoxConverter());
-        try {
-            HttpClientResponse response = apiService.get("/panels/"+ panelId +"/pipelineVersions"/* + this.panelId*/, null, null, null);
-
-            List<PipelineVersionView> viewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
-            this.list = viewList;
-            if(viewList != null && !viewList.isEmpty()) {
-                for(PipelineVersionView pipelineVersionView : viewList) {
-                    versionComboBox.getItems().add(new ComboBoxItem(pipelineVersionView.getId().toString(), pipelineVersionView.getVersion()));
-                }
-                versionComboBox.getSelectionModel().selectFirst();
+        Task task = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response = apiService.get("/panels/"+ panelId +"/pipelineVersions"/* + this.panelId*/, null, null, null);
+                list = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
+                return null;
             }
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
-        }
-    }
 
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                if(list != null && !list.isEmpty()) {
+                    for(PipelineVersionView pipelineVersionView : list) {
+                        versionComboBox.getItems().add(new ComboBoxItem(pipelineVersionView.getId().toString(), pipelineVersionView.getVersion()));
+                    }
+                    versionComboBox.getSelectionModel().selectFirst();
+                }
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                Exception e = new Exception(getException());
+                if (e instanceof WebAPIException) {
+                    WebAPIException wae = (WebAPIException)e;
+                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), dialogStage, true);
+                } else {
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), dialogStage, true);
+                }
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
+    }
 }

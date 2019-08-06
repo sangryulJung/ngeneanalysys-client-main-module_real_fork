@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.NoticeView;
@@ -38,8 +39,6 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
     private static Logger logger = LoggerUtil.getLogger();
 
     private APIService apiService;
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     @FXML
     private TextField titleTextField;
@@ -87,18 +86,18 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
         editTableColumn.setCellFactory(param -> new NewsAndTipsModifyButton());
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
+                item.getValue().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getUpdatedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getUpdatedAt().toDate(), DATE_FORMAT));
+                        item.getValue().getUpdatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), DATE_FORMAT));
+                        item.getValue().getDeletedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
@@ -204,21 +203,12 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
         setDisabledItem(false);
     }
 
-    public void deleteNewsAndTips(int noticeId) {
-        try {
-            apiService.delete("admin/notices/" + noticeId);
-        } catch (WebAPIException wae) {
-            DialogUtil.error(wae.getHeaderText(), wae.getMessage(), mainController.getPrimaryStage(), true);
-        }
-
-    }
-
     private class NewsAndTipsModifyButton extends TableCell<NoticeView, Boolean> {
         HBox box = null;
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public NewsAndTipsModifyButton() {
+        private NewsAndTipsModifyButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 NoticeView notice = NewsAndTipsModifyButton.this.getTableView().getItems().get(
@@ -235,7 +225,6 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 DialogUtil.setIcon(alert);
-                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this notice?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -245,7 +234,7 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
                 alert.setContentText(alertContentText);
                 logger.debug(notice.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deleteNewsAndTips(notice.getId());
                 } else {
                     logger.debug(result.get() + " : button select");
@@ -274,13 +263,21 @@ public class SystemManagerNewsAndTipsController extends SubPaneController {
             box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 
             setGraphic(box);
 
+        }
+
+        private void deleteNewsAndTips(int noticeId) {
+            try {
+                apiService.delete("admin/notices/" + noticeId);
+            } catch (WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getMessage(), mainController.getPrimaryStage(), true);
+            }
         }
     }
 

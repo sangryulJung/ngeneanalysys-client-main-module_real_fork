@@ -9,7 +9,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.RawDataDownloadInfo;
-import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.task.RawDataDownloadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -54,9 +53,6 @@ public class RawDataDownloadProgressTaskController extends SubPaneController {
 	/** 진행중 아이콘 객체 */
 	@FXML
 	public ProgressIndicator progressIndicator;
-
-	/** 분석 요청 서비스 */
-	private AnalysisRequestService analysisRequestService;
 
 	/** progress task object */
 	private Task<?> task;
@@ -117,9 +113,6 @@ public class RawDataDownloadProgressTaskController extends SubPaneController {
 	@SuppressWarnings("static-access")
 	@Override
 	public void show(Parent root) throws IOException {
-		this.analysisRequestService = AnalysisRequestService.getInstance();
-
-		boolean isWorkStart = false;
 		this.progressIndicator.setProgress(new ProgressBar().getProgress());
 
 		this.task = new RawDataDownloadTask(this, info.getRunSampleView(),	info.getFolder(), info.getType());
@@ -196,8 +189,8 @@ public class RawDataDownloadProgressTaskController extends SubPaneController {
 		DialogUtil.setIcon(alert);
 		alert.initOwner(getMainController().getPrimaryStage());
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Analysis Cancel Request");
-		alert.setContentText("Do you want to cancel analysis request?");
+		alert.setHeaderText("");
+		alert.setContentText("File download is in progress. Do you want to cancel?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK){

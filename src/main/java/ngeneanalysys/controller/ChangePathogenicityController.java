@@ -50,7 +50,7 @@ public class ChangePathogenicityController extends SubPaneController {
     private AnalysisDetailSNVController snvController;
 
     /**
-     * @param snvController
+     * @param snvController AnalysisDetailSNVController
      */
     public void setSnvController(AnalysisDetailSNVController snvController) {
         this.snvController = snvController;
@@ -78,7 +78,7 @@ public class ChangePathogenicityController extends SubPaneController {
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Pathogenicity");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Modify Pathogenicity in individual");
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -101,7 +101,7 @@ public class ChangePathogenicityController extends SubPaneController {
         String comment = commentTextField.getText();
         Map<String, Object> params = new HashMap<>();
 
-        params.put("comment", StringUtils.isEmpty(comment) ? "N/A" : comment);
+        params.put("comment", StringUtils.isEmpty(comment) ? "Not applicable" : comment);
 
         try {
             params.put("pathogenicity", pathogenicity);
@@ -127,7 +127,7 @@ public class ChangePathogenicityController extends SubPaneController {
     }
 
     private String getCurrentPathogenicity() {
-        String currentPathogenicity = null;
+        String currentPathogenicity;
         if(!StringUtils.isEmpty(selectedItem.getSnpInDel().getExpertPathogenicity())) {
             currentPathogenicity = selectedItem.getSnpInDel().getExpertPathogenicity();
         } else {

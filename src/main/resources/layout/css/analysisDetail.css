@@ -10,8 +10,9 @@
 
 /** 탭 상단 */
 #topTabPane.tab-pane:top>.tab-header-area {
-	-fx-padding:0 5 0 -4;
+	-fx-padding:0; //0 5 0 -4;
 	-fx-background-color : transparent;
+	-fx-font-family: "Noto Sans KR Bold";
 }
 
 /** 탭 상단 배경 */
@@ -19,67 +20,59 @@
 	-fx-background-color: transparent;
 	-fx-border-width:0;
 	-fx-background-insets: 0;
-	-fx-min-height: 45px;
-    -fx-pref-height: 45px;
-    -fx-max-height: 45px;
 }
 
 /** 탭메뉴 : 미선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region {
-	-fx-alignment: bottom-center;
-	-fx-min-height: 45px;
-	-fx-pref-height: 45px;
-	-fx-max-height: 45px;
+	//-fx-alignment: bottom-center;
 }
-
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top {
-	-fx-background-color: transparent;
-	-fx-background-insets: 0;
-	-fx-border-width:0;
-	-fx-padding:0 0 0 4;
-	-fx-min-height: 45px;
-    -fx-pref-height: 45px;
-    -fx-max-height: 45px;
+	-fx-background-color: #96a8bf;
+	-fx-background-insets: 0 5 0 0;
+	-fx-padding:0;
+	-fx-min-height: 30px;
+    -fx-pref-height: 30px;
+    -fx-max-height: 30px;
 	-fx-focus-traversable: false;
+	-fx-background-radius : 10 10 0 0;
+    -fx-border-width : 0 1 0 0;
+    -fx-border-radius : 10 10 0 0;
+    -fx-border-color : #ffffff;
+    -fx-min-width:220;
+    -fx-pref-width:220;
+    -fx-max-width:220;
 }
-
 /** 탭메뉴 컨테이너 : 미선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container {
 	-fx-background-color: transparent;
-	//linear-gradient(#fff, #e5e5e5);
-	/*-fx-border-color: #B8B7B5, #FFFFFF;
-	-fx-border-radius: 0;
-	-fx-border-width:0 1 0 0, 0 1 0 0;
-	-fx-border-insets:0 1 0 0, 0 0 0 0;*/
 	-fx-cursor:hand;
-}
 
+}
 /** 탭메뉴 라벨 : 미선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:top>.tab-container>.tab-label{
-	-fx-alignment: CENTER;
-	-fx-text-fill: #595757;
-	-fx-font-size:13px;
-	-fx-padding:0 30;
-	//-fx-background-image : url('../images/sample_detail_menu_inactive.png');
-	//-fx-background-repeat : no-repeat;
-	//-fx-background-position : 0 3;
-	-fx-background-color : white;
-	-fx-background-radius : 15;
-	-fx-border : 1;
-	-fx-border-color : black;
-	-fx-border-radius : 15;
+    -fx-min-width:220;
+    -fx-pref-width:220;
+    -fx-max-width:220;
+	-fx-alignment: center;
+	-fx-text-fill: #ffffff;
+	-fx-font-size:14px;
 }
 
 /** 탭메뉴 : 선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:selected:top {
-	-fx-background-color: transparent;
-	-fx-background-insets: 0;
-	-fx-border-width:0;
-	-fx-padding:0 0 0 4;
-	-fx-min-height: 45px;
-    -fx-pref-height: 45px;
-    -fx-max-height: 45px;
+	-fx-background-color: #24467c;
+	-fx-background-insets: 0 5 0 0;
+	-fx-padding:0 0 0 0;
+	-fx-min-height: 30px;
+    -fx-pref-height: 30px;
+    -fx-max-height: 30px;
 	-fx-focus-traversable: false;
+	-fx-border-width : 0 1 0 0;
+    -fx-border-radius : 10 10 0 0;
+    -fx-border-color : #ffffff;
+    -fx-min-width:220;
+    -fx-pref-width:220;
+    -fx-max-width:220;
 }
 
 /** 탭메뉴 컨테이너 : 선택 */
@@ -97,16 +90,12 @@
 
 /** 탭메뉴 라벨 : 선택 */
 #topTabPane.tab-pane:top>.tab-header-area>.headers-region>.tab:selected>.tab-container>.tab-label {
-	-fx-alignment: CENTER;
-	-fx-text-fill: #ffffff;
-	-fx-font-size:13px;
-	-fx-padding:0 30;
-	//-fx-background-image : url('../images/sample_detail_menu_active.png');
-    -fx-background-repeat : no-repeat;
-    -fx-background-color : #8f9fb9;
-    -fx-background-position : 0 3;
-    -fx-border : 1;
-    -fx-border-color : #8f9fb9;
+	-fx-min-width:220;
+        -fx-pref-width:220;
+        -fx-max-width:220;
+    	-fx-alignment: center;
+    	-fx-text-fill: #ffffff;
+    	-fx-font-size:14px;
 }
 
 /** 탭메뉴 닫기 버튼 : 선택 */

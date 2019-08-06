@@ -1,8 +1,5 @@
 package ngeneanalysys.model;
 
-import ngeneanalysys.model.FusionGene;
-import ngeneanalysys.model.VariantAndInterpretationEvidence;
-
 /**
  * @author Jang
  * @since 2018-01-22

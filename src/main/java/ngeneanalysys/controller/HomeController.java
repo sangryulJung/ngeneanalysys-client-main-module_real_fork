@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,10 +20,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import ngeneanalysys.animaition.HddStatusTimer;
+import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.controller.systemMenu.SystemMenuPublicDatabasesController;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNotice;
 import ngeneanalysys.model.paged.PagedRun;
@@ -37,7 +38,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Jang
@@ -68,18 +68,16 @@ public class HomeController extends SubPaneController{
     private HBox toggleGroupHBox;
 
     @FXML
-    private Label dateLabel;
+    private Label noticeTitleLabel;
 
     @FXML
-    private Label noticeContentsLabel;
+    private TextArea noticeContentsTextArea;
 
     @FXML
     private ToggleGroup newsTipGroup;
 
     @FXML
     private VBox databaseVersionVBox;
-
-    private List<NoticeView> noticeList = null;
 
     /** API Service */
     private APIService apiService;
@@ -91,27 +89,21 @@ public class HomeController extends SubPaneController{
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("HomeController show..");
-
         apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
         homeWrapper.add(maskerPane,0 ,0, 5, 6);
-        maskerPane.setPrefWidth(homeWrapper.getPrefWidth());
-        maskerPane.setPrefHeight(homeWrapper.getPrefHeight());
-        maskerPane.setVisible(false);
+        setMaskerPanePrefWidth(homeWrapper.getPrefWidth());
+        setMaskerPanePrefHeight(homeWrapper.getPrefHeight());
+        setMaskerPaneVisable(false);
 
         newsTipGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             logger.debug("init");
             if(newValue == null) return;
-
-            if(!noticeLabelSetting(newsTipGroup.getToggles().indexOf(newValue))) {
-                newsTipGroup.selectToggle(oldValue);
-            } else {
-                newsTipGroup.selectToggle(newValue);
-            }
+            if(oldValue != null && oldValue != newValue)
+                setNoticeArea(newsTipGroup.getToggles().indexOf(newValue));
         });
 
-        //getMainController().getPrimaryStage().setMaxWidth(1000);
         this.mainController.getMainFrame().setCenter(root);
 
         initRunListLayout();
@@ -174,23 +166,39 @@ public class HomeController extends SubPaneController{
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void setToolsAndDatabase() {
         databaseVersionVBox.getChildren().removeAll(databaseVersionVBox.getChildren());
-        try {
-            HttpClientResponse response = apiService.get("pipelineVersions/currentVersionGroupByPanel", null, null, null);
+        Task task = new Task() {
+            List<PipelineVersionView> pipelineVersionViewList;
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response = apiService.get("pipelineVersions/currentVersionGroupByPanel", null, null, null);
 
-            List<PipelineVersionView> pipelineVersionViewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
-            if(pipelineVersionViewList != null && !pipelineVersionViewList.isEmpty()) {
-                for (PipelineVersionView pipelineVersionView : pipelineVersionViewList) {
-                    createPipelineVersionHBox(pipelineVersionView);
-                }
-            } else {
-                createDefaultVersionHBox();
+                pipelineVersionViewList = (List<PipelineVersionView>)response.getMultiObjectBeforeConvertResponseToJSON(PipelineVersionView.class, false);
+                return null;
             }
 
-        } catch (WebAPIException wae) {
-            createDefaultVersionHBox();
-        }
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                if(pipelineVersionViewList != null && !pipelineVersionViewList.isEmpty()) {
+                    for (PipelineVersionView pipelineVersionView : pipelineVersionViewList) {
+                        createPipelineVersionHBox(pipelineVersionView);
+                    }
+                } else {
+                    createDefaultVersionHBox();
+                }
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                createDefaultVersionHBox();
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void createDefaultVersionHBox() {
@@ -245,72 +253,118 @@ public class HomeController extends SubPaneController{
     }
 
 
-    private void setNoticeArea() {
-        try {
-            Map<String, Object> params = new HashMap<>();
+    private void setNoticeArea(int index) {
+        Task<Void> task = new Task<Void>() {
 
-            params.put("limit", 5);
-            params.put("offset", 0);
+            List<NoticeView> noticeList = null;
+            @Override
+            protected Void call() throws Exception {
+                HttpClientResponse response;
+                Map<String, Object> params = new HashMap<>();
 
-            HttpClientResponse response = apiService.get("/notices", params, null, false);
+                params.put("limit", 5);
+                params.put("offset", 0);
 
-             noticeList =response.getObjectBeforeConvertResponseToJSON(PagedNotice.class).getResult();
+                response = apiService.get("/notices", params, null, false);
 
-             if(toggleGroupHBox.getChildren() != null && !toggleGroupHBox.getChildren().isEmpty()) {
-                 toggleGroupHBox.getChildren().clear();
-                 newsTipGroup.getToggles().clear();
-             }
+                noticeList = response.getObjectBeforeConvertResponseToJSON(PagedNotice.class).getResult();
+                return null;
+            }
 
-             if(noticeList != null && !noticeList.isEmpty()) {
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                if(toggleGroupHBox.getChildren() != null && !toggleGroupHBox.getChildren().isEmpty()) {
+                    toggleGroupHBox.getChildren().clear();
+                    newsTipGroup.getToggles().clear();
+                }
 
-                 for(int i = 0 ; i < noticeList.size(); i++) {
-                     RadioButton radioButton = new RadioButton();
-                     radioButton.setToggleGroup(newsTipGroup);
-                     toggleGroupHBox.getChildren().add(radioButton);
-                 }
+                if(noticeList != null && !noticeList.isEmpty() && index >= 0 && index < noticeList.size()) {
 
-                noticeLabelSetting(0);
-                newsTipGroup.selectToggle(newsTipGroup.getToggles().get(0));
-             }
+                    for(int i = 0; i < noticeList.size(); i++) {
+                        RadioButton radioButton = new RadioButton();
+                        radioButton.setToggleGroup(newsTipGroup);
+                        toggleGroupHBox.getChildren().add(radioButton);
+                    }
+                    //noticeTitleLabel.setText(noticeView.getTitle());
 
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+                    noticeTitleLabel.setText(noticeList.get(index).getTitle());
+                    noticeContentsTextArea.setText(noticeList.get(index).getContents());
 
+                    newsTipGroup.selectToggle(newsTipGroup.getToggles().get(index));
+                }
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getException().printStackTrace();
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
-    private boolean noticeLabelSetting(int index) {
-        if(noticeList == null || index > noticeList.size() -1) return false;
-        NoticeView noticeView = noticeList.get(index);
-        //noticeTitleLabel.setText(noticeView.getTitle());
-
-        dateLabel.setText(DateFormatUtils.format(
-                noticeView.getCreatedAt().toDate(), "yyyy-MM-dd"));
-        noticeContentsLabel.setText(noticeView.getTitle() + "\n" + noticeView.getContents());
-        return true;
-    }
+//    private boolean noticeLabelSetting(int index) {
+//        if(noticeList == null || index > noticeList.size() -1) return false;
+//        NoticeView noticeView = noticeList.get(index);
+//        //noticeTitleLabel.setText(noticeView.getTitle());
+//
+//        dateLabel.setText(DateFormatUtils.format(
+//                noticeView.getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
+//        noticeTitleLabel.setText(noticeView.getTitle());
+//        noticeContentsTextArea.setText(noticeView.getContents());
+//        return true;
+//    }
 
     private void hddCheck() {
-        try {
-            HttpClientResponse response = apiService.get("/storageUsage", null, null, false);
+        Task<Void> task = new Task<Void>() {
 
-            StorageUsage storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
-            double value = (double)(storageUsage.getTotalSpace() - storageUsage.getFreeSpace()) / storageUsage.getTotalSpace();
-            String textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
-            AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
-                    textLabel, 1);
-            hddStatusTier.start();
+            StorageUsage storageUsage;
+            double value;
+            int totalCount;
+            double usageSample;
+            String textLabel;
+            String label;
 
-            int totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
-            double usageSample = (double)(storageUsage.getCurrentSampleCount()) / totalCount;
-            String label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
-            AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), usageSample, "Available",
-                    label, 1);
-            availableTier.start();
+            @Override
+            protected Void call() throws Exception {
+                HttpClientResponse response;
+                response = apiService.get("/storageUsage", null, null, false);
 
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-        }
+                storageUsage = response.getObjectBeforeConvertResponseToJSON(StorageUsage.class);
+                value = (double)(storageUsage.getTotalSpace() -  storageUsage.getFreeSpace())
+                        / storageUsage.getTotalSpace();
+                totalCount = (int)(storageUsage.getAvailableSampleCount() + storageUsage.getCurrentSampleCount());
+                usageSample = (double)(storageUsage.getCurrentSampleCount()) / totalCount;
+                textLabel = ConvertUtil.convertFileSizeFormat(storageUsage.getFreeSpace()) + " / " + ConvertUtil.convertFileSizeFormat(storageUsage.getTotalSpace());
+                label = storageUsage.getAvailableSampleCount() + " / " + totalCount + " Samples";
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                Platform.runLater(() ->{
+                    AnimationTimer hddStatusTier = new HddStatusTimer(hddCanvas.getGraphicsContext2D(), value, "Free Space",
+                            textLabel, 1);
+                    hddStatusTier.start();
+                    if(storageUsage!= null) {
+                        AnimationTimer availableTier = new HddStatusTimer(availableCanvas.getGraphicsContext2D(), usageSample, "Available",
+                                label, 1);
+                        availableTier.start();
+                    }
+                });
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getException().printStackTrace();
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void showRunList() {
@@ -318,48 +372,51 @@ public class HomeController extends SubPaneController{
         if(autoRefreshTimeline != null)
             logger.debug("cycle time : " + autoRefreshTimeline.getCycleDuration());
 
-        Platform.runLater(this::hddCheck);
-        Platform.runLater(this::setNoticeArea);
-        Platform.runLater(this::setToolsAndDatabase);
-        final int maxRunNumberOfPage = 4;
-        CompletableFuture<PagedRun> getPagedRun = new CompletableFuture<>();
-        CompletableFuture.supplyAsync(() -> {
-            HttpClientResponse response;
-            Map<String, Object> params = new HashMap<>();
-            try {
-                params.clear();
+        hddCheck();
+        setNoticeArea(0);
+        setToolsAndDatabase();
+
+        Task task = new Task() {
+            private PagedRun pagedRun;
+            private final int maxRunNumberOfPage = 4;
+            @Override
+            protected Object call() throws Exception {
+                Map<String, Object> params = new HashMap<>();
                 params.put("limit", maxRunNumberOfPage);
                 params.put("offset", 0);
                 params.put("ordering", "DESC");
-
-                response = apiService.get("/runs", params, null, false);
-
-                PagedRun searchedSamples = response
-                        .getObjectBeforeConvertResponseToJSON(PagedRun.class);
-                //logger.debug(pagedRun.toString());
-                getPagedRun.complete(searchedSamples);
-            } catch (Exception e) {
-                getPagedRun.completeExceptionally(e);
+                HttpClientResponse response = apiService.get("/runs", params, null, false);
+                pagedRun = response.getObjectBeforeConvertResponseToJSON(PagedRun.class);
+                return null;
             }
-            return getPagedRun;
-        });
-        try {
-            PagedRun pagedRun = getPagedRun.get();
-            int runCount = pagedRun.getResult().size();
-            for(int i = 0; i < runCount; i++) {
-                Run run = pagedRun.getResult().get(i);
-                runList.get(i).setRunStatus(run);
-                runList.get(i).setVisible(true);
 
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                getMainController().setContentsMaskerPaneVisible(false);
+                int runCount = pagedRun.getResult().size();
+                for(int i = 0; i < runCount; i++) {
+                    Run run = pagedRun.getResult().get(i);
+                    runList.get(i).setRunStatus(run);
+                    runList.get(i).setVisible(true);
+                }
+                for(int i = runCount; i < maxRunNumberOfPage; i++){
+                    runList.get(i).reset();
+                    runList.get(i).setVisible(false);
+                }
+                pagedRun = null;
             }
-            for(int i = runCount; i < maxRunNumberOfPage; i++){
-                runList.get(i).reset();
-                runList.get(i).setVisible(false);
+
+            @Override
+            protected void failed() {
+                super.failed();
+                pagedRun = null;
+                getMainController().setContentsMaskerPaneVisible(false);
+                logger.error("HOME -> SHOW RUN LIST", getException());
             }
-        } catch (Exception e) {
-            logger.error("HOME -> SHOW RUN LIST", e);
-        }
-        getMainController().setContentsMaskerPaneVisible(false);
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     static class RunStatusVBox extends VBox {
@@ -437,18 +494,11 @@ public class HomeController extends SubPaneController{
             startDateLabel = new Label();
             startDateHBox = createHBox(startDateLabel, "Start : ");
             finishDateLabel = new Label();
-            finishDateHBox = createHBox(finishDateLabel, "Finished : ");
-            /*completeLabel = new Label();
-            completeHBox = createHBox(completeLabel, "Complete : ");
-            queuedLabel = new Label();
-            queuedHBox = createHBox(queuedLabel, "Queued : ");
-            runningLabel = new Label();
-            runningHBox = createHBox(runningLabel, "Running : ");
-            failedLabel = new Label();
-            failedHBox = createHBox(failedLabel, "Failed : ");*/
+            finishDateHBox = createHBox(finishDateLabel, "Finish : ");
+
             completeLabel = new Label();
             failedLabel = new Label();
-            completeHBox = createHBox(completeLabel, "Complete : ", failedLabel, "Failed : ");
+            completeHBox = createHBox(completeLabel, "Completed : ", failedLabel, "Failed : ");
             runningLabel = new Label();
             queuedLabel = new Label();
             queuedHBox = createHBox(runningLabel, "Running : ", queuedLabel, "Queued : ");
@@ -507,23 +557,24 @@ public class HomeController extends SubPaneController{
             runName.setText(run.getName());
             /////////////run status 설정
             statusLabel.setText("");
+            String commonLabelStyleClass = "label";
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
             //statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
             switch (run.getRunStatus().getStatus().toUpperCase()) {
-                case "QUEUED":
-                    statusLabel.getStyleClass().addAll("label", "queued_icon");
+                case AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED:
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "queued_icon");
                     statusLabel.setText("Q");
                     break;
-                case "RUNNING":
-                    statusLabel.getStyleClass().addAll("label", "run_icon");
+                case AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_RUNNING:
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "run_icon");
                     statusLabel.setText("R");
                     break;
-                case "COMPLETE":
-                    statusLabel.getStyleClass().addAll("label", "complete_icon");
+                case AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE:
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "complete_icon");
                     statusLabel.setText("C");
                     break;
                 default:
-                    statusLabel.getStyleClass().addAll("label", "failed_icon");
+                    statusLabel.getStyleClass().addAll(commonLabelStyleClass, "failed_icon");
                     statusLabel.setText("F");
                     break;
             }
@@ -651,7 +702,7 @@ public class HomeController extends SubPaneController{
      */
     void resumeAutoRefresh() {
         boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
-        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
+        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) / 2;
         // 기능 실행중인 상태인 경우 실행
         if(autoRefreshTimeline != null && isAutoRefreshOn) {
             logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),

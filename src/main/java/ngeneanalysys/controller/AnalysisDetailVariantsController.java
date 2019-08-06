@@ -2,7 +2,6 @@ package ngeneanalysys.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,7 +16,9 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
-import ngeneanalysys.model.paged.PagedCNV;
+import ngeneanalysys.model.paged.PagedBrcaCNV;
+import ngeneanalysys.model.paged.PagedCnv;
+import ngeneanalysys.model.paged.PagedNormalizedCoverage;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -51,6 +52,10 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private AnalysisDetailCNVController cnvController;
 
+    private AnalysisDetailBrcaCNVController brcaCNVController;
+
+    private AnalysisDetailHeredCNVController heredCNVController;
+
     private AnalysisDetailTSTCNVController tstCNVController;
 
     private AnalysisDetailTSTFusionController tstFusionController;
@@ -66,12 +71,12 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private Panel panel;
 
-    private Label snvLabel;
+    //private Label snvLabel;
 
     /**
      * @return detailContents
      */
-    public BorderPane getDetailContents() {
+    BorderPane getDetailContents() {
         return detailContents;
     }
 
@@ -89,30 +94,66 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     }
 
-    public void setSNVTabName(String text) {
+    /*void setSNVTabName(String text) {
         if(snvLabel != null) {
             if (StringUtils.isNotEmpty(text)) {
                 snvLabel.setText("SNV/Indel : " + text);
-                snvLabel.getStyleClass().add("bold");
             } else {
                 snvLabel.setText("SNV/Indel");
-                snvLabel.getStyleClass().add("bold");
             }
         }
-    }
+    }*/
 
-    private boolean checkCNV() {
+    private boolean checkSomaticCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
-            PagedCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCNV.class);
-            if(pagedCNV.getCount() > 0) {
+            PagedCnv pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
+            if (pagedCNV.getCount() > 0) {
                 return true;
             }
         } catch (WebAPIException wae) {
             return false;
         }
+
+        return false;
+    }
+
+    private boolean checkBrcaCNV() {
+        SampleView sample = (SampleView)paramMap.get("sampleView");
+        Integer sampleSize = (Integer)paramMap.get("sampleSize");
+
+        if(PipelineCode.isBRCACNVPipeline(sample.getPanel().getCode()) && sampleSize > 5) {
+            try {
+                HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, null);
+                PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
+                if (pagedCNV.getCount() > 0) {
+                    return true;
+                }
+            } catch (WebAPIException wae) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkHeredAmcCNV() {
+        SampleView sample = (SampleView)paramMap.get("sampleView");
+
+        if(sample.getPanel().getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
+            try {
+                HttpClientResponse response = apiService.get("/analysisResults/normalizedCoverage/" + sample.getId(), null, null, null);
+                PagedNormalizedCoverage pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedNormalizedCoverage.class);
+                if (pagedCNV.getCount() > 0) {
+                    return true;
+                }
+            } catch (WebAPIException wae) {
+                return false;
+            }
+        }
+
         return false;
     }
 
@@ -130,7 +171,7 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 menu.setStaticMenu(true);
                 topMenus[1] = menu;
             } else {
-                if(checkCNV()) {
+                if(checkSomaticCNV()) {
                     topMenus = new TopMenu[2];
                     topMenuContent = new Node[topMenus.length];
                     menu = new TopMenu();
@@ -140,13 +181,33 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     menu.setDisplayOrder(1);
                     menu.setStaticMenu(true);
                     topMenus[1] = menu;
+                } else if(checkBrcaCNV()) {
+                    topMenus = new TopMenu[2];
+                    topMenuContent = new Node[topMenus.length];
+                    menu = new TopMenu();
+                    menu.setMenuName("CNV");
+                    menu.setParamMap(getParamMap());
+                    menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV);
+                    menu.setDisplayOrder(1);
+                    menu.setStaticMenu(true);
+                    topMenus[1] = menu;
+                } else if(checkHeredAmcCNV()) {
+                    topMenus = new TopMenu[2];
+                    topMenuContent = new Node[topMenus.length];
+                    menu = new TopMenu();
+                    menu.setMenuName("CNV");
+                    menu.setParamMap(getParamMap());
+                    menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_HERED_CNV);
+                    menu.setDisplayOrder(1);
+                    menu.setStaticMenu(true);
+                    topMenus[1] = menu;
                 } else {
                     topMenus = new TopMenu[1];
                     topMenuContent = new Node[topMenus.length];
                 }
             }
             menu = new TopMenu();
-            menu.setMenuName("SNV");
+            menu.setMenuName("SNV/Indel");
             menu.setParamMap(getParamMap());
             menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_VARIANTS_SNV);
             menu.setDisplayOrder(0);
@@ -205,20 +266,18 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
                 region.getStyleClass().removeAll(region.getStyleClass());
                 menuName.getStyleClass().removeAll(menuName.getStyleClass());
-                if(topMenu.getMenuName().equals("SNV")) {
+                /*if(topMenu.getMenuName().equals("SNV")) {
                     snvLabel = menuName;
                     menu.getStyleClass().add("group-big");
                     region.getStyleClass().add("region-big");
                     menuName.getStyleClass().add("label-big");
-                } else {
-                    menu.getStyleClass().add("group-small");
-                    region.getStyleClass().add("region-small");
-                    menuName.getStyleClass().add("label-small");
-                }
+                } else {*/
+                menu.getStyleClass().add("group-small");
+                region.getStyleClass().add("region-small");
+                menuName.getStyleClass().add("label-small");
+                //}
+                menuName.getStyleClass().addAll("bold", "cursor_hand");
                 menu.getChildren().setAll(region, menuName);
-
-                // 마우스 커서 타입 설정
-                menu.setCursor(Cursor.HAND);
                 menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, selectIdx));
 
                 topMenuGroups[idx] = menu;
@@ -301,6 +360,20 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                             cnvController.setParamMap(menu.getParamMap());
                             cnvController.show((Parent) node);
                             break;
+                        case FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV:
+                            brcaCNVController = loader.getController();
+                            brcaCNVController.setMainController(this.getMainController());
+                            brcaCNVController.setVariantsController(this);
+                            brcaCNVController.setParamMap(menu.getParamMap());
+                            brcaCNVController.show((Parent) node);
+                            break;
+                        case FXMLConstants.ANALYSIS_DETAIL_HERED_CNV:
+                            heredCNVController = loader.getController();
+                            heredCNVController.setMainController(this.getMainController());
+                            heredCNVController.setVariantsController(this);
+                            heredCNVController.setParamMap(menu.getParamMap());
+                            heredCNVController.show((Parent) node);
+                            break;
                         default:
                             break;
                     }
@@ -309,16 +382,16 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     detailContents.setCenter(topMenuContent[menu.getDisplayOrder()]);
                 }
 
-                if(currentShowFrameId != null) {
+                /*if(currentShowFrameId != null) {
+                    String snvWrapper = "snvWrapper";
                     if (!currentShowFrameId.equals(detailContents.getCenter().getId())) {
-                        if (currentShowFrameId.equals("snvWrapper") && !detailContents.getCenter().getId().equals("snvWrapper")) {
+                        if (currentShowFrameId.equals(snvWrapper) && !detailContents.getCenter().getId().equals(snvWrapper)) {
                             snvLabel.setText("SNV/Indel");
-                            snvLabel.getStyleClass().add("bold");
-                        } else if (!currentShowFrameId.equals("snvWrapper") && detailContents.getCenter().getId().equals("snvWrapper")) {
+                        } else if (!currentShowFrameId.equals(snvWrapper) && detailContents.getCenter().getId().equals(snvWrapper)) {
                             snvController.setSNVTabName();
                         }
                     }
-                }
+                }*/
 
                 currentShowFrameId = detailContents.getCenter().getId();
             }

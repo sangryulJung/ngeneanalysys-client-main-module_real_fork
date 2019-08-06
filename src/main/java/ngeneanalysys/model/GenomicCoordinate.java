@@ -12,6 +12,14 @@ public class GenomicCoordinate {
     private String exonNumBic;
     private String strand;
     private String refGenomeVer;
+    private String inheritance;
+
+    /**
+     * @return inheritance
+     */
+    public String getInheritance() {
+        return inheritance;
+    }
 
     /**
      * @return startPosition

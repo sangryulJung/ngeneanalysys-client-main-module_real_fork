@@ -1,5 +1,7 @@
 package ngeneanalysys.controller.fragment;
 
+import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.controller.AnalysisDetailSNVController;
 import ngeneanalysys.controller.ExcludeReportDialogController;
 import ngeneanalysys.controller.extend.SubPaneController;
@@ -28,6 +32,11 @@ import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.controlsfx.control.textfield.CustomTextField;
+import org.controlsfx.control.textfield.TextFields;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -124,6 +133,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
     private Panel panel;
 
+    private Diseases diseases;
+
     /**
      * @param analysisDetailSNVController AnalysisDetailSNVController
      */
@@ -135,11 +146,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
         panel = (Panel)getParamMap().get("panel");
-        selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
 
-        if(StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) arrow.setVisible(false);
         addToReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToReportCheckBox ));
-        checkBoxSetting(addToReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
 
         evidenceTableView.addEventFilter(ScrollEvent.ANY, scrollEvent -> {
             evidenceTableView.refresh();
@@ -186,21 +194,50 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         pastCasesDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDelEvidence()
                 != null ? DateFormatUtils.format(cellData.getValue().getSnpInDelEvidence().getCreatedAt().toDate(), "yyyy-MM-dd hh:mm:ss") : ""));
 
-        setEvidenceTable();
-        setPastCases();
+        contentRefresh();
+    }
+
+    public void contentRefresh() {
+        selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
+        checkBoxSetting(addToReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
         setTier(selectedAnalysisResultVariant.getSnpInDel());
+
+        Platform.runLater(this::getDiseases);
+        Platform.runLater(this::setPastCases);
+        setEvidenceTable();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void getDiseases() {
+        try {
+            HttpClientResponse response = apiService.get("/diseases", null, null, false);
+            List<Diseases> diseasesList = (List<Diseases>)response.getMultiObjectBeforeConvertResponseToJSON(Diseases.class, false);
+
+            SampleView sample = (SampleView)getParamMap().get("sampleView");
+
+            Optional<Diseases> diseasesOptional = diseasesList.stream().filter(disease ->
+                    disease.getName().equalsIgnoreCase(sample.getDiseaseName())).findFirst();
+
+            diseasesOptional.ifPresent(item -> this.diseases = item);
+
+        } catch (WebAPIException wae) {
+            DialogUtil.error("Server communication error", wae.getMessage(), mainApp.getPrimaryStage(), true);
+        }
     }
 
     class EditingCell extends TableCell<SnpInDelEvidence, String> {
-        private TextField textField = null;
+        private CustomTextField textField = null;
+        SuggestionProvider<String> provider = null;
 
-        private EditingCell() {}
+        private EditingCell() {
+            createTextField();
+        }
 
         @Override
         public void startEdit() {
             if(!isEmpty()) {
                 super.startEdit();
-                createTextField();
+                textField.setText(getString());
                 setGraphic(textField);
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 textField.selectAll();
@@ -237,8 +274,45 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
         }
 
+        private void updateAutoCompletion(final String value) {
+
+            SnpInDelEvidence snpInDelEvidence = EditingCell.this.getTableView().getItems().get(
+                    EditingCell.this.getIndex());
+
+            try {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diseaseId",  diseases != null ? diseases.getId() : panel.getDefaultDiseaseId());
+                params.put("gene", selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene());
+                params.put("keyword", value);
+                params.put("targetEvidence", snpInDelEvidence.getEvidenceType() + "EvidenceLevel" + snpInDelEvidence.getEvidenceLevel());
+                params.put("resultCount", 15);
+                HttpClientResponse response = apiService.get("/filter/evidence", params, null, false);
+                logger.debug(response.getContentString());
+                JSONParser jsonParser = new JSONParser();
+                JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
+                provider.clearSuggestions();
+                provider.addPossibleSuggestions(getAllData(jsonArray));
+            } catch (WebAPIException wae) {
+                DialogUtil.error("Server communication error", wae.getMessage(), mainApp.getPrimaryStage(), true);
+            } catch (ParseException pe) {
+                logger.debug(pe.getMessage());
+            }
+
+        }
+
+        @SuppressWarnings("unchecked")
+        private Set<String> getAllData(JSONArray array) {
+            Set<String> data = new HashSet<>();
+            array.forEach(item -> data.add(item.toString()));
+            return data;
+        }
+
         private void createTextField() {
-            textField = new TextField(getString());
+            textField = new CustomTextField();
+            provider = SuggestionProvider.create(new HashSet<>());
+            TextFields.bindAutoCompletion(textField, provider).setVisibleRowCount(10);
+            textField.textProperty().addListener((ob, oValue, nValue) -> updateAutoCompletion(nValue));
+            textField.setText(getString());
             textField.getStyleClass().add("txt_black");
             textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
             textField.setOnKeyPressed(t -> {
@@ -288,7 +362,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             if(comboBox.getItems().isEmpty()) {
 
-                if(panel.getAnalysisType().equals("SOMATIC")) {
+                if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                     comboBox.getItems().addAll("therapeutic", "prognosis", "diagnosis", "N/A");
                 }
 
@@ -324,7 +398,6 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                     if(StringUtils.isNotEmpty(t) && !t.equals(t1)) {
                         evidenceTableView.refresh();
                     }
-                    //evidenceTableView.refresh();
                 }
             });
         }
@@ -339,7 +412,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
 
             if(comboBox.getItems().isEmpty()) {
 
-                if(panel.getAnalysisType().equals("SOMATIC")) {
+                if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                     comboBox.getItems().addAll("A", "B", "C", "D", "T3", "T4");
                 }
 
@@ -416,7 +489,7 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-            img.setStyle("-fx-cursor:hand;");
+            img.getStyleClass().add("cursor_hand");
             box = new HBox();
             box.setAlignment(Pos.CENTER);
             box.getChildren().add(img);
@@ -453,11 +526,10 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
             List<SnpInDelEvidence> list = (List<SnpInDelEvidence>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelEvidence.class, false);
             if(list != null && !list.isEmpty()) {
-                //list.sort(Comparator.comparing(SnpInDelEvidence::getId));
+
                 Collections.sort(list, Collections.reverseOrder(Comparator.comparing(SnpInDelEvidence::getId)));
 
-                List<SnpInDelEvidence> interpretationList = new ArrayList<>();
-                interpretationList.addAll(list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList()));
+                List<SnpInDelEvidence> interpretationList = list.stream().filter(item -> "Active".equalsIgnoreCase(item.getStatus())).collect(Collectors.toList());
 
                 if (StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getExpertTier())) {
                         returnTierClass(returnTier(selectedAnalysisResultVariant.getSnpInDel().getExpertTier()), userTierLabel ,2);
@@ -477,8 +549,8 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -508,14 +580,13 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
     private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
-            String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
             String symbol = "N";
             if (checkBox.isSelected()) {
                 symbol = "Y";
@@ -533,47 +604,29 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-
-            /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                analysisDetailSNVController.showVariantList(analysisDetailSNVController.getCurrentPageIndex() + 1, 0);*/
         }
     }
 
-    public void checkBoxSetting(CheckBox checkBox, String Symbol) {
-        if("Y".equals(Symbol)) {
-            checkBox.setSelected(true);
-        } else {
-            checkBox.setSelected(false);
-        }
+    private void checkBoxSetting(CheckBox checkBox, String symbol) {
+        checkBox.setSelected("Y".equals(symbol));
     }
 
     private void returnTierClass(String tier, Label label, Integer userTier) {
         label.setAlignment(Pos.CENTER);
-        logger.debug("+++++++++++++++");
-        logger.debug(userTierLabel.getText()+" "+tier+" "+userTier);
         if(userTier == 2 && tier != null) {arrow.setVisible(true);}
-        //else {arrow.setVisible(true);}
-        //if(label == userTierLabel) arrow.setVisible(true);
 
         label.getStyleClass().removeAll(label.getStyleClass());
-        if(!StringUtils.isEmpty(tier)) {
-            if (tier.equalsIgnoreCase("T1")) {
+        if(StringUtils.isNotEmpty(tier)) {
+            if ("T1".equalsIgnoreCase(tier)) {
                 label.setText("Tier 1");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_one");
-            } else if (tier.equalsIgnoreCase("T2")) {
+            } else if ("T2".equalsIgnoreCase(tier)) {
                 label.setText("Tier 2");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_two");
-            } else if (tier.equalsIgnoreCase("T3")) {
+            } else if ("T3".equalsIgnoreCase(tier)) {
                 label.setText("Tier 3");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_three");
-            } else if (tier.equalsIgnoreCase("T4")) {
+            } else if ("T4".equalsIgnoreCase(tier)) {
                 label.setText("Tier 4");
-                label.getStyleClass().add("tier_full");
-                //label.getStyleClass().add("tier_four");
             }
+            label.getStyleClass().add("tier_full");
         }
     }
 
@@ -620,15 +673,11 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
-                    wae.printStackTrace();
-                } catch (IOException e) {
-                    logger.error("Unknown Error", e);
-                    DialogUtil.error("Unknown Error", e.getMessage(),
-                            getMainApp().getPrimaryStage(), true);
+                } catch (Exception e) {
+                    DialogUtil.warning("", e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
-
             } else {
-                DialogUtil.warning("Primary check error", "Check primary radio button", getMainApp().getPrimaryStage(), true);
+                DialogUtil.warning("", "Make sure you have selected primary evidence.", getMainApp().getPrimaryStage(), true);
             }
         }
     }
@@ -640,15 +689,23 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
         }
     }
 
-    private List<Map<String, Object>> returnEvidenceMap() {
+    private List<Map<String, Object>> returnEvidenceMap() throws Exception {
         List<Map<String, Object>> list = new ArrayList<>();
         for(SnpInDelEvidence snpInDelEvidence : evidenceTableView.getItems()) {
             Map<String, Object> params = new HashMap<>();
-
             params.put("provider", StringUtils.isEmpty(snpInDelEvidence.getProvider()) ? "Clinician" : snpInDelEvidence.getProvider());
+            if (snpInDelEvidence.getEvidenceType() == null) {
+                throw new Exception("evidenceType is empty.");
+            }
             params.put("evidenceType", snpInDelEvidence.getEvidenceType());
+            if (snpInDelEvidence.getEvidenceLevel() == null) {
+                throw new Exception("evidenceLevel is empty.");
+            }
             params.put("evidenceLevel", snpInDelEvidence.getEvidenceLevel());
             params.put("primaryEvidence", snpInDelEvidence.getPrimaryEvidence() != null ? snpInDelEvidence.getPrimaryEvidence() : false);
+            if (snpInDelEvidence.getEvidence() == null) {
+                throw new Exception("evidence is empty.");
+            }
             params.put("evidence", snpInDelEvidence.getEvidence());
             list.add(params);
         }
@@ -656,9 +713,9 @@ public class AnalysisDetailInterpretationController extends SubPaneController {
     }
 
     public void delete(SnpInDelEvidence snpInDelEvidence) {
+
         evidenceTableView.getItems().remove(snpInDelEvidence);
+        evidenceTableView.refresh();
         if(evidenceTableView.getItems().isEmpty()) saveBtn.setDisable(true);
     }
-
-
 }

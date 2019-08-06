@@ -12,6 +12,45 @@ public class SnpInDelTranscript {
     private String protein;
     private String genomicDna;
     private Boolean isDefault;
+    private String leftSequence;
+    private String rightSequence;
+    private String refSequence;
+    private String altSequence;
+
+    /**
+     * @return isDefault
+     */
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    /**
+     * @return leftSequence
+     */
+    public String getLeftSequence() {
+        return leftSequence;
+    }
+
+    /**
+     * @return rightSequence
+     */
+    public String getRightSequence() {
+        return rightSequence;
+    }
+
+    /**
+     * @return refSequence
+     */
+    public String getRefSequence() {
+        return refSequence;
+    }
+
+    /**
+     * @return altSequence
+     */
+    public String getAltSequence() {
+        return altSequence;
+    }
 
     /**
      * @return snpInDelId

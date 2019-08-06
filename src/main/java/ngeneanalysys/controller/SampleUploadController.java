@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -25,6 +26,7 @@ import ngeneanalysys.model.Run;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.FXMLLoadUtil;
 import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -53,7 +55,12 @@ public class SampleUploadController extends BaseStageController{
     /** 작업 Dialog Window Stage Object */
     private Stage currentStage;
 
-    private List<SampleView> samples = new ArrayList<>(23);
+    private List<SampleView> samples = new ArrayList<>();
+
+    @FXML
+    private Label runNameToolTip;
+    @FXML
+    private Label sequencerToolTip;
 
     @FXML
     private TextField textFieldRunName;
@@ -138,7 +145,7 @@ public class SampleUploadController extends BaseStageController{
     }
 
     /**
-     * @param homeController
+     * @param homeController HomeController
      */
     void setHomeController(HomeController homeController) {
         this.homeController = homeController;
@@ -182,6 +189,12 @@ public class SampleUploadController extends BaseStageController{
         }
     }
 
+    private void initTooltip() {
+        PopOverUtil.openToolTipPopOver(runNameToolTip,
+                "Enter Run Name (default: present date and time)");
+        PopOverUtil.openToolTipPopOver(sequencerToolTip,
+                "Choose sequencing instrument platform");
+    }
 
     @Override
     public void show(Parent root) throws IOException {
@@ -200,7 +213,7 @@ public class SampleUploadController extends BaseStageController{
             currentStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
         currentStage.initOwner(getMainApp().getPrimaryStage());
-        pageSetting(1);
+        pageSetting();
 
         if(run != null) runInfoEdit();
 
@@ -215,29 +228,11 @@ public class SampleUploadController extends BaseStageController{
             }
         });
 
-        nextSeqDxRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            if(sampleUploadScreenFirstController != null) {
-                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(true);
-                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(true);
-                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(false);
-            }
-        });
+        nextSeqDxRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(false));
 
-        sequencerMiSeqDXRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            if(sampleUploadScreenFirstController != null) {
-                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(true);
-            }
-        });
+        sequencerMiSeqDXRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(true));
 
-        sequencerMiSeqRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-            if(sampleUploadScreenFirstController != null) {
-                sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(false);
-                sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(true);
-            }
-        });
+        sequencerMiSeqRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(true));
 
         contentWrapper.getChildren().add(maskerPane);
         maskerPane.setPrefHeight(contentWrapper.getPrefHeight());
@@ -249,8 +244,17 @@ public class SampleUploadController extends BaseStageController{
         if (root != null) {
             scene = new Scene(root);
         }
+        initTooltip();
         currentStage.setScene(scene);
         currentStage.showAndWait();
+    }
+
+    private void uploadBtnActive(boolean serverRunFolder) {
+        if(sampleUploadScreenFirstController != null) {
+            sampleUploadScreenFirstController.localFastqFilesRadioButton.setDisable(!serverRunFolder);
+            sampleUploadScreenFirstController.serverFastqFilesRadioButton.setDisable(!serverRunFolder);
+            sampleUploadScreenFirstController.serverRunFolderRadioButton.setDisable(serverRunFolder);
+        }
     }
 
     private void runInfoEdit() {
@@ -271,7 +275,7 @@ public class SampleUploadController extends BaseStageController{
 
     }
 
-    void pageSetting(int scene) throws IOException {
+    private void pageSetting() throws IOException {
         tableRegion.getChildren().clear();
         FXMLLoader loader;
         VBox box;
@@ -282,19 +286,14 @@ public class SampleUploadController extends BaseStageController{
 
         nextSeqDxRadioButton.setOnAction(ev -> sequencerType.setUserData(SequencerCode.NEXTSEQ_DX.getDescription()));
 
-        switch (scene) {
-            case 1 :
-                loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
-                box = loader.load();
-                sampleUploadScreenFirstController = loader.getController();
-                sampleUploadScreenFirstController.setMainController(mainController);
-                sampleUploadScreenFirstController.setSampleUploadController(this);
-                sampleUploadScreenFirstController.show(box);
-                tableRegion.getChildren().add(box);
-                break;
-            default:
-                break;
-        }
+        loader = FXMLLoadUtil.load(FXMLConstants.ANALYSIS_SAMPLE_UPLOAD_FIRST);
+        box = loader.load();
+        sampleUploadScreenFirstController = loader.getController();
+        sampleUploadScreenFirstController.setMainController(mainController);
+        sampleUploadScreenFirstController.setSampleUploadController(this);
+        sampleUploadScreenFirstController.show(box);
+        tableRegion.getChildren().add(box);
+
     }
 
 
@@ -310,8 +309,6 @@ public class SampleUploadController extends BaseStageController{
             APIService apiService = APIService.getInstance();
             params.clear();
             params.put("runId", run.getId());
-            params.put("limit", 23);
-            params.put("offset", 0);
             HttpClientResponse response = apiService.get("/samples", params, null, false);
 
             PagedSample pagedSample = response.getObjectBeforeConvertResponseToJSON(PagedSample.class);

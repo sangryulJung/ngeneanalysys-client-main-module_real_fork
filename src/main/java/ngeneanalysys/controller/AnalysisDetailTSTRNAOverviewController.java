@@ -153,11 +153,10 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
         hBox.getChildren().add(label);
     }
 
-
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
-            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && tier.equalsIgnoreCase(item.getSnpInDel().getSwTier())))))
+            return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && tier.equalsIgnoreCase(item.getSnpInDel().getSwTier()))))
                     .collect(Collectors.toList());
         }
 
@@ -205,19 +204,6 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
                 });
 
                 tierOneGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                tierOne.forEach(item -> {
-                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
-                    if (snpInDelEvidence != null) {
-                        snpInDelInterpretations.add(snpInDelEvidence);
-                    }
-
-                });
-
-                //long count = snpInDelInterpretations.size();
-                //long count = countTherapeutic(snpInDelInterpretations);
-                //tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierTwo != null) {
@@ -231,18 +217,6 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
                 });
 
                 tierTwoGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                tierTwo.forEach(item -> {
-                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
-                    if (snpInDelEvidence != null) {
-                        snpInDelInterpretations.add(snpInDelEvidence);
-                    }
-
-                });
-
-                //long count = countTherapeutic(snpInDelInterpretations);
-                //tierTwoTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierThree != null) {
@@ -302,11 +276,10 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
         hBox.setAlignment(Pos.CENTER);
         String title = returnQCTitle(sampleQC.getQcType());
         Label titleLabel = new Label(title);
-        titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
+        titleLabel.getStyleClass().add("txt_white");
         Label descriptionLabel = new Label();
 
-        descriptionLabel.getStyleClass().add("help_tooltip_white");
-        descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
+        descriptionLabel.getStyleClass().addAll("help_tooltip_white", "cursor_hand");
         String value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
                 + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
         descriptionLabel.setOnMouseClicked(ev ->
@@ -348,7 +321,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
             }
 
         } catch(WebAPIException e) {
-            DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
+            DialogUtil.alert("QC Metrics data can not be loaded.", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
 }

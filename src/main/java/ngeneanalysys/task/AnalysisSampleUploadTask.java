@@ -9,7 +9,6 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.LoginSessionUtil;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -35,13 +34,8 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     /** 현재 업로드 중인 요청 그룹 아이디 */
     private Integer currentUploadGroupId;
-    private Integer currentUploadGroupServerId;
     /** 현재 업로드 중인 요청 그룹명 */
     private String currentUploadGroupRefName;
-    /** 현재 업로드 중인 분석 샘플 파일의 인덱스 [Local DB] */
-    private Integer currentUploadSampleFileId;
-    /** 현재 업로드 중인 분석 샘플 파일의 진행률 */
-    private double currentUploadSampleFileProgress;
 
     private boolean taskStatus = true;
 
@@ -55,26 +49,24 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
     @Override
     public void updateProgress(long workDone, long max) {
-        long total = getNumberOfWork() * 100;
+        long total = getNumberOfWork() * 100L;
         long complete = (long)(((double)getCompleteWorkCount() + (workDone / (double)max)) * 100);
         updateMessage(String.valueOf(getCompleteWorkCount()));
         try {
-            Platform.runLater(() -> {
-                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork()));
-            });
+            Platform.runLater(() ->
+                this.analysisSampleUploadProgressTaskController.updateTotalCount(String.valueOf(getNumberOfWork())));
         } catch (Exception e) {
             e.printStackTrace();
         }
         super.updateProgress(complete, total);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected Void call() throws Exception {
         logger.debug("start upload task...");
 
         try {
-
-            String loginId = LoginSessionUtil.getAccessLoginId();
 
             List<AnalysisFile> fileDataList = (List<AnalysisFile>) analysisSampleUploadProgressTaskController.getParamMap().get("fileMap");
 
@@ -90,7 +82,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
             updateCurrentUploadGroupInfo();
 
             for (AnalysisFile fileData : fileDataList) {
-                fileList.stream().forEach(file -> {
+                fileList.forEach(file -> {
 
                     if (this.analysisSampleUploadProgressTaskController.isStop) {
                        return;
@@ -99,11 +91,11 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     if (fileData.getName().equals(file.getName())) {
                         try {
                             analysisRequestService.uploadFile(fileData.getId(), file, this);
-                            completeFile.add(fileData);
-                            setCompleteWorkCount(completeFile.size());
-
                         } catch (WebAPIException e) {
                             e.printStackTrace();
+                        } finally {
+                            completeFile.add(fileData);
+                            setCompleteWorkCount(completeFile.size());
                         }
                     }
 
@@ -185,7 +177,7 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
 
                 if(this.taskStatus) {
                     // 완료 메시지 출력
-                    DialogUtil.alert("Analysis Request Upload Finished", "The analysis request has been completed.", this.analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
+                    DialogUtil.alert("Analysis Request Upload Finish", "The analysis request has been completed.", this.analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);
                 } else {
                     // 오류 발생시 실패 메시지 출력
                     DialogUtil.error("Upload Failed", String.format("[%s] %s", this.msgDialogHeader, this.msgDialogContent), analysisSampleUploadProgressTaskController.getMainController().getPrimaryStage(), false);

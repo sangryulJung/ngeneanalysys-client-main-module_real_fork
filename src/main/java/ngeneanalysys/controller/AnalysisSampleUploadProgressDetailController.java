@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
-import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.util.LoggerUtil;
 import org.slf4j.Logger;
 
@@ -32,9 +31,6 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
 
     /** 파라미터 */
     private Map<String,Object> paramMap;
-
-    /** 분석 요청 서비스 */
-    private AnalysisRequestService analysisRequestService;
 
     /** 분석 요청 업로드 작업 컨트롤러 객체 */
     private AnalysisSampleUploadProgressTaskController taskController;
@@ -89,7 +85,6 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
 
     @Override
     public void show(Parent root) throws IOException {
-        analysisRequestService = AnalysisRequestService.getInstance();
         this.currentUploadGroupId = (Integer) this.paramMap.get("currentUploadGroupId");
         this.currentUploadGroupRefName = (String) this.paramMap.get("currentUploadGroupRefName");
         this.refName.setText(this.currentUploadGroupRefName);
@@ -166,7 +161,7 @@ public class AnalysisSampleUploadProgressDetailController extends BaseStageContr
                 }
                 statusLabel.setText("[" + progressPercent + "%]");
             } else {
-                statusLabel.setText("[Complete]");
+                statusLabel.setText("[Completed]");
                 // 완료된 경우 진행바 제거
                 hbox.getChildren().remove(1);
             }

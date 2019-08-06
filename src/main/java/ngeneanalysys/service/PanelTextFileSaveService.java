@@ -1,5 +1,7 @@
 package ngeneanalysys.service;
 
+import ngeneanalysys.code.enums.PipelineCode;
+import ngeneanalysys.model.CnvConfigBrcaAccuTest;
 import ngeneanalysys.model.QCPassConfig;
 import ngeneanalysys.model.VariantFilter;
 import ngeneanalysys.util.LoggerUtil;
@@ -20,7 +22,7 @@ public class PanelTextFileSaveService {
 
     private String[] viewList = new String[]{"name", "code", "target", "analysisType", "libraryType", "memberGroupIds",
             "diseaseIds", "defaultDiseaseId", "defaultSampleSource", "reportTemplate", "canonicalTranscripts",
-            "warningReadDepth", "warningMAF", "variantFilter", "qcPassConfig"};
+            "warningReadDepth", "warningMAF", "variantFilter", "qcPassConfig" , "cnvConfigBrcaAccuTest"};
 
     private String[] saveList = new String[]{"Panel name", "pipeline", "Target", "Analysis Type", "Library Type", "Groups",
             "Diseases", "Default Disease", "Default Sample Source", "Report Template", "Canonical Transcripts",
@@ -53,21 +55,27 @@ public class PanelTextFileSaveService {
             for(int i = 0; i < viewList.length ; i++) {
                 if(viewList[i].equals("variantFilter")) {
                     VariantFilter variantFilter = (VariantFilter)panelMap.get(viewList[i]);
-                    out.write("Essential Genes" + " : " + returnStringText(variantFilter.getEssentialGenes()));
+                    out.write("Essential Genes : " + returnStringText(variantFilter.getEssentialGenes()));
                     out.newLine();
-                    out.write("InDel MRD" + " : " + returnStringText(variantFilter.getInDelMinReadDepth()));
+                    out.write("InDel MRD : " + returnStringText(variantFilter.getInDelMinReadDepth()));
                     out.newLine();
-                    out.write("InDel MAF" + " : " + returnStringText(variantFilter.getInDelMinAlleleFraction()));
+                    out.write("InDel MAF : " + returnStringText(variantFilter.getInDelMinAlleleFraction()));
                     out.newLine();
-                    out.write("InDel MAC" + " : " + returnStringText(variantFilter.getInDelMinAlternateCount()));
+                    out.write("InDel MAC : " + returnStringText(variantFilter.getInDelMinAlternateCount()));
                     out.newLine();
-                    out.write("SNV MRD" + " : " + returnStringText(variantFilter.getSnvMinReadDepth()));
+                    out.write("SNV MRD : " + returnStringText(variantFilter.getSnvMinReadDepth()));
                     out.newLine();
-                    out.write("Low Confidence" + " : " + returnStringText(variantFilter.getLowConfidenceFilter()));
+                    out.write("SNV MAC : " + returnStringText(variantFilter.getSnvMinAlternateCount()));
                     out.newLine();
-                    out.write("Population Frequency DBs" + " : " + returnStringText(variantFilter.getPopulationFrequencyDBs()));
+                    out.write("SNV MAF : " + returnStringText(variantFilter.getSnvMinAlleleFraction()));
                     out.newLine();
-                    out.write("Frequency Threshold" + " : " + returnStringText(variantFilter.getPopulationFrequency()));
+                    out.write("Homopolymer & Repeat sequence MAF : " + returnStringText(variantFilter.getLowConfidenceMinAlleleFraction()));
+                    out.newLine();
+                    out.write("Low Confidence : " + returnStringText(variantFilter.getLowConfidenceFilter()));
+                    out.newLine();
+                    out.write("Population Frequency DBs : " + returnStringText(variantFilter.getPopulationFrequencyDBs()));
+                    out.newLine();
+                    out.write("Frequency Threshold : " + returnStringText(variantFilter.getPopulationFrequency()));
                     out.newLine();
                 } else if(viewList[i].equals("qcPassConfig")) {
                     QCPassConfig qcPassConfig = (QCPassConfig)panelMap.get(viewList[i]);
@@ -89,6 +97,23 @@ public class PanelTextFileSaveService {
                     out.newLine();
                     out.write("Mapping Quality : " + returnStringText(qcPassConfig.getMappingQuality60Percentage()));
                     out.newLine();
+                } else if(viewList[i].equals("cnvConfigBrcaAccuTest")) {
+                    String code = (String)panelMap.get("code");
+                    if(PipelineCode.isBRCACNVPipeline(code)) {
+                        CnvConfigBrcaAccuTest cnvConfigBrcaAccuTest = (CnvConfigBrcaAccuTest) panelMap.get(viewList[i]);
+                        out.write("Amplicon Copy Number Prediction Algorithm : " + cnvConfigBrcaAccuTest.getAmpliconCopyNumberPredictionAlgorithm());
+                        out.newLine();
+                        out.write("Amplification Cut-off Level : " + returnStringText(cnvConfigBrcaAccuTest.getSimpleCutoffDuplicationValue()));
+                        out.newLine();
+                        out.write("Deletion Cut-off Level : " + returnStringText(cnvConfigBrcaAccuTest.getSimpleCutoffDeletionValue()));
+                        out.newLine();
+                        out.write("Exon Copy Number Prediction Threshold : " + returnStringText(cnvConfigBrcaAccuTest.getExonCopyNumberPredictionThreshold()));
+                        out.newLine();
+                        out.write("Low Confidence CNV Amplification : " + returnStringText(cnvConfigBrcaAccuTest.getLowConfidenceCnvDuplication()));
+                        out.newLine();
+                        out.write("Low Confidence CNV Deletion : " + returnStringText(cnvConfigBrcaAccuTest.getLowConfidenceCnvDeletion()));
+                        out.newLine();
+                    }
                 } else {
                     out.write(saveList[i] + " : " + ((panelMap.get(viewList[i]) != null) ? panelMap.get(viewList[i]) : ""));
                     out.newLine();

@@ -4,9 +4,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -15,8 +17,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
+import ngeneanalysys.controller.fragment.AnalysisDetailOverviewBrcaCnvController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedVariantAndInterpretationEvidence;
@@ -29,7 +33,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +44,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
 
     @FXML
     private GridPane dataQCResultGridPane;
+
+    @FXML
+    private GridPane overviewMainGridPane;
 
     @FXML
     private Label pVariantsCountLabel;
@@ -96,21 +102,12 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
     @FXML
     private TableColumn<VariantAndInterpretationEvidence, String> aaChangeColumn;
 
-    @FXML
-    private Label roiCoverageLabel;
-
-    @FXML
-    private Label coverageUniformityLabel;
-
-    @FXML
-    private Label roiCoverageQCLabel;
-
-    @FXML
-    private Label coverageUniQCLabel;
-
-
     /** API 서버 통신 서비스 */
     private APIService apiService;
+
+    private AnalysisDetailOverviewBrcaCnvController analysisDetailOverviewBrcaCnvController;
+
+    private AnalysisDetailOverviewHeredAmcController analysisDetailOverviewHeredAmcController;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -130,10 +127,60 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         ntChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
-        setDisplayItem();
+        setBrcaCnvOverview();
+
+        //Platform.runLater(this::setDisplayItem);
+    }
+
+    private void setBrcaCnvOverview() {
+        Panel panel = (Panel)paramMap.get("panel");
+        Integer sampleSize = (Integer)paramMap.get("sampleSize");
+        if(PipelineCode.isBRCACNVPipeline(panel.getCode()) && sampleSize > 5) {
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 165);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(165);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(165);
+
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV_OVERVIEW);
+                Node node = loader.load();
+                AnalysisDetailOverviewBrcaCnvController controller = loader.getController();
+                analysisDetailOverviewBrcaCnvController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                overviewMainGridPane.add(node, 0, 4);
+                GridPane.setValignment(node, VPos.BOTTOM);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode().equals(panel.getCode())) {
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 123);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(123);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(123);
+
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_HERED_AMC_OVERVIEW);
+                Node node = loader.load();
+                AnalysisDetailOverviewHeredAmcController controller = loader.getController();
+                analysisDetailOverviewHeredAmcController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                overviewMainGridPane.add(node, 0, 4);
+                GridPane.setValignment(node, VPos.BOTTOM);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     void setDisplayItem() {
+        if(analysisDetailOverviewBrcaCnvController != null) {
+            analysisDetailOverviewBrcaCnvController.getBrcaCnvList();
+        } else if(analysisDetailOverviewHeredAmcController != null) {
+            analysisDetailOverviewHeredAmcController.setContents("OVERVIEW");
+        }
+
         SampleView sample = (SampleView) getParamMap().get("sampleView");
         try {
             HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/" + sample.getId(), null,
@@ -172,13 +219,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 pGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                pathogenicList.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
-
             }
 
             if(likelyPathogenic != null) {
@@ -192,12 +232,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 lpGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                likelyPathogenic.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
             if(uncertainSignificance != null) {
@@ -211,12 +245,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 usGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                uncertainSignificance.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
             if(likelyBenign != null) {
@@ -229,12 +257,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 lbGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                likelyBenign.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
             if(benign != null) {
@@ -247,12 +269,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                 });
 
                 bGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                benign.forEach(item -> {
-                    if (ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()) != null)
-                        snpInDelInterpretations.add(ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences()));
-                });
             }
 
         } catch (Exception e) {
@@ -274,17 +290,16 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         columnConstraints.setHgrow(Priority.ALWAYS);
         dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
         HBox hBox = new HBox();
-        hBox.setSpacing(10);
+        hBox.setSpacing(2);
         hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
         hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
         String title = ConvertUtil.returnQCTitle(sampleQC.getQcType());
         Label titleLabel = new Label(title);
-        titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
+        titleLabel.getStyleClass().add("txt_white");
         Label descriptionLabel = new Label();
 
-        descriptionLabel.getStyleClass().add("help_tooltip_white");
-        descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
+        descriptionLabel.getStyleClass().addAll("help_tooltip_white", "cursor_hand");
         String value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
                 + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
         descriptionLabel.setOnMouseClicked(ev ->
@@ -295,7 +310,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         dataQCResultGridPane.add(hBox, col, 0);
 
         Label qcResultLabel = new Label(sampleQC.getQcResult().toUpperCase());
-        //qcResultLabel.setTooltip(new Tooltip(sampleQC.getQcValue() + sampleQC.getQcUnit()));
 
         dataQCResultGridPane.add(qcResultLabel, col, 1);
         GridPane.setValignment(qcResultLabel, VPos.CENTER);
@@ -322,7 +336,9 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
                     null, false);
 
             List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
-
+            qcList = qcList.stream().filter(item -> !("target_coverage_at_30x".equals(item.getQcType()) ||
+                    "mean_throughput".equals(item.getQcType()) ||
+                    "on_target_read".equals(item.getQcType()))).collect(Collectors.toList());
             qcList.sort(Comparator.comparing(SampleQC::getQcType));
             int i = 0;
             for(SampleQC sampleQC : qcList) {
@@ -332,37 +348,7 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
             }
 
         } catch(WebAPIException e) {
-            DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
+            DialogUtil.alert("QC Metrics data can not be loaded.", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCResult(List<SampleQC> qcList, String qc) {
-        String result = "none";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent() && !StringUtils.isEmpty(findQC.get().getQcResult())) {
-                result = findQC.get().getQcResult();
-            }
-        }
-
-        return result;
-    }
-
-    //qcList에서 해당 qc 결과를 반환
-    private String findQCTooltipString(List<SampleQC> qcList, String qc) {
-        String result = "";
-
-        if(qcList != null && !qcList.isEmpty()) {
-            Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
-            if(findQC.isPresent()) {
-                result = findQC.get().getQcDescription() + " " + findQC.get().getQcThreshold() + System.lineSeparator()
-                        + "Value : " + findQC.get().getQcValue().stripTrailingZeros().toPlainString() + findQC.get().getQcUnit();
-            }
-        }
-
-        return result;
-    }
-
 }

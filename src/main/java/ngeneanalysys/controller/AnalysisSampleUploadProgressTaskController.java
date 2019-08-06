@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import javafx.scene.Node;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.service.AnalysisRequestService;
 import ngeneanalysys.task.AnalysisSampleUploadTask;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
@@ -62,9 +61,6 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	@FXML
 	public ProgressIndicator progressIndicator;
 
-	/** 분석 요청 서비스 */
-	private AnalysisRequestService analysisRequestService;
-
 	/** progress task object */
 	private Task<?> task;
 	/** running progress task thread  */
@@ -112,11 +108,10 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	/**
 	 * 화면 출력 및 Task 실행
 	 */
-	@SuppressWarnings("static-access")
+
+	@SuppressWarnings({"static-access", "unchecked"})
 	@Override
 	public void show(Parent root) throws IOException {
-		this.analysisRequestService = AnalysisRequestService.getInstance();
-
 		node = root;
 
 		boolean isWorkStart = false;
@@ -196,8 +191,8 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 		DialogUtil.setIcon(alert);
 		alert.initOwner(getMainController().getPrimaryStage());
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Analysis Cancel Request");
-		alert.setContentText("Do you want to cancel analysis request?");
+		alert.setHeaderText("");
+		alert.setContentText("File upload is in progress. Do you want to cancel?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK){
@@ -216,7 +211,7 @@ public class AnalysisSampleUploadProgressTaskController extends SubPaneControlle
 	 * 취소 완료 Alert창 출력
 	 */
 	public void showCancelCompleteDialog() {
-		DialogUtil.alert("Cancel incomplete analysis request", "It has been canceled.", getMainController().getPrimaryStage(), true);
+		DialogUtil.alert("", "File upload canceled.", getMainController().getPrimaryStage(), true);
 	}
 
 	/**

@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
@@ -360,12 +361,11 @@ public class VariantFilterController extends SubPaneController {
 
     private Panel panel;
 
-    /*private String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-    "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4"};*/
-
     private AnalysisDetailSNVController snvController;
 
     private CheckComboBox<String> warningCheckComboBox;
+
+    private String currentFilterName;
 
     /**
      * @param snvController AnalysisDetailSNVController
@@ -420,29 +420,23 @@ public class VariantFilterController extends SubPaneController {
 
         setPathogenicity();
 
-        startFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) startFractionTextField.setText(oldValue);
-        });
+        startFractionTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(startFractionTextField, oldValue, newValue));
 
-        endFractionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endFractionTextField.setText(oldValue);
-        });
+        endFractionTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(endFractionTextField, oldValue, newValue));
 
-        depthCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) depthCountTextField.setText(oldValue);
-        });
+        depthCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(depthCountTextField, oldValue, newValue));
 
-        altCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) altCountTextField.setText(oldValue);
-        });
+        altCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(altCountTextField, oldValue, newValue));
 
-        depthEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) depthEndCountTextField.setText(oldValue);
-        });
+        depthEndCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(depthEndCountTextField, oldValue, newValue));
 
-        altEndCountTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) altEndCountTextField.setText(oldValue);
-        });
+        altEndCountTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            integerCheck(altEndCountTextField, oldValue, newValue));
 
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
             if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
@@ -490,12 +484,11 @@ public class VariantFilterController extends SubPaneController {
 
         filterNameComboBox.valueProperty().addListener((ob, oValue, nValue) -> {
             if(StringUtils.isNotEmpty(nValue)) {
-                setCurrentOption(filter.get(nValue));
+                currentFilterName = nValue;
+                setCurrentOption(filter.get(nValue), nValue);
             }
         });
 
-        //newFilterNameLabel.setVisible(false);
-        //filterNameTextField.setVisible(false);
         saveBtn.setDisable(true);
 
         filterNameTextField.textProperty().addListener((ev, oldV, newV) -> {
@@ -510,6 +503,10 @@ public class VariantFilterController extends SubPaneController {
         Scene scene = new Scene(root);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
+    }
+
+    private void integerCheck(TextField textField, String oValue, String nValue) {
+        if (!nValue.matches(CommonConstants.NUMBER_PATTERN)) textField.setText(oValue);
     }
 
     private boolean checkNotEmptyTextField(TextField textField1, TextField textField2) {
@@ -530,12 +527,12 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     public void setDefaultLowConfidence() {
         if(warningCheckComboBox != null) {
-            if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())
+            if(PipelineCode.isHemePipeline(panel.getCode())
                     || panel.getCode().equals(PipelineCode.TST170_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    || PipelineCode.isSolidPipeline(panel.getCode())) {
                 warningCheckComboBox.getCheckModel().checkAll();
                 warningCheckComboBox.getCheckModel().clearCheck("t_lod");
-            } else if (panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            } else if (PipelineCode.isHeredPipeline(panel.getCode())) {
                 warningCheckComboBox.getCheckModel().checkAll();
             }
         }
@@ -552,10 +549,10 @@ public class VariantFilterController extends SubPaneController {
         CheckComboBox<String> lowConfidenceCheckComboBox = new CheckComboBox<>();
         if(panel != null) {
             lowConfidenceCheckComboBox.getItems().addAll(PipelineCode.getLowConfidences(panel.getCode()));
-            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+            if (PipelineCode.isHemePipeline(panel.getCode()) || PipelineCode.isSolidPipeline(panel.getCode())) {
                 lowConfidenceCheckComboBox.getItems().addAll("homopolymer", "repeat_sequence", "lowcoverage_indel", "lowcoverage_snv");
             }
+            lowConfidenceCheckComboBox.getItems().add("consecutive_variants");
         }
 
         lowConfidenceCheckComboBox.setPrefWidth(150);
@@ -602,13 +599,13 @@ public class VariantFilterController extends SubPaneController {
 
     private void setOperator(String value, ComboBox<ComboBoxItem> comboBox) {
         if(value.contains("gte:")) {
-            comboBox.getSelectionModel().select(2);
-        } else if(value.contains("lte:")) {
             comboBox.getSelectionModel().select(3);
+        } else if(value.contains("lte:")) {
+            comboBox.getSelectionModel().select(2);
         } else if(value.contains("gt:")) {
-            comboBox.getSelectionModel().select(0);
-        } else if(value.contains("lt:")) {
             comboBox.getSelectionModel().select(1);
+        } else if(value.contains("lt:")) {
+            comboBox.getSelectionModel().select(0);
         }
     }
 
@@ -671,7 +668,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setPathogenicity() {
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             caseLabel.setText("Tier");
             caseECheckBox.setVisible(false);
             caseACheckBox.setText("Tier1");
@@ -686,35 +683,14 @@ public class VariantFilterController extends SubPaneController {
             caseDCheckBox.setText("LB(Likely Benign)");
             caseECheckBox.setText("B(Benign)");
 
-            if(panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            if(PipelineCode.isHeredPipeline(panel.getCode())) {
                 kohbraComboBox.setDisable(true);
                 kohbraTextField.setDisable(true);
-            } else if(panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())){
-                gnomADaaaComboBox.setDisable(true);
-                gnomADaaaTextField.setDisable(true);
-                gnomADAllComboBox.setDisable(true);
-                gnomADAllTextField.setDisable(true);
-                gnomADeaComboBox.setDisable(true);
-                gnomADeaTextField.setDisable(true);
-                gnomADfinComboBox.setDisable(true);
-                gnomADfinTextField.setDisable(true);
-                gnomADmaComboBox.setDisable(true);
-                gnomADmaTextField.setDisable(true);
-                gnomADnfeComboBox.setDisable(true);
-                gnomADnfeTextField.setDisable(true);
-                gnomADotherComboBox.setDisable(true);
-                gnomADotherTextField.setDisable(true);
-                gnomADsaComboBox.setDisable(true);
-                gnomADsaTextField.setDisable(true);
             }
         }
 
-        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-            if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
-                    || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) warningHBox.setDisable(true);
+        if(PipelineCode.isBRCAPipeline(panel.getCode()) || PipelineCode.isHeredPipeline(panel.getCode())) {
+            if(PipelineCode.isBRCAPipeline(panel.getCode())) warningHBox.setDisable(true);
             cosmicidCheckBox.setDisable(true);
             cosmicOccurrenceComboBox.setDisable(true);
         }
@@ -754,11 +730,12 @@ public class VariantFilterController extends SubPaneController {
         setFormat(kohbraTextField);
     }
 
-    private void setCurrentOption(List<Object> currentFilter) {
-        filterNameTextField.setVisible(false);
+    private void setCurrentOption(List<Object> currentFilter, String filterName) {
+        //filterNameTextField.setVisible(false);
         newFilterNameLabel.setVisible(false);
         saveBtn.setDisable(false);
         resetFilterList();
+        filterNameTextField.setText(filterName);
         for(Object obj : currentFilter) {
             String option = obj.toString();
             if(obj.toString().contains(" ")) {
@@ -773,20 +750,6 @@ public class VariantFilterController extends SubPaneController {
                     cosmicidCheckBox.setSelected(true);
                 }
             }
-        }
-    }
-
-    private void setCase(String value) {
-        if(value.equalsIgnoreCase("T1") || value.equalsIgnoreCase("P")) {
-            caseACheckBox.setSelected(true);
-        } else if(value.equalsIgnoreCase("T2") || value.equalsIgnoreCase("LP")) {
-            caseBCheckBox.setSelected(true);
-        } else if(value.equalsIgnoreCase("T3") || value.equalsIgnoreCase("US")) {
-            caseCCheckBox.setSelected(true);
-        } else if(value.equalsIgnoreCase("T4") || value.equalsIgnoreCase("LB")) {
-            caseDCheckBox.setSelected(true);
-        } else {
-            caseECheckBox.setSelected(true);
         }
     }
 
@@ -954,7 +917,7 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setFeqTextField(String option, TextField textField) {
-        textField.setText(option.substring(option.indexOf(":") + 1));
+        textField.setText(option.substring(option.indexOf(':') + 1));
     }
 
     private void codingConsequenceCheck(String option) {
@@ -1013,8 +976,7 @@ public class VariantFilterController extends SubPaneController {
 
     @FXML
     private void removeFilter() {
-        if(!filterNameTextField.isVisible()
-                && StringUtils.isNotEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
+        if(StringUtils.isNotEmpty(filterNameComboBox.getSelectionModel().getSelectedItem())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             DialogUtil.setIcon(alert);
             String alertHeaderText = filterNameComboBox.getSelectionModel().getSelectedItem();
@@ -1036,22 +998,22 @@ public class VariantFilterController extends SubPaneController {
                 Map<String, Object> map = new HashMap<>();
                 map.put("value", valueJsonString);
                 try {
-                    if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                    if (PipelineCode.isHemePipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/hemeFilter", map, null, true);
-                    } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/solidFilter", map, null, true);
                     } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                         apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
-                    } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                            panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+                    } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/brcaFilter", map, null, true);
-                    } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                    } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
                         apiService.put("/member/memberOption/heredFilter", map, null, true);
                     }
 
                 } catch (WebAPIException wae) {
                     DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
                 }
+                filterNameTextField.setText("");
                 saveBtn.setDisable(true);
             } else {
                 alert.close();
@@ -1067,7 +1029,8 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     public void addFilter() {
         filterNameComboBox.getSelectionModel().clearSelection();
-        filterNameTextField.setVisible(true);
+        //filterNameTextField.setVisible(true);
+        filterNameTextField.setText("");
         newFilterNameLabel.setVisible(true);
         saveBtn.setDisable(true);
         resetFilterList();
@@ -1089,22 +1052,22 @@ public class VariantFilterController extends SubPaneController {
             DialogUtil.alert("Warning", "No filtering elements found.", this.dialogStage, true);
             return;
         }
-
-        if(filterNameTextField.isVisible()) {
-            if(StringUtils.isEmpty(filterNameTextField.getText())) {
-                DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
-                filterNameTextField.requestFocus();
-                return;
-            } else if("All".equalsIgnoreCase(filterNameTextField.getText())) {
-                DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
-                filterNameTextField.requestFocus();
-                return;
-            }
-            filterName = filterNameTextField.getText();
-        } else {
-            filterName = filterNameComboBox.getSelectionModel().getSelectedItem();
+        filterName = filterNameTextField.getText();
+        //if(filterNameTextField.isVisible()) {
+        if(StringUtils.isEmpty(filterName)) {
+            DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
+            filterNameTextField.requestFocus();
+            return;
+        } else if("All".equalsIgnoreCase(filterName) || (StringUtils.isNotEmpty(this.currentFilterName) &&
+                !filterName.equals(currentFilterName) && filterNameComboBox.getItems().contains(filterName))) {
+            DialogUtil.alert("Unavailable name", "Please edit the filter name", mainApp.getPrimaryStage(), true);
+            filterNameTextField.requestFocus();
+            return;
         }
-
+        /*} else {
+            filterName = filterNameComboBox.getSelectionModel().getSelectedItem();
+        }*/
+        filter.remove(currentFilterName);
         filter.put(filterName, list);
 
         changeFilter();
@@ -1113,18 +1076,19 @@ public class VariantFilterController extends SubPaneController {
         Map<String, Object> map = new HashMap<>();
         map.put("value", gg);
         try {
-            if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+            if (PipelineCode.isHemePipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/hemeFilter", map, null, true);
-            } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+            } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/solidFilter", map, null, true);
             } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
                 apiService.put("/member/memberOption/tstDNAFilter", map, null, true);
-            } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                    panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+            } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/brcaFilter", map, null, true);
-            } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+            } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
                 apiService.put("/member/memberOption/heredFilter", map, null, true);
             }
+            filterNameTextField.setText("");
+            currentFilterName = null;
         } catch (WebAPIException wae) {
             DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainApp.getPrimaryStage(), true);
         }
@@ -1134,20 +1098,19 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void changeFilter() {
-        if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if (PipelineCode.isHemePipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("hemeFilter");
             mainController.getBasicInformationMap().put("hemeFilter", filter);
-        } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+        } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("solidFilter");
             mainController.getBasicInformationMap().put("solidFilter", filter);
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             mainController.getBasicInformationMap().remove("tstDNAFilter");
             mainController.getBasicInformationMap().put("tstDNAFilter", filter);
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+        } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("brcaFilter");
             mainController.getBasicInformationMap().put("brcaFilter", filter);
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             mainController.getBasicInformationMap().remove("heredFilter");
             mainController.getBasicInformationMap().put("heredFilter", filter);
         }
@@ -1196,32 +1159,31 @@ public class VariantFilterController extends SubPaneController {
             setFrequency(list, exacTextField.getText(), exacComboBox.getSelectionModel().getSelectedItem().getValue(), "exac");
         }
 
-        if("somatic".equalsIgnoreCase(panel.getAnalysisType())) {
-            if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
-                setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
-            }
-            if (StringUtils.isNotEmpty(gnomADmaTextField.getText())) {
-                setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
-            }
-            if (StringUtils.isNotEmpty(gnomADaaaTextField.getText())) {
-                setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
-            }
-            if (StringUtils.isNotEmpty(gnomADeaTextField.getText())) {
-                setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
-            }
-            if (StringUtils.isNotEmpty(gnomADfinTextField.getText())) {
-                setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
-            }
-            if (StringUtils.isNotEmpty(gnomADnfeTextField.getText())) {
-                setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
-            }
-            if (StringUtils.isNotEmpty(gnomADotherTextField.getText())) {
-                setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
-            }
-            if (StringUtils.isNotEmpty(gnomADsaTextField.getText())) {
-                setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
-            }
+        if (StringUtils.isNotEmpty(gnomADAllTextField.getText())) {
+            setFrequency(list, gnomADAllTextField.getText(), gnomADAllComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADall");
         }
+        if (StringUtils.isNotEmpty(gnomADmaTextField.getText())) {
+            setFrequency(list, gnomADmaTextField.getText(), gnomADmaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADadmixedAmerican");
+        }
+        if (StringUtils.isNotEmpty(gnomADaaaTextField.getText())) {
+            setFrequency(list, gnomADaaaTextField.getText(), gnomADaaaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADafricanAfricanAmerican");
+        }
+        if (StringUtils.isNotEmpty(gnomADeaTextField.getText())) {
+            setFrequency(list, gnomADeaTextField.getText(), gnomADeaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADeastAsian");
+        }
+        if (StringUtils.isNotEmpty(gnomADfinTextField.getText())) {
+            setFrequency(list, gnomADfinTextField.getText(), gnomADfinComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADfinnish");
+        }
+        if (StringUtils.isNotEmpty(gnomADnfeTextField.getText())) {
+            setFrequency(list, gnomADnfeTextField.getText(), gnomADnfeComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADnonFinnishEuropean");
+        }
+        if (StringUtils.isNotEmpty(gnomADotherTextField.getText())) {
+            setFrequency(list, gnomADotherTextField.getText(), gnomADotherComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADothers");
+        }
+        if (StringUtils.isNotEmpty(gnomADsaTextField.getText())) {
+            setFrequency(list, gnomADsaTextField.getText(), gnomADsaComboBox.getSelectionModel().getSelectedItem().getValue(), "gnomADsouthAsian");
+        }
+
     }
 
     private void setFrequency(List<Object> list, String text,String operator , String key) {
@@ -1315,7 +1277,7 @@ public class VariantFilterController extends SubPaneController {
 
     private void variantTabSave(List<Object> list) {
 
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+        if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if(caseACheckBox.isSelected()) {
                 list.add("tier T1");
             }

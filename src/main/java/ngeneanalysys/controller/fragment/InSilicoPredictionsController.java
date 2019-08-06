@@ -35,19 +35,17 @@ public class InSilicoPredictionsController extends SubPaneController {
     @FXML
     private Canvas mtCanvas;
 
-    private Panel panel;
-
     @Override
     public void show(Parent root) throws IOException {
-        panel = (Panel)paramMap.get("panel");
+        Panel panel = (Panel)paramMap.get("panel");
         if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
           polyphenCanvas.setVisible(false);
         }
         showInSilicoPredictions();
     }
 
-
-    public Map<String, Object> returnResultsAfterSearch(String key) {
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
         Optional<SnpInDelExtraInfo> populationFrequency = detail.stream().filter(item
@@ -59,10 +57,10 @@ public class InSilicoPredictionsController extends SubPaneController {
 
     /**
      * Pathgenic Radar 차트 레벨에 따른 출력 퍼센트로 변환 반환
-     * @param level
-     * @return
+     * @param level String
+     * @return double
      */
-    public double convertRadarItemPercentageByLevelForPathogenic(String level) {
+    private double convertRadarItemPercentageByLevelForPathogenic(String level) {
         if(StringUtils.isEmpty(level)) {
             return -1d;
         } else if("1".equals(level)) {
@@ -86,7 +84,8 @@ public class InSilicoPredictionsController extends SubPaneController {
         return (String) obj;
     }
 
-    public void showInSilicoPredictions () {
+    @SuppressWarnings("unchecked")
+    private void showInSilicoPredictions () {
         Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
         Map<String,Object> siftMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("SIFT")) ? (Map<String,Object>) inSilicoPredictionMap.get("SIFT") : null;
         Map<String,Object> polyphenMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("PolyPhen2")) ? (Map<String,Object>) inSilicoPredictionMap.get("PolyPhen2") : null;
@@ -111,11 +110,11 @@ public class InSilicoPredictionsController extends SubPaneController {
                     try {
                         siftValue = 1.0 - Double.valueOf(siftScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("sift score value is invalid " + siftScore);
+                        logger.debug("sift score value is invalid " + siftScore);
                         siftValue = -1.0;
                     }
                 } else {
-                    logger.warn("sift score value is null");
+                    logger.debug("sift score value is null");
                     siftValue = -1.0;
                 }
             } else if (siftMap.containsKey("radar")) {
@@ -123,7 +122,7 @@ public class InSilicoPredictionsController extends SubPaneController {
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("sift score or radar value was not found.");
+                logger.debug("sift score or radar value was not found.");
                 siftValue = -1.0;
             }
             if (siftMap.containsKey("text") && siftMap.get("text") != null) {
@@ -139,11 +138,11 @@ public class InSilicoPredictionsController extends SubPaneController {
                     try {
                         polyphenValue = Double.valueOf(polyphenScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("metaSVM score value is invalid " + polyphenScore);
+                        logger.debug("metaSVM score value is invalid " + polyphenScore);
                         polyphenValue = -1.0;
                     }
                 } else {
-                    logger.warn("metaSVM value is null");
+                    logger.debug("metaSVM value is null");
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
@@ -151,7 +150,7 @@ public class InSilicoPredictionsController extends SubPaneController {
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("metaSVM score or radar value was not found.");
+                logger.debug("metaSVM score or radar value was not found.");
                 polyphenValue = -1.0;
             }
             if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {
@@ -165,7 +164,7 @@ public class InSilicoPredictionsController extends SubPaneController {
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("mt score or radar value was not found.");
+                logger.debug("mt score or radar value was not found.");
                 mtValue = -1.0;
             }
             if (mtMap.containsKey("text") && mtMap.get("text") != null) {

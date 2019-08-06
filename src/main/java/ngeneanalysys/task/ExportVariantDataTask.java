@@ -46,6 +46,8 @@ public class ExportVariantDataTask extends Task<Void> {
 	private int sampleId;
 	/** API Service */
 	private APIService apiService;
+	private boolean isBrcaCnv = false;
+	private boolean isAmcCnv = false;
 
 	public ExportVariantDataTask(MainApp mainApp, String fileType, File file, Map<String, List<Object>> filterList,
 								 Map<String, Object> params, int sampleId) {
@@ -70,6 +72,17 @@ public class ExportVariantDataTask extends Task<Void> {
 		apiService.setStage(mainApp.getPrimaryStage());
 	}
 
+	public ExportVariantDataTask(MainApp mainApp, File file, boolean isBrcaCnv, boolean isAmcCnv, Integer sampleId) {
+		this.file = file;
+		this.isBrcaCnv = isBrcaCnv;
+		this.isAmcCnv = isAmcCnv;
+		this.sampleId = sampleId;
+		this.mainApp = mainApp;
+		// api service init..
+		apiService = APIService.getInstance();
+		apiService.setStage(mainApp.getPrimaryStage());
+	}
+
 	@Override
 	protected Void call() throws Exception {
 		updateProgress(0, 1);
@@ -77,7 +90,11 @@ public class ExportVariantDataTask extends Task<Void> {
 		CloseableHttpClient httpclient = null;
 		CloseableHttpResponse response = null;
 		String downloadUrl = "";
-		if(StringUtils.isEmpty(fileType)) {
+		if(isAmcCnv) {
+			downloadUrl = "/analysisResults/exportHeredCnv/" + sampleId;
+		} else if(isBrcaCnv) {
+			downloadUrl = "/analysisResults/exportBrcaCnv/" + sampleId;
+		} else if(StringUtils.isEmpty(fileType)) {
 			downloadUrl = "/sampleSummaryExcel";
 		} else {
 			downloadUrl = "/analysisResults/sampleSnpInDels/" + sampleId;
@@ -187,19 +204,18 @@ public class ExportVariantDataTask extends Task<Void> {
 			DialogUtil.setIcon(alert);
 			alert.initOwner(this.mainApp.getPrimaryStage());
 			alert.setTitle("Confirmation Dialog");
-			alert.setHeaderText("Creating the " + fileType + " document was completed.");
+			alert.setHeaderText("");
 			alert.setContentText("Do you want to check the " + fileType + " document?");
 
 			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.OK) {
+			if (result.isPresent() && result.get() == ButtonType.OK) {
 				this.mainApp.getHostServices().showDocument(file.toURI().toURL().toExternalForm());
 			} else {
 				alert.close();
 			}
 		} catch (Exception e){
 			e.printStackTrace();
-			DialogUtil.error("Save Fail.",
-					"An error occurred during the creation of the " + fileType + " document.\n" + e.getMessage(),
+			DialogUtil.error("", "Could not open document file.\n" + e.getMessage(),
 					this.mainApp.getPrimaryStage(), false);
 		}
 	}

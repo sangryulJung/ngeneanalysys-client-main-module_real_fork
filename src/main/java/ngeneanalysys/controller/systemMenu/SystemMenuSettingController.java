@@ -118,12 +118,12 @@ public class SystemMenuSettingController extends SubPaneController {
         for (String second : CommonConstants.AUTO_REFRESH_SECOND_PERIOD) {
             autoRefreshPeriodComboBox.getItems().add(second + " second");
         }
+
         autoRefreshPeriodComboBox.setValue(config.getProperty("analysis.job.auto.refresh.period"));
         
         // 윈도우 테마 콤보박스 아이템 삽입
-        for (String theme : CommonConstants.WINDOW_THEME) {
-            windowTheme.getItems().add(theme);
-        }
+        windowTheme.getItems().addAll(CommonConstants.WINDOW_THEME);
+
         windowTheme.setValue(config.getProperty("window.theme"));
         //System.out.println(windowTheme.getValue());
 
@@ -148,7 +148,7 @@ public class SystemMenuSettingController extends SubPaneController {
     @FXML
     public void confirmServerURL() {
         if(StringUtils.isEmpty(serverURLTextField.getText())) {
-            DialogUtil.warning("Empty server URL", "Please enter a valid server URL", this.mainApp.getPrimaryStage(), true);
+            DialogUtil.warning("", "Please enter a valid server URL", this.mainApp.getPrimaryStage(), true);
         } else {
             int status = serverURLManageService.isValidURL(serverURLTextField.getText());
             if(status >= 200 && status < 300) {
@@ -199,7 +199,7 @@ public class SystemMenuSettingController extends SubPaneController {
             DialogUtil.setIcon(alert);
             alert.initOwner(this.dialogStage);
             alert.setTitle("Save Settings");
-			alert.setHeaderText("Save Settings");
+			alert.setHeaderText("");
 			alert.setContentText("Do you want to save your changes?");
 
             Optional<ButtonType> result = alert.showAndWait();
@@ -222,10 +222,9 @@ public class SystemMenuSettingController extends SubPaneController {
            
 
             // 현재 설정된 프로퍼티 설정 갱신
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "UTF-8"))){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))){
                 Properties properties = new Properties();
                 properties.load(reader);
-                reader.close();
                 for (Map.Entry<Object, Object> entry : properties.entrySet()) {
                     String key = (String) entry.getKey();
                     String value = (String) entry.getValue();

@@ -129,3 +129,11 @@
 	-fx-background-color : white;
     -fx-background-radius: 0;
 }
+
+.text-area .content {
+    -fx-background-color : #fff;
+
+}
+.text-area {
+    -fx-border-width: 0;
+}

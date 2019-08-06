@@ -2,30 +2,35 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
+<AnchorPane prefHeight="470.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerPanelController">
    <stylesheets>
       <URL value="@../../css/common.css" />
       <URL value="@../../css/experimenter.css" />
+      <URL value="@../../css/request.css" />
    </stylesheets>
    <children>
       <HBox prefHeight="502.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -43,7 +48,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="498.0">
                                  <children>
-                                    <GridPane fx:id="basicInformationGridPane" hgap="2.0" maxWidth="-Infinity" prefHeight="934.0" prefWidth="450.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                    <GridPane fx:id="basicInformationGridPane" hgap="2.0" maxWidth="-Infinity" prefHeight="934.0" prefWidth="450.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.99999237060547" minWidth="91.0" percentWidth="25.0" prefWidth="141.99999237060547" />
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="111.0" percentWidth="25.0" prefWidth="161.0" />
@@ -51,13 +56,13 @@
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="120.0" percentWidth="25.0" prefWidth="156.0" />
                                       </columnConstraints>
                                       <rowConstraints>
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="29.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="29.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="29.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="29.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="29.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="29.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
                                           <TextField fx:id="panelNameTextField" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="txt_black" GridPane.columnIndex="1" HBox.hgrow="ALWAYS" />
@@ -83,6 +88,106 @@
                               </AnchorPane>
                         </content>
                       </TitledPane>
+                        <TitledPane fx:id="cnvForBrcaAaccuTestTitledPane" animated="false" text="CNV for BRCAaccuTest Series Panel">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <GridPane AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.0" minWidth="10.0" prefWidth="282.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="287.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="10.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="CNV Algorithm Setting" GridPane.columnSpan="2" />
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <children>
+                                                <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
+                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" text="Copy Gain :" />
+                                                <TextField fx:id="brcaCnvAmpliconCnDuplicationCutoffTextField" prefWidth="60.0" text="0.2" />
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="1">
+                                             <children>
+                                                <RadioButton fx:id="distributionAmpliconCnpAlgorithmRadioButton" mnemonicParsing="false" text="Distribution">
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="ampliconCopyNumberPredictionAlgorihtmToggleGroup" />
+                                                   </toggleGroup>
+                                                </RadioButton>
+                                                <Label fx:id="distributionToolTip" styleClass="help_tooltip">
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <children>
+                                                <RadioButton fx:id="simpleCutoffAmpliconCnpAlgorithmRadioButton" mnemonicParsing="false" text="User Cut-off" toggleGroup="$ampliconCopyNumberPredictionAlgorihtmToggleGroup" />
+                                                <Label fx:id="cutOffToolTip" styleClass="help_tooltip">
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor></Label>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.rowIndex="5">
+                                             <children>
+                                                <Label text="Exon CNV Threshold" />
+                                                <Label fx:id="predictionThresholdToolTip" styleClass="help_tooltip">
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin></Label>
+                                                <TextField fx:id="exonCnpThresholdTextField" prefWidth="60.0" text="0.15" />
+                                                <Label text="\%" />
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                             <children>
+                                                <Region maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="14.0" />
+                                                <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" text="Copy Loss :" />
+                                                <TextField fx:id="brcaCnvAmpliconCnDeletionCutoffTextField" prefWidth="60.0" text="0.25" />
+                                             </children>
+                                          </HBox>
+                                          <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                                             <children>
+                                                <Label text="Hypothetical CNV Cut-off Limit" />
+                                                <Label fx:id="putativeToolTip" styleClass="help_tooltip">
+                                                   <HBox.margin>
+                                                      <Insets right="40.0" />
+                                                   </HBox.margin>
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor>
+                                                </Label>
+                                                <Label text="Copy Gain: " />
+                                                <TextField fx:id="lowConfidenceCnvDuplicationTextField" prefWidth="60.0">
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin></TextField>
+                                                <Label text="Copy Loss: " />
+                                                <TextField fx:id="lowConfidenceCnvDeletionTextField" prefWidth="60.0" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </TitledPane>
                       <TitledPane animated="false" text="Canonical Transcripts">
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -150,17 +255,17 @@
                                        <children>
                                           <Label text="InDel MAF( % )" GridPane.halignment="LEFT">
                                              <tooltip>
-                                                <Tooltip text="Min Allele Fraction, Default 5%" />
+                                                <Tooltip text="InDel Min Allele Fraction" />
                                              </tooltip>
                                           </Label>
                                           <Label text="InDel MRD( x )" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth, Default 30x" />
+                                                <Tooltip text="InDel Min Read Depth" />
                                              </tooltip>
                                           </Label>
                                           <Label text="InDel MAC" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                                              <tooltip>
-                                                <Tooltip text="Min Alternate Count, Default 6" />
+                                                <Tooltip text="InDel Min Alternate Count" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="indelMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="1" />
@@ -170,24 +275,24 @@
                                           <TextField fx:id="essentialGenesTextField" maxWidth="1.7976931348623157E308" styleClass="txt_black" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                                           <Label text="SNV MRD( x )" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth, Default 30x" />
+                                                <Tooltip text="SNV Min Read Depth" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="snvMinReadDepthTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                          <Label text="Homopolymer &amp; Repeat sequence MAF( x )" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                                          <Label text="Homopolymer &amp; Repeat sequence MAF( % )" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3">
                                              <tooltip>
-                                                <Tooltip text="Default 30x" />
+                                                <Tooltip text="Default 5%" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="lowConfidenceMinAlleleFractionTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                           <Label text="SNV MAC" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <tooltip>
-                                                <Tooltip text="Min Read Depth, Default 30x" />
+                                                <Tooltip text="SNV Min Alternate Count" />
                                              </tooltip>
                                           </Label>
                                           <Label text="SNV MAF( % )" GridPane.columnIndex="2">
                                              <tooltip>
-                                                <Tooltip text="Min Allele Fraction, Default 5%" />
+                                                <Tooltip text="SNV Min Allele Fraction" />
                                              </tooltip>
                                           </Label>
                                           <TextField fx:id="snvMinAlternateCountTextField" maxHeight="38.0" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="txt_black" GridPane.columnIndex="3" GridPane.rowIndex="1" />
@@ -249,11 +354,12 @@
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="246.0" prefWidth="200.0">
                                  <children>
-                                    <GridPane fx:id="qcMetricsPassThresholdGridPane" maxWidth="-Infinity" prefHeight="240.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <GridPane fx:id="qcMetricsPassThresholdGridPane" hgap="5.0" maxWidth="-Infinity" prefHeight="240.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="150.0" prefWidth="166.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="77.0" prefWidth="158.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.0" minWidth="5.0" prefWidth="150.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="150.0" percentWidth="30.0" prefWidth="166.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="77.0" percentWidth="20.0" prefWidth="80.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.0" minWidth="5.0" percentWidth="30.0" prefWidth="205.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.0" minWidth="10.0" percentWidth="20.0" prefWidth="150.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
@@ -261,30 +367,26 @@
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
                                           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="27.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
                                           <Label text="Total Base Pair( bp, &gt;= )" GridPane.halignment="RIGHT" />
                                           <TextField fx:id="totalBasePairTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                                          <Label text="Q30 Trimmed Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                          <TextField fx:id="q30TrimmedBasePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                                          <Label text="Mapped Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                          <TextField fx:id="mappedBasePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-                                          <Label text="On Target( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                          <TextField fx:id="onTargetPercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
-                                          <Label text="On Target Coverage( x, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                          <TextField fx:id="onTargetCoverageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
-                                          <Label text="Duplicated Reads( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                                          <TextField fx:id="duplicatedReadsPercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
-                                          <Label text="ROI Coverage( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                          <TextField fx:id="roiCoveragePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" />
-                                          <TextField fx:id="uniformity02PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                          <TextField fx:id="mappingQuality60PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                          <Label text="Uniformity( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-                                          <Label text="Mapping Quality( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+                                          <Label text="Q30 Trimmed Base( %, &gt;= )" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                          <TextField fx:id="q30TrimmedBasePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" />
+                                          <Label text="Mapped Base( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                          <TextField fx:id="mappedBasePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                          <Label text="On Target( %, &gt;= )" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                          <TextField fx:id="onTargetPercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                          <Label text="On Target Coverage( x, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                          <TextField fx:id="onTargetCoverageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                                          <Label text="Duplicated Reads( %, &lt;= )" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                          <TextField fx:id="duplicatedReadsPercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                                          <Label text="ROI Coverage( %, &gt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                          <TextField fx:id="roiCoveragePercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                                          <TextField fx:id="uniformity02PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                          <TextField fx:id="mappingQuality60PercentageTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label text="Uniformity 0.2( %, &lt;= )" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                          <Label text="Mapping Quality( %, &lt;= )" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                                        </children>
                                        <padding>
                                           <Insets bottom="-5.0" top="-5.0" />
@@ -298,6 +400,11 @@
                   </Accordion>
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="300.0">
                      <children>
+                        <Button fx:id="loadSettingFileBtn" mnemonicParsing="false" onAction="#loadSettingFile" styleClass="submitBtn" text="Load setting file">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="saveTextFile" mnemonicParsing="false" onAction="#showSaveTextFile" styleClass="submitBtn" text="Save current setting to file">
                            <HBox.margin>
                               <Insets right="10.0" />
@@ -349,13 +456,9 @@
                         <TableColumn fx:id="analysisTypeTableColumn" prefWidth="92.0" text="Analysis Type" visible="false" />
                         <TableColumn fx:id="libraryTypeTableColumn" prefWidth="97.0" text="Library Type" visible="false" />
                         <TableColumn fx:id="sampleSourceTableColumn" prefWidth="97.0" text="Sample Source" visible="false" />
-                        <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted" visible="false" />
-                        <TableColumn prefWidth="75.0" text="Date" visible="false">
-                           <columns>
-                              <TableColumn fx:id="createdAtTableColumn" prefWidth="90.0" text="Create" />
-                              <TableColumn fx:id="updatedAtTableColumn" prefWidth="90.0" text="Update" />
-                           </columns>
-                        </TableColumn>
+                        <TableColumn fx:id="deletedAtTableColumn" prefWidth="108.0" text="Deleted At" visible="false" />
+                        <TableColumn fx:id="createdAtTableColumn" prefWidth="90.0" text="Create At" visible="false" />
+                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="90.0" text="Update At" visible="false" />
                         <TableColumn fx:id="deletedTableColumn" prefWidth="55.0" style="-fx-alignment: center;" text="Deleted" />
                     </columns>
                   </TableView>

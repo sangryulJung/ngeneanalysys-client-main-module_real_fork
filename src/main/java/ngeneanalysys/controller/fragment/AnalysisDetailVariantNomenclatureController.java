@@ -1,5 +1,6 @@
 package ngeneanalysys.controller.fragment;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,14 +10,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.controller.extend.SubPaneController;
+import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.SnpInDelTranscript;
 import ngeneanalysys.model.VariantAndInterpretationEvidence;
+import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,21 +76,25 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
     @Override
     public void show(Parent root) throws IOException {
         variant = (VariantAndInterpretationEvidence)paramMap.get("variant");
-        showVariantIdentification();
+        Platform.runLater(this::showVariantIdentification);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<SnpInDelTranscript> getTranscript() {
+        try {
+            APIService apiService = APIService.getInstance();
+            HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + variant.getSnpInDel().getId() + "/snpInDelTranscripts", null, null, false);
+            return (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
+        } catch (WebAPIException wae) {
+            return Collections.emptyList();
+        }
     }
     /**
      * Variant Nomenclature 값 설정 및 화면 출력
      */
-    @SuppressWarnings("unchecked")
     private void showVariantIdentification() {
-        List<SnpInDelTranscript> transcriptDataList = (List<SnpInDelTranscript>) paramMap.get("snpInDelTranscripts");
+        List<SnpInDelTranscript> transcriptDataList = getTranscript();
 
-        String ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
-        String alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
-        String left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
-        String right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
-        String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
-        String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
         String defaultTranscript = null;
         // transcript 콤보박스 설정
         // variant identification transcript data map
@@ -115,7 +124,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         String codingDNA = (!StringUtils.isEmpty(transcript.getCodingDna())) ? transcript.getCodingDna() : "N/A";
                         String protein = (!StringUtils.isEmpty(transcript.getProtein())) ? transcript.getProtein() : "N/A";
                         String genomicDNA = (!StringUtils.isEmpty(transcript.getGenomicDna())) ? transcript.getGenomicDna() : "N/A";
-
+                        initNomenclature(transcript);
                         logger.debug(String.format("variant identification choose '%s' option idx [%s]", transcriptName, newIdx));
                         List<Integer> textLength = new ArrayList<>();
                         setTextField(geneSymbolTextField, geneSymbol, textLength);
@@ -124,48 +133,44 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
                         setTextField(grch37TextField, genomicDNA, textLength);
                         Optional<Integer> maxTextLengthOptional = textLength.stream().max(Integer::compare);
                         maxTextLengthOptional.ifPresent(value -> {
-                            if(value > 29) {
-                                transcriptDetailGrid.setPrefWidth(value * 9);
-                                geneSymbolTextField.setMinWidth(value * 9);
-                                hgvspTextField.setMinWidth(value * 9);
-                                hgvscTextField.setMinWidth(value * 9);
-                                grch37TextField.setMinWidth(value * 9);
+                            if(value > 24) {
+                                transcriptDetailGrid.setPrefWidth(95 + (8 + value * 7.4));
                                 transcriptDetailScrollBox.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                                 transcriptDetailScrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
                             }
                         });
-
-
+                    } else {
+                        initNomenclature(null);
                     }
                 }
             });
 
             // 첫번째 아이템 선택 처리
             transcriptComboBox.getSelectionModel().select(defaultTranscript);
+        } else {
+            initNomenclature(null);
+        }
+    }
+
+    private void initNomenclature(SnpInDelTranscript snpInDelTranscript) {
+        String ref;
+        String alt;
+        String left22Bp;
+        String right22Bp;
+        if(snpInDelTranscript == null || snpInDelTranscript.getLeftSequence() == null) {
+            ref = variant.getSnpInDel().getSnpInDelExpression().getRefSequence();
+            alt = variant.getSnpInDel().getSnpInDelExpression().getAltSequence();
+            left22Bp = variant.getSnpInDel().getSnpInDelExpression().getLeftSequence();
+            right22Bp = variant.getSnpInDel().getSnpInDelExpression().getRightSequence();
+        } else {
+            ref = snpInDelTranscript.getRefSequence();
+            alt = snpInDelTranscript.getAltSequence();
+            left22Bp = snpInDelTranscript.getLeftSequence();
+            right22Bp = snpInDelTranscript.getRightSequence();
         }
 
-        // 레퍼런스 앞문자열 끝에서부터 9글자만 출력함.
-        int displayLeft22Bplength = 9;
-        String displayLeft22Bp = left22Bp;
-        /*if(!StringUtils.isEmpty(left22Bp) && left22Bp.length() > displayLeft22Bplength) {
-            for(int i = 0; i < left22Bp.length(); i++) {
-                if( i >= (left22Bp.length() - displayLeft22Bplength)) {
-                    displayLeft22Bp += left22Bp.substring(i, i + 1);
-                }
-            }
-        }*/
-
-        // 레퍼런스 뒷문자열 9글자만 출력 : 레퍼런스 문자열이 1보다 큰 경우 1보다 늘어난 숫자만큼 출력 문자열 수 가감함.
-        int displayRight22BpLength = 9;
-        String displayRight22Bp = right22Bp;
-        // 처음부터 지정글자수까지 출력
-        /*if(!StringUtils.isEmpty(right22Bp) && right22Bp.length() > displayRight22BpLength) {
-            for(int i = 0; i < right22Bp.length(); i++) {
-                if( i <= (displayRight22BpLength - 1)) {
-                    displayRight22Bp += right22Bp.substring(i, i + 1);
-                }
-            }
-        }*/
+        String genePositionStart = String.valueOf(variant.getSnpInDel().getGenomicCoordinate().getStartPosition());
+        String transcriptAltType = variant.getSnpInDel().getSnpInDelExpression().getVariantType();
 
         // 변이 유형이 "deletion"인 경우 삭제된 염기서열 문자열 분리
         String notDeletionRef = "";
@@ -179,36 +184,37 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
             notDeletionRef = ref;
         }
 
-        if(!StringUtils.isEmpty(displayLeft22Bp)) {
+        if(!StringUtils.isEmpty(left22Bp)) {
             leftVbox.setPrefWidth(170);
         }
 
         // 값 화면 출력
         genePositionStartLabel.setText(genePositionStart);
-        left22BpLabel.setText(displayLeft22Bp.toUpperCase());
+        left22BpLabel.setText(left22Bp);
         transcriptRefLabel.setText(notDeletionRef);
         deletionRefLabel.setText(deletionRef);
-        right22BpLabel.setText(displayRight22Bp.toUpperCase());
+        right22BpLabel.setText(right22Bp);
 
-        double textLength = (double)(displayLeft22Bp.length() + ref.length() + displayRight22Bp.length());
+        double textLength = (double)(left22Bp.length() + ref.length() + right22Bp.length());
         logger.debug("text length : " + textLength);
 
-
-        if(alt.length() > 21 && (textLength - displayLeft22Bp.length()) < alt.length()){
-            gridBox.setPrefWidth(alt.length() * 12);
-            sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
-            scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        if(alt.length() > 21 && (textLength - left22Bp.length()) < alt.length()){
+            setScrollBoxSize(alt.length() - 21);
         } else if(textLength > 31) {
-            gridBox.setPrefWidth(textLength * 12);
-            sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
-            scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            setScrollBoxSize(textLength - 31);
         }
 
         transcriptAltLabel.setText(alt);
         transcriptAltTypeLabel.setText(transcriptAltType);
     }
 
-    public void setTextField(TextField textField, String text, List<Integer> textLength) {
+    private void setScrollBoxSize(double size) {
+        gridBox.setPrefWidth(275 + size * 8);
+        sequenceCharsBox.setStyle("-fx-padding:-10 0 0 20;");
+        scrollBox.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    }
+
+    private void setTextField(TextField textField, String text, List<Integer> textLength) {
         textField.setText(text); //Gene Symbol
         if(!StringUtils.isEmpty(text)) {
             textField.setTooltip(new Tooltip(text));
@@ -216,7 +222,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         }
     }
 
-    public int getTranscriptComboBoxSelectedIndex() {
+    int getTranscriptComboBoxSelectedIndex() {
         return transcriptComboBox.getSelectionModel().getSelectedIndex();
     }
 

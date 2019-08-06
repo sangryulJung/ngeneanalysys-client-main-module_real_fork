@@ -26,7 +26,7 @@ public class PopOverUtil {
     private static HBox getTextItemBox(String title) {
         HBox hBox = new HBox();
         Label label = new Label(title.replace(":", " : "));
-        label.setStyle("-fx-text-fill : black;");
+        label.getStyleClass().add("txt_black");
         hBox.getChildren().add(label);
         return hBox;
     }
@@ -47,6 +47,28 @@ public class PopOverUtil {
                 box.getChildren().add(hbox);
             }
         }
+
+        label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            PopOver popOver = new PopOver();
+            popOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+            popOver.setHeaderAlwaysVisible(true);
+            popOver.setAutoHide(true);
+            popOver.setAutoFix(true);
+            popOver.setDetachable(true);
+            popOver.setArrowSize(15);
+            popOver.setArrowIndent(30);
+            popOver.setContentNode(box);
+            popOver.show(label);
+        });
+    }
+
+    public static void openToolTipPopOver(Label label, String text) {
+
+        VBox box = new VBox();
+        box.setStyle("-fx-padding:10;");
+        box.setAlignment(Pos.CENTER);
+        Label emptyLabel = new Label(text);
+        box.getChildren().add(emptyLabel);
 
         label.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             PopOver popOver = new PopOver();
@@ -87,9 +109,9 @@ public class PopOverUtil {
         box.getStyleClass().add("acmg_content_box");
 
         scrollPane.setContent(box);
-
-        String[] results = acmg.containsKey("rules") ? ((String)acmg.get("rules")).split(",") : null;
-        String rulesText = acmg.containsKey("rules") ? "(" + acmg.get("rules") + ")" : null;
+        String key = "rules";
+        String[] results = acmg.containsKey(key) ? ((String)acmg.get(key)).split(",") : null;
+        String rulesText = acmg.containsKey(key) ? "(" + acmg.get(key) + ")" : null;
 
         Label reason = new Label();
         String pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
@@ -164,20 +186,21 @@ public class PopOverUtil {
         popOver.setAutoFix(true);
         popOver.setDetachable(true);
         popOver.setArrowSize(15);
-        popOver.setMaxSize(200, 80);
-        popOver.setPrefSize(200, 80);
-        popOver.setMinSize(200, 80);
+        popOver.setPrefSize(240, 80);
+        popOver.setMinSize(240, 80);
+        popOver.setMaxSize(300, 80);
 
         VBox box = new VBox();
-        box.setMinWidth(200);
-        box.setPrefWidth(200);
-        box.setMaxWidth(200);
+        box.setMinWidth(240);
+        box.setPrefWidth(240);
+        box.setMaxWidth(300);
 
         Label contents = new Label();
         contents.setPadding(new Insets(0, 0, 0, 10));
         contents.setAlignment(Pos.TOP_LEFT);
         contents.setPrefHeight(80);
-        contents.setPrefWidth(200);
+        contents.setPrefWidth(240);
+        contents.setMaxWidth(300);
         contents.setWrapText(true);
 
         contents.setText(value);
@@ -272,7 +295,7 @@ public class PopOverUtil {
         } else if(option.contains("lt:")) {
             operator = "< ";
         }
-        return operator + option.substring(option.indexOf(":") + 1);
+        return operator + option.substring(option.indexOf(':') + 1);
     }
 
     private static void setKeyValue(String key, String value, VBox box) {
@@ -306,13 +329,6 @@ public class PopOverUtil {
                 value = "MNP";
             }
             createHBox(keyValue, value, box);
-            /*if(value.equalsIgnoreCase("snp")) {
-                createHBox(keyValue, "snv", box);
-            } else if(value.equalsIgnoreCase("ins")) {
-                createHBox(keyValue, "ins", box);
-            } else if(value.equalsIgnoreCase("del")) {
-                createHBox(keyValue, "del", box);
-            }*/
         } else if(key.equalsIgnoreCase("g1000All")) {
             createHBox("1KGP All",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("g1000African")) {

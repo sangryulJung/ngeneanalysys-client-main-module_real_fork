@@ -85,6 +85,9 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_CNV = "/layout/fxml/AnalysisDetail-CNV.fxml";
 
 	/** 분석 상세 > Variants 화면 */
+	public static final String ANALYSIS_DETAIL_BRCA_CNV = "/layout/fxml/AnalysisDetail-BRCA-CNV.fxml";
+
+	/** 분석 상세 > Variants 화면 */
 	public static final String ANALYSIS_DETAIL_TST_CNV = "/layout/fxml/AnalysisDetail-TST-CNV.fxml";
 
 	/** 분석 상세 > Variants 화면 */
@@ -171,4 +174,22 @@ public class FXMLConstants {
 	public static final String RUN_RAW_DATA_DOWNLOAD = "/layout/fxml/RunRawDataDownload.fxml";
 
 	public static final String RAW_DATA_DOWNLOAD_TASK = "/layout/fxml/AnalysisSampleDownloadProgressTask.fxml";
+
+	public static final String WORK_PROGRESS = "/layout/fxml/WorkProgress.fxml";
+
+	public static final String ANALYSIS_DETAIL_BRCA_CNV_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-BRCA-CNV.fxml";
+
+	public static final String ANALYSIS_DETAIL_BRCA_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Germline-CNV-Report.fxml";
+
+	public static final String ANALYSIS_DETAIL_HERED_CNV = "/layout/fxml/AnalysisDetail-HERED-CNV.fxml";
+
+	public static final String ANALYSIS_DETAIL_HERED_AMC_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Germline-AMC-CNV-Report.fxml";
+
+	public static final String ANALYSIS_DETAIL_SOLID_AMC_CNV_REPORT = "/layout/fxml/AnalysisDetail-Report-Solid-CNV-Report.fxml";
+
+	public static final String ANALYSIS_DETAIL_HERED_AMC_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-Hered-CNV.fxml";
+
+	public static final String ANALYSIS_DETAIL_SOLID_CNV_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-Solid-CNV.fxml";
+
+	public static final String BATCH_BRCA_CNV = "/layout/fxml/BatchChangeBrcaCnvDialog.fxml";
 }

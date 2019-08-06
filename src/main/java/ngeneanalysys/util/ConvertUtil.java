@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.SnpInDelEvidence;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +19,8 @@ import org.apache.commons.lang3.StringUtils;
  * @since 2016. 6. 21. 오후 9:00:21
  */
 public class ConvertUtil {
+
+	private ConvertUtil() {}
 
 	/**
 	 * 숫자 문자열 지정 형식 문자열로 변환
@@ -75,7 +79,7 @@ public class ConvertUtil {
 	 * @return
 	 */
 	public static String convertLocalTimeToUTC(String inputDateTime, String dateFormat, String utcDateFormat) {
-		if(dateFormat == null) dateFormat = "yyyy-MM-dd";
+		if(dateFormat == null) dateFormat = CommonConstants.DEFAULT_DAY_FORMAT;
 		if(utcDateFormat == null) utcDateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'";
 		
 		String utcTime = null;
@@ -182,5 +186,60 @@ public class ConvertUtil {
 		}
 
 		return WordUtils.capitalize(value.replaceAll("_", " "));
+	}
+
+	public static String convertBrcaCnvRegion(List<String> list, final String gene) {
+		final StringBuilder sb = new StringBuilder();
+		LinkedList<String> tempList = new LinkedList<>();
+		list.remove("Promoter");
+		/** MLPA 처리방식 논의중 **/
+		list.remove("MLPA");
+		try {
+			list.forEach(item -> {
+				if (item.equals("Promoter")) {
+					tempList.add(item);
+				} else {
+					if (tempList.isEmpty()) {
+						tempList.add(item);
+					} else {
+						String last = tempList.getLast();
+						if (last.equals("Promoter") && item.equals("1")) {
+							tempList.add(item);
+						} else if (last.equals("Promoter")) {
+							sb.append(last).append(", ");
+							tempList.clear();
+						} else {
+							int lastInt = Integer.parseInt(last);
+							int currentInt = Integer.parseInt(item);
+							if (lastInt == currentInt - 1/* ||
+                                    ("BRCA1".equals(gene) && lastInt == 3 && currentInt == 5)*/) {
+								tempList.add(item);
+							} else if (tempList.size() > 1) {
+								sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast()).append(", ");
+								tempList.clear();
+								tempList.add(item);
+							} else {
+								sb.append(last).append(", ");
+								tempList.clear();
+								tempList.add(item);
+							}
+						}
+					}
+				}
+			});
+
+			if(!tempList.isEmpty()) {
+				if(tempList.size() > 1) {
+					sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast());
+				} else {
+					sb.append(tempList.getLast());
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return sb.toString();
 	}
 }

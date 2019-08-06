@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -180,11 +181,11 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         });
 
         endPosTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) endPosTextField.setText(oldValue);
+            if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) endPosTextField.setText(oldValue);
         });
 
         startPosTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) startPosTextField.setText(oldValue);
+            if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) startPosTextField.setText(oldValue);
         });
 
         diseaseIdTableColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getDiseaseId()));
@@ -275,10 +276,10 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         prognosisEvidenceDTableColumn.setCellFactory(tableColumn -> new PopUpTableCell("prognosisEvidenceD"));
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
+                item.getValue().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT)));
 
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
-
+        deletedTableColumn.setVisible(false);
         interpretationPagination.setPageFactory(pageIndex -> {
             if(currentPageIndex != pageIndex) {
                 setInterpretationList(pageIndex + 1);
@@ -910,7 +911,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
         startPosTextField.setText("");
         endPosTextField.setText("");
         condingConsTextField.setText("");
-        typeTableColumn.setText("");
+        variantTypeTextField.setText("");
 
         setInterpretationList(currentPageIndex + 1);
     }

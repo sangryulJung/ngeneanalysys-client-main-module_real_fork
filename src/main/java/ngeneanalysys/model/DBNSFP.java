@@ -1,5 +1,7 @@
 package ngeneanalysys.model;
 
+import java.math.BigDecimal;
+
 public class DBNSFP {
     private String siftPrediction;
     private String mutationTasterPrediction;
@@ -8,6 +10,30 @@ public class DBNSFP {
     private String fathmmPrediction;
     private String lrtPrediction;
     private String mutationAssessorPrediction;
+    private String metaSvmPrediction;
+    private BigDecimal dbscSnvRfScore;
+    private BigDecimal dbscSnvAdaScore;
+
+    /**
+     * @return metaSvmPrediction
+     */
+    public String getMetaSvmPrediction() {
+        return metaSvmPrediction;
+    }
+
+    /**
+     * @return dbscSnvRfScore
+     */
+    public BigDecimal getDbscSnvRfScore() {
+        return dbscSnvRfScore;
+    }
+
+    /**
+     * @return dbscSnvAdaScore
+     */
+    public BigDecimal getDbscSnvAdaScore() {
+        return dbscSnvAdaScore;
+    }
 
     public String getSiftPrediction() {
         return siftPrediction;
@@ -47,6 +73,9 @@ public class DBNSFP {
                 ", fathmmPrediction='" + fathmmPrediction + '\'' +
                 ", lrtPrediction='" + lrtPrediction + '\'' +
                 ", mutationAssessorPrediction='" + mutationAssessorPrediction + '\'' +
+                ", metaSvmPrediction='" + metaSvmPrediction + '\'' +
+                ", dbscSnvRfScore=" + dbscSnvRfScore +
+                ", dbscSnvAdaScore=" + dbscSnvAdaScore +
                 '}';
     }
 }

@@ -18,6 +18,7 @@ public class SampleView {
     private String inputFType;
     private SampleStatus sampleStatus;
     private PipelineVersion pipelineVersion;
+    private Boolean isControl;
     private AnalysisResultSummary analysisResultSummary;
     private DateTime createdAt;
     private DateTime updatedAt;
@@ -232,22 +233,37 @@ public class SampleView {
         this.analysisResultSummary = analysisResultSummary;
     }
 
+    /**
+     * @return isControl
+     */
+    public Boolean getIsControl() {
+        return isControl;
+    }
+
+    /**
+     * @param control
+     */
+    public void setIsControl(Boolean control) {
+        isControl = control;
+    }
+
     @Override
     public String toString() {
         return "SampleView{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", run='" + run + '\'' +
+                ", run=" + run +
                 ", memberName='" + memberName + '\'' +
                 ", memberGroupName='" + memberGroupName + '\'' +
                 ", patientId='" + patientId + '\'' +
-                ", panel='" + panel + '\'' +
+                ", panel=" + panel +
                 ", diseaseName='" + diseaseName + '\'' +
                 ", sampleSource='" + sampleSource + '\'' +
                 ", qcResult='" + qcResult + '\'' +
                 ", inputFType='" + inputFType + '\'' +
                 ", sampleStatus=" + sampleStatus +
-                ", pipelineVersion='" + pipelineVersion + '\'' +
+                ", pipelineVersion=" + pipelineVersion +
+                ", isControl=" + isControl +
                 ", analysisResultSummary=" + analysisResultSummary +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

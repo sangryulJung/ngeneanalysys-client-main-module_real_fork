@@ -159,12 +159,12 @@ public class ExportInterpretationDataTask extends Task<Void> {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			DialogUtil.setIcon(alert);
 			alert.initOwner(this.mainApp.getPrimaryStage());
-			alert.setTitle("Confirmation Dialog");
-			alert.setHeaderText("Creating the " + fileType + " document was completed.");
-			alert.setContentText("Do you want to check the " + fileType + " document?");
+			alert.setTitle("");
+			alert.setHeaderText("");
+			alert.setContentText("Creating the " + fileType + " document was completed. Do you want to check the " + fileType + " document?");
 
 			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.OK) {
+			if (result.isPresent() && result.get() == ButtonType.OK) {
 				this.mainApp.getHostServices().showDocument(file.toURI().toURL().toExternalForm());
 			} else {
 				alert.close();

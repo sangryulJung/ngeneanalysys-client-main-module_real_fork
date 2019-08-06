@@ -22,7 +22,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.BrcaAmpliconCopyNumberPredictionAlgorithmCode;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.SampleSourceCode;
 import ngeneanalysys.controller.VirtualPanelEditController;
@@ -37,16 +39,15 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.PanelTextFileSaveService;
 import ngeneanalysys.task.BedFileUploadTask;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.FXMLLoadUtil;
-import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.StringUtils;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
@@ -63,7 +64,17 @@ public class SystemManagerPanelController extends SubPaneController {
 
     private APIService apiService;
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    @FXML
+    private Label distributionToolTip;
+    @FXML
+    private Label cutOffToolTip;
+    @FXML
+    private Label predictionThresholdToolTip;
+    @FXML
+    private Label putativeToolTip;
+
+    @FXML
+    private Button loadSettingFileBtn;
 
     @FXML
     private GridPane basicInformationGridPane;
@@ -159,6 +170,9 @@ public class SystemManagerPanelController extends SubPaneController {
     private TableColumn<PanelView, String> updatedAtTableColumn;
 
     @FXML
+    private TableColumn<PanelView, String> sampleSourceTableColumn;
+
+    @FXML
     private TableColumn<PanelView, String> deletedAtTableColumn;
 
     @FXML
@@ -170,6 +184,23 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private TableColumn<PanelView, Boolean> virtualPanelColumn;
 
+    @FXML
+    private TitledPane cnvForBrcaAaccuTestTitledPane;
+    @FXML
+    private RadioButton distributionAmpliconCnpAlgorithmRadioButton;
+    @FXML
+    private RadioButton simpleCutoffAmpliconCnpAlgorithmRadioButton;
+    @FXML
+    private TextField brcaCnvAmpliconCnDuplicationCutoffTextField;
+    @FXML
+    private TextField brcaCnvAmpliconCnDeletionCutoffTextField;
+    @FXML
+    private TextField lowConfidenceCnvDeletionTextField;
+    @FXML
+    private TextField lowConfidenceCnvDuplicationTextField;
+
+    @FXML
+    private TextField exonCnpThresholdTextField;
     @FXML
     private TextField essentialGenesTextField;
 
@@ -221,6 +252,9 @@ public class SystemManagerPanelController extends SubPaneController {
     private File bedFile = null;
 
     private int panelId = 0;
+    private final double simpleCutoffDuplicationDefault = 0.25d;
+    private final double simpleCutoffDeletionDefault = 0.2d;
+    private final int exonCpnThresholdDefault = 60;
 
     @Override
     public void show(Parent root) throws IOException {
@@ -244,13 +278,37 @@ public class SystemManagerPanelController extends SubPaneController {
         analysisTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getAnalysisType()));
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
+        sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDefaultSampleSource()));
 
         warningMAFTextField.setTextFormatter(returnFormatter());
 
         warningReadDepthTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue.matches("[0-9]*")) warningReadDepthTextField.setText(oldValue);
+            if(!newValue.matches(CommonConstants.NUMBER_PATTERN)) warningReadDepthTextField.setText(oldValue);
         });
-
+        brcaCnvAmpliconCnDuplicationCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDuplicationCutoffTextField.setText(oldValue);
+        });
+        brcaCnvAmpliconCnDeletionCutoffTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("[0-9]*\\.?[0-9]+")) brcaCnvAmpliconCnDeletionCutoffTextField.setText(oldValue);
+        });
+        lowConfidenceCnvDeletionTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("\\d*|\\d+\\.\\d*")) lowConfidenceCnvDeletionTextField.setText(oldValue);
+        });
+        lowConfidenceCnvDuplicationTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(StringUtils.isNotEmpty(newValue) &&
+                    !newValue.matches("\\d*|\\d+\\.\\d*")) lowConfidenceCnvDuplicationTextField.setText(oldValue);
+        });
+        distributionAmpliconCnpAlgorithmRadioButton.setOnMouseClicked(e -> {
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setDisable(true);
+            brcaCnvAmpliconCnDeletionCutoffTextField.setDisable(true);
+        });
+        simpleCutoffAmpliconCnpAlgorithmRadioButton.setOnMouseClicked(e -> {
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setDisable(false);
+            brcaCnvAmpliconCnDeletionCutoffTextField.setDisable(false);
+        });
         pipelineComboBox.setConverter(new ComboBoxConverter());
         pipelineComboBox.getItems().add(new ComboBoxItem());
         for(PipelineCode pipelineCode : PipelineCode.values()) {
@@ -273,15 +331,16 @@ public class SystemManagerPanelController extends SubPaneController {
                     panelInfoLabel.setText("Analysis Type : " + pipelineCode.getAnalysisType() + ", Library Type : "
                             + pipelineCode.getLibraryType() + ", Analysis Target : " + pipelineCode.getAnalysisTarget());
 
-                    if(pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                            pipelineCode.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
-                        setBRCADefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+                    if(PipelineCode.isBRCAPipeline(pipelineCode.getCode())) {
+                        setBRCADefault(pipelineCode.getCode());
+                    } else if(PipelineCode.isHeredPipeline(pipelineCode.getCode())) {
                         setHeredDefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+                    } else if(PipelineCode.isHemePipeline(pipelineCode.getCode())) {
                         setHemeDefault();
-                    } else if(pipelineCode.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+                    } else if(PipelineCode.isSolidPipeline(pipelineCode.getCode())) {
                         setSolidDefault();
+                    } else {
+                        setTST170Default();
                     }
 
                     defaultSampleSourceComboBox.getItems().addAll(PipelineCode.getSampleSource(newValue.getValue()));
@@ -293,18 +352,18 @@ public class SystemManagerPanelController extends SubPaneController {
         });
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), DATE_FORMAT)));
+                item.getValue().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
-            if (item.getValue().getUpdatedAt() != null )
+            if (item.getValue().getUpdatedAt() != null)
                 return new SimpleStringProperty(DateFormatUtils.format(
-                    item.getValue().getUpdatedAt().toDate(), DATE_FORMAT));
+                    item.getValue().getUpdatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), DATE_FORMAT));
+                        item.getValue().getDeletedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
@@ -323,12 +382,84 @@ public class SystemManagerPanelController extends SubPaneController {
         });
 
         setDisabledItem(true);
+        initToolTip();
+    }
+
+    private void initToolTip() {
+        PopOverUtil.openToolTipPopOver(distributionToolTip,
+                "CNV analysis using normal distribution");
+        PopOverUtil.openToolTipPopOver(cutOffToolTip,
+                "CNV analysis applied with cut-off value(s) set by user (default Copy Gain = 0.25, Copy Loss = 0.2)");
+        PopOverUtil.openToolTipPopOver(predictionThresholdToolTip,
+                "Exon CNV determination according to the ratio of amplicon copy number (default = 60%)");
+        PopOverUtil.openToolTipPopOver(putativeToolTip,
+                "Cut-off limit value for hypothetical gain or loss each amplicon (default = 0.05)");
+    }
+
+    private void setTST170Default() {
+        cnvForBrcaAaccuTestTitledPane.setDisable(true);
+        warningMAFTextField.setText("");
+        warningReadDepthTextField.setText("");
+        indelMinAlleleFractionTextField.setText("");
+        indelMinAlternateCountTextField.setText("");
+        indelMinReadDepthTextField.setText("");
+        snvMinAlleleFractionTextField.setText("");
+        snvMinAlternateCountTextField.setText("");
+        snvMinReadDepthTextField.setText("");
+
+        populationFrequencyTextField.setText("");
+        essentialGenesTextField.setText("");
+        canonicalTranscriptTextArea.setText("");
+        totalBasePairTextField.setText("");
+        q30TrimmedBasePercentageTextField.setText("");
+        mappedBasePercentageTextField.setText("");
+        onTargetPercentageTextField.setText("");
+        onTargetCoverageTextField.setText("");
+        lowConfidenceMinAlleleFractionTextField.setText("");
+        duplicatedReadsPercentageTextField.setText("");
+        roiCoveragePercentageTextField.setText("");
+        mappingQuality60PercentageTextField.setText("");
+        uniformity02PercentageTextField.setText("");
+
+        warningReadDepthTextField.setDisable(false);
+        warningMAFTextField.setDisable(false);
+        panelNameTextField.setDisable(false);
+        roiFileSelectionButton.setDisable(false);
+        groupCheckComboBox.setDisable(false);
+        diseaseCheckComboBox.setDisable(false);
+        reportTemplateComboBox.setDisable(false);
+        indelMinAlleleFractionTextField.setDisable(false);
+        indelMinAlternateCountTextField.setDisable(false);
+        indelMinReadDepthTextField.setDisable(false);
+        lowConfidenceMinAlleleFractionTextField.setDisable(false);
+        snvMinAlleleFractionTextField.setDisable(false);
+        snvMinAlternateCountTextField.setDisable(false);
+        snvMinReadDepthTextField.setDisable(false);
+        indelMinAlternateCountTextField.setDisable(false);
+        frequencyDBCheckComboBox.setDisable(false);
+        lowConfidenceCheckComboBox.setDisable(false);
+        populationFrequencyTextField.setDisable(false);
+        essentialGenesTextField.setDisable(false);
+        pipelineComboBox.setDisable(false);
+        canonicalTranscriptTextArea.setDisable(false);
+        totalBasePairTextField.setDisable(false);
+        q30TrimmedBasePercentageTextField.setDisable(false);
+        mappedBasePercentageTextField.setDisable(false);
+        onTargetPercentageTextField.setDisable(false);
+        onTargetCoverageTextField.setDisable(false);
+        duplicatedReadsPercentageTextField.setDisable(false);
+        roiCoveragePercentageTextField.setDisable(false);
+        defaultDiseaseComboBox.setDisable(false);
+        defaultSampleSourceComboBox.setDisable(false);
+        mappingQuality60PercentageTextField.setDisable(false);
+        uniformity02PercentageTextField.setDisable(false);
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
     private void setHeredDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
-
+        cnvForBrcaAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("30");
         warningMAFTextField.setDisable(false);
         warningReadDepthTextField.setText("");
@@ -359,14 +490,17 @@ public class SystemManagerPanelController extends SubPaneController {
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(true);
 
+        resetQcInformation();
+
         roiCoveragePercentageTextField.setText("");
         roiCoveragePercentageTextField.setDisable(true);
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
     private void setHemeDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
-
+        cnvForBrcaAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("5.0");
         warningMAFTextField.setDisable(false);
         warningReadDepthTextField.setText("100");
@@ -374,20 +508,20 @@ public class SystemManagerPanelController extends SubPaneController {
 
         essentialGenesTextField.setText("");
         essentialGenesTextField.setDisable(false);
-        indelMinAlleleFractionTextField.setText("5.0");
+        indelMinAlleleFractionTextField.setText("");
         indelMinAlleleFractionTextField.setDisable(false);
-        indelMinReadDepthTextField.setText("30");
+        indelMinReadDepthTextField.setText("");
         indelMinReadDepthTextField.setDisable(false);
-        indelMinAlternateCountTextField.setText("6");
+        indelMinAlternateCountTextField.setText("");
         indelMinAlternateCountTextField.setDisable(false);
 
         snvMinAlleleFractionTextField.setText("");
         snvMinAlleleFractionTextField.setDisable(true);
         snvMinAlternateCountTextField.setText("");
         snvMinAlternateCountTextField.setDisable(true);
-        snvMinReadDepthTextField.setText("30");
+        snvMinReadDepthTextField.setText("");
         snvMinReadDepthTextField.setDisable(false);
-        lowConfidenceMinAlleleFractionTextField.setText("5.0");
+        lowConfidenceMinAlleleFractionTextField.setText("");
         lowConfidenceMinAlleleFractionTextField.setDisable(false);
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(false);
@@ -396,14 +530,17 @@ public class SystemManagerPanelController extends SubPaneController {
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(false);
 
+        resetQcInformation();
+
         roiCoveragePercentageTextField.setText("");
         roiCoveragePercentageTextField.setDisable(true);
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
     private void setSolidDefault() {
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
-
+        cnvForBrcaAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("5.0");
         warningMAFTextField.setDisable(false);
         warningReadDepthTextField.setText("100");
@@ -412,20 +549,20 @@ public class SystemManagerPanelController extends SubPaneController {
         essentialGenesTextField.setText("");
         essentialGenesTextField.setDisable(false);
 
-        indelMinAlleleFractionTextField.setText("5.0");
+        indelMinAlleleFractionTextField.setText("");
         indelMinAlleleFractionTextField.setDisable(false);
-        indelMinReadDepthTextField.setText("30");
+        indelMinReadDepthTextField.setText("");
         indelMinReadDepthTextField.setDisable(false);
-        indelMinAlternateCountTextField.setText("6");
+        indelMinAlternateCountTextField.setText("");
         indelMinAlternateCountTextField.setDisable(false);
 
         snvMinAlleleFractionTextField.setText("");
         snvMinAlleleFractionTextField.setDisable(true);
         snvMinAlternateCountTextField.setText("");
         snvMinAlternateCountTextField.setDisable(true);
-        snvMinReadDepthTextField.setText("30");
+        snvMinReadDepthTextField.setText("");
         snvMinReadDepthTextField.setDisable(false);
-        lowConfidenceMinAlleleFractionTextField.setText("5.0");
+        lowConfidenceMinAlleleFractionTextField.setText("");
         lowConfidenceMinAlleleFractionTextField.setDisable(false);
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(false);
@@ -434,13 +571,33 @@ public class SystemManagerPanelController extends SubPaneController {
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(false);
 
+        resetQcInformation();
+
         roiCoveragePercentageTextField.setText("");
         roiCoveragePercentageTextField.setDisable(true);
+        if(bedFile == null) panelSaveButton.setDisable(true);
     }
 
-    private void setBRCADefault() {
-        canonicalTranscriptTextArea.setText("");
+    private void setBRCADefault(String code) {
+        canonicalTranscriptTextArea.setText("BRCA1\tNM_007294\nBRCA2\tNM_000059");
+        panelSaveButton.setDisable(false);
         canonicalTranscriptTextArea.setDisable(true);
+        if(PipelineCode.isBRCACNVPipeline(code)) {
+            cnvForBrcaAaccuTestTitledPane.setDisable(false);
+            distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
+            brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+            exonCnpThresholdTextField.setText(String.valueOf(exonCpnThresholdDefault));
+            lowConfidenceCnvDuplicationTextField.setText("0.05");
+            lowConfidenceCnvDeletionTextField.setText("0.05");
+        } else {
+            cnvForBrcaAaccuTestTitledPane.setDisable(true);
+            brcaCnvAmpliconCnDuplicationCutoffTextField.setText("");
+            brcaCnvAmpliconCnDeletionCutoffTextField.setText("");
+            exonCnpThresholdTextField.setText("");
+            lowConfidenceCnvDuplicationTextField.setText("");
+            lowConfidenceCnvDeletionTextField.setText("");
+        }
 
         warningReadDepthTextField.setText("");
         warningReadDepthTextField.setDisable(true);
@@ -456,8 +613,8 @@ public class SystemManagerPanelController extends SubPaneController {
         indelMinReadDepthTextField.setDisable(true);
         indelMinAlternateCountTextField.setText("");
         indelMinAlternateCountTextField.setDisable(true);
-        snvMinAlleleFractionTextField.setText("30");
-        snvMinAlleleFractionTextField.setDisable(false);
+        snvMinAlleleFractionTextField.setText("");
+        snvMinAlleleFractionTextField.setDisable(true);
         snvMinAlternateCountTextField.setText("");
         snvMinAlternateCountTextField.setDisable(true);
         snvMinReadDepthTextField.setText("");
@@ -493,7 +650,29 @@ public class SystemManagerPanelController extends SubPaneController {
         uniformity02PercentageTextField.setDisable(true);
         mappingQuality60PercentageTextField.setText("");
         mappingQuality60PercentageTextField.setDisable(true);
+        saveTextFile.setDisable(false);
+        bedFile = null;
+    }
 
+    private void resetQcInformation() {
+        totalBasePairTextField.setText("");
+        totalBasePairTextField.setDisable(false);
+        q30TrimmedBasePercentageTextField.setText("");
+        q30TrimmedBasePercentageTextField.setDisable(false);
+        mappedBasePercentageTextField.setText("");
+        mappedBasePercentageTextField.setDisable(false);
+        onTargetCoverageTextField.setText("");
+        onTargetCoverageTextField.setDisable(false);
+        onTargetPercentageTextField.setText("");
+        onTargetPercentageTextField.setDisable(false);
+        duplicatedReadsPercentageTextField.setText("");
+        duplicatedReadsPercentageTextField.setDisable(false);
+        roiCoveragePercentageTextField.setText("");
+        roiCoveragePercentageTextField.setDisable(false);
+        uniformity02PercentageTextField.setText("");
+        uniformity02PercentageTextField.setDisable(false);
+        mappingQuality60PercentageTextField.setText("");
+        mappingQuality60PercentageTextField.setDisable(false);
     }
 
     private TextFormatter returnFormatter() {
@@ -503,6 +682,10 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     void setPanelList(int page) {
+        if(panelListTable.getItems() != null) {
+            panelListTable.getItems().removeAll(panelListTable.getItems());
+            panelListTable.refresh();
+        }
 
         int totalCount = 0;
         int limit = 11;
@@ -543,7 +726,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 if (pageCount > 0) {
                     panelPagination.setVisible(true);
-                    panelPagination.setPageCount(pageCount);
+                    panelPagination.setPageCount( pageCount);
                 } else {
                     panelPagination.setVisible(false);
                 }
@@ -553,8 +736,8 @@ public class SystemManagerPanelController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
@@ -579,11 +762,6 @@ public class SystemManagerPanelController extends SubPaneController {
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("koreanExomInformationDatabase", "KoEXID"));
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("koreanReferenceGenomeDatabase", "KRGDB"));
         frequencyDBCheckComboBox.getItems().add(new ComboBoxItem("exac", "ExAC"));
-        /*lowConfidenceCheckComboBox.getItems().addAll("artifact_in_normal", "base_quality", "clustered_events",
-                "contamination", "duplicate_evidence", "fragment_length", "germline_risk", "mapping_quality",
-                "multiallelic", "orientation_bias", "panel_of_normals", "read_position", "str_contraction",
-                "strand_artifact", "t_lod", "homopolymer", "repeat_sequence", "sequencing_error", "mapping_error",
-                "snp_candidate");*/
     }
 
     private void createComboBox() {
@@ -667,7 +845,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 diseaseCheckComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<ComboBoxItem>() {
                     @Override
                     public void onChanged(Change<? extends ComboBoxItem> c) {
-                        List<ComboBoxItem> selectedItem = diseaseCheckComboBox.getCheckModel().getCheckedItems().stream().collect(Collectors.toList());
+                        List<ComboBoxItem> selectedItem = new ArrayList<>(diseaseCheckComboBox.getCheckModel().getCheckedItems());
                         if(defaultDiseaseComboBox.getItems().isEmpty()) {
                             defaultDiseaseComboBox.getItems().addAll(selectedItem);
                         } else {
@@ -759,7 +937,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(!frequencyDBCheckComboBox.getCheckModel().getCheckedItems().isEmpty()) {
             final StringBuilder value = new StringBuilder();
-            frequencyDBCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item.getValue() + ","));
+            frequencyDBCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item.getValue()).append(","));
             value.deleteCharAt(value.length() - 1);
             variantFilter.setPopulationFrequencyDBs(value.toString());
         }
@@ -777,7 +955,7 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(!lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().isEmpty()) {
             final StringBuilder value = new StringBuilder();
-            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item + ","));
+            lowConfidenceCheckComboBox.getCheckModel().getCheckedItems().forEach(item -> value.append(item ).append(","));
             value.deleteCharAt(value.length() - 1);
             variantFilter.setLowConfidenceFilter(value.toString());
         }
@@ -844,7 +1022,11 @@ public class SystemManagerPanelController extends SubPaneController {
 
         if(file != null) {
             String panelName = panelNameTextField.getText();
-            if(pipelineComboBox.getSelectionModel().getSelectedItem() == null) return;
+            if(pipelineComboBox.getSelectionModel().getSelectedItem() == null) {
+                DialogUtil.alert("not setting pipeline code" ,"Set the pipeline code.",
+                        mainApp.getPrimaryStage(), true);
+                return;
+            }
             String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
 
             Map<String,Object> params = new HashMap<>();
@@ -858,6 +1040,37 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("analysisType", pipelineCode.getAnalysisType());
                 params.put("libraryType", pipelineCode.getLibraryType());
             }
+            CnvConfigBrcaAccuTest cnvConfigBrcaAaccuTest = new CnvConfigBrcaAccuTest();
+            if(!cnvForBrcaAaccuTestTitledPane.isDisable()) {
+                if(distributionAmpliconCnpAlgorithmRadioButton.isSelected()) {
+                    cnvConfigBrcaAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode());
+                } else {
+                    cnvConfigBrcaAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode());
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDuplicationCutoffTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setSimpleCutoffDuplicationValue(
+                            Double.valueOf(brcaCnvAmpliconCnDuplicationCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDeletionCutoffTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setSimpleCutoffDeletionValue(
+                            Double.valueOf(brcaCnvAmpliconCnDeletionCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(exonCnpThresholdTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setExonCopyNumberPredictionThreshold(
+                            Integer.valueOf(exonCnpThresholdTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDeletionTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDeletion(
+                            Double.valueOf(lowConfidenceCnvDeletionTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDuplicationTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDuplication(
+                            Double.valueOf(lowConfidenceCnvDuplicationTextField.getText()));
+                }
+            }
+            params.put("cnvConfigBrcaAccuTest", cnvConfigBrcaAaccuTest);
 
             if(StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
@@ -900,14 +1113,14 @@ public class SystemManagerPanelController extends SubPaneController {
             StringBuilder groupString = new StringBuilder();
             ObservableList<ComboBoxItem> checkedGroupList =  groupCheckComboBox.getCheckModel().getCheckedItems();
             for(ComboBoxItem  group : checkedGroupList) {
-                groupString.append(group.getText() + " ");
+                groupString.append(group.getText()).append(" ");
             }
 
             //panel에서 선택할 수 있는 질병을 지정함
             StringBuilder diseaseList = new StringBuilder();
             ObservableList<ComboBoxItem> checkedDiseaseList =  diseaseCheckComboBox.getCheckModel().getCheckedItems();
             for(ComboBoxItem  disease : checkedDiseaseList) {
-                diseaseList.append(disease.getText() + " ");
+                diseaseList.append(disease.getText()).append(" ");
             }
 
             params.put("memberGroupIds", groupString.toString());
@@ -932,7 +1145,7 @@ public class SystemManagerPanelController extends SubPaneController {
         String code = pipelineComboBox.getSelectionModel().getSelectedItem().getValue();
 
         if(StringUtils.isNotEmpty(code)) {
-            if(bedFile == null && panelId == 0) return;
+            if((!PipelineCode.isBRCAPipeline(code) && bedFile == null) && panelId == 0) return;
 
             if(defaultSampleSourceComboBox.getSelectionModel().getSelectedItem() == null) {
                 defaultSampleSourceComboBox.requestFocus();
@@ -950,7 +1163,37 @@ public class SystemManagerPanelController extends SubPaneController {
                 params.put("analysisType", pipelineCode.getAnalysisType());
                 params.put("libraryType", pipelineCode.getLibraryType());
             }
-
+            CnvConfigBrcaAccuTest cnvConfigBrcaAaccuTest = new CnvConfigBrcaAccuTest();
+            if(!cnvForBrcaAaccuTestTitledPane.isDisable()) {
+                if(distributionAmpliconCnpAlgorithmRadioButton.isSelected()) {
+                    cnvConfigBrcaAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.DISTRIBUTION.getCode());
+                } else {
+                    cnvConfigBrcaAaccuTest.setAmpliconCopyNumberPredictionAlgorithm(
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode());
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDuplicationCutoffTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setSimpleCutoffDuplicationValue(
+                            Double.valueOf(brcaCnvAmpliconCnDuplicationCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(brcaCnvAmpliconCnDeletionCutoffTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setSimpleCutoffDeletionValue(
+                            Double.valueOf(brcaCnvAmpliconCnDeletionCutoffTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(exonCnpThresholdTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setExonCopyNumberPredictionThreshold(
+                            Integer.valueOf(exonCnpThresholdTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDeletionTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDeletion(
+                            Double.valueOf(lowConfidenceCnvDeletionTextField.getText()));
+                }
+                if (StringUtils.isNotEmpty(lowConfidenceCnvDuplicationTextField.getText())) {
+                    cnvConfigBrcaAaccuTest.setLowConfidenceCnvDuplication(
+                            Double.valueOf(lowConfidenceCnvDuplicationTextField.getText()));
+                }
+            }
+            params.put("cnvConfigBrcaAccuTest", cnvConfigBrcaAaccuTest);
             if(StringUtils.isNotEmpty(warningReadDepthTextField.getText())) {
                 params.put("warningReadDepth", Integer.parseInt(warningReadDepthTextField.getText()));
             }
@@ -1030,23 +1273,30 @@ public class SystemManagerPanelController extends SubPaneController {
                     panelId = 0; //패널을 수정했으므로 초기화
                 }
 
-                Task task = new BedFileUploadTask(panel.getId(), bedFile);
+                if(!PipelineCode.isBRCAPipeline(code) && bedFile != null) {
+                    Task task = new BedFileUploadTask(panel.getId(), bedFile);
 
-                Thread thread = new Thread(task);
-                thread.setDaemon(true);
-                thread.start();
+                    Thread thread = new Thread(task);
+                    thread.setDaemon(true);
+                    thread.start();
 
-                task.setOnSucceeded(ev -> {
-                    try {
-                        setPanelList(1);
-                        setDisabledItem(true);
-                        panelSaveButton.setDisable(true);
-                    } catch (Exception e) {
-                        logger.error("panel list refresh fail.", e);
-                    }
+                    task.setOnSucceeded(ev -> {
+                        try {
+                            setPanelList(1);
+                            setDisabledItem(true);
+                            panelSaveButton.setDisable(true);
+                            basicInformationTitlePane.setExpanded(true);
+                        } catch (Exception e) {
+                            logger.error("panel list refresh fail.", e);
+                        }
 
-                });
-
+                    });
+                } else {
+                    setPanelList(1);
+                    setDisabledItem(true);
+                    panelSaveButton.setDisable(true);
+                    basicInformationTitlePane.setExpanded(true);
+                }
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
@@ -1071,6 +1321,7 @@ public class SystemManagerPanelController extends SubPaneController {
         }
         bedFile = null;
         panelSaveButton.setDisable(true);
+        clinVarDrugResponseCheckBox.setSelected(false);
         groupCheckComboBox.getCheckModel().clearChecks();
         diseaseCheckComboBox.getCheckModel().clearChecks();
         defaultDiseaseComboBox.getSelectionModel().clearSelection();
@@ -1098,14 +1349,23 @@ public class SystemManagerPanelController extends SubPaneController {
         roiCoveragePercentageTextField.setText("");
         mappingQuality60PercentageTextField.setText("");
         uniformity02PercentageTextField.setText("");
+        lowConfidenceCnvDeletionTextField.setText("");
+        lowConfidenceCnvDuplicationTextField.setText("");
+        brcaCnvAmpliconCnDuplicationCutoffTextField.setText("");
+        brcaCnvAmpliconCnDeletionCutoffTextField.setText("");
+        exonCnpThresholdTextField.setText("");
+        distributionAmpliconCnpAlgorithmRadioButton.setSelected(false);
+        simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(false);
     }
 
     void setDisabledItem(boolean condition) {
         resetItem();
         saveTextFile.setDisable(condition);
+        cnvForBrcaAaccuTestTitledPane.setDisable(condition);
         warningReadDepthTextField.setDisable(condition);
         warningMAFTextField.setDisable(condition);
         panelNameTextField.setDisable(condition);
+        loadSettingFileBtn.setDisable(condition);
         roiFileSelectionButton.setDisable(condition);
         groupCheckComboBox.setDisable(condition);
         diseaseCheckComboBox.setDisable(condition);
@@ -1135,24 +1395,9 @@ public class SystemManagerPanelController extends SubPaneController {
         defaultSampleSourceComboBox.setDisable(condition);
         mappingQuality60PercentageTextField.setDisable(condition);
         uniformity02PercentageTextField.setDisable(condition);
-    }
-
-    public void deletePanel(Integer panelId) {
-        try {
-            apiService.delete("admin/panels/" + panelId);
-
-            HttpClientResponse response = apiService.get("admin/panels", null, null, false);
-            final PagedPanel tablePanels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
-            mainController.getBasicInformationMap().put("panels", tablePanels.getResult());
-
-            //panelListTable.getItems().removeAll(panelListTable.getItems());
-            //panelListTable.getItems().addAll(tablePanels.getResult());
-
-            setPanelList(1);
-
-        } catch (WebAPIException wae) {
-            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
-        }
+        clinVarDrugResponseCheckBox.setDisable(condition);
+        lowConfidenceCnvDeletionTextField.setDisable(condition);
+        lowConfidenceCnvDuplicationTextField.setDisable(condition);
     }
 
     @FXML
@@ -1176,19 +1421,12 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
-    private void selectPipelineComboBox(String code) {
-        Optional<ComboBoxItem> comboBoxItem = pipelineComboBox.getItems().stream()
-                .filter(item -> item.getValue().equals(code)).findFirst();
-
-        comboBoxItem.ifPresent(item -> pipelineComboBox.getSelectionModel().select(item));
-    }
-
     private class PanelModifyButton extends TableCell<PanelView, Boolean> {
         HBox box = null;
         final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
         final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
 
-        public PanelModifyButton() {
+        private PanelModifyButton() {
 
             img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Panel panel = PanelModifyButton.this.getTableView().getItems().get(
@@ -1199,8 +1437,6 @@ public class SystemManagerPanelController extends SubPaneController {
                 try {
                     response = apiService.get("admin/panels/" + panel.getId(), null, null, false);
                     panelDetail = response.getObjectBeforeConvertResponseToJSON(PanelView.class);
-                } catch (WebAPIException wae) {
-                    wae.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1223,22 +1459,73 @@ public class SystemManagerPanelController extends SubPaneController {
                     warningReadDepthTextField.setDisable(false);
                     warningReadDepthTextField.setText(panel.getWarningReadDepth().toString());
                 }
-
+                if(PipelineCode.isBRCACNVPipeline(panel.getCode())) {
+                    CnvConfigBrcaAccuTest cnvConfigBRCAaccuTest = panel.getCnvConfigBRCAaccuTest();
+                    if (cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm() != null &&
+                            BrcaAmpliconCopyNumberPredictionAlgorithmCode.SIMPLE_CUTOFF.getCode().equals(
+                                    cnvConfigBRCAaccuTest.getAmpliconCopyNumberPredictionAlgorithm())) {
+                        simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                    } else {
+                        distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                    }
+                    if (cnvConfigBRCAaccuTest.getSimpleCutoffDuplicationValue() != null) {
+                        brcaCnvAmpliconCnDuplicationCutoffTextField.setText(
+                                cnvConfigBRCAaccuTest.getSimpleCutoffDuplicationValue().toString());
+                    } else {
+                        brcaCnvAmpliconCnDuplicationCutoffTextField.setText(String.valueOf(simpleCutoffDuplicationDefault));
+                    }
+                    if (cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue() != null) {
+                        brcaCnvAmpliconCnDeletionCutoffTextField.setText(
+                                cnvConfigBRCAaccuTest.getSimpleCutoffDeletionValue().toString());
+                    } else {
+                        brcaCnvAmpliconCnDeletionCutoffTextField.setText(String.valueOf(simpleCutoffDeletionDefault));
+                    }
+                    if(cnvConfigBRCAaccuTest.getExonCopyNumberPredictionThreshold() != null) {
+                        exonCnpThresholdTextField.setText(cnvConfigBRCAaccuTest.getExonCopyNumberPredictionThreshold().toString());
+                    }
+                    if(cnvConfigBRCAaccuTest.getLowConfidenceCnvDeletion() != null) {
+                        lowConfidenceCnvDeletionTextField.setText(cnvConfigBRCAaccuTest.getLowConfidenceCnvDeletion().toString());
+                    }
+                    if(cnvConfigBRCAaccuTest.getLowConfidenceCnvDuplication() != null) {
+                        lowConfidenceCnvDuplicationTextField.setText(cnvConfigBRCAaccuTest.getLowConfidenceCnvDuplication().toString());
+                    }
+                }
                 VariantFilter variantFilter = panel.getVariantFilter();
-                if(variantFilter.getInDelMinAlleleFraction() != null)
+                if(variantFilter.getInDelMinAlleleFraction() != null) {
                     indelMinAlleleFractionTextField.setText(variantFilter.getInDelMinAlleleFraction().toString());
-                if(variantFilter.getSnvMinAlleleFraction() != null)
+                } else {
+                    indelMinAlleleFractionTextField.setText("");
+                }
+                if(variantFilter.getSnvMinAlleleFraction() != null) {
                     snvMinAlleleFractionTextField.setText(variantFilter.getSnvMinAlleleFraction().toString());
-                if(variantFilter.getInDelMinAlternateCount() != null)
+                } else {
+                    snvMinAlleleFractionTextField.setText("");
+                }
+                if(variantFilter.getInDelMinAlternateCount() != null) {
                     indelMinAlternateCountTextField.setText(variantFilter.getInDelMinAlternateCount().toString());
-                if(variantFilter.getSnvMinAlternateCount() != null)
+                } else {
+                    indelMinAlternateCountTextField.setText("");
+                }
+                if(variantFilter.getSnvMinAlternateCount() != null) {
                     snvMinAlternateCountTextField.setText(variantFilter.getSnvMinAlternateCount().toString());
-                if(variantFilter.getInDelMinReadDepth() != null)
+                } else {
+                    snvMinAlternateCountTextField.setText("");
+                }
+                if(variantFilter.getInDelMinReadDepth() != null) {
                     indelMinReadDepthTextField.setText(variantFilter.getInDelMinReadDepth().toString());
-                if(variantFilter.getSnvMinReadDepth() != null)
+                } else {
+                    indelMinReadDepthTextField.setText("");
+                }
+                if(variantFilter.getSnvMinReadDepth() != null) {
                     snvMinReadDepthTextField.setText(variantFilter.getSnvMinReadDepth().toString());
-                if(variantFilter.getLowConfidenceMinAlleleFraction() != null)
+                } else {
+                    snvMinReadDepthTextField.setText("");
+                }
+                if(variantFilter.getLowConfidenceMinAlleleFraction() != null) {
                     lowConfidenceMinAlleleFractionTextField.setText(variantFilter.getLowConfidenceMinAlleleFraction().toString());
+                } else {
+                    lowConfidenceMinAlleleFractionTextField.setText("");
+                }
                 if(variantFilter.getPopulationFrequencyDBs() != null) {
                     String[] freqDBs = panel.getVariantFilter().getPopulationFrequencyDBs().split(",");
                     for(String freqDB : freqDBs) {
@@ -1292,7 +1579,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     for (int i = 0; i < groupCheckComboBox.getItems().size(); i++) {
                         ComboBoxItem item = groupCheckComboBox.getCheckModel().getItem(i);
                         if (groupIds != null && !groupIds.isEmpty() &&
-                                groupIds.stream().filter(id -> id.equals(Integer.parseInt(item.getValue()))).findFirst().isPresent())
+                                groupIds.stream().anyMatch(id -> id.equals(Integer.parseInt(item.getValue()))))
                             groupCheckComboBox.getCheckModel().check(item);
                     }
 
@@ -1300,7 +1587,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     for (int i = 0; i < diseaseCheckComboBox.getItems().size(); i++) {
                         ComboBoxItem item = diseaseCheckComboBox.getCheckModel().getItem(i);
                         if (diseaseIds != null && !diseaseIds.isEmpty() &&
-                                diseaseIds.stream().filter(id -> id.equals(Integer.parseInt(item.getValue()))).findFirst().isPresent())
+                                diseaseIds.stream().anyMatch(id -> id.equals(Integer.parseInt(item.getValue()))))
                             diseaseCheckComboBox.getCheckModel().check(item);
                     }
 
@@ -1322,7 +1609,6 @@ public class SystemManagerPanelController extends SubPaneController {
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 DialogUtil.setIcon(alert);
-                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this panel?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -1332,7 +1618,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 alert.setContentText(alertContentText);
                 logger.debug(panel.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deletePanel(panel.getId());
                 } else {
                     logger.debug(result.get() + " : button select");
@@ -1361,14 +1647,37 @@ public class SystemManagerPanelController extends SubPaneController {
             box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 
             setGraphic(box);
 
         }
+
+        private void selectPipelineComboBox(String code) {
+            Optional<ComboBoxItem> comboBoxItem = pipelineComboBox.getItems().stream()
+                    .filter(item -> item.getValue().equals(code)).findFirst();
+
+            comboBoxItem.ifPresent(item -> pipelineComboBox.getSelectionModel().select(item));
+        }
+
+        private void deletePanel(Integer panelId) {
+            try {
+                apiService.delete("admin/panels/" + panelId);
+
+                HttpClientResponse response = apiService.get("admin/panels", null, null, false);
+                final PagedPanel tablePanels = response.getObjectBeforeConvertResponseToJSON(PagedPanel.class);
+                mainController.getBasicInformationMap().put("panels", tablePanels.getResult());
+
+                setPanelList(1);
+
+            } catch (WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+            }
+        }
+
     }
 
     private class VirtualPanelButton extends TableCell<PanelView, Boolean> {
@@ -1376,7 +1685,7 @@ public class SystemManagerPanelController extends SubPaneController {
         ComboBox<ComboBoxItem> comboBox = new ComboBox<>();
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
 
-        public VirtualPanelButton() {
+        private VirtualPanelButton() {
 
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Panel panel = VirtualPanelButton.this.getTableView().getItems().get(
@@ -1385,7 +1694,7 @@ public class SystemManagerPanelController extends SubPaneController {
                     VirtualPanelEditController controller;
                     FXMLLoader loader = mainApp.load(FXMLConstants.VIRTUAL_PANEL_EDIT);
                     Node pane = loader.load();
-                    logger.debug("try virtual Panel edit..A");
+                    logger.debug("try virtual Panel edit..");
                     controller = loader.getController();
                     controller.setComboBox(this.comboBox);
                     controller.setPanelId(panel.getId());
@@ -1406,9 +1715,10 @@ public class SystemManagerPanelController extends SubPaneController {
                     Integer virtualPanelId = Integer.parseInt(t1.getValue());
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    DialogUtil.setIcon(alert);
                     alert.setTitle("virtual panel setting");
-                    alert.setHeaderText("What would you like to do?");
-                    alert.setContentText("choose an action");
+                    alert.setHeaderText("");
+                    alert.setContentText("What would you like to do? Choose an action");
 
                     ButtonType buttonTypeEdit = new ButtonType("Edit");
                     ButtonType buttonTypeRemove = new ButtonType("Remove");
@@ -1482,7 +1792,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 box.setAlignment(Pos.CENTER);
 
                 box.setSpacing(10);
-                img.setStyle("-fx-cursor:hand;");
+                img.getStyleClass().add("cursor_hand");
                 box.getChildren().add(comboBox);
                 box.getChildren().add(img);
             }
@@ -1490,15 +1800,15 @@ public class SystemManagerPanelController extends SubPaneController {
 
         }
 
-        public void showRemoveDialog(ComboBoxItem item) {
+        private void showRemoveDialog(ComboBoxItem item) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             DialogUtil.setIcon(alert);
             alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText("Look, a Confirmation Dialog");
-            alert.setContentText("Are you ok with this?");
+            alert.setHeaderText("");
+            alert.setContentText("The virtual panel settings will be deleted. Do you want to proceed?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if (result.isPresent() && result.get() == ButtonType.OK){
                 try {
                     apiService.delete("admin/virtualPanels/" + item.getValue());
 
@@ -1511,6 +1821,138 @@ public class SystemManagerPanelController extends SubPaneController {
             }
         }
 
+    }
+
+    @FXML
+    public void loadSettingFile() {
+        if(panelNameTextField.isDisable()) return;
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.txt)", "*.txt"));
+
+        fileChooser.setTitle("load setting text file");
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            try (FileReader fr = new FileReader(file);
+                 BufferedReader br = new BufferedReader(fr)){
+                String line = "";
+                StringBuilder sb = new StringBuilder();
+                while((line = br.readLine()) != null) {
+                    if(line.contains(" : ")) {
+                        String[] strs = line.split(" : ");
+                        if(strs.length == 2) {
+                            if(strs[0].equals("Panel name")) {
+                                panelNameTextField.setText(strs[1]);
+                            } else if(strs[0].equals("pipeline")) {
+                                Optional<ComboBoxItem> comboBoxItem = pipelineComboBox.getItems().stream()
+                                        .filter(item -> item.getValue().equals(strs[1])).findFirst();
+
+                                comboBoxItem.ifPresent(item -> pipelineComboBox.getSelectionModel().select(item));
+                            } else if(strs[0].equals("Canonical Transcripts")) {
+                                sb.append(strs[1]);
+                            } else if(strs[0].equals("Diseases")) {
+                                List<String> diseasesList = diseaseCheckComboBox.getItems().stream()
+                                                .map(ComboBoxItem::getText).collect(Collectors.toList());
+
+                                for(final String disease : diseasesList) {
+                                    if(strs[1].contains(disease)) {
+                                        Optional<ComboBoxItem> disComboBoxItem = diseaseCheckComboBox.getItems()
+                                                .stream().filter(item -> item.getText().equals(disease)).findFirst();
+                                        disComboBoxItem.ifPresent(item -> diseaseCheckComboBox.getCheckModel().check(item));
+                                    }
+                                }
+                            } else if(strs[0].equals("Default Disease")) {
+                                Optional<ComboBoxItem> comboBoxItem = defaultDiseaseComboBox.getItems().stream()
+                                        .filter(item -> item.getText().equals(strs[1])).findFirst();
+
+                                comboBoxItem.ifPresent(item -> defaultDiseaseComboBox.getSelectionModel().select(item));
+                            } else if(strs[0].equals("Default Sample Source")) {
+                                Optional<SampleSourceCode> comboBoxItem = defaultSampleSourceComboBox.getItems().stream()
+                                        .filter(item -> item.getDescription().equals(strs[1])).findFirst();
+
+                                comboBoxItem.ifPresent(item -> defaultSampleSourceComboBox.getSelectionModel().select(item));
+                            } else if(strs[0].equals("Warning Read Depth")) {
+                                warningReadDepthTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Warning MAF")) {
+                                warningMAFTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Essential Genes")) {
+                                essentialGenesTextField.setText(strs[1]);
+                            } else if(strs[0].equals("InDel MRD")) {
+                                indelMinReadDepthTextField.setText(strs[1]);
+                            } else if(strs[0].equals("InDel MAF")) {
+                                indelMinAlleleFractionTextField.setText(strs[1]);
+                            } else if(strs[0].equals("InDel MAC")) {
+                                indelMinAlternateCountTextField.setText(strs[1]);
+                            } else if(strs[0].equals("SNV MRD")) {
+                                snvMinReadDepthTextField.setText(strs[1]);
+                            } else if(strs[0].equals("SNV MAC")) {
+                                snvMinAlternateCountTextField.setText(strs[1]);
+                            } else if(strs[0].equals("SNV MAF")) {
+                                snvMinAlleleFractionTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Homopolymer & Repeat sequence MAF")) {
+                                lowConfidenceMinAlleleFractionTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Low Confidence")) {
+                                String[] lowConfidences = strs[1].split(",");
+                                Arrays.stream(lowConfidences).forEach(item
+                                        -> lowConfidenceCheckComboBox.getCheckModel().check(item));
+                            } else if(strs[0].equals("Population Frequency DBs")) {
+                                String[] dbs = strs[1].split(",");
+                                for(final String db : dbs) {
+                                    Optional<ComboBoxItem> disComboBoxItem = frequencyDBCheckComboBox.getItems()
+                                            .stream().filter(item -> item.getValue().equals(db)).findFirst();
+                                    disComboBoxItem.ifPresent(item -> frequencyDBCheckComboBox.getCheckModel().check(item));
+                                }
+                            } else if(strs[0].equals("Frequency Threshold")) {
+                                populationFrequencyTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Total Base Pair")) {
+                                totalBasePairTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Q30 Trimmed Base")) {
+                                q30TrimmedBasePercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Mapped Base")) {
+                                mappedBasePercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("On Target")) {
+                                onTargetPercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("On Target Coverage")) {
+                                onTargetCoverageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Duplicated Reads")) {
+                                duplicatedReadsPercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("ROI Coverage")) {
+                                roiCoveragePercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Uniformity")) {
+                                uniformity02PercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Mapping Quality")) {
+                                mappingQuality60PercentageTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Amplicon Copy Number Prediction Algorithm")) {
+                                if(strs[1].equals("Simple Cut-off")) {
+                                    simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                                } else {
+                                    distributionAmpliconCnpAlgorithmRadioButton.setSelected(true);
+                                }
+                            } else if(strs[0].equals("Amplification Cut-off Level")) {
+                                brcaCnvAmpliconCnDuplicationCutoffTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Deletion Cut-off Level")) {
+                                brcaCnvAmpliconCnDeletionCutoffTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Exon Copy Number Prediction Threshold")) {
+                                exonCnpThresholdTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Low Confidence CNV Amplification")) {
+                                lowConfidenceCnvDuplicationTextField.setText(strs[1]);
+                            } else if(strs[0].equals("Low Confidence CNV Deletion")) {
+                                lowConfidenceCnvDeletionTextField.setText(strs[1]);
+                            }
+                        }
+                    } else {
+                        sb.append("\n").append(line);
+                    }
+                }
+                canonicalTranscriptTextArea.setText(sb.toString());
+            } catch (Exception e) {
+                DialogUtil.error("file read error", "check panel setting file",
+                        mainApp.getPrimaryStage(), true);
+                logger.debug(e.getMessage());
+            }
+        }
     }
 
 }

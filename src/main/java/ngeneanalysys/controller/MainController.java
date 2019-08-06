@@ -3,6 +3,7 @@ package ngeneanalysys.controller;
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -25,7 +26,6 @@ import ngeneanalysys.controller.systemMenu.SystemMenuEditController;
 import ngeneanalysys.controller.systemMenu.SystemMenuLicenseController;
 import ngeneanalysys.controller.systemMenu.SystemMenuSettingController;
 import ngeneanalysys.controller.systemMenu.SystemMenuSupportController;
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
@@ -98,7 +98,7 @@ public class MainController extends BaseStageController {
     @FXML
     private BorderPane mainFrame;
 
-    /** progress task contenst area */
+    /** progress task contents area */
     @FXML
     private HBox progressTaskContentArea;
 
@@ -222,25 +222,26 @@ public class MainController extends BaseStageController {
         contentsMaskerPane.setVisible(false);
 
         primaryStage.setOnCloseRequest(event -> {
-            /*if(!progressTaskContentArea.getChildren().isEmpty()) {
-                String alertContentText = "The job is running. Are you sure you want to quit?";
+            if(!progressTaskContentArea.getChildren().isEmpty()) {
+                String alertContentText = "A file upload or download operation is in progress. Do you want to cancel?";
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                DialogUtil.setIcon(alert);
                 alert.initOwner(this.primaryStage);
-                alert.setTitle("Warning Dialog");
+                alert.setTitle("");
                 alert.setContentText(alertContentText);
 
                 Optional<ButtonType> result = alert.showAndWait();
 
-                if(result.get() == ButtonType.CANCEL) {
+                if(result.isPresent() && result.get() == ButtonType.CANCEL) {
                     event.consume();
                 } else {
                     closeEvent(event);
                 }
             } else {
                 closeEvent(event);
-            }*/
-            closeEvent(event);
+            }
+            //closeEvent(event);
         });
 
         //로그인 사용자 세션
@@ -260,8 +261,6 @@ public class MainController extends BaseStageController {
         // 하단 빌드 정보 출력
         getSoftwareVersionInfo();
 
-        // 중단된 분석 요청 작업이 있는지 체크
-
         dashBoardBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(0));
         resultsBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(1));
         managerBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showTopMenuContents(3));
@@ -277,12 +276,13 @@ public class MainController extends BaseStageController {
                 };
             }
         };
-
         this.sampleList = sampleList;
-        sampleList.getStyleClass().add("combo-box");
         sampleList.setDisable(true);
         sampleListLabel.setDisable(true);
         sampleList.getStyleClass().addAll("combo-box", "combo-box-base");
+        sampleList.setMinWidth(100.0);
+        sampleList.setPrefWidth(100.0);
+        sampleList.setMaxWidth(100.0);
         sampleListStackPane.getChildren().add(0, sampleList);
 
         sampleListStackPane.setOnMouseClicked(ev -> {
@@ -294,8 +294,11 @@ public class MainController extends BaseStageController {
         sampleList.setCellFactory(lv ->
             new ListCell<ComboBoxItem>() {
                 private HBox graphic;
+                private HBox clearBox;
 
                 {
+                    clearBox = createClearLabel();
+
                     Label label = new Label();
                     label.getStyleClass().removeAll(label.getStyleClass());
 
@@ -317,14 +320,15 @@ public class MainController extends BaseStageController {
                     Button btn = new Button("X");
                     btn.getStyleClass().removeAll(btn.getStyleClass());
                     btn.getStyleClass().add("remove_btn");
-                    /*btn.setPrefWidth(6);
-                    btn.setPrefHeight(6);*/
                     btn.addEventHandler(MouseEvent.MOUSE_CLICKED, event-> {
                         ComboBoxItem item = getItem();
 
                         removeTopMenu(item.getValue());
                         sampleList.getItems().remove(item);
                         sampleList.hide();
+                        if(sampleList.getItems().size() > 1) {
+                            sampleList.show();
+                        }
                         Platform.runLater(() -> sampleList.getSelectionModel().select(null));
                     });
 
@@ -335,34 +339,72 @@ public class MainController extends BaseStageController {
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 }
 
+                private HBox createClearLabel() {
+                    HBox box = new HBox();
+                    Label label = new Label();
+                    label.textProperty().bind(Bindings.convert(itemProperty()));
+                    label.getStyleClass().removeAll(label.getStyleClass());
+                    box.getChildren().add(label);
+                    box.setAlignment(Pos.CENTER);
+                    box.setStyle("-fx-border-color : #000000; -fx-border-width : 0 0 0.5 0;");
+                    box.setOnMouseClicked(event -> {
+                        if(itemProperty() == null) return;
+                        while(sampleList.getItems().size() > 1) {
+                            ComboBoxItem comboBoxItem = sampleList.getItems().get(1);
+                            removeTopMenu(comboBoxItem.getValue());
+                            sampleList.getItems().remove(comboBoxItem);
+                        }
+                        clearComboBox();
+                        sampleList.hide();
+                    });
+                    box.setCursor(Cursor.HAND);
+                    return box;
+                }
+
                 @Override
                 protected void updateItem(ComboBoxItem item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
                     } else {
-                        setGraphic(graphic);
+                        if(item.getValue().equals("clear")) {
+                            setGraphic(clearBox);
+                        } else {
+                            setGraphic(graphic);
+                        }
                     }
                 }
 
             });
-
-        //settingPanelAndDiseases();
-        Platform.runLater(this::createFilter);
-        //primaryStage.setResizable(false);
+        sampleList.getItems().add(new ComboBoxItem("clear", "Close all samples"));
+        createFilter();
     }
 
     private void getSoftwareVersionInfo() {
-        Platform.runLater(() -> {
-            try {
-                HttpClientResponse response = apiService.get("", null, null, null);
-                NGeneAnalySysVersion nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
-                labelSystemBuild.setText("System version : " + nGeneAnalySysVersion.getSystem());
-            } catch (WebAPIException wae) {
-                logger.debug(wae.getMessage());
-            }
-        });
+        Task task = new Task() {
+            NGeneAnalySysVersion nGeneAnalySysVersion;
 
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response = apiService.get("", null, null, null);
+                nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                labelSystemBuild.setText("System version : " + nGeneAnalySysVersion.getSystem());
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                getException().printStackTrace();
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void closeEvent(Event event) {
@@ -372,12 +414,12 @@ public class MainController extends BaseStageController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         DialogUtil.setIcon(alert);
         alert.initOwner(this.primaryStage);
-        alert.setTitle("Confirmation Dialog");
+        alert.setTitle("");
         alert.setContentText(alertContentText);
 
         Optional<ButtonType> result = alert.showAndWait();
 
-        if(result.get() == ButtonType.OK) {
+        if(result.isPresent() && result.get() == ButtonType.OK) {
             isClose = true;
         }
 
@@ -396,88 +438,36 @@ public class MainController extends BaseStageController {
     }
 
     private void createFilter() {
-        HttpClientResponse response;
+        Task task = new Task() {
 
-        Map<String, List<Object>> somaticFilter = new HashMap<>();
+            @Override
+            protected Object call() throws Exception {
+                HttpClientResponse response;
+                response = apiService.get("member/memberOption/hemeFilter", null, null, null);
+                basicInformationMap.put("hemeFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                response = apiService.get("member/memberOption/solidFilter", null, null, null);
+                basicInformationMap.put("solidFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
+                basicInformationMap.put("tstDNAFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                response = apiService.get("member/memberOption/brcaFilter", null, null, null);
+                basicInformationMap.put("brcaFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                response = apiService.get("member/memberOption/heredFilter", null, null, null);
+                basicInformationMap.put("heredFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                return null;
+            }
 
-        try {
-            response = apiService.get("member/memberOption/hemeFilter", null, null, null);
-            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-        } catch (WebAPIException wae) {
-            somaticFilter = new HashMap<>();
-        } finally {
-            //setDefaultSomaticFilter(somaticFilter, "hemeFilter");
-            basicInformationMap.put("hemeFilter", somaticFilter);
-        }
-
-        try {
-            response = apiService.get("member/memberOption/solidFilter", null, null, null);
-            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-        } catch (WebAPIException wae) {
-            somaticFilter = new HashMap<>();
-        } finally {
-            //setDefaultSomaticFilter(somaticFilter, "solidFilter");
-            basicInformationMap.put("solidFilter", somaticFilter);
-        }
-
-        try {
-            response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
-            somaticFilter = JsonUtil.fromJsonToMap(response.getContentString());
-        } catch (WebAPIException wae) {
-            somaticFilter = new HashMap<>();
-        } finally {
-            //setDefaultSomaticFilter(somaticFilter, "tstDNAFilter");
-            basicInformationMap.put("tstDNAFilter", somaticFilter);
-        }
-
-        Map<String, List<Object>> germlineFilter = new HashMap<>();
-
-        try {
-            response = apiService
-                    .get("member/memberOption/brcaFilter", null, null, null);
-            germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
-
-        } catch (WebAPIException wae) {
-            germlineFilter = new HashMap<>();
-        } finally {
-            //setDefaultGermlineFilter(germlineFilter, "brcaFilter");
-            basicInformationMap.put("brcaFilter", germlineFilter);
-        }
-
-        try {
-            response = apiService
-                    .get("member/memberOption/heredFilter", null, null, null);
-            germlineFilter = JsonUtil.fromJsonToMap(response.getContentString());
-
-        } catch (WebAPIException wae) {
-            germlineFilter = new HashMap<>();
-        } finally {
-            //setDefaultGermlineFilter(germlineFilter, "heredFilter");
-            basicInformationMap.put("heredFilter", germlineFilter);
-        }
-    }
-
-    /*private void setDefaultGermlineFilter(Map<String, List<Object>> germlineFilter, String filterName) {
-        germlineFilter.put("Pathogenic", setStandardFilter("pathogenicity", "P"));
-        germlineFilter.put("Likely Pathogenic", setStandardFilter("pathogenicity", "LP"));
-        germlineFilter.put("Uncertain Significance", setStandardFilter("pathogenicity", "US"));
-        germlineFilter.put("Likely Benign", setStandardFilter("pathogenicity", "LB"));
-        germlineFilter.put("Benign", setStandardFilter("pathogenicity", "B"));
-        basicInformationMap.put(filterName, germlineFilter);
-    }
-
-    private void setDefaultSomaticFilter(Map<String, List<Object>> somaticFilter, String filterName) {
-        somaticFilter.put("Tier 1", setStandardFilter("tier", "T1"));
-        somaticFilter.put("Tier 2", setStandardFilter("tier", "T2"));
-        somaticFilter.put("Tier 3", setStandardFilter("tier", "T3"));
-        somaticFilter.put("Tier 4", setStandardFilter("tier", "T4"));
-        basicInformationMap.put(filterName, somaticFilter);
-    }*/
-
-    private List<Object> setStandardFilter(String key, String value) {
-        List<Object> list = new ArrayList<>();
-        list.add(key + " " + value);
-        return list;
+            @Override
+            protected void failed() {
+                super.failed();
+                basicInformationMap.put("hemeFilter", new HashMap<>());
+                basicInformationMap.put("solidFilter", new HashMap<>());
+                basicInformationMap.put("tstDNAFilter", new HashMap<>());
+                basicInformationMap.put("brcaFilter", new HashMap<>());
+                basicInformationMap.put("heredFilter", new HashMap<>());
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     /**
@@ -556,10 +546,9 @@ public class MainController extends BaseStageController {
     /**
      * 상단 메뉴 추가
      * @param menu TopMenu
-     * @param addPositionIdx int
      * @param isDisplay boolean
      */
-    void addTopMenu(TopMenu menu, int addPositionIdx, boolean isDisplay) {
+    void addTopMenu(TopMenu menu, boolean isDisplay) {
         // 중복 체크
         boolean isAdded = false;
         int addedMenuIdx = 0;
@@ -580,7 +569,7 @@ public class MainController extends BaseStageController {
         }
 
         if(sampleMenu.length == 8) {
-            DialogUtil.warning("", "The maximum number of tabs is eight.", this.getPrimaryStage(), true);
+            DialogUtil.warning("", "Only 8 samples can be opened at the same time.", this.getPrimaryStage(), true);
             return;
         }
 
@@ -637,17 +626,17 @@ public class MainController extends BaseStageController {
             }
             sampleMenu = newTopMenus;
 
-            if(currentSampleId == null) {
-
-            } else if(sampleMenu.length == 0) {
-                currentSampleId = null;
-                showTopMenuContents(1);
-            } else {
-                if(removeIdx > 0) {
-                    currentSampleId = sampleMenu[removeIdx - 1].getId();
-                    showSampleDetail(sampleMenu[removeIdx - 1]);
+            if(currentSampleId != null) {
+                if (sampleMenu.length == 0) {
+                    currentSampleId = null;
+                    showTopMenuContents(1);
                 } else {
-                    showSampleDetail(sampleMenu[removeIdx]);
+                    if (removeIdx > 0) {
+                        currentSampleId = sampleMenu[removeIdx - 1].getId();
+                        showSampleDetail(sampleMenu[removeIdx - 1]);
+                    } else {
+                        showSampleDetail(sampleMenu[removeIdx]);
+                    }
                 }
             }
             if(sampleMenu == null || sampleMenu.length == 0) {
@@ -693,7 +682,6 @@ public class MainController extends BaseStageController {
         }
 
         setAuto(isFirstShow);
-
     }
 
     /**
@@ -832,13 +820,7 @@ public class MainController extends BaseStageController {
                 softwareVersionController.setMainController(this);
                 softwareVersionController.setConfig(this.config);
                 softwareVersionController.show((Parent) root);
-            } /*else if(menuId.equals(SystemMenuCode.PUBLIC_DATABASES.name())) {
-                loader = mainApp.load(FXMLConstants.SYSTEM_MENU_PUBLIC_DATABASES);
-                Node root = loader.load();
-                SystemMenuPublicDatabasesController publicDatabasesController = loader.getController();
-                publicDatabasesController.setMainController(this);
-                publicDatabasesController.show((Parent) root);
-            }*/
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -852,7 +834,7 @@ public class MainController extends BaseStageController {
 
         // 진행중인 분석 요청건이 있는지 확인
         if(progressTaskContentArea.getChildren() != null && progressTaskContentArea.getChildren().size() > 0) {
-            alertHeaderText = "There is a work of analysis request in progress.";
+            alertHeaderText = "A file upload or download operation is in progress. Do you want to logout?";
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -938,13 +920,6 @@ public class MainController extends BaseStageController {
                 this.analysisSampleUploadProgressTaskController = loader.getController();
                 this.analysisSampleUploadProgressTaskController.setMainController(this);
                 Map<String, Object> param = uploadListQueue.poll();
-            /*if (uploadFileData != null && !uploadFileData.isEmpty()) {
-                Map<String, Object> param = new HashMap<>();
-                param.put("fileMap", uploadFileData);
-                param.put("fileList", fileList);
-                param.put("run", run);
-                this.analysisSampleUploadProgressTaskController.setParamMap(param);
-            }*/
                 this.analysisSampleUploadProgressTaskController.setParamMap(param);
                 this.analysisSampleUploadProgressTaskController.show(box);
             } catch (IOException e) {
@@ -1053,7 +1028,7 @@ public class MainController extends BaseStageController {
     }
 
     void setMainMaskerPane(boolean status) {
-        maskerPane.setVisible(status);
+        Platform.runLater(() -> maskerPane.setVisible(status));
     }
     
     public void applyTheme(String theme) {

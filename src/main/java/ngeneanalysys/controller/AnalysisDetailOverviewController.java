@@ -5,15 +5,19 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -36,6 +40,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     @FXML
     private GridPane dataQCResultGridPane;
+
+    @FXML
+    private GridPane overviewMainGridPane;
 
     @FXML
     private Label tierOneVariantsCountLabel;
@@ -94,6 +101,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     /** API 서버 통신 서비스 */
     private APIService apiService;
 
+    private AnalysisDetailOverviewSolidCNVController analysisDetailOverviewSolidCNVController;
+
     @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
@@ -135,7 +144,32 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 setGraphic(hBox);
             }
         });
-        setDisplayItem();
+        Platform.runLater(this::setDisplayItem);
+
+        setSolidCnvOverview();
+    }
+
+    private void setSolidCnvOverview() {
+        Panel panel = (Panel)paramMap.get("panel");
+         if(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode().equals(panel.getCode())) {
+            overviewMainGridPane.setPrefHeight(overviewMainGridPane.getPrefHeight() + 183);
+            overviewMainGridPane.getRowConstraints().get(4).setPrefHeight(183);
+            overviewMainGridPane.getRowConstraints().get(4).setMaxHeight(183);
+
+            try {
+                FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_SOLID_CNV_OVERVIEW);
+                Node node = loader.load();
+                AnalysisDetailOverviewSolidCNVController controller = loader.getController();
+                analysisDetailOverviewSolidCNVController = controller;
+                controller.setMainController(this.getMainController());
+                controller.setParamMap(paramMap);
+                controller.show((Parent) node);
+                overviewMainGridPane.add(node, 0, 4);
+                GridPane.setValignment(node, VPos.BOTTOM);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void createEvidenceLabel(List<SnpInDelEvidence> interpretation, HBox hBox, String evidenceLevel) {
@@ -156,8 +190,8 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
 
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
-            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && tier.equalsIgnoreCase(item.getSnpInDel().getSwTier())))))
+            return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && tier.equalsIgnoreCase(item.getSnpInDel().getSwTier()))))
                     .collect(Collectors.toList());
         }
 
@@ -165,6 +199,9 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
     }
 
     void setDisplayItem() {
+        if(analysisDetailOverviewSolidCNVController != null) {
+            analysisDetailOverviewSolidCNVController.setContents();
+        }
         SampleView sample = (SampleView) getParamMap().get("sampleView");
 
         //기본 초기화
@@ -205,19 +242,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 });
 
                 tierOneGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                tierOne.forEach(item -> {
-                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
-                    if (snpInDelEvidence != null) {
-                        snpInDelInterpretations.add(snpInDelEvidence);
-                    }
-
-                });
-
-                //long count = snpInDelInterpretations.size();
-                //long count = countTherapeutic(snpInDelInterpretations);
-                //tierOneTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierTwo != null) {
@@ -231,18 +255,6 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
                 });
 
                 tierTwoGenesCountLabel.setText(genomicCoordinates.stream().collect(Collectors.groupingBy(GenomicCoordinate::getGene)).size() + "");
-
-                List<SnpInDelEvidence> snpInDelInterpretations = new ArrayList<>();
-                tierTwo.forEach(item -> {
-                    SnpInDelEvidence snpInDelEvidence = ConvertUtil.findPrimaryEvidence(item.getSnpInDelEvidences());
-                    if (snpInDelEvidence != null) {
-                        snpInDelInterpretations.add(snpInDelEvidence);
-                    }
-
-                });
-
-                //long count = countTherapeutic(snpInDelInterpretations);
-                //tierTwoTherapeuticLabel.setText(String.valueOf(count));
             }
 
             if(tierThree != null) {
@@ -279,19 +291,24 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
         columnConstraints.setHgrow(Priority.ALWAYS);
         dataQCResultGridPane.getColumnConstraints().add(columnConstraints);
         HBox hBox = new HBox();
-        hBox.setSpacing(10);
+        hBox.setSpacing(2);
         hBox.setStyle(hBox.getStyle() + "-fx-background-color : #8f9fb9;");
         hBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
         String title = ConvertUtil.returnQCTitle(sampleQC.getQcType());
         Label titleLabel = new Label(title);
-        titleLabel.setStyle(titleLabel.getStyle() + "-fx-text-fill : #FFF;");
+        titleLabel.getStyleClass().add("txt_white");
         Label descriptionLabel = new Label();
 
-        descriptionLabel.getStyleClass().add("help_tooltip_white");
-        descriptionLabel.setStyle(descriptionLabel.getStyle() + "-fx-cursor : hand;");
-        String value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
-                + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
+        descriptionLabel.getStyleClass().addAll("help_tooltip_white", "cursor_hand");
+        String value;
+            if("uniformity_0.5".equals(sampleQC.getQcType())) {
+                value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
+                        + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + " (" + sampleQC.getQcUnit() + ")";
+            } else {
+                value = sampleQC.getQcDescription() + " " + sampleQC.getQcThreshold() + System.lineSeparator()
+                        + "Value : " + sampleQC.getQcValue().stripTrailingZeros().toPlainString() + sampleQC.getQcUnit();
+            }
         descriptionLabel.setOnMouseClicked(ev ->
             PopOverUtil.openQCPopOver(descriptionLabel, value));
 
@@ -331,7 +348,7 @@ public class AnalysisDetailOverviewController extends AnalysisDetailCommonContro
             }
 
         } catch(WebAPIException e) {
-            DialogUtil.alert("QC ERROR", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
+            DialogUtil.alert("QC Metrics data can not be loaded.", e.getMessage(), this.getMainApp().getPrimaryStage(), true);
         }
     }
 

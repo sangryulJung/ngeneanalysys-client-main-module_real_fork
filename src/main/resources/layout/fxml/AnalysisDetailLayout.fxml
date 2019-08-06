@@ -16,19 +16,19 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="analysisDetailWrapper" prefHeight="555.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
+<GridPane fx:id="analysisDetailWrapper" prefHeight="555.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailLayoutController">
    <children>
       <TabPane fx:id="topTabPane" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="455.0" prefWidth="1280.0" scaleZ="2.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets top="5.0" />
          </GridPane.margin>
          <tabs>
-            <Tab styleClass="bold" text="OVERVIEW">
+            <Tab closable="false" styleClass="bold" text="OVERVIEW">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
-            <Tab styleClass="bold" text="REPORT">
+            <Tab closable="false" styleClass="bold" text="REPORT">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
@@ -79,7 +79,7 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></Label>
-                  <Label fx:id="runNameLabel" text="run name">
+                  <Label fx:id="runNameLabel" text=" ">
                      <tooltip>
                         <Tooltip fx:id="runNameTooltip" text="Empty Tooltip" />
                      </tooltip>
@@ -92,7 +92,7 @@
             <HBox alignment="CENTER_LEFT">
                <children>
                   <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="56.0" styleClass="bold" text="PANEL : " />
-                  <Label fx:id="panelLabel" text="Panel Name" textFill="#262b33">
+                  <Label fx:id="panelLabel" text=" " textFill="#262b33">
                      <tooltip>
                         <Tooltip fx:id="panelNameTooltip" text="Empty Tooltip" />
                      </tooltip>
@@ -105,7 +105,7 @@
             <HBox alignment="CENTER_LEFT">
                <children>
                   <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="65.0" styleClass="bold" text="DISEASE : " />
-                  <Label fx:id="diseaseLabel" text="disease name">
+                  <Label fx:id="diseaseLabel" text=" ">
                      <tooltip>
                         <Tooltip fx:id="diseaseTooltip" text="Empty Tooltip" />
                      </tooltip>
@@ -117,8 +117,8 @@
             </HBox>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="90.0" styleClass="bold" text="SEQUENCER : " />
-                  <Label fx:id="sequencerLabel" text="sequencer name">
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="100.0" styleClass="bold" text="INSTRUMENT : " />
+                  <Label fx:id="sequencerLabel" text=" ">
                      <tooltip>
                         <Tooltip fx:id="sequencerTooltip" text="Empty Tooltip" />
                      </tooltip>

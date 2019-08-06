@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.paged.PagedSystemLogView;
@@ -33,7 +34,7 @@ import java.util.Map;
 public class SystemManagerSystemLogsController extends SubPaneController {
     private static final Logger logger = LoggerUtil.getLogger();
 
-    APIService apiService = null;
+    private APIService apiService = null;
 
     @FXML
     private TableView<SystemLogView> logListTable;
@@ -78,7 +79,7 @@ public class SystemManagerSystemLogsController extends SubPaneController {
         });
     }
 
-    public Map<String, Object> getLogSearchParam() {
+    private Map<String, Object> getLogSearchParam() {
 
 
         return new HashMap<>();
@@ -135,8 +136,8 @@ public class SystemManagerSystemLogsController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 

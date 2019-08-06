@@ -4,6 +4,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -14,248 +15,279 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="410.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewGermlineController">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" prefWidth="1140.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="TOP" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="135.0" valignment="TOP" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="BOTTOM" vgrow="NEVER" />
-      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="TOP" vgrow="NEVER" />
-   </rowConstraints>
-   <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="30.0">
+<ScrollPane hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.AnalysisDetailOverviewGermlineController">
+   <content>
+      <GridPane fx:id="overviewMainGridPane" prefHeight="410.0" prefWidth="1140.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" prefWidth="1140.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" valignment="TOP" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="135.0" valignment="TOP" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" valignment="BOTTOM" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" valignment="BOTTOM" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" valignment="TOP" vgrow="NEVER" />
+         </rowConstraints>
          <children>
-            <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" prefHeight="30.0">
                <children>
-                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="DETECTED VARIANT SUMMARY">
-                     <styleClass>
-                        <String fx:value="font_size_15" />
-                        <String fx:value="font_gray" />
-                     </styleClass>
-                  </Label>
+                  <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="SNV/INDEL SUMMARY">
+                           <styleClass>
+                              <String fx:value="font_size_15" />
+                              <String fx:value="font_gray" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="BOTTOM_RIGHT" />
                </children>
             </HBox>
-            <HBox alignment="BOTTOM_RIGHT" />
-         </children>
-      </HBox>
-      <TableView fx:id="pathogenicityTable" prefHeight="149.0" prefWidth="966.0" style="-fx-border-width: 0;" GridPane.rowIndex="3">
-         <columns>
-            <TableColumn fx:id="pathogenicityColumn" editable="false" prefWidth="100.0" sortable="false" text="Pathogenicity" />
-            <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
-            <TableColumn fx:id="positionColumn" editable="false" prefWidth="120.0" sortable="false" text="Position" />
-            <TableColumn fx:id="variantColumn" editable="false" prefWidth="160.0" sortable="false" text="Variant" />
-            <TableColumn fx:id="transcriptColumn" editable="false" prefWidth="180.0" sortable="false" text="Transcript" />
-            <TableColumn fx:id="ntChangeColumn" editable="false" prefWidth="250.0" sortable="false" text="NT Change" />
-            <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="213.0" sortable="false" text="AA Change" />
-         </columns>
-         <GridPane.margin>
-            <Insets right="2.0" />
-         </GridPane.margin>
-      </TableView>
-      <HBox maxWidth="1140.0" minWidth="1140.0" prefHeight="100.0" prefWidth="1140.0" GridPane.rowIndex="5">
-         <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="1140.0">
+            <TableView fx:id="pathogenicityTable" minWidth="1130.0" prefHeight="149.0" prefWidth="1130.0" style="-fx-border-width: 0; -fx-text-fill: black;" GridPane.rowIndex="3">
+               <columns>
+                  <TableColumn fx:id="pathogenicityColumn" editable="false" prefWidth="100.0" sortable="false" text="Pathogenicity" />
+                  <TableColumn fx:id="geneColumn" editable="false" prefWidth="100.0" sortable="false" text="Gene" />
+                  <TableColumn fx:id="positionColumn" editable="false" prefWidth="120.0" sortable="false" text="Position" />
+                  <TableColumn fx:id="variantColumn" editable="false" prefWidth="160.0" sortable="false" text="Variant" />
+                  <TableColumn fx:id="transcriptColumn" editable="false" prefWidth="180.0" sortable="false" text="Transcript" />
+                  <TableColumn fx:id="ntChangeColumn" editable="false" prefWidth="250.0" sortable="false" text="NT Change" />
+                  <TableColumn fx:id="aaChangeColumn" editable="false" prefWidth="208.0" sortable="false" text="AA Change" />
+               </columns>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </TableView>
+            <HBox maxWidth="1140.0" minWidth="1140.0" prefHeight="100.0" prefWidth="1140.0" GridPane.rowIndex="6">
                <children>
-                  <GridPane fx:id="dataQCResultGridPane" prefWidth="1140.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="1140.0">
+                     <children>
+                        <GridPane fx:id="dataQCResultGridPane" prefWidth="1140.0">
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+            <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30;" text="QC METRICS" GridPane.rowIndex="5">
+               <styleClass>
+                  <String fx:value="font_size_15" />
+                  <String fx:value="font_gray" />
+               </styleClass>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+               <children>
+                  <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
+                     </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label text="P">
+                                 <styleClass>
+                                    <String fx:value="txt_white" />
+                                    <String fx:value="font_size_24" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Variants : " />
+                                    <Label fx:id="pVariantsCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Gene : " />
+                                    <Label fx:id="pGenesCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+                  <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
+                     </columnConstraints>
+                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Variants : " />
+                                    <Label fx:id="lpVariantsCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Gene : " />
+                                    <Label fx:id="lpGenesCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label text="LP">
+                                 <styleClass>
+                                    <String fx:value="txt_white" />
+                                    <String fx:value="font_size_24" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </GridPane>
+                  <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Variants : " />
+                                    <Label fx:id="usVariantsCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Gene : " />
+                                    <Label fx:id="usGenesCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label text="US">
+                                 <styleClass>
+                                    <String fx:value="font_size_24" />
+                                    <String fx:value="txt_white" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </GridPane>
+                  <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Variants : " />
+                                    <Label fx:id="lbVariantsCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Gene : " />
+                                    <Label fx:id="lbGenesCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label text="LB">
+                                 <styleClass>
+                                    <String fx:value="font_size_24" />
+                                    <String fx:value="txt_white" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </GridPane>
+                  <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                           <children>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Variants : " />
+                                    <Label fx:id="bVariantsCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                                 <children>
+                                    <Label text="Gene : " />
+                                    <Label fx:id="bGenesCountLabel" text="0" />
+                                 </children>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
+                           </children>
+                        </VBox>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Circle fill="#5a64a5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label text="B">
+                                 <styleClass>
+                                    <String fx:value="font_size_24" />
+                                    <String fx:value="txt_white" />
+                                 </styleClass></Label>
+                           </children>
+                        </StackPane>
+                     </children>
                   </GridPane>
                </children>
-            </VBox>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </HBox>
          </children>
-      </HBox>
-      <Label alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="85.0" style="-fx-pref-height: 30;" text="QC METRICS" GridPane.rowIndex="4">
-         <styleClass>
-            <String fx:value="font_size_15" />
-            <String fx:value="font_gray" />
-         </styleClass>
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </Label>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
-         <children>
-            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="P" />
-                     </children>
-                  </StackPane>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label  text="Variants : " />
-                              <Label fx:id="pVariantsCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label text="Gene : " />
-                              <Label fx:id="pGenesCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </GridPane>
-            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label text="Variants : " />
-                              <Label fx:id="lpVariantsCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label text="Gene : " />
-                              <Label fx:id="lpGenesCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="LP" />
-                     </children>
-                  </StackPane>
-               </children>
-            </GridPane>
-            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label text="Variants : " />
-                              <Label fx:id="usVariantsCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label  text="Gene : " />
-                              <Label fx:id="usGenesCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
-                     </children>
-                  </VBox>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_24" text="US" />
-                     </children>
-                  </StackPane>
-               </children>
-            </GridPane>
-            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label  text="Variants : " />
-                              <Label fx:id="lbVariantsCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label  text="Gene : " />
-                              <Label fx:id="lbGenesCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
-                     </children>
-                  </VBox>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff; " styleClass="font_size_24" text="LB" />
-                     </children>
-                  </StackPane>
-               </children>
-            </GridPane>
-            <GridPane prefWidth="240.0" style="-fx-background-color: #f2f5fa;">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="140.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label  text="Variants : " />
-                              <Label fx:id="bVariantsCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
-                           <children>
-                              <Label  text="Gene : " />
-                              <Label fx:id="bGenesCountLabel" text="0" />
-                           </children>
-                        </HBox>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" />
-                     </children>
-                  </VBox>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <Circle fill="#5a64a5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff; " styleClass="font_size_24" text="B" />
-                     </children>
-                  </StackPane>
-               </children>
-            </GridPane>
-         </children>
-      </HBox>
-   </children>
+      </GridPane>
+   </content>
    <stylesheets>
       <URL value="@../css/common.css" />
       <URL value="@../css/experimenter.css" />
       <URL value="@../css/request.css" />
    </stylesheets>
-</GridPane>
+</ScrollPane>

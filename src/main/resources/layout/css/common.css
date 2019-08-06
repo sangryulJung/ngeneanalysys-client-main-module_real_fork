@@ -80,6 +80,10 @@ Button {
 	-fx-max-height:26;
 }
 
+.cursor_hand {
+    -fx-cursor : hand;
+}
+
 .text-area {
 	-fx-background-color:#fff;
 	-fx-background-insets:0;
@@ -135,12 +139,12 @@ Button {
 
 .alignment_top_left {-fx-alignment:top-left;}
 .alignment_top_center {-fx-alignment:top-center;}
-.alignment_top_rightr {-fx-alignment:top-right;}
+.alignment_top_right {-fx-alignment:top-right;}
 .alignment_center_left {-fx-alignment:center-left;}
 .alignment_center {-fx-alignment:center;}
 .alignment_center_right {-fx-alignment:center-right;}
 .alignment_bottom_center {-fx-alignment:bottom-center;}
-.alignment_bottom_rightr {-fx-alignment:bottom-right;}
+.alignment_bottom_right {-fx-alignment:bottom-right;}
 
 .weight_bold {-fx-font-weight:bold;}
 
@@ -422,6 +426,7 @@ Button {
 .pagination>.pagination-control>.control-box>.number-button:selected>.text {
 	-fx-font-size:12px;
 	-fx-fill:#0469b0;
+	-fx-font-family: "Noto Sans KR Bold";
 	-fx-padding:0 10;
 }
 
@@ -1472,6 +1477,7 @@ Button {
 	-fx-background-radius: 0;
 	-fx-pref-height:35;
 	-fx-text-fill:#ffffff;
+	-fx-font-size:12;
 }
 .btn_setting_save:hover {
 	//-fx-background-color:#0D5E97;
@@ -1481,7 +1487,7 @@ Button {
 	-fx-background-radius : 0;
 	-fx-pref-height:35;
 	-fx-text-fill:#ffffff;
-	-fx-font-size:11;
+	-fx-font-size:12;
 }
 .btn_setting_close:hover {
 	-fx-background-color:#8C8C8C;
@@ -1953,4 +1959,68 @@ Button {
 
 .general_progress > .label {
     -fx-text-fill : #FFFFFF;
+}
+
+.help_tooltip {
+    -fx-graphic: url("../images/renewal/help_icon.png");
+	/*-fx-background-image:url('../images/icon_help.png');
+	-fx-background-color:transparent;
+	-fx-background-repeat:no-repeat;*/
+	-fx-min-width:16;
+	-fx-pref-width:16;
+	-fx-max-width:16;
+	-fx-min-height:16;
+	-fx-pref-height:16;
+	-fx-max-height:16;
+}
+
+.help_tooltip_white {
+    -fx-graphic: url("../images/renewal/help_white_icon.png");
+	/*-fx-background-image:url('../images/icon_help.png');
+	-fx-background-color:transparent;
+	-fx-background-repeat:no-repeat;*/
+	-fx-min-width:14;
+	-fx-pref-width:14;
+	-fx-max-width:14;
+	-fx-min-height:14;
+	-fx-pref-height:14;
+	-fx-max-height:14;
+}
+
+.border_top {
+    -fx-border-color : black;
+    -fx-border-width : 0.5 0 0 0;
+}
+
+.border_bottom {
+    -fx-border-color : black;
+    -fx-border-width : 0 0 0.5 0;
+}
+
+.deletion_paint {
+    -fx-background-color : #F04978;
+    -fx-text-fill : white;
+}
+
+.duplication_paint {
+    -fx-background-color : #2D70E8;
+    -fx-text-fill : white;
+}
+
+#cnvSummaryTable .table-cell {
+    -fx-alignment : center;
+    -fx-text-fill : black;
+    -fx-text-background-color : black;
+}
+
+#heredAmcCnvResultTable .table-cell {
+    -fx-alignment : center;
+    -fx-text-fill : black;
+    -fx-text-background-color : black;
+}
+
+.search_item_box {
+    -fx-background-color : #273e5e;
+    -fx-background-radius : 20;
+    -fx-padding : 2 5 2 5;
 }

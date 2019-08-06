@@ -32,7 +32,7 @@
          <children>
             <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="DETECTED VARIANT SUMMARY">
+                  <Label alignment="TOP_LEFT" maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="30.0" prefHeight="30.0" prefWidth="1240.0" text="SNV/INDEL SUMMARY">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -99,20 +99,24 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#f6545c" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier I" />
+                        <Label text="Tier I">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierOneVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierOneGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -133,13 +137,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierTwoVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierTwoGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -148,7 +152,11 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#ff9482" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier II" />
+                        <Label text="Tier II">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                </children>
@@ -166,13 +174,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierThreeVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierThreeGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -182,7 +190,11 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#70acf5" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier III" />
+                        <Label text="Tier III">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                </children>
@@ -200,13 +212,13 @@
                      <children>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Variants : " />
+                              <Label text="Variants : " />
                               <Label fx:id="tierFourVariantsCountLabel" text="0" />
                            </children>
                         </HBox>
                         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                            <children>
-                              <Label  text="Gene : " />
+                              <Label text="Gene : " />
                               <Label fx:id="tierFourGenesCountLabel" text="0" />
                            </children>
                         </HBox>
@@ -216,7 +228,11 @@
                   <StackPane prefHeight="150.0" prefWidth="200.0">
                      <children>
                         <Circle fill="#1f2d87" radius="35.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Label style="-fx-text-fill: #ffffff;" styleClass="font_size_18" text="Tier IV" />
+                        <Label text="Tier IV">
+                           <styleClass>
+                              <String fx:value="txt_white" />
+                              <String fx:value="font_size_18" />
+                           </styleClass></Label>
                      </children>
                   </StackPane>
                </children>

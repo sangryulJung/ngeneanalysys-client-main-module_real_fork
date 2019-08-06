@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ngeneanalysys.code.AnalysisJobStatusCode;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -140,7 +140,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         restart.setCellFactory(param -> new UpdateButtonCreate());
 
         pageText.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[0-9]*")) pageText.setText(oldValue);
+            if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) pageText.setText(oldValue);
         });
 
 
@@ -201,8 +201,8 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
 
     }
@@ -302,20 +302,10 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     getMainApp().getPrimaryStage(), true);
             wae.printStackTrace();
         } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
-
-    private void restartRun(Integer id) {
-        try {
-            apiService.get("admin/restartRun/" + id, null ,null, false);
-        } catch(WebAPIException wae) {
-            DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
-        }
-
-    }
-
 
     /** 삭제 버튼 생성 */
     private class DeleteButtonCreate extends TableCell<Run, Boolean> {
@@ -352,7 +342,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-            img.setStyle("-fx-cursor:hand;");
+            img.getStyleClass().add("cursor_hand");
             box = new HBox();
             box.setAlignment(Pos.CENTER);
             box.getChildren().add(img);
@@ -366,10 +356,19 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         HBox box = null;
         final ImageView img = new ImageView(resourceUtil.getImage("/layout/images/refresh.png", 18, 18));
 
+        private void restartRun(Integer id) {
+            try {
+                apiService.get("admin/restartRun/" + id, null ,null, false);
+            } catch(WebAPIException wae) {
+                DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
+            }
+
+        }
+
         UpdateButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Run run = UpdateButtonCreate.this.getTableView().getItems().get(UpdateButtonCreate.this.getIndex());
-                if (AnalysisJobStatusCode.JOB_RUN_GROUP_FAIL.equals(run.getRunStatus().getStatus())) {
+                //if (AnalysisJobStatusCode.JOB_RUN_GROUP_FAIL.equals(run.getRunStatus().getStatus())) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     DialogUtil.setIcon(alert);
                     String alertContentText = "Are you sure to restart this run?";
@@ -383,7 +382,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     } else {
                         alert.close();
                     }
-                } else {
+                /*} else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     DialogUtil.setIcon(alert);
                     String alertContentText = "Only the failed analysis can be restarted.";
@@ -392,7 +391,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     alert.setHeaderText(run.getName());
                     alert.setContentText(alertContentText);
                     alert.showAndWait();
-                }
+                }*/
             });
 
         }
@@ -405,7 +404,7 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                 setGraphic(null);
                 return;
             }
-            img.setStyle("-fx-cursor:hand;");
+            img.getStyleClass().add("cursor_hand");
             box = new HBox();
             box.setAlignment(Pos.CENTER);
             box.getChildren().add(img);

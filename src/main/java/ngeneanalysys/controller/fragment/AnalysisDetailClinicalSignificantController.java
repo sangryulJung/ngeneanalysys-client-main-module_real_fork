@@ -1,5 +1,6 @@
 package ngeneanalysys.controller.fragment;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +25,6 @@ import ngeneanalysys.model.VariantAndInterpretationEvidence;
 import ngeneanalysys.model.render.SNPsINDELsOverviewRadarGraph;
 import ngeneanalysys.util.JsonUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.PopOverUtil;
 import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
@@ -93,20 +93,18 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         this.controller = controller;
     }
 
-    /**
-     * @param selectedAnalysisResultVariant VariantAndInterpretationEvidence
-     */
-    public void setSelectedAnalysisResultVariant(VariantAndInterpretationEvidence selectedAnalysisResultVariant) {
-        this.selectedAnalysisResultVariant = selectedAnalysisResultVariant;
-    }
-
     @Override
     public void show(Parent root) throws IOException {
+        refresh();
+        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
+    }
+
+    public void refresh() {
+        selectedAnalysisResultVariant = (VariantAndInterpretationEvidence)paramMap.get("variant");
         setGermlineArea();
         setACMG();
         checkBoxSetting(addToGermlineReportCheckBox, selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport());
         showClinicalSignificantGraph();
-        addToGermlineReportCheckBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> addToReportBtn(addToGermlineReportCheckBox));
     }
 
     private void checkBoxSetting(CheckBox checkBox, String symbol) {
@@ -117,7 +115,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         }
     }
 
-    
     private void setGermlineArea() {
         if(selectedAnalysisResultVariant.getSnpInDel().getSwPathogenicity() != null) {
             for(Node node : predictionArea.getChildren()) {
@@ -142,8 +139,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                             break;
                          default:
                     }
-                    //label.setCursor(Cursor.HAND);
-                    //addClickEvent("PREDICTION", label);
                 } else {
                     label.getStyleClass().add("prediction_none");
                 }
@@ -155,8 +150,11 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     @SuppressWarnings("unchecked")
     private void setACMG() {
+        acmgVBox.getChildren().removeAll(acmgVBox.getChildren());
         Map<String, Object> acmg = returnResultsAfterSearch("acmg");
-        if(acmg != null && !acmg.isEmpty()) {
+        Map<String, Object> enigma = returnResultsAfterSearch("ENIGMA");
+        boolean enigmaFlag = enigma != null && StringUtils.isNotEmpty((String)enigma.get("message"));
+        if(enigmaFlag || (acmg != null && !acmg.isEmpty())) {
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -171,14 +169,27 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
             scrollPane.setContent(box);
 
-            String rules = (String)acmg.get("rules");
-            String[] results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
-            String rulesText = StringUtils.isNotEmpty(rules) ? "(" + rules + ")" : "";
+            String rules;
+            String[] results;
+            String rulesText;
+            String pathogenicity;
+            if(enigmaFlag) {
+                rules = (String) enigma.get("rules");
+                results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
+                rulesText = StringUtils.isNotEmpty(rules) ? "(" + rules + ")" : "";
+                pathogenicity = enigma.containsKey("pathogenic") ? (String)enigma.get("pathogenic") : null;
+
+            } else {
+                rules = (String) acmg.get("rules");
+                results = StringUtils.isNotEmpty(rules) ? rules.split(",") : null;
+                rulesText = StringUtils.isNotEmpty(rules) ? "(" + rules + ")" : "";
+                pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
+            }
 
             Label reason = new Label();
             reason.setMaxWidth(widthSize);
             reason.setWrapText(true);
-            String pathogenicity = acmg.containsKey("pathogenicity") ? (String)acmg.get("pathogenicity") : null;
+
             reason.setText(pathogenicity + rulesText);
             if("benign".equalsIgnoreCase(pathogenicity)) {
                 reason.getStyleClass().add("benign");
@@ -202,37 +213,61 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             } else {
                 for (String result : results) {
                     Map<String, Object> role = (Map<String, Object>) acmg.get(result);
+                    String desc;
+                    String massage;
+                    if(enigmaFlag) {
+                        desc = (String) enigma.get("desc");
+                        massage = (String) enigma.get("message");
+                    } else {
+                        desc = role.containsKey("desc") ? (String) role.get("desc") : null;
+                        massage = role.containsKey("message") ? (String) role.get("message") : null;
+                    }
 
-                    Label roleLabel = new Label(result);
+                    Label roleLabel = new Label();
                     roleLabel.setMaxWidth(50);
                     roleLabel.setWrapText(true);
                     roleLabel.getStyleClass().add("acmg_content_role_label");
-                    if (result.startsWith("PVS")) {
-                        roleLabel.getStyleClass().add("acmg_PVS");
-                    } else if (result.startsWith("PS")) {
-                        roleLabel.getStyleClass().add("acmg_PS");
-                    } else if (result.startsWith("PM")) {
-                        roleLabel.getStyleClass().add("acmg_PM");
-                    } else if (result.startsWith("PP")) {
-                        roleLabel.getStyleClass().add("acmg_PP");
-                    } else if (result.startsWith("BP")) {
-                        roleLabel.getStyleClass().add("acmg_BP");
-                    } else if (result.startsWith("BS")) {
-                        roleLabel.getStyleClass().add("acmg_BS");
-                    } else if (result.startsWith("BA")) {
-                        roleLabel.getStyleClass().add("acmg_BA");
+                    if(enigmaFlag) {
+                        roleLabel.setText("ENIGMA");
+                        if("benign".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_e");
+                        } else if("likely benign".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_d");
+                        } else if("uncertain significance".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_c");
+                        } else if("likely pathogenic".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_b");
+                        } else if("pathogenic".equalsIgnoreCase(pathogenicity)) {
+                            roleLabel.getStyleClass().add("enigma_level_a");
+                        }
+                    } else {
+                        roleLabel.setText(result);
+                        if (result.startsWith("PVS")) {
+                            roleLabel.getStyleClass().add("acmg_PVS");
+                        } else if (result.startsWith("PS")) {
+                            roleLabel.getStyleClass().add("acmg_PS");
+                        } else if (result.startsWith("PM")) {
+                            roleLabel.getStyleClass().add("acmg_PM");
+                        } else if (result.startsWith("PP")) {
+                            roleLabel.getStyleClass().add("acmg_PP");
+                        } else if (result.startsWith("BP")) {
+                            roleLabel.getStyleClass().add("acmg_BP");
+                        } else if (result.startsWith("BS")) {
+                            roleLabel.getStyleClass().add("acmg_BS");
+                        } else if (result.startsWith("BA")) {
+                            roleLabel.getStyleClass().add("acmg_BA");
+                        }
                     }
                     box.getChildren().add(roleLabel);
 
                     Label descLabel = new Label();
-                    String desc = role.containsKey("desc") ? (String) role.get("desc") : null;
+
                     descLabel.setWrapText(true);
                     descLabel.setText(desc);
                     descLabel.getStyleClass().add("acmg_content_desc_label");
                     descLabel.setMaxWidth(widthSize);
                     box.getChildren().add(descLabel);
 
-                    String massage = role.containsKey("message") ? (String) role.get("message") : null;
                     if (!StringUtils.isEmpty(massage)) {
                         Label msgLabel = new Label();
                         msgLabel.setWrapText(true);
@@ -294,39 +329,27 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     private void addToReportBtn(CheckBox checkBox) {
         if(selectedAnalysisResultVariant != null) {
-            String oldSymbol = selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport();
-            if (checkBox.isSelected()) {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.setParamMap(this.getParamMap());
-                    excludeReportDialogController.setSnvController(controller);
+            try {
+                FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
+                Node node = loader.load();
+                ExcludeReportDialogController excludeReportDialogController = loader.getController();
+                excludeReportDialogController.setMainController(mainController);
+                excludeReportDialogController.setParamMap(this.getParamMap());
+                excludeReportDialogController.setSnvController(controller);
+                if (checkBox.isSelected()) {
                     excludeReportDialogController.settingItem("Y", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                    controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
-            } else {
-                try {
-                    FXMLLoader loader = mainApp.load(FXMLConstants.EXCLUDE_REPORT);
-                    Node node = loader.load();
-                    ExcludeReportDialogController excludeReportDialogController = loader.getController();
-                    excludeReportDialogController.setMainController(mainController);
-                    excludeReportDialogController.setParamMap(this.getParamMap());
-                    excludeReportDialogController.setSnvController(controller);
+                } else {
                     excludeReportDialogController.settingItem("N", selectedAnalysisResultVariant, checkBox);
-                    excludeReportDialogController.show((Parent) node);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
                 }
+                excludeReportDialogController.show((Parent) node);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
-            /*if(!oldSymbol.equals(selectedAnalysisResultVariant.getSnpInDel().getIncludedInReport()))
-                controller.showVariantList(controller.getCurrentPageIndex() + 1,0);*/
         }
+    }
+
+    private boolean txtCheck(String radar, Map<String,Object> map) {
+        return map != null && map.containsKey(radar) && StringUtils.isNotEmpty((String)map.get(radar));
     }
 
     /**
@@ -336,7 +359,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     private void showClinicalSignificantGraph() {
         Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
         Map<String,Object> variantClassifierMap = returnResultsAfterSearch("variant_classifier");
-        Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical");
+        Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical_variation");
         Map<String,Object> breastCancerInformationCoreMap = returnResultsAfterSearch("breast_cancer_information_core");
         Map<String,Object> siftMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("SIFT")) ? (Map<String,Object>) inSilicoPredictionMap.get("SIFT") : null;
         Map<String,Object> polyphenMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("PolyPhen2")) ? (Map<String,Object>) inSilicoPredictionMap.get("PolyPhen2") : null;
@@ -353,29 +376,30 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         String mtText = "";
         String siftScore = null;
         String polyphenScore = null;
-
+        String radar = "radar";
         // BIC
-        if(breastCancerInformationCoreMap != null) {
-            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", (String) breastCancerInformationCoreMap.get("radar"));
+        if(txtCheck(radar, breastCancerInformationCoreMap)) {
+            renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", (String) breastCancerInformationCoreMap.get(radar));
         } else {
             renderClinicalPathogenicityData(pathogenicityBicHBox, "BIC", null);
         }
         // CLINVAR
-        if(clinicalMap != null) {
-            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", (String) clinicalMap.get("radar"));
+        if(txtCheck("variation_radar", clinicalMap)) {
+            renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", (String) clinicalMap.get("variation_radar"));
         } else {
             renderClinicalPathogenicityData(pathogenicityClinVarHBox, "CLINVAR", null);
         }
         // ENIGMA
-        if(enigmaMap != null) {
-            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", (String) enigmaMap.get("radar"));
+        if(txtCheck(radar, enigmaMap)) {
+            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", (String) enigmaMap.get(radar));
+            renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", (String) enigmaMap.get(radar));
         } else {
             renderClinicalPathogenicityData(pathogenicityEnigmaHBox, "ENIGMA", null);
         }
         // PREDICTION
-        if(variantClassifierMap != null) {
-            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", (String) variantClassifierMap.get("radar"));
-        } else {
+        if(!txtCheck(radar, enigmaMap) && txtCheck(radar, variantClassifierMap)) {
+            renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", (String) variantClassifierMap.get(radar));
+        } else if(enigmaMap == null && variantClassifierMap == null){
             renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", null);
         }
         // SIFT
@@ -387,19 +411,19 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     try {
                         siftValue = 1.0 - Double.valueOf(siftScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("sift score value is invalid " + siftScore);
+                        logger.debug("sift score value is invalid " + siftScore);
                         siftValue = -1.0;
                     }
                 } else {
-                    logger.warn("sift score value is null");
+                    logger.debug("sift score value is null");
                     siftValue = -1.0;
                 }
-            } else if (siftMap.containsKey("radar")) {
-                siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get("radar"))) / 100.0;
+            } else if (siftMap.containsKey(radar)) {
+                siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get(radar))) / 100.0;
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("sift score or radar value was not found.");
+                logger.debug("sift score or radar value was not found.");
                 siftValue = -1.0;
             }
             if (siftMap.containsKey("text") && siftMap.get("text") != null) {
@@ -415,11 +439,11 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                     try {
                         polyphenValue = Double.valueOf(polyphenScore);
                     } catch (NumberFormatException e) {
-                        logger.warn("metaSVM score value is invalid " + polyphenScore);
+                        logger.debug("metaSVM score value is invalid " + polyphenScore);
                         polyphenValue = -1.0;
                     }
                 } else {
-                    logger.warn("metaSVM value is null");
+                    logger.debug("metaSVM value is null");
                     polyphenValue = -1.0;
                 }
             } else if (polyphenMap.containsKey("radar")) {
@@ -427,7 +451,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("metaSVM score or radar value was not found.");
+                logger.debug("metaSVM score or radar value was not found.");
                 polyphenValue = -1.0;
             }
             if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {
@@ -441,7 +465,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
                 // Tooltip((String) siftMap.get("radar")));
             } else {
-                logger.warn("mt score or radar value was not found.");
+                logger.debug("mt score or radar value was not found.");
                 // mtValue = -1.0;
             }
             if (mtMap.containsKey("text") && mtMap.get("text") != null) {
@@ -488,7 +512,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 frequencyValue[5] * 100);
         frequenciesRadarGraph.display();
         Panel panel = (Panel)paramMap.get("panel");
-        if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        if(PipelineCode.isHeredPipeline(panel.getCode())) {
             deleteClinicalSignificantItem();
         }
     }
@@ -514,17 +538,18 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
     @SuppressWarnings("unchecked")
     private double getPopulationFrequencyByParam(String orgKey, String location) {
         double percentage = -1d;
+        String alleleFrequency = "allele_frequency";
         Map<String,Object> populationFrequencyMap = returnResultsAfterSearch("population_frequency");
         if(!populationFrequencyMap.isEmpty() && populationFrequencyMap.containsKey(orgKey)) {
             Map<String,Object> orgMap = (Map<String,Object>) populationFrequencyMap.get(orgKey);
             if(!orgMap.isEmpty() && orgMap.containsKey(location)) {
                 Map<String,Object> locationMap = (Map<String,Object>) orgMap.get(location);
-                if(!locationMap.isEmpty() && locationMap.containsKey("allele_frequency")) {
-                    if(!StringUtils.isEmpty(locationMap.get("allele_frequency").toString())) {
-                        if(locationMap.get("allele_frequency") instanceof String) {
-                            percentage = Double.parseDouble((String)locationMap.get("allele_frequency"));
-                        } else if(locationMap.get("allele_frequency") instanceof Double){
-                            percentage = (double) locationMap.get("allele_frequency");
+                if(!locationMap.isEmpty() && locationMap.containsKey(alleleFrequency)) {
+                    if(StringUtils.isNotEmpty(locationMap.get(alleleFrequency).toString())) {
+                        if(locationMap.get(alleleFrequency) instanceof String) {
+                            percentage = Double.parseDouble((String)locationMap.get(alleleFrequency));
+                        } else if(locationMap.get(alleleFrequency) instanceof Double){
+                            percentage = (double) locationMap.get(alleleFrequency);
                         }
                     }
                 }
@@ -569,7 +594,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
 
     private void renderClinicalPathogenicityData(HBox node, String text, String value) {
         int level = 0;
-        if (!StringUtils.isEmpty(value) && !"None".equals(value)) {
+        if (StringUtils.isNotEmpty(value) && !"None".equals(value)) {
             try {
                 level = Integer.valueOf(value);
             } catch(NumberFormatException nfe){
@@ -583,35 +608,20 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
                 child.getStyleClass().removeAll(child.getStyleClass());
                 if (((Label)child).getText().equals("P") && level  == 5) {
                     child.getStyleClass().add("prediction_A");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LP") && level == 4) {
                     child.getStyleClass().add("prediction_B");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("US") && level == 3) {
                     child.getStyleClass().add("prediction_C");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("LB") && level == 2) {
                     child.getStyleClass().add("prediction_D");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals("B") && level == 1) {
                     child.getStyleClass().add("prediction_E");
-                    //addClickEvent(text, child);
                 } else if(((Label)child).getText().equals(text)) {
                     child.getStyleClass().add("clinical_significant_pathogenicity_label");
                 } else {
                     child.getStyleClass().add("prediction_none");
                 }
             }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void addClickEvent(String text, Node node) {
-        if("PREDICTION".equals(text)) {
-            Map<String, Object> acmg = returnResultsAfterSearch("acmg");
-            if(acmg == null) return;
-            node.setStyle("-fx-cursor:hand;");
-            node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> PopOverUtil.openACMGPopOver((Label) node, acmg));
         }
     }
 
@@ -646,7 +656,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            controller.showVariantList(0);
+            Platform.runLater(() -> controller.showVariantList(0));
         }
     }
 

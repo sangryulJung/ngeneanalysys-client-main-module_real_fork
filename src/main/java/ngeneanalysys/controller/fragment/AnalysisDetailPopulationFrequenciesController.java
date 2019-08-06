@@ -38,7 +38,7 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
     /**
      * 주요 기관 발현 빈도수(Population Frequencies) 그래프 화면 출력
      */
-    public void showPopulationFrequency() {
+    private void showPopulationFrequency() {
         double populationFrequencyESP6500 = (variant.getSnpInDel().getPopulationFrequency().getEsp6500() != null &&
                 variant.getSnpInDel().getPopulationFrequency().getEsp6500().getAll() != null) ? variant.getSnpInDel().getPopulationFrequency().getEsp6500().getAll().doubleValue() : -1d;
         addPopulationFrequencyGraph(0, 0, "ESP6500 ", populationFrequencyESP6500);
@@ -92,7 +92,6 @@ public class AnalysisDetailPopulationFrequenciesController extends SubPaneContro
             hBox.setDisable(true);
         }
         double graphHBoxWidth = 74.0;
-        //populationFrequencyGraphVBox.getChildren().add(hBox);
         populationFrequencyGraphGridPane.add(vbox, col, row);
         if(graphPercentage > -1) {
             double widthByPercent = Math.round(graphHBoxWidth * (graphPercentage/100));

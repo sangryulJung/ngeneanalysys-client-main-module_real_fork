@@ -173,6 +173,7 @@ public class ServerDirectoryViewController extends BaseStageController {
                 closeDialog();
             } else {
                 //select FASTQ files
+                String headerText = "Server Fastq Files Selection";
                 List<TreeItem<ServerFile>> selectedFiles = serverItemTreeView.getSelectionModel().getSelectedItems();
                 if (selectedFiles != null && !selectedFiles.isEmpty()) {
                     List<TreeItem<ServerFile>> filteredFiles = ((ObservableList<TreeItem<ServerFile>>) selectedFiles).filtered(item -> item.getValue().getIsFile());
@@ -188,18 +189,18 @@ public class ServerDirectoryViewController extends BaseStageController {
                                         filteredFiles2.stream().map(TreeItem::getValue).collect(Collectors.toList()));
                                 closeDialog();
                             } else {
-                                DialogUtil.warning("Server Fastq Files Selection", "Please select valid fastq file pairs.", this.currentStage, true);
+                                DialogUtil.warning(headerText, "Please select valid fastq file pairs.", this.currentStage, true);
                             }
                         } else if (otherFile.isPresent()) {
-                            DialogUtil.warning("Server Fastq Files Selection", "Please select only one directory.", this.currentStage, true);
+                            DialogUtil.warning(headerText, "Please select only one directory.", this.currentStage, true);
                         } else {
-                            DialogUtil.warning("Server Fastq Files Selection", "Please select at least one fastq files pair.", this.currentStage, true);
+                            DialogUtil.warning(headerText, "Please select at least one fastq files pair.", this.currentStage, true);
                         }
                     } else {
-                        DialogUtil.warning("Server Fastq Files Selection", "Please select at least one paired fastq files.", this.currentStage, true);
+                        DialogUtil.warning(headerText, "Please select at least one paired fastq files.", this.currentStage, true);
                     }
                 } else {
-                    DialogUtil.warning("Server Fastq Files Selection", "Please select at least one paired fastq files.", this.currentStage, true);
+                    DialogUtil.warning(headerText, "Please select at least one paired fastq files.", this.currentStage, true);
                 }
             }
         } else {
@@ -208,12 +209,12 @@ public class ServerDirectoryViewController extends BaseStageController {
     }
 
     private String getPathRemoveRoot(TreeItem<ServerFile> item) {
-        StringBuffer path = new StringBuffer();
+        StringBuilder path = new StringBuilder();
 
         TreeItem<ServerFile> current = item;
         while (current != null && current != serverItemTreeView.getRoot()) {
             if (path.toString().equalsIgnoreCase("")) {
-                path = new StringBuffer(current.getValue().getName());
+                path.append(current.getValue().getName());
             } else {
                 path.insert(0, current.getValue().getName() + "/");
             }

@@ -5,6 +5,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.exceptions.WebAPIException;
 
 /**
  * Dialog 출력 Util Class
@@ -31,11 +32,8 @@ public class DialogUtil {
 			alert.initOwner(ownerStage);
 		}
 		
-		String title = null;
-		
-	/*	if(alterType == AlertType.INFORMATION) {
-			title = "INFORMATION";
-		} else */
+		String title;
+
 		if(alterType == AlertType.WARNING) {
 			title = "WARNING";
 		} else if(alterType == AlertType.ERROR) {
@@ -51,11 +49,6 @@ public class DialogUtil {
 		if(StringUtils.isEmpty(contentText)) {
 			alert.setContentText("Unknown message.");
 		} else {
-			/*if(contentText.length() > 100) {
-				alert.setContentText(contentText.substring(0, 100));
-			} else {
-				alert.setContentText(contentText);
-			}*/
 			alert.setContentText(contentText);
 		}
 		
@@ -119,4 +112,15 @@ public class DialogUtil {
             stage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
     }
+	public static void showWebApiException(Throwable throwable, Stage stage) {
+		Exception e = new Exception(throwable);
+		e.printStackTrace();
+		if (e instanceof WebAPIException) {
+			WebAPIException wae = (WebAPIException)e;
+			generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+					stage, true);
+		} else {
+			DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), stage, true);
+		}
+	}
 }

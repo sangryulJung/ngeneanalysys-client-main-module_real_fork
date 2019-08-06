@@ -1,5 +1,6 @@
 package ngeneanalysys.controller.extend;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import ngeneanalysys.MainApp;
 import ngeneanalysys.service.PropertiesService;
@@ -60,5 +61,16 @@ public abstract class BaseStageController {
      */
     public void setConfig(Properties config) {
         this.config = config;
+    }
+
+    public void setMaskerPaneVisable(boolean visable) {
+        Platform.runLater(() -> this.maskerPane.setVisible(visable));
+    }
+
+    protected void setMaskerPanePrefWidth(double width) {
+        Platform.runLater(() -> this.maskerPane.setPrefWidth(width));
+    }
+    protected void setMaskerPanePrefHeight(double height) {
+        Platform.runLater(() -> this.maskerPane.setPrefHeight(height));
     }
 }

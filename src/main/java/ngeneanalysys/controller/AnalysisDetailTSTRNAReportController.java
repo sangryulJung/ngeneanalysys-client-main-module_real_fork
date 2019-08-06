@@ -21,6 +21,7 @@ import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.ExcelConvertReportInformationService;
 import ngeneanalysys.service.PDFCreateService;
 import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.JarDownloadTask;
@@ -65,6 +66,15 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     /** Velocity Util */
     private VelocityUtil velocityUtil = new VelocityUtil();
+
+    @FXML
+    private Label tierCountLabel;
+
+    @FXML
+    private Button excelTemplateBtn;
+
+    @FXML
+    private Label excelUploadBtn;
 
     @FXML
     private TextArea conclusionsTextArea;
@@ -136,6 +146,10 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     private boolean reportData = false;
 
+    private File excelFile = null;
+
+    private Map<String, Object> variableList = null;
+
     @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
@@ -185,7 +199,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                     Map<String, Object> variableList = JsonUtil.fromJsonToMap(template.getCustomFields());
 
                     if (variableList != null && !variableList.isEmpty()) {
-
+                        this.variableList = variableList;
                         Set<String> keyList = variableList.keySet();
 
                         List<String> sortedKeyList = keyList.stream().sorted().collect(Collectors.toList());
@@ -194,7 +208,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                             Map<String, String> item = (Map<String, String>) variableList.get("conclusions");
                             conclusions.setText(item.get("displayName"));
                             sortedKeyList.remove("conclusions");
-                            //conclusions.setStyle("-fx-font-family: \"Noto Sans KR Bold\"");
                         }
 
 
@@ -229,9 +242,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                             if (type.equalsIgnoreCase("Date")) {
                                 DatePicker datePicker = new DatePicker();
                                 datePicker.setStyle(datePicker.getStyle() + "-fx-text-inner-color: black; -fx-control-inner-background: white;");
-                                String dateType = "yyyy-MM-dd";
-                                datePicker.setPromptText(dateType);
-                                datePicker.setConverter(DatepickerConverter.getConverter(dateType));
+                                datePicker.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
+                                datePicker.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
                                 datePicker.setId(key);
                                 customFieldGridPane.add(datePicker, colIndex++, rowIndex);
                             } else if (type.equalsIgnoreCase("ComboBox")) {
@@ -250,16 +262,18 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                                 textField.setId(key);
                                 if (type.equalsIgnoreCase("Integer")) {
                                     textField.textProperty().addListener((observable, oldValue, newValue) -> {
-                                        if (!newValue.matches("[0-9]*")) textField.setText(oldValue);
+                                        if (!newValue.matches(CommonConstants.NUMBER_PATTERN)) textField.setText(oldValue);
                                     });
                                 }
 
                                 customFieldGridPane.add(textField, colIndex++, rowIndex);
                             }
                         }
-
                     }
                 }
+            } else {
+                excelUploadBtn.setVisible(false);
+                excelTemplateBtn.setVisible(false);
             }
             if(sample.getSampleStatus().getReportStartedAt() != null) {
                 response = apiService.get("sampleReport/" + sample.getId(), null, null, false);
@@ -347,9 +361,9 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
                     targetGenesFlowPane.getChildren().add(label);
                     if(targetGenesFlowPane.getChildren().size() % 15 == 1) {
-                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 29);
-                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 29);
-                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 29);
+                        targetGenesFlowPane.setPrefHeight(targetGenesFlowPane.getPrefHeight() + 30);
+                        mainContentsPane.setPrefHeight(mainContentsPane.getPrefHeight() + 30);
+                        contentVBox.setPrefHeight(contentVBox.getPrefHeight() + 30);
                     }
                 }
             }
@@ -461,6 +475,15 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
             tierFour = settingTierList(list, "T4");
 
+            tierCountLabel.setText("Tier 1 : " + ((tierOne != null) ? tierOne
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", Tier 2 : " + ((tierTwo != null) ? tierTwo
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", Tier 3 : " + ((tierThree != null) ? tierThree
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0) +
+                    ", Tier 4 : " + ((tierFour != null) ? tierFour
+                    .stream().filter(variant -> "Y".equals(variant.getSnpInDel().getIncludedInReport())).count() : 0));
+
             List<VariantAndInterpretationEvidence> tableList = new ArrayList<>();
 
             if(tierOne != null && !tierOne.isEmpty()) {
@@ -534,25 +557,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         return null;
     }
 
-    public SimpleStringProperty returnTherapeutic(SnpInDelInterpretation snpInDelInterpretation) {
-        String text = "";
-        if(snpInDelInterpretation != null) {
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelA()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelA() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelB()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelB() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelC()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelC() + ", ";
-            if (!StringUtils.isEmpty(snpInDelInterpretation.getTherapeuticEvidence().getLevelD()))
-                text += snpInDelInterpretation.getTherapeuticEvidence().getLevelD() + ", ";
-        }
-        if(!"".equals(text)) {
-            text = text.substring(0, text.length() - 2);
-        }
-
-        return new SimpleStringProperty(text);
-    }
-
     private void settingReportData(String contents) {
 
         Map<String,Object> contentsMap = JsonUtil.fromJsonToMap(contents);
@@ -568,7 +572,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             } else if(gridObject instanceof DatePicker) {
                 DatePicker datePicker = (DatePicker)gridObject;
                 if(contentsMap.containsKey(datePicker.getId())) {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(CommonConstants.DEFAULT_DAY_FORMAT);
                     datePicker.setValue(LocalDate.parse((String)contentsMap.get(datePicker.getId()), formatter));
                 }
             } else if(gridObject instanceof ComboBox) {
@@ -581,16 +585,12 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     /**
      * 입력 정보 저장
-     * @param user User
      * @return boolean
      */
-    private boolean saveData(User user) {
-
+    private boolean saveData() {
         String conclusionsText = conclusionsTextArea.getText();
 
         Map<String, Object> params = new HashMap<>();
-
-        //params.put("sampleId", sample.getId());
 
         Map<String, Object> contentsMap = new HashMap<>();
 
@@ -623,8 +623,10 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             }
         } catch (WebAPIException wae) {
             wae.printStackTrace();
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
 
         return true;
@@ -636,12 +638,12 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
         alert.setTitle(CONFIRMATION_DIALOG);
-        alert.setHeaderText("Save Report Information");
+        alert.setHeaderText("");
         alert.setContentText("Do you want to save?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
-            boolean dataSave = saveData(null);
+            boolean dataSave = saveData();
             if(dataSave) {
                 DialogUtil.alert("Save Success", "Input data is successfully saved.", getMainController().getPrimaryStage(), false);
             }
@@ -652,7 +654,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     @FXML
     public void createPDFAsDraft() {
-        boolean dataSave = saveData(null);
+        boolean dataSave = saveData();
         if(dataSave){
             if(createPDF(true)) {
                 setVariantsList();
@@ -662,8 +664,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     @FXML
     public void createPDFAsFinal() {
-        User user;
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         DialogUtil.setIcon(alert);
         alert.initOwner(getMainController().getPrimaryStage());
@@ -674,23 +674,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                HttpClientResponse response = apiService.get("/member", null,
-                        null, false);
-                user = response.getObjectBeforeConvertResponseToJSON(User.class);
-                // 소속기관, 연락처 정보 존재 확인
-                /*if (!StringUtils.isEmpty(user.getOrganization()) && !StringUtils.isEmpty(user.getPhone())) {
-                    boolean dataSave = saveData(user);
-                    if (dataSave) {
-                        // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
-                        if (createPDF(false)) {
-                            setComplete();
-                        }
-                    }
-                } else {
-                    DialogUtil.warning("Empty Reviewer Information",
-                            "Please Input a Reviewer Information. [Menu > Edit]", getMainApp().getPrimaryStage(), true);
-                }*/
-                boolean dataSave = saveData(user);
+
+                boolean dataSave = saveData();
                 if (dataSave) {
                     // 최종 보고서 생성이 정상 처리된 경우 분석 샘플의 상태값 완료 처리.
                     if (createPDF(false)) {
@@ -698,13 +683,9 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                     }
                 }
 
-            }  catch (WebAPIException wae) {
-                logger.error("web api exception", wae);
-                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                        getMainApp().getPrimaryStage(), true);
             } catch (Exception e) {
-                logger.error("Unknown Error", e);
-                DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
             }
         } else {
             alert.close();
@@ -716,7 +697,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         createPDF(false);
     }
 
-    public void convertPDFtoImage(File file, String baseFileName) {
+    /*public void convertPDFtoImage(File file, String baseFileName) {
         String path = file.getParentFile().getAbsolutePath();
         try {
         PDDocument document = PDDocument.load(file);
@@ -730,7 +711,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public Map<String, Object> contents() throws WebAPIException {
         Map<String,Object> contentsMap = new HashMap<>();
@@ -946,6 +927,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             if(file != null) {
 
                 Map<String, Object> contentsMap = contents();
+                contentsMap.put("isDraft", isDraft);
 
                 String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
                 String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
@@ -968,26 +950,26 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
                 String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report_tst_rna.vm", "UTF-8", model);
+                    contents = velocityUtil.getContents("/layout/velocity/report_tst_rna.vm", CommonConstants.ENCODING_TYPE_UTF, model);
                     created = pdfCreateService.createPDF(file, contents);
                     createdCheck(created, file);
                     //convertPDFtoImage(file, sample.getName());
                 } else {
-                    for(int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
+                    for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                         Object gridObject = customFieldGridPane.getChildren().get(i);
 
-                        if(gridObject instanceof TextField) {
-                            TextField textField = (TextField)gridObject;
+                        if (gridObject instanceof TextField) {
+                            TextField textField = (TextField) gridObject;
                             contentsMap.put(textField.getId(), textField.getText());
-                        } else if(gridObject instanceof DatePicker) {
-                            DatePicker datePicker = (DatePicker)gridObject;
-                            if(datePicker.getValue() != null) {
+                        } else if (gridObject instanceof DatePicker) {
+                            DatePicker datePicker = (DatePicker) gridObject;
+                            if (datePicker.getValue() != null) {
                                 contentsMap.put(datePicker.getId(), datePicker.getValue().toString());
                             } else {
                                 contentsMap.put(datePicker.getId(), "");
                             }
-                        } else if(gridObject instanceof ComboBox) {
-                            ComboBox<String> comboBox = (ComboBox<String>)gridObject;
+                        } else if (gridObject instanceof ComboBox) {
+                            ComboBox<String> comboBox = (ComboBox<String>) gridObject;
                             contentsMap.put(comboBox.getId(), comboBox.getSelectionModel().getSelectedItem());
                         }
                     }
@@ -1070,7 +1052,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                         thread.setDaemon(true);
                         thread.start();
 
-                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", "UTF-8", model);
+                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", CommonConstants.ENCODING_TYPE_UTF, model);
                         task.setOnSucceeded(ev -> {
                             try {
                                 final boolean created1 = pdfCreateService.createPDF(file, contents1);
@@ -1099,12 +1081,10 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     @SuppressWarnings("unchecked")
     private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-        URLClassLoader classLoader = null;
-        try {
-            classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader());
+
+        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
             Class classToLoad = Class.forName("word.create.App", true, classLoader);
             logger.debug("application init..");
-            // Method[] methods = classToLoad.getMethods();
             Method setParams = classToLoad.getMethod("setParams", Map.class);
             Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
             Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
@@ -1117,12 +1097,7 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             createdCheck(true, file);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-        } finally {
-            try {
-                if(classLoader != null) classLoader.close();
-            } catch (IOException e) {
-                DialogUtil.error("close error", e.getMessage(), getMainApp().getPrimaryStage(), false);
-            }
+            e.printStackTrace();
         }
     }
 
@@ -1133,8 +1108,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                 DialogUtil.setIcon(alert);
                 alert.initOwner(getMainController().getPrimaryStage());
                 alert.setTitle(CONFIRMATION_DIALOG);
-                alert.setHeaderText("Creating the report document was completed.");
-                alert.setContentText("Do you want to check the report document?");
+                alert.setHeaderText("");
+                alert.setContentText("Creating the report document was completed. Do you want to check the report document?");
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -1156,18 +1131,52 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         if(qcList != null && !qcList.isEmpty()) {
             Optional<SampleQC> findQC = qcList.stream().filter(sampleQC -> sampleQC.getQcType().equalsIgnoreCase(qc)).findFirst();
             if(findQC.isPresent()) {
-                    SampleQC qcData = findQC.get();
-                    String number = findQC.get().getQcValue().toString();
-                    Long value = Math.round(Double.parseDouble(number));
+                SampleQC qcData = findQC.get();
+                String number = findQC.get().getQcValue().toString();
+                double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1024 / 1024));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_FLOOR));
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_FLOOR));
                 return qcData;
             }
         }
         return null;
+    }
+
+    @FXML
+    private void createExcelTemplate() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx)", "*.xlsx")
+                        ,new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xls)", "*.xls"));
+        fileChooser.setTitle("format file");
+        fileChooser.setInitialFileName("SampleSheet");
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            ExcelConvertReportInformationService.createExcelTemplate(file, variableList, mainApp.getPrimaryStage());
+        }
+    }
+
+    @FXML
+    private void excelUpload() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Microsoft Worksheet(*.xlsx, *.xls)", "*.xlsx", "*.xls"));
+        fileChooser.setTitle("format file");
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            excelFile = file;
+            if(variableList != null && !variableList.isEmpty()) {
+                ExcelConvertReportInformationService.convertExcelData(sample.getName(),
+                        excelFile, customFieldGridPane, variableList, mainController.getPrimaryStage());
+            }
+        }
     }
 }

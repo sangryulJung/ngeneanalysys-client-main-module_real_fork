@@ -1,6 +1,5 @@
 package ngeneanalysys.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.DateTime;
 
 public class SystemLogView {

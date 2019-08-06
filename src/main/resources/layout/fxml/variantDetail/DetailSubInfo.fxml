@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -7,23 +8,24 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainVBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" spacing="10.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
+<VBox fx:id="mainVBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="360.0" spacing="10.0" style="-fx-background-color: #FFFFFF;" stylesheets="@../../css/variantDetail.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.fragment.DetailSubInfoController">
    <children>
-      <Label styleClass="title1" text="External Links" />
-      <ScrollPane VBox.vgrow="ALWAYS">
+      <Label styleClass="title1" text="EXTERNAL LINKS" />
+      <ScrollPane hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
          <content>
-            <GridPane fx:id="dbLinkGridPane" hgap="5.0" maxWidth="1.7976931348623157E308" minWidth="30.0">
+            <GridPane fx:id="dbLinkGridPane" alignment="CENTER_LEFT" hgap="5.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="355.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="150.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="150.0" />
               </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="15.0" minHeight="15.0" prefHeight="15.0" />
                </rowConstraints>
                <children>
-                  <Label styleClass="title1" text="IGV" />
-                  <Label onMouseClicked="#showIGV" style="-fx-cursor: hand;" styleClass="title1" text="View" GridPane.columnIndex="1" />
+                  <Label onMouseClicked="#showIGV" style="-fx-cursor: hand;" styleClass="title2" text="IGV" />
                </children>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
             </GridPane>
          </content>
       </ScrollPane>

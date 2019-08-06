@@ -7,16 +7,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import impl.org.controlsfx.autocompletion.SuggestionProvider;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import ngeneanalysys.code.UserTypeCode;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedPanel;
 import ngeneanalysys.model.paged.PagedRunSampleView;
@@ -28,7 +32,6 @@ import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.textfield.TextFields;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 
 import ngeneanalysys.code.AnalysisJobStatusCode;
@@ -43,6 +46,8 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.util.Duration;
+
+import static ngeneanalysys.code.AnalysisJobStatusCode.*;
 
 /**
  * 분석자(실험자) Past Results (최근 완료 분석건) 화면 컨트롤러 Class
@@ -75,17 +80,6 @@ public class PastResultsController extends SubPaneController {
 	@FXML
 	private ScrollPane mainContentsScrollPane;
 
-	@FXML
-	private Label totalCountLabel;
-	@FXML
-	private Label queueLabel;
-	@FXML
-	private Label runningLabel;
-	@FXML
-	private Label completeLabel;
-	@FXML
-	private Label failLabel;
-
 	/** API Service */
 	private APIService apiService;
 	
@@ -94,14 +88,15 @@ public class PastResultsController extends SubPaneController {
 
 	private int itemCountPerPage;
 
-	private List<RunStatusGirdPane> runStatusGirdPanes;
+	//private List<RunStatusGirdPane> runStatusGirdPanes;
 
 	private boolean oneItem = false;
 
 	private Map<String, String> searchOption = new HashMap<>();
 
-	SuggestionProvider<String> provider = null;
+	private SuggestionProvider<String> provider = null;
 
+	private int currentPageIndex = -1;
 	private void setSearchOption() {
 		searchOption.put("SAMPLE","sampleName");
 		searchOption.put("RUN","runName");
@@ -122,7 +117,7 @@ public class PastResultsController extends SubPaneController {
 		apiService = APIService.getInstance();
 		apiService.setStage(getMainController().getPrimaryStage());
 
-		runStatusGirdPanes = new ArrayList<>();
+		//runStatusGirdPanes = new ArrayList<>();
 
 		// masker pane init
 		experimentPastResultsWrapper.add(maskerPane, 0, 0, 6, 6);
@@ -132,8 +127,11 @@ public class PastResultsController extends SubPaneController {
 
 		// 페이지 이동 이벤트 바인딩
 		paginationList.setPageFactory(pageIndex -> {
-			mainContentsScrollPane.setVvalue(0);
-			setList(pageIndex + 1);
+			if (pageIndex != this.currentPageIndex) {
+				this.currentPageIndex = pageIndex;
+				mainContentsScrollPane.setVvalue(0);
+				setList(pageIndex + 1);
+			}
 			return new VBox();
 		});
 
@@ -164,7 +162,7 @@ public class PastResultsController extends SubPaneController {
 					try {
 						Map<String,Object> params = new HashMap<>();
 						LoginSession loginSession = LoginSessionUtil.getCurrentLoginSession();
-						if(loginSession.getRole().equalsIgnoreCase("ADMIN")) {
+						if(loginSession.getRole().equalsIgnoreCase(UserTypeCode.USER_TYPE_ADMIN)) {
 							params.put("skipOtherGroup", "false");
 						} else {
 							params.put("skipOtherGroup", "true");
@@ -175,7 +173,9 @@ public class PastResultsController extends SubPaneController {
 						List<Panel> panels = pagedPanel.getResult();
 						List<Panel> filterPanel = null;
 						if (StringUtils.isEmpty(textField.getText())) {
-							filterPanel = panels.stream().filter(panel -> panel.getName().contains(textField.getText())).collect(Collectors.toList());
+							filterPanel = panels.stream()
+									.filter(panel -> panel.getName().contains(textField.getText()))
+									.collect(Collectors.toList());
 						} else {
 							filterPanel = panels;
 						}
@@ -188,7 +188,6 @@ public class PastResultsController extends SubPaneController {
 					provider = SuggestionProvider.create(new HashSet<>());
 					TextFields.bindAutoCompletion(textField, provider).setVisibleRowCount(10);
 					textField.textProperty().addListener((ob, oValue, nValue) -> updateAutoCompletion(nValue, textField));
-
 				}
 
 				textField.setPrefWidth(Double.MAX_VALUE);
@@ -199,15 +198,13 @@ public class PastResultsController extends SubPaneController {
 				final DatePicker endDate = new DatePicker();
 				endDate.setPrefWidth(240);
 
-				String dateFormat = "yyyy-MM-dd";
-
-				startDate.setConverter(DatepickerConverter.getConverter(dateFormat));
-				startDate.setPromptText(dateFormat);
+				startDate.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
+				startDate.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
 				startDate.valueProperty().addListener(element -> compareDate(startDate, endDate, true
 				, "선택한 날짜가 검색의 마지막 날짜 이후의 날짜입니다.", "Date is later than the last day of the selected date search."));
 
-				endDate.setConverter(DatepickerConverter.getConverter(dateFormat));
-				endDate.setPromptText(dateFormat);
+				endDate.setConverter(DatepickerConverter.getConverter(CommonConstants.DEFAULT_DAY_FORMAT));
+				endDate.setPromptText(CommonConstants.DEFAULT_DAY_FORMAT);
 				endDate.valueProperty().addListener(element -> compareDate(startDate, endDate, false
 						, "선택한 날짜가 검색의 시작 날짜 이전의 날짜입니다.", "The selected date is the date before the search of the start date."));
 
@@ -218,7 +215,8 @@ public class PastResultsController extends SubPaneController {
 		searchComboBox.getSelectionModel().select(0);
 	}
 
-	private void compareDate(DatePicker leftDate, DatePicker rightDate, boolean firstDateReset , String titleText, String contentText) {
+	private void compareDate(DatePicker leftDate, DatePicker rightDate, boolean firstDateReset , String titleText,
+							 String contentText) {
 		if(leftDate.getValue() != null && rightDate.getValue() != null) {
 			int leftDateInt = Integer.parseInt(leftDate.getValue().toString().replace("-", ""));
 			int rightDateInt = Integer.parseInt(rightDate.getValue().toString().replace("-", ""));
@@ -235,22 +233,39 @@ public class PastResultsController extends SubPaneController {
 
 	private void updateAutoCompletion(final String value, final CustomTextField textField) {
 		if(!StringUtils.isEmpty(value)) {
-			try {
-				Map<String, Object> params = new HashMap<>();
-				params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
-				params.put("keyword", textField.getText());
-				params.put("resultCount", 15);
-				HttpClientResponse response = apiService.get("/filter", params, null, false);
-				logger.debug(response.getContentString());
-				JSONParser jsonParser = new JSONParser();
-				JSONArray jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
-				provider.clearSuggestions();
-				provider.addPossibleSuggestions(getAllData(jsonArray));
-			} catch (WebAPIException wae) {
-				wae.printStackTrace();
-			} catch (ParseException pe) {
-				pe.printStackTrace();
-			}
+			Map<String, Object> params = new HashMap<>();
+			params.put("target", searchComboBox.getSelectionModel().getSelectedItem().getText().toLowerCase());
+			params.put("keyword", textField.getText());
+			params.put("resultCount", 15);
+			Task task = new Task() {
+				JSONArray jsonArray;
+
+				@Override
+				protected Object call() throws Exception {
+					HttpClientResponse response = apiService.get("/filter", params, null, false);
+					logger.debug(response.getContentString());
+					JSONParser jsonParser = new JSONParser();
+					jsonArray = (JSONArray) jsonParser.parse(response.getContentString());
+					return null;
+				}
+
+				@Override
+				protected void succeeded() {
+					super.succeeded();
+					provider.clearSuggestions();
+					provider.addPossibleSuggestions(getAllData(jsonArray));
+					jsonArray = null;
+				}
+
+				@Override
+				protected void failed() {
+					super.failed();
+					getException().printStackTrace();
+					jsonArray = null;
+				}
+			};
+			Thread thread = new Thread(task);
+			thread.start();
 		}
 	}
 
@@ -310,7 +325,7 @@ public class PastResultsController extends SubPaneController {
 	/**
 	 * 자동 새로고침 일시정지
 	 */
-	public void pauseAutoRefresh() {
+	void pauseAutoRefresh() {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
@@ -327,9 +342,9 @@ public class PastResultsController extends SubPaneController {
 	/**
 	 * 자동 새로고침 시작
 	 */
-	public void resumeAutoRefresh() {
+	void resumeAutoRefresh() {
 		boolean isAutoRefreshOn = "true".equals(config.getProperty("analysis.job.auto.refresh"));
-        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) - 1;
+        int refreshPeriodSecond = (Integer.parseInt(config.getProperty("analysis.job.auto.refresh.period")) * 1000) / 2;
 		// 기능 실행중인 상태인 경우 실행
 		if(autoRefreshTimeline != null && isAutoRefreshOn) {
 			logger.debug(String.format("[%s] timeline status : %s", this.getClass().getName(),
@@ -347,7 +362,7 @@ public class PastResultsController extends SubPaneController {
 	 * 목록 새로고침 실행.
 	 */
 	@FXML
-	public void refreshList() {
+	private void refreshList() {
 		setList(paginationList.getCurrentPageIndex() + 1);
 	}
 
@@ -361,78 +376,88 @@ public class PastResultsController extends SubPaneController {
 			logger.debug(String.format("auto refresh timeline status : %s", autoRefreshTimeline.getStatus()));
 		}
 		maskerPane.setVisible(true);
-		
-		int totalCount = 0;
-		// 조회 시작 index
-		int offset = (page - 1) * itemCountPerPage;
+		Task<Void> task = new Task<Void>() {
 
-		Map<String, Object> param = getSearchParam();
-		Map<String, List<Object>> subParams = getSubSearchParam();
-		param.put("limit", itemCountPerPage);
-		param.put("offset", offset);
-		
-		try {
-			HttpClientResponse response = apiService.get("/searchSamples", param, null, subParams);
+			private PagedRunSampleView searchedSamples = null;
+			private List<RunSampleView> list = null;
+			private int totalCount = 0;
+			private int pageCount = 0;
 
-			if (response != null) {
-				PagedRunSampleView searchedSamples = response
-						.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
+			@Override
+			protected Void call() throws Exception {
+				HttpClientResponse response;
+				// 조회 시작 index
+				int offset = (page - 1) * itemCountPerPage;
 
-				/*totalCountLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunCount().toString());
-				queueLabel.setText(searchedSamples.getSampleAnalysisJobCount().getQueuedSampleCount().toString());
-				runningLabel.setText(searchedSamples.getSampleAnalysisJobCount().getRunningSampleCount().toString());
-				completeLabel.setText(searchedSamples.getSampleAnalysisJobCount().getCompletedSampleCount().toString());
-				failLabel.setText(searchedSamples.getSampleAnalysisJobCount().getFailedSampleCount().toString());*/
+				Map<String, Object> param = getSearchParam();
+				Map<String, List<Object>> subParams = getSubSearchParam();
+				param.put("limit", itemCountPerPage);
+				param.put("offset", offset);
+				response = apiService.get("/searchSamples", param, null, subParams);
 
-				List<RunSampleView> list = null;
-				if (searchedSamples != null) {
-					totalCount = searchedSamples.getCount();
-					list = searchedSamples.getResult().stream().sorted((a, b) -> Integer.compare(b.getRun().getId(), a.getRun().getId())).collect(Collectors.toList());
-				}
-				int pageCount = 0;
-				if (totalCount > 0) {
-					paginationList.setCurrentPageIndex(page - 1);
-					pageCount = totalCount / itemCountPerPage;
-					if (totalCount % itemCountPerPage > 0) {
-						pageCount++;
+				if (response != null) {
+					searchedSamples = response.getObjectBeforeConvertResponseToJSON(PagedRunSampleView.class);
+					if (searchedSamples != null) {
+						totalCount = searchedSamples.getCount();
+						list = searchedSamples.getResult().stream()
+								.sorted((a, b) -> Integer.compare(b.getRun().getId(), a.getRun().getId()))
+								.collect(Collectors.toList());
 					}
 				}
-				logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
-
-				renderSampleList(list);
-				if (pageCount > 0) {
-					paginationList.setVisible(true);
-					paginationList.setPageCount(pageCount);
-				} else {
-					paginationList.setVisible(false);
-				}
-
-			} else {
-				paginationList.setVisible(false);
+				return null;
 			}
-		} catch (WebAPIException wae) {
-			// DialogUtil.error(null, "Running and Recent Samples Search
-			// Error.", getMainApp().getPrimaryStage(),true);
-			DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-					getMainApp().getPrimaryStage(), false);
-		} catch (Exception e) {
-			logger.error("Unknown Error", e);
-			DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(),
-					false);
-			e.printStackTrace();
-		}
-		maskerPane.setVisible(false);
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				Platform.runLater(() -> {
+					maskerPane.setVisible(false);
+					if (totalCount > 0) {
+						paginationList.setCurrentPageIndex(page - 1);
+						pageCount = totalCount / itemCountPerPage;
+						if (totalCount % itemCountPerPage > 0) {
+							pageCount++;
+						}
+					}
+					logger.debug(String.format("total count : %s, page count : %s", totalCount, pageCount));
+
+					renderSampleList(list);
+					if (pageCount > 0) {
+						paginationList.setVisible(true);
+						paginationList.setPageCount(pageCount);
+					} else {
+						paginationList.setVisible(false);
+					}
+				});
+			}
+
+			@Override
+			protected void failed() {
+				super.failed();
+				maskerPane.setVisible(false);
+				Exception e = new Exception(getException());
+				if (e instanceof WebAPIException) {
+					DialogUtil.generalShow(((WebAPIException)e).getAlertType(), ((WebAPIException)e).getHeaderText(),
+							((WebAPIException)e).getContents(),	getMainApp().getPrimaryStage(), false);
+				} else {
+					logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+					DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), false);
+					e.printStackTrace();
+				}
+			}
+		};
+		Thread thread = new Thread(task);
+		thread.start();
 	}
 
 	private Map<String, Object> getSearchParam() {
 		Map<String, Object> param = new HashMap<>();
 		param.put("format", "json");
-		/*param.put("step", AnalysisJobStatusCode.JOB_RUN_GROUP_PIPELINE);
-		param.put("status", AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE);*/
 
 		if(oneItem) {
 			final CustomTextField textField = (CustomTextField)filterSearchArea.getChildren().get(0);
-			param.put("search", searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText()) + " " + textField.getText());
+			param.put("search", searchOption.get(searchComboBox.getSelectionModel().getSelectedItem().getText())
+					+ " " + textField.getText());
 		}
 
 		/* End 검색 항목 설정 */
@@ -478,23 +503,22 @@ public class PastResultsController extends SubPaneController {
 	 * @param list List<RunSampleView>
 	 */
 	private void renderSampleList(List<RunSampleView> list) {
-
+		Insets insets = new Insets(0, 0, 30, 0);
 		resultVBox.getChildren().removeAll(resultVBox.getChildren());
 		resultVBox.setPrefHeight(0);
 		if (list != null && !list.isEmpty()) {
 			for(RunSampleView runSampleView : list) {
 				RunStatusGirdPane gridPane = new RunStatusGirdPane();
-				runStatusGirdPanes.add(gridPane);
+				//runStatusGirdPanes.add(gridPane);
 				resultVBox.getChildren().add(gridPane);
 				gridPane.setLabel(runSampleView);
 				setVBoxPrefSize(gridPane);
 
 				SampleInfoVBox vBox = new SampleInfoVBox();
-				vBox.setSampleList(runSampleView.getSampleViews());
+				vBox.setSampleList(runSampleView.getSampleViews(), runSampleView.getRun().getRunStatus().getSampleCount());
 				resultVBox.getChildren().add(vBox);
 				setVBoxPrefSize(vBox);
 				if(list.indexOf(runSampleView) < list.size() - 1) {
-                    Insets insets = new Insets(0, 0, 30, 0);
                     VBox.setMargin(vBox, insets);
                     resultVBox.setPrefHeight(resultVBox.getPrefHeight() + 30);
                 }
@@ -527,7 +551,7 @@ public class PastResultsController extends SubPaneController {
 
 	private HBox createItemHBox(String id) {
 		HBox hBox = new HBox();
-		hBox.setStyle(hBox.getStyle() + "-fx-background-color : #273e5e; -fx-background-radius : 20; -fx-padding : 2 5 2 5");
+		hBox.getStyleClass().add("search_item_box");
 		hBox.setAlignment(Pos.CENTER);
 		hBox.setId(id);
 
@@ -536,7 +560,6 @@ public class PastResultsController extends SubPaneController {
 
 	private Label createRemoveBtn(final FlowPane flowPane, final HBox hBox, final VBox box) {
 		Label xLabel = new Label("X");
-		xLabel.setCursor(Cursor.HAND);
 		xLabel.setOnMouseClicked(ev -> {
 			if(flowPane.getChildren().size() == 1) {
 				searchListVBox.getChildren().remove(box);
@@ -545,18 +568,19 @@ public class PastResultsController extends SubPaneController {
 			}
 			setList(1);
 		});
-		xLabel.getStyleClass().add("remove_btn");
+		xLabel.getStyleClass().addAll("remove_btn");
 
 		return xLabel;
 	}
 
 	private void addDateLabel(final String startDate, final String endDate, final HBox hBox) {
 		Label startLabel = new Label(startDate);
-		startLabel.setStyle(startLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
+		String textFill = "txt_white";
+		startLabel.getStyleClass().add(textFill);
 		Label label = new Label(" ~ ");
-		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
+		label.getStyleClass().add(textFill);
 		Label endLabel = new Label(endDate);
-		endLabel.setStyle(endLabel.getStyle() + "-fx-text-fill : #FFFFFF;");
+		endLabel.getStyleClass().add(textFill);
 		if(startDate != null && endDate != null) {
 			hBox.getChildren().addAll(startLabel, label, endLabel);
 		} else if(startDate != null) {
@@ -584,7 +608,7 @@ public class PastResultsController extends SubPaneController {
 		flowPane.setVgap(10);
 		HBox hBox = createItemHBox(textField.getText());
 		Label label = new Label(textField.getText());
-		label.setStyle(label.getStyle() + "-fx-text-fill : #FFFFFF;");
+		label.getStyleClass().add("txt_white");
 		Label xLabel = createRemoveBtn(flowPane, hBox, box);
 		hBox.getChildren().addAll(label, xLabel);
 		addItemSearchArea(hBox, box, flowPane);
@@ -655,12 +679,14 @@ public class PastResultsController extends SubPaneController {
 				String id = "";
 				if(!StringUtils.isEmpty(minCreateAt)) {
 					// 로컬 타임 표준시로 변환
-					id = "gt:"+startDate.getValue().atTime(0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+					id = "gt:"+startDate.getValue().atTime(0, 0, 0)
+							.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 				}
 				// Submitted [end]
 				if(!StringUtils.isEmpty(maxCreateAt)) {
 					// 로컬 타임 표준시로 변환
-					long endMilli= endDate.getValue().atTime(23, 59, 59).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+					long endMilli= endDate.getValue().atTime(23, 59, 59)
+							.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 					if(StringUtils.isEmpty(id)) {
 						id = "lt:"+endMilli;
 					} else {
@@ -713,7 +739,7 @@ public class PastResultsController extends SubPaneController {
 		setList(1);
 	}
 
-	class SampleInfoVBox extends VBox {
+	private class SampleInfoVBox extends VBox {
 		private SampleInfoVBox() {
 			this.setPrefWidth(810);
 			this.setMaxWidth(Double.MAX_VALUE);
@@ -744,31 +770,34 @@ public class PastResultsController extends SubPaneController {
 			if(style != null) label.getStyleClass().add(style);
 		}
 
-		private void openSampleTab(final SampleView sample) {
+		private void openSampleTab(final SampleView sample, final Integer size) {
 			if(sample.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-					sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+					sample.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 				Map<String, Object> detailViewParamMap = new HashMap<>();
 				detailViewParamMap.put("id", sample.getId());
-
+				detailViewParamMap.put("sampleSize", size);
 				TopMenu menu = new TopMenu();
 				menu.setId("sample_" + sample.getId());
 				menu.setMenuName(sample.getName());
 				menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_LAYOUT);
 				menu.setParamMap(detailViewParamMap);
 				menu.setStaticMenu(false);
-				mainController.addTopMenu(menu, 2, true);
+				mainController.addTopMenu(menu, true);
 			} else if(sample.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
 				DialogUtil.alert("Error message", sample.getSampleStatus().getStatusMsg(), mainController.getPrimaryStage(), true);
 			}
 		}
 
-		private void setSampleList(List<SampleView> sampleList) {
+		private void setSampleList(List<SampleView> sampleList, Integer sampleSize) {
 			for(SampleView sampleView : sampleList) {
 				HBox itemHBox = new HBox();
-				itemHBox.setStyle(itemHBox.getStyle() + "-fx-cursor:hand;");
-				if((sampleView.getSampleStatus().getStep().equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
-                        (sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_COMPLETE)
-                        || sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)))) {
+				itemHBox.getStyleClass().add("cursor_hand");
+				if(sampleView.getSampleStatus().getStep()
+						.equalsIgnoreCase(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						(sampleView.getSampleStatus().getStatus()
+								.equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) ||
+						sampleView.getSampleStatus().getStatus()
+								.equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
 					itemHBox.setDisable(false);
 				} else {
 					itemHBox.setDisable(true);
@@ -777,9 +806,6 @@ public class PastResultsController extends SubPaneController {
 				final SampleView sample = sampleView;
 				
 				itemHBox.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
-					//itemHBox.setStyle(itemHBox.getStyle() + "-fx-text-fill: #CD0034; -fx-font-size: 13px; -fx-font-family:  Noto Sans KR Bold; ");
-					//itemHBox.getChildren().clear();
-
 					HBox currentVariants = (HBox)itemHBox.getChildren().get(3);
 					int variantsSize = currentVariants.getChildren().size();
 					String textFillStyle = "-fx-text-fill: #CD0034;";
@@ -788,7 +814,7 @@ public class PastResultsController extends SubPaneController {
 					itemHBox.getChildren().get(1).setStyle(itemHBox.getStyle() + textFillStyle);
 					itemHBox.getChildren().get(4).setStyle(itemHBox.getStyle() + textFillStyle);
 
-					for(int i = 1; i < variantsSize ; i+=2) {
+					for(int i = 1; i < variantsSize ; i+= 2) {
 						currentVariants.getChildren().get(i).setStyle(itemHBox.getStyle() + textFillStyle);
 					}
 			
@@ -813,8 +839,9 @@ public class PastResultsController extends SubPaneController {
 
 					}
 				});*/
-				String styleClass = null;
+				String styleClass = "result_sample_name";
 				Label name = new Label(sampleView.getName());
+				name.setTooltip(new Tooltip(sampleView.getName()));
 				labelSize(name, 180., styleClass);
 				HBox statusHBox = new HBox();
 				statusHBox.setPrefWidth(70);
@@ -835,35 +862,50 @@ public class PastResultsController extends SubPaneController {
 				}
 				statusHBox.getChildren().add(status);
 				Label panel = new Label(sampleView.getPanel().getName());
+				panel.setTooltip(new Tooltip(sampleView.getPanel().getName()));
 				labelSize(panel, 170., styleClass);
 				HBox variants = new HBox();
 				variants.getStyleClass().add("variant_hbox");
-				setVariantHBox(variants, sampleView);
 				variants.setPrefWidth(340);
 				variants.setSpacing(5);
+				if(sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+					setVariantHBox(variants, sampleView);
+				} else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)){
+					Label uploadLabel = new Label("UPLOAD");
+					variants.getChildren().add(uploadLabel);
+				} else if (sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_RUNNING) ||
+						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
+					String statusMsg = (sampleView.getSampleStatus().getProgressPercentage() != null ?
+							sampleView.getSampleStatus().getProgressPercentage() + " %" :
+							"") + " " +
+							(sampleView.getSampleStatus().getStatusMsg() != null ?
+							sampleView.getSampleStatus().getStatusMsg() :"");
+							Label statusMsgLabel = new Label(statusMsg);
+					variants.getChildren().add(statusMsgLabel);
+				}
 				String qcValue = sampleView.getQcResult();
 				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
 				Label qc = new Label(qcValue);
-				labelSize(qc, 78., styleClass);
+				labelSize(qc, 78., null);
 
 				Label restart = new Label();
 				labelSize(restart, 20., "sample_restart_button");
 
-				name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				panel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
-				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample));
+				name.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				panel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				statusHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				variants.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
+				qc.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> openSampleTab(sample, sampleSize));
 
                 if(sampleView.getPanel().getName().contains("TruSight Tumor")) {
                     restart.setVisible(false);
-                } else {
-                	if(sampleView.getSampleStatus().getStatus().equals(AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_FAIL)) {
-                		restart.setVisible(false);
-					} else {
-						restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
-					}
-                }
+                } else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
+						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
+					restart.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> showAlert(sampleView));
+				} else {
+                	restart.setVisible(false);
+				}
 
 				itemHBox.getChildren().addAll(name, panel, statusHBox, variants, qc, restart);
 
@@ -908,28 +950,21 @@ public class PastResultsController extends SubPaneController {
 			if (summary == null) {
 				return;
 			}
-			final String countLabelStyleClass = "count_label";
-			final String countLabelStyle = "-fx-text-fill : gray;";
 			if(sample.getPanel().getAnalysisType().equalsIgnoreCase("GERMLINE")) {
 				Label lv1Icon = createIconLabel("P", "lv_i_icon");
-				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString());
 
 				Label lv2Icon = createIconLabel("LP", "lv_ii_icon");
-				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString());
 
 				Label lv3Icon = createIconLabel("US", "lv_iii_icon");
-				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString());
 
 				Label lv4Icon = createIconLabel("LB", "lv_iv_icon");
-				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString());
 
 				Label lv5Icon = createIconLabel("B", "lv_v_icon");
-				Label lv5Value = createValueLabel(summary.getLevel5VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv5Value = createValueLabel(summary.getLevel5VariantCount().toString());
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,
@@ -938,22 +973,18 @@ public class PastResultsController extends SubPaneController {
 								lv4Icon, lv4Value,
 								lv5Icon, lv5Value);
 
-			} else if (sample.getPanel().getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+			} else if (AnalysisTypeCode.SOMATIC.getDescription().equals(sample.getPanel().getAnalysisType())) {
 				Label lv1Icon = createIconLabel("T1", "lv_i_icon");
-				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv1Value = createValueLabel(summary.getLevel1VariantCount().toString());
 
 				Label lv2Icon = createIconLabel("T2", "lv_ii_icon");
-				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv2Value = createValueLabel(summary.getLevel2VariantCount().toString());
 
 				Label lv3Icon = createIconLabel("T3", "lv_iii_icon");
-				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv3Value = createValueLabel(summary.getLevel3VariantCount().toString());
 
 				Label lv4Icon = createIconLabel("T4", "lv_iv_icon");
-				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString(), countLabelStyleClass,
-						countLabelStyle);
+				Label lv4Value = createValueLabel(summary.getLevel4VariantCount().toString());
 
 				variantHBox.getChildren()
 						.addAll(lv1Icon, lv1Value,
@@ -970,10 +1001,9 @@ public class PastResultsController extends SubPaneController {
 			return label;
 		}
 
-		private Label createValueLabel(String text, String styleClass, String style) {
+		private Label createValueLabel(String text) {
 			Label label = new Label(text);
-			label.getStyleClass().add(styleClass);
-			label.setStyle(style);
+			label.getStyleClass().add("count_label");
 			return label;
 		}
 
@@ -1015,6 +1045,7 @@ public class PastResultsController extends SubPaneController {
 			setLabelStyle(finishDateLabel);
 			this.add(downloadLabel, 4, 0);
 			setLabelStyle(downloadLabel);
+			downloadLabel.setTooltip(new Tooltip("Raw data download (bai, bam, vcf, fastq.gz)"));
 			downloadLabel.getStyleClass().add("fileDownloadButton");
 
 			this.setPrefHeight(35);
@@ -1037,7 +1068,7 @@ public class PastResultsController extends SubPaneController {
 			if (runSampleView.getRun().getCreatedAt() != null)
 				submitDateLabel.setText(format.format(runSampleView.getRun().getCreatedAt().toDate()));
 			if (runSampleView.getRun().getCompletedAt() != null)
-			finishDateLabel.setText(format.format(runSampleView.getRun().getCompletedAt().toDate()));
+				finishDateLabel.setText(format.format(runSampleView.getRun().getCompletedAt().toDate()));
 			downloadLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
 				try {
 					FXMLLoader fxmlLoader = FXMLLoadUtil.load(FXMLConstants.RUN_RAW_DATA_DOWNLOAD);

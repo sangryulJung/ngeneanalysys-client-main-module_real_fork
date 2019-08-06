@@ -88,16 +88,12 @@ public class AnalysisDetailTSTFusionController extends AnalysisDetailCommonContr
     @FXML
     private TableColumn<TSTFusion, String> keepFusionTableColumn;
 
-    private APIService apiService;
-
-    private SampleView sample;
-
     private AnalysisDetailVariantsController variantsController;
 
     /**
      * @param variantsController AnalysisDetailVariantsController
      */
-    public void setVariantsController(AnalysisDetailVariantsController variantsController) {
+    void setVariantsController(AnalysisDetailVariantsController variantsController) {
         this.variantsController = variantsController;
     }
 
@@ -127,8 +123,8 @@ public class AnalysisDetailTSTFusionController extends AnalysisDetailCommonContr
         keepFusionTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKeepFusion()));
 
 
-        apiService = APIService.getInstance();
-        this.sample = (SampleView)paramMap.get("sampleView");
+        APIService apiService = APIService.getInstance();
+        SampleView sample = (SampleView)paramMap.get("sampleView");
         try {
             HttpClientResponse response = apiService
                     .get("TST170RnaResults/samples/" + sample.getId() + "/fusions", null, null, null);
@@ -136,7 +132,6 @@ public class AnalysisDetailTSTFusionController extends AnalysisDetailCommonContr
             PagedTSTFusion fusion = response.getObjectBeforeConvertResponseToJSON(PagedTSTFusion.class);
 
             fusionTableView.setItems(FXCollections.observableArrayList(fusion.getResult()));
-
 
         } catch (WebAPIException wae) {
             wae.printStackTrace();

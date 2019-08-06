@@ -26,6 +26,22 @@ public class Panel {
 
     private Integer reportTemplateId;
 
+    private CnvConfigBrcaAccuTest cnvConfigBRCAaccuTest;
+
+    /**
+     * @return cnvConfigBRCAaccuTest
+     */
+    public CnvConfigBrcaAccuTest getCnvConfigBRCAaccuTest() {
+        return cnvConfigBRCAaccuTest;
+    }
+
+    /**
+     * @param code
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     /**
      * @return canonicalTranscripts
      */

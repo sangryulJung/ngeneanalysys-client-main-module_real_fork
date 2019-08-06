@@ -43,7 +43,7 @@
                   </HBox>
                   <HBox prefHeight="20.0" prefWidth="210.0">
                      <children>
-                        <Label text="Complete : " />
+                        <Label text="Completed : " />
                         <Label fx:id="completeLabel" text="Label" />
                      </children>
                   </HBox>

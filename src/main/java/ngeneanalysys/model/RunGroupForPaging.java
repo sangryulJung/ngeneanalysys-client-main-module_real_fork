@@ -2,7 +2,6 @@ package ngeneanalysys.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**

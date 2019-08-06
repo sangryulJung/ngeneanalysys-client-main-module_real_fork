@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -13,14 +8,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
       <ColumnConstraints prefWidth="350.0" />
@@ -73,7 +67,7 @@
                   <String fx:value="header" />
                   <String fx:value="regular" />
                </styleClass></Label>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Sequencer" GridPane.columnIndex="1">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Instrument" GridPane.columnIndex="1">
                <styleClass>
                   <String fx:value="header" />
                   <String fx:value="regular" />
@@ -83,7 +77,7 @@
                   <String fx:value="header" />
                   <String fx:value="regular" />
                </styleClass></Label>
-            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Finished Date" GridPane.columnIndex="3">
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Finish Date" GridPane.columnIndex="3">
                <styleClass>
                   <String fx:value="header" />
                   <String fx:value="regular" />
@@ -131,59 +125,7 @@
       </VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label styleClass="total_icon" text="T" visible="false">
-               <tooltip>
-                  <Tooltip text="Run Count" />
-               </tooltip></Label>
-            <Label fx:id="totalCountLabel" text="100" visible="false">
-               <HBox.margin>
-                  <Insets left="3.0" right="10.0" />
-               </HBox.margin></Label>
-            <Label styleClass="queued_icon" text="Q" visible="false">
-               <padding>
-                  <Insets top="-1.0" />
-               </padding>
-               <tooltip>
-                  <Tooltip text="Queued Sample Count" />
-               </tooltip></Label>
-            <Label fx:id="queueLabel" text="10" visible="false">
-               <HBox.margin>
-                  <Insets left="3.0" right="10.0" />
-               </HBox.margin></Label>
-            <Label styleClass="run_icon" text="R" visible="false">
-               <padding>
-                  <Insets top="-1.0" />
-               </padding>
-               <tooltip>
-                  <Tooltip text="Running Sample Count" />
-               </tooltip></Label>
-            <Label fx:id="runningLabel" text="10" visible="false">
-               <HBox.margin>
-                  <Insets left="3.0" right="10.0" />
-               </HBox.margin></Label>
-            <Label styleClass="complete_icon" text="C" visible="false">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <padding>
-                  <Insets left="-1.0" top="-1.0" />
-               </padding>
-               <tooltip>
-                  <Tooltip text="Completed Sample Count" />
-               </tooltip></Label>
-            <Label fx:id="completeLabel" text="10" visible="false">
-               <HBox.margin>
-                  <Insets left="3.0" right="10.0" />
-               </HBox.margin></Label>
-            <Label styleClass="failed_icon" text="F" visible="false">
-               <tooltip>
-                  <Tooltip text="Failed Sample Count" />
-               </tooltip></Label>
-            <Label fx:id="failLabel" prefHeight="19.0" prefWidth="0.0" text="1" visible="false">
-               <HBox.margin>
-                  <Insets left="3.0" />
-               </HBox.margin></Label>
-            <Button id="excel_download_image" mnemonicParsing="false" onMouseClicked="#downloadExcel" />
+            <Label mnemonicParsing="false" onMouseClicked="#downloadExcel" styleClass="excel_download_image" />
          </children>
       </HBox>
       <HBox prefHeight="38.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">

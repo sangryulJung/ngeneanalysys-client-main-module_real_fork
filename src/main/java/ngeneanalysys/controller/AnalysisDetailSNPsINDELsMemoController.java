@@ -52,15 +52,6 @@ AnalysisDetailSNPsINDELsMemoController extends SubPaneController {
     @FXML
     private TableColumn<SnpInDelInterpretationLogs,String> commentColumn;
 
-    private AnalysisDetailSNVController analysisDetailSNVController;
-
-    /**
-     * @param analysisDetailSNVController AnalysisDetailSNVController
-     */
-    public void setAnalysisDetailSNVController(AnalysisDetailSNVController analysisDetailSNVController) {
-        this.analysisDetailSNVController = analysisDetailSNVController;
-    }
-
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");

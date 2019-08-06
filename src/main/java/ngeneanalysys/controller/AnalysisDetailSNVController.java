@@ -1,6 +1,10 @@
 package ngeneanalysys.controller;
 
-import com.sun.javafx.scene.control.skin.TableHeaderRow;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -10,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -19,14 +24,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import ngeneanalysys.code.constants.CommonConstants;
+import org.slf4j.Logger;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.*;
 import ngeneanalysys.controller.extend.AnalysisDetailCommonController;
@@ -44,13 +47,6 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.IGVService;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Jang
@@ -66,7 +62,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     @FXML
     private Label reportedCountLabel;
 
-   @FXML
+    @FXML
     private CheckBox levelACheckBox;
     @FXML
     private CheckBox levelBCheckBox;
@@ -76,11 +72,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private CheckBox levelDCheckBox;
     @FXML
     private CheckBox levelECheckBox;
-    @FXML
-    private CheckBox reportCheckBox;
 
     @FXML
+    private CheckBox reportCheckBox;
+    @FXML
     private CheckBox showFalseVariantsCheckBox;
+    @FXML
+    private CheckBox commonVariantsCheckBox;
 
     @FXML
     private GridPane snvWrapper;
@@ -146,15 +144,21 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private SampleView sample = null;
     private Panel panel = null;
-    private Map<String, String> sortMap = new HashMap<>();
+    //private Map<String, String> sortMap = new HashMap<>();
 
     private AnalysisDetailVariantsController variantsController;
+
+    private AnalysisDetailInterpretationController interpretationController;
+
+    private AnalysisDetailVariantStatisticsController statisticsController;
+
+    private AnalysisDetailClinicalSignificantController clinicalSignificantController;
 
     /** 현재 선택된 변이 정보 객체 */
     private VariantAndInterpretationEvidence selectedAnalysisResultVariant;
     /** 현재 선택된 변이 리스트 객체의 index */
 
-    private Boolean rFlag = false;
+    private boolean rFlag = false;
 
     private AnalysisDetailSNPsINDELsMemoController memoController;
 
@@ -162,18 +166,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private Map<String, TableColumn> columnMap = new HashMap<>();
 
-    /**
-     * @param rFlag
-     */
-    public void setrFlag(Boolean rFlag) {
+    public void setrFlag(boolean rFlag) {
         this.rFlag = rFlag;
     }
 
     private final ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>> tableColumnListChangeListener =
-            c -> saveColumnInfoToServer();
-    private final ChangeListener<Boolean> tableColumnVisibilityChangeListener = (observable, oldValue, newValue) -> {
-        if(!oldValue.equals(newValue)) saveColumnInfoToServer();
-    };
+            c -> Platform.runLater(this::saveColumnInfoToServer);
+//    private final ChangeListener<Boolean> tableColumnVisibilityChangeListener = (observable, oldValue, newValue) -> {
+//        if(!oldValue.equals(newValue)) Platform.runLater(this::saveColumnInfoToServer);
+//    };
     private ChangeListener<ComboBoxItem> filterComboBoxValuePropertyChangeListener = (ob, ov, nv) -> {
         if (!nv.equals(ov)) {
             Platform.runLater(() -> showVariantList(0));
@@ -195,120 +196,140 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         this.variantsController = variantsController;
     }
 
+    private void checkBoxCheck(CheckBox checkBox, List<Object> filterList, String value) {
+        if(checkBox.isSelected() && !filterList.contains(value)) {
+            filterList.add(value);
+        }
+    }
+
     private void defaultFilterAction(Map<String, List<Object>> list) {
+        String key = "search";
         List<Object> filterList;
-        if(list.containsKey("search")) {
-            filterList = list.get("search");
+        if(list.containsKey(key)) {
+            filterList = list.get(key);
         } else {
             filterList = new ArrayList<>();
-            list.put("search", filterList);
+            list.put(key, filterList);
         }
-        if(panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equalsIgnoreCase(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode()) ||
-                panel.getCode().equalsIgnoreCase(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-            if(levelACheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity P")) {
-                    filterList.add("pathogenicity P");
-                }
-            }
-            if(levelBCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity LP")) {
-                    filterList.add("pathogenicity LP");
-                }
-            }
-            if(levelCCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity US")) {
-                    filterList.add("pathogenicity US");
-                }
-            }
-            if(levelDCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity LP")) {
-                    filterList.add("pathogenicity LP");
-                }
-            }
-            if(levelECheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity B")) {
-                    filterList.add("pathogenicity B");
-                }
-            }
+        if(PipelineCode.isBRCAPipeline(panel.getCode()) ||
+                PipelineCode.isHeredPipeline(panel.getCode())) {
+            checkBoxCheck(levelACheckBox, filterList, "pathogenicity P");
+            checkBoxCheck(levelBCheckBox, filterList, "pathogenicity LP");
+            checkBoxCheck(levelCCheckBox, filterList, "pathogenicity US");
+            checkBoxCheck(levelDCheckBox, filterList, "pathogenicity LB");
+            checkBoxCheck(levelECheckBox, filterList, "pathogenicity B");
         } else {
-            if(levelACheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T1")) {
-                    filterList.add("tier T1");
-                }
-            }
-            if(levelBCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T2")) {
-                    filterList.add("tier T2");
-                }
-            }
-            if(levelCCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T3")) {
-                    filterList.add("tier T3");
-                }
-            }
-            if(levelDCheckBox.isSelected()) {
-                if(!filterList.contains("pathogenicity T4")) {
-                    filterList.add("tier T4");
-                }
-            }
+            checkBoxCheck(levelACheckBox, filterList, "tier T1");
+            checkBoxCheck(levelBCheckBox, filterList, "tier T2");
+            checkBoxCheck(levelCCheckBox, filterList, "tier T3");
+            checkBoxCheck(levelDCheckBox, filterList, "tier T4");
         }
-        if(reportCheckBox.isSelected()) {
-            if(!filterList.contains("includedInReport Y")) {
-                filterList.add("includedInReport Y");
+        checkBoxCheck(reportCheckBox, filterList, "includedInReport Y");
+    }
+
+    private void setStatisticsContents() {
+        try {
+            // comment tab 화면 출력
+            if (statisticsTitledPane.getContent() == null) {
+                showVariantStatistics();
+            } else if(statisticsController != null) {
+                statisticsController.showVariantStatistics();
             }
+        } catch (Exception e) {
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    private void setInterpretationContents() {
+        try {
+            // comment tab 화면 출력
+            if (interpretationTitledPane.getContent() == null) {
+                showPredictionAndInterpretation();
+            } else if(interpretationController != null) {
+                interpretationController.contentRefresh();
+            }
+        } catch (Exception e) {
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
+        }
+    }
+
+    private void setClincialSignificant() {
+        try {
+            // comment tab 화면 출력
+            if (clinicalSignificantTitledPane.getContent() == null) {
+                showClinicalSignificant();
+            } else if(clinicalSignificantController != null) {
+                clinicalSignificantController.refresh();
+            }
+        } catch (Exception e) {
+            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
         }
     }
 
     private void setAccordionContents() {
+        Task task = new Task() {
+            SnpInDelInterpretationLogsList memoList;
+            @Override
+            protected Object call() throws Exception {
+                // Memo 데이터 API 요청
+                //Map<String, Object> commentParamMap = new HashMap<>();
+                HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId()  + "/snpInDelInterpretationLogs", null, null, false);
 
-        try {
-            // Memo 데이터 API 요청
-            //Map<String, Object> commentParamMap = new HashMap<>();
-            HttpClientResponse responseMemo = apiService.get("/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId()  + "/snpInDelInterpretationLogs", null, null, false);
-
-            // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
-            SnpInDelInterpretationLogsList memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
-
-            // comment tab 화면 출력
-            if (interpretationLogsTitledPane.getContent() == null) {
-                showMemoTab(FXCollections.observableList(memoList.getResult()));
-            } else {
-                memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
+                // Flagging Comment 데이터 요청이 정상 요청된 경우 진행.
+                memoList = responseMemo.getObjectBeforeConvertResponseToJSON(SnpInDelInterpretationLogsList.class);
+                return null;
             }
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        } catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                Platform.runLater(() -> {
+                    // comment tab 화면 출력
+                    if (interpretationLogsTitledPane.getContent() == null) {
+                        showMemoTab(FXCollections.observableList(memoList.getResult()));
+                    } else {
+                        memoController.updateList(selectedAnalysisResultVariant.getSnpInDel().getId());
+                    }
+                    memoList = null;
+                });
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
-    public void setCheckBoxFilter() {
+    private void setCheckBoxFilter() {
         levelACheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         levelBCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         levelCCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() ->showVariantList(0));
         });
 
         levelDCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         levelECheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
 
         reportCheckBox.selectedProperty().addListener((ob, ov, nv) -> {
-            if(nv != null) showVariantList(0);
+            if(nv != null) Platform.runLater(() -> showVariantList(0));
         });
     }
 
@@ -330,19 +351,24 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         sample = (SampleView)paramMap.get("sampleView");
         panel = (Panel)paramMap.get("panel");
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if(PipelineCode.isHemePipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("hemeFilter");
-        } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+        } else if(PipelineCode.isSolidPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("solidFilter");
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("tstDNAFilter");
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+        } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("brcaFilter");
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             this.filterList = (Map<String, List<Object>>)mainController.getBasicInformationMap().get("heredFilter");
         }
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
+
+        if(!PipelineCode.isHeredPipeline(panel.getCode())) {
+            commonVariantsCheckBox.setDisable(true);
+            commonVariantsCheckBox.setVisible(false);
+        }
+
+        if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             levelACheckBox.setText("T1");
             levelBCheckBox.setText("T2");
             levelCCheckBox.setText("T3");
@@ -358,7 +384,26 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
         eventRegistration();
 
-        interpretationLogsTitledPane.setOnMouseClicked(ev -> setAccordionContents());
+        interpretationLogsTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setAccordionContents();
+            }
+        });
+        interpretationTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setInterpretationContents();
+            }
+        });
+        statisticsTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setStatisticsContents();
+            }
+        });
+        clinicalSignificantTitledPane.expandedProperty().addListener((obs, ov, nv) -> {
+            if(nv != null && nv) {
+                setClincialSignificant();
+            }
+        });
 
         leftSizeButton.setOnMouseClicked(event -> {
             if(leftSizeButton.getStyleClass().contains("btn_fold")){
@@ -376,8 +421,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             filterComboBox.valueProperty().addListener(filterComboBoxValuePropertyChangeListener);
         });
 
-        //setFilterList();
-
         rightSizeButton.setOnMouseClicked(event -> {
             if(rightSizeButton.getStyleClass().contains("right_btn_fold")){
                 foldRight();
@@ -385,14 +428,14 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 expandRight();
             }
         });
-
+        variantListTableView.setTableMenuButtonVisible(false);
         // 목록 클릭 시 변이 상세정보 출력 이벤트 바인딩
         variantListTableView.setRowFactory(tv -> {
             TableRow<VariantAndInterpretationEvidence> row = new TableRow<>();
             row.setOnMouseClicked(e -> {
-                if(e.getClickCount() == 1) {
+                /*if(e.getClickCount() == 1) {
                     setSNVTabName();
-                } else if (e.getClickCount() <= 2) {
+                } else */if (e.getClickCount() <= 2) {
                     logger.debug(e.getClickCount() + " Click count");
                    if(e.getClickCount() == 2) {
                        expandRight();
@@ -406,16 +449,15 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         variantListTableView.setOnKeyPressed(keyEvent -> {
             if(keyEvent.getCode().equals(KeyCode.ENTER)) {
                 expandRight();
-            } else if(keyEvent.getCode().equals(KeyCode.UP) || keyEvent.getCode().equals(KeyCode.DOWN)) {
+            }/* else if(keyEvent.getCode().equals(KeyCode.UP) || keyEvent.getCode().equals(KeyCode.DOWN)) {
                 setSNVTabName();
-            }
+            }*/
         });
 
 
         setTableViewColumn();
+        //runColumnAction();
         setCheckBoxFilter();
-        //foldLeft();
-        foldRight();
 
         variantsController.getDetailContents().setCenter(root);
 
@@ -433,34 +475,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 variantListTableView.setPrefWidth(wrapperWidth - filterWidth - 110);
             }
         });
-        showVariantList(0);
-
-//        snvWrapper.heightProperty().addListener((ob, ov, nv) -> {
-//            double wrapperHeight = (Double)nv;
-//
-//            if(wrapperHeight > 450) {
-//                changeTitledPaneTextSize("font_size_15", "font_size_15");
-//            } else {
-//                changeTitledPaneTextSize("font_size_15", "font_size_15");
-//            }
-//        });
-
-    }
-
-    private void changeTitledPaneTextSize(String currentStyle, String changeStyle) {
-        if(interpretationTitledPane != null) {
-            interpretationTitledPane.getStyleClass().remove(currentStyle);
-            interpretationTitledPane.getStyleClass().add(changeStyle);
-        } else {
-            clinicalSignificantTitledPane.getStyleClass().remove(currentStyle);
-            clinicalSignificantTitledPane.getStyleClass().add(changeStyle);
-        }
-        variantDetailTitledPane.getStyleClass().remove(currentStyle);
-        variantDetailTitledPane.getStyleClass().add(changeStyle);
-        statisticsTitledPane.getStyleClass().remove(currentStyle);
-        statisticsTitledPane.getStyleClass().add(changeStyle);
-        interpretationLogsTitledPane.getStyleClass().remove(currentStyle);
-        interpretationLogsTitledPane.getStyleClass().add(changeStyle);
+        Platform.runLater(this::initColumnOrderAndVariantList);
     }
 
     private List<VariantAndInterpretationEvidence> getSelectedItemList() {
@@ -476,7 +491,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void eventRegistration() {
-        addToReportButton.setCursor(Cursor.HAND);
         addToReportButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
@@ -496,8 +510,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        if("SOMATIC".equalsIgnoreCase(panel.getAnalysisType())) {
-            changeTierButton.setCursor(Cursor.HAND);
+        if(AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) {
             changeTierButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                 List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
                 if (!selectList.isEmpty()) {
@@ -505,7 +518,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_TIER);
                         Node node = loader.load();
                         BatchChangeTierDialogController controller = loader.getController();
-                        controller.settingItem(sample.getId(), selectList, this);
+                        controller.settingItem(sample.getId(), selectList, this,
+                                "Modify Tier in multi-selection");
                         controller.setMainController(this.getMainController());
                         controller.setParamMap(getParamMap());
                         controller.show((Parent) node);
@@ -526,7 +540,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                         FXMLLoader loader = getMainApp().load(FXMLConstants.BATCH_CHANGE_PATHOGENICITY);
                         Node node = loader.load();
                         BatchChangePathogenicityDialogController controller = loader.getController();
-                        controller.settingItem(sample.getId(), selectList, this);
+                        controller.settingItem(sample.getId(), selectList, this,
+                                "Modify Pathogenicity in multi-selection");
                         controller.setMainController(this.getMainController());
                         controller.setParamMap(getParamMap());
                         controller.show((Parent) node);
@@ -538,7 +553,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         }
-        falsePositiveButton.setCursor(Cursor.HAND);
         falsePositiveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             List<VariantAndInterpretationEvidence> selectList = getSelectedItemList();
             if(!selectList.isEmpty()) {
@@ -557,7 +571,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 viewCheckAlert();
             }
         });
-        showIGVButton.setCursor(Cursor.HAND);
         showIGVButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
             if(variantListTableView.getSelectionModel() != null
                     && variantListTableView.getSelectionModel().getSelectedItem() != null) {
@@ -566,7 +579,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 igvService.setMainController(getMainController());
 
                 String sampleId = sample.getId().toString();
-                String variantId = variant.getSnpInDel().getId().toString();
                 String gene = variant.getSnpInDel().getGenomicCoordinate().getGene();
                 String locus = String.format("%s:%,d-%,d",
                         variant.getSnpInDel().getGenomicCoordinate().getChromosome(),
@@ -576,7 +588,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
                 try {
-                    igvService.load(sampleId, sample.getName(), variantId, gene, locus , humanGenomeVersion);
+                    igvService.load(sampleId, sample.getName(), gene, locus , humanGenomeVersion);
                 } catch (WebAPIException wae) {
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
@@ -589,17 +601,17 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     void refreshTable() {
-        showVariantList(0);
+        Platform.runLater(() -> showVariantList(0));
     }
 
-    void setSNVTabName() {
+    /*void setSNVTabName() {
         if(variantListTableView.getItems() != null) {
             VariantAndInterpretationEvidence variant = variantListTableView.getSelectionModel()
                     .getSelectedItem();
             String title;
             String conSeq = StringUtils.isNotEmpty(variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence()) ?
                     variant.getSnpInDel().getSnpInDelExpression().getCodingConsequence().split(";")[0] : "";
-            if (panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
+            if (AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
                 title = variant.getSnpInDel().getGenomicCoordinate().getGene() + " "
                         + conSeq + " "
                         + variant.getSnpInDel().getSnpInDelExpression().getTranscriptAccession() + " "
@@ -623,30 +635,17 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantsController.setSNVTabName(null);
         }
     }
-
+*/
     private void setDefaultFilter() {
         totalLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
         filterComboBox.setConverter(new ComboBoxConverter());
         filterComboBox.getItems().removeAll(filterComboBox.getItems());
         filterComboBox.getItems().add(new ComboBoxItem("All", "All"));
-        /*if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 1", "Tier I"));
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 2", "Tier II"));
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 3", "Tier III"));
-            filterComboBox.getItems().add(new ComboBoxItem("Tier 4", "Tier IV"));
-        } else {
-            filterComboBox.getItems().add(new ComboBoxItem("Pathogenic", "Pathogenic"));
-            filterComboBox.getItems().add(new ComboBoxItem("Likely Pathogenic", "Likely Pathogenic"));
-            filterComboBox.getItems().add(new ComboBoxItem("Uncertain Significance", "Uncertain Significance"));
-            filterComboBox.getItems().add(new ComboBoxItem("Likely Benign", "Likely Benign"));
-            filterComboBox.getItems().add(new ComboBoxItem("Benign", "Benign"));
-        }*/
         filterComboBox.getSelectionModel().select(0);
         viewAppliedFiltersLabel.setDisable(true);
     }
 
+    @SuppressWarnings("unchecked")
     private void setSomaticFilterList(String filterName) {
         Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
         Set<String> keySet = filter.keySet();
@@ -663,6 +662,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterList = filter;
     }
 
+    @SuppressWarnings("unchecked")
     private void setGermlineFilterList(String filterName){
         Map<String, List<Object>> filter = (Map<String, List<Object>>)mainController.getBasicInformationMap().get(filterName);
         Set<String> keySet = filter.keySet();
@@ -677,20 +677,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         filterList = filter;
     }
 
-   @SuppressWarnings("unchecked")
     private void setFilterList() {
         filterComboBox.hide();
         String currentFilterName = filterComboBox.getSelectionModel().getSelectedItem().getText();
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if(PipelineCode.isHemePipeline(panel.getCode())) {
             setSomaticFilterList("hemeFilter");
-        } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+        } else if (PipelineCode.isSolidPipeline(panel.getCode())) {
             setSomaticFilterList("solidFilter");
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             setSomaticFilterList("tstDNAFilter");
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+        } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             setGermlineFilterList("brcaFilter");
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             setGermlineFilterList("heredFilter");
         }
 
@@ -766,7 +764,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private void foldRight(){
         if(rFlag) {
-            showVariantList(0);
+            Platform.runLater(() -> showVariantList(0));
             rFlag = false;
         }
         double rightFoldedWidth = 50;
@@ -790,6 +788,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_VARIANT_STATISTICS);
             Node node = loader.load();
             AnalysisDetailVariantStatisticsController variantStatisticsController = loader.getController();
+            this.statisticsController = variantStatisticsController;
             variantStatisticsController.setMainController(this.getMainController());
             variantStatisticsController.setParamMap(paramMap);
             variantStatisticsController.show((Parent) node);
@@ -821,6 +820,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_INTERPRETATION);
             Node node = loader.load();
             AnalysisDetailInterpretationController controller = loader.getController();
+            this.interpretationController = controller;
             controller.setMainController(this.getMainController());
             controller.setAnalysisDetailSNVController(this);
             controller.setParamMap(getParamMap());
@@ -840,7 +840,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Node node = loader.load();
             memoController = loader.getController();
             memoController.setMainController(this.getMainController());
-            memoController.setAnalysisDetailSNVController(this);
             memoController.show((Parent) node);
             memoController.displayList(memoList);
             interpretationLogsTitledPane.setContent(node);
@@ -857,67 +856,54 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     private void showVariantDetail(VariantAndInterpretationEvidence analysisResultVariant) {
         // 선택된 변이 객체 정보 설정
         selectedAnalysisResultVariant = analysisResultVariant;
-
         // 탭 메뉴 활성화 토글
-        //setDetailTabActivationToggle(false);
-        try {
-            // Detail 데이터 API 요청
-            HttpClientResponse responseDetail = apiService.get(
-                    "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
-            // 상세 데이터 요청이 정상 요청된 경우 진행.
-            SnpInDel snpInDel
-                    = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
-            // VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
+        Task<Void> task = new Task<Void>() {
 
-            // variantAndInterpretationEvidence.setSnpInDel(snpInDel);
-            // variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
+            @Override
+            protected Void call() throws Exception {
+                // Detail 데이터 API 요청
+                //HttpClientResponse responseDetail = apiService.get(
+                //        "/analysisResults/snpInDels/" + selectedAnalysisResultVariant.getSnpInDel().getId(), null, null, false);
+                // 상세 데이터 요청이 정상 요청된 경우 진행.
+                //SnpInDel snpInDel
+                //        = responseDetail.getObjectBeforeConvertResponseToJSON(SnpInDel.class);
+                // VariantAndInterpretationEvidence variantAndInterpretationEvidence = new VariantAndInterpretationEvidence();
 
-            paramMap.put("variant", analysisResultVariant);
+                // variantAndInterpretationEvidence.setSnpInDel(snpInDel);
+                // variantAndInterpretationEvidence.setSnpInDelEvidences(selectedAnalysisResultVariant.getSnpInDelEvidences());
 
-            Platform.runLater(() -> {
-                try {
-                    HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelStatistics", null, null, false);
-                    VariantStatistics variantStatistics = response.getObjectBeforeConvertResponseToJSON(VariantStatistics.class);
-                    paramMap.put("variantStatistics", variantStatistics);
+                paramMap.put("variant", analysisResultVariant);
 
-                    showVariantStatistics();
-                } catch (WebAPIException wae) {
-                    DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                            getMainApp().getPrimaryStage(), true);
-                }
-            });
+                HttpClientResponse response = apiService.get(
+                        "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
 
-
-            HttpClientResponse response = apiService.get("/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelTranscripts", null, null, false);
-            List<SnpInDelTranscript> snpInDelTranscripts = (List<SnpInDelTranscript>) response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelTranscript.class, false);
-            paramMap.put("snpInDelTranscripts", snpInDelTranscripts);
-
-            response = apiService.get(
-                    "/analysisResults/snpInDels/" + analysisResultVariant.getSnpInDel().getId() + "/snpInDelExtraInfos", null, null, false);
-
-            List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
-            paramMap.put("detail", item);
-
-            showDetailTab();
-            if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
-                showPredictionAndInterpretation();
-                overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
-            } else {
-                overviewAccordion.getPanes().remove(interpretationTitledPane);
-                showClinicalSignificant();
+                List<SnpInDelExtraInfo> item = (List<SnpInDelExtraInfo>)response.getMultiObjectBeforeConvertResponseToJSON(SnpInDelExtraInfo.class, false);
+                paramMap.put("detail", item);
+                return null;
             }
 
-        } catch (WebAPIException wae) {
-            wae.printStackTrace();
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-        }
-        catch (Exception e) {
-            logger.error("Unknown Error", e);
-            DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-        overviewAccordion.setExpandedPane(variantDetailTitledPane);
-        //setDetailTabActivationToggle(true);
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                Platform.runLater(() -> {
+                    showDetailTab();
+                    if(panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.SOMATIC.getDescription())) {
+                        overviewAccordion.getPanes().remove(clinicalSignificantTitledPane);
+                    } else {
+                        overviewAccordion.getPanes().remove(interpretationTitledPane);
+                    }
+                    overviewAccordion.setExpandedPane(variantDetailTitledPane);
+                });
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private void showClinicalSignificant() {
@@ -927,32 +913,35 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             AnalysisDetailClinicalSignificantController controller = loader.getController();
             controller.setMainController(this.getMainController());
             controller.setParamMap(getParamMap());
-            controller.setSelectedAnalysisResultVariant(selectedAnalysisResultVariant);
             controller.setController(this);
             controller.show((Parent) node);
+            clinicalSignificantController = controller;
             clinicalSignificantTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void setSortItem(Map<String, List<Object>> list) {
+    /*private void setSortItem(Map<String, List<Object>> list) {
         Set<Map.Entry<String, String>> entrySet = sortMap.entrySet();
         List<Object> sortList = new ArrayList<>();
         for(Map.Entry<String, String> entry : entrySet) {
             sortList.add(entry.getKey() + " " + entry.getValue());
         }
         if(!sortList.isEmpty()) list.put("sort", sortList);
-    }
+    }*/
 
     private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
         if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
-            list.put("search", filterList.get(comboBoxItem.getValue()).stream().collect(Collectors.toList()));
+            list.put("search", new ArrayList<>(filterList.get(comboBoxItem.getValue())));
         }
         defaultFilterAction(list);
         if(!showFalseVariantsCheckBox.isSelected()) {
             setIsFalseItemToN(list);
+        }
+        if(!commonVariantsCheckBox.isSelected()) {
+            setCommonVariantsItemToN(list);
         }
     }
 
@@ -966,82 +955,101 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
+    private void setCommonVariantsItemToN(Map<String, List<Object>> list) {
+        if(list.containsKey("search")) {
+            list.get("search").add("commonVariants N");
+        } else {
+            List<Object> searchList = new ArrayList<>();
+            searchList.add("commonVariants N");
+            list.put("search", searchList);
+        }
+    }
+
     public void showVariantList(int selectedIdx) {
-        Platform.runLater(() ->{
-            mainController.setMainMaskerPane(true);
-            try {
-                headerCheckBox.setSelected(false);
-                compareColumnOrder();
-                int totalCount;
+        headerCheckBox.setSelected(false);
+        // API 서버 조회
+        Map<String, Object> params = new HashMap<>();
+        Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-                try {
-                    // API 서버 조회
-                    Map<String, Object> params = new HashMap<>();
+        //setSortItem(sortAndSearchItem);
+        setFilterItem(sortAndSearchItem);
+        Task<Void> task = new Task<Void>() {
 
-                    Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
+            private PagedVariantAndInterpretationEvidence analysisResultVariantList;
+            private List<VariantAndInterpretationEvidence> list;
+            private int totalCount;
+            @Override
+            protected Void call() throws Exception {
+                HttpClientResponse response1;
+                HttpClientResponse response2;
 
-                    setSortItem(sortAndSearchItem);
-                    setFilterItem(sortAndSearchItem);
+                response1 = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
+                        null, sortAndSearchItem);
+                analysisResultVariantList =
+                        response1.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
 
-                    HttpClientResponse response = apiService.get("/analysisResults/sampleSnpInDels/"+ sample.getId(), params,
-                            null, sortAndSearchItem);
-                    PagedVariantAndInterpretationEvidence analysisResultVariantList =
-                            response.getObjectBeforeConvertResponseToJSON(PagedVariantAndInterpretationEvidence.class);
+                list = analysisResultVariantList.getResult();
+                totalCount = analysisResultVariantList.getCount();
 
-                    List<VariantAndInterpretationEvidence> list = analysisResultVariantList.getResult();
-                    totalCount = analysisResultVariantList.getCount();
+                response2 = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
 
+                sample.setAnalysisResultSummary(response2.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                Platform.runLater(() -> {
+                    mainController.setMainMaskerPane(false);
+                    foldRight();
+                    if (variantListTableView.getItems() != null) variantListTableView.getItems().clear();
                     searchCountLabel.setText(totalCount +"/");
 
-                    //totalVariantCountLabel.setText(sample.getAnalysisResultSummary().getAllVariantCount().toString());
                     ObservableList<VariantAndInterpretationEvidence> displayList = null;
-
-                    response = apiService.get("/analysisResults/sampleSummary/"+ sample.getId(), null, null, false);
-
-                    sample.setAnalysisResultSummary(response.getObjectBeforeConvertResponseToJSON(AnalysisResultSummary.class));
                     reportedCountLabel.setText("(R : " + sample.getAnalysisResultSummary().getReportVariantCount() +")");
 
                     if (list != null && !list.isEmpty()) {
                         displayList = FXCollections.observableArrayList(list);
-                    }
-
-                    // 리스트 삽입
-                    if (variantListTableView.getItems() != null && variantListTableView.getItems().size() > 0) {
-                        variantListTableView.getItems().clear();
                     }
                     variantListTableView.setItems(displayList);
 
                     // 화면 출력
                     if (displayList != null && displayList.size() > 0) {
                         variantListTableView.getSelectionModel().select(selectedIdx);
-                        //showVariantDetail(displayList.get(selectedIdx));
                     }
-                    setSNVTabName();
+                    //setSNVTabName();
+                });
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                mainController.setMainMaskerPane(false);
+                try {
+                    throw new Exception(getException());
                 } catch (WebAPIException wae) {
                     variantListTableView.setItems(null);
                     DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                             getMainApp().getPrimaryStage(), true);
                     wae.printStackTrace();
                 } catch (Exception e) {
-                    logger.error("Unknown Error", e);
+                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
                     variantListTableView.setItems(null);
-                    DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
-            } finally {
-                mainController.setMainMaskerPane(false);
             }
-
-        });
-
-
-
+        };
+        mainController.setMainMaskerPane(true);
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     void comboBoxSetAll() {
         filterComboBox.getSelectionModel().selectFirst();
     }
 
-    private void sortTable(String column) {
+    /*private void sortTable(String column) {
         if(sortMap.size() == 1 && sortMap.containsKey(column)) {
             if(sortMap.get(column).equalsIgnoreCase("ASC")) {
                 sortMap.put(column, "DESC");
@@ -1054,55 +1062,58 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             sortMap.clear();
             sortMap.put(column, "ASC");
          }
-        showVariantList(0);
-    }
+        Platform.runLater(() -> showVariantList(0));
+    }*/
 
     @FXML
     public void resetTableColumnOrder() {
-        mainController.setContentsMaskerPaneVisible(true);
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    apiService.delete("/member/memberOption/" + getColumnOrderType());
+                } catch (WebAPIException wae) {
+                    if (wae.getResponse() == null || wae.getResponse().getStatus() != 404) {
+                        throw wae;
+                    }
+                }
+                return null;
+            }
 
-        deleteColumn();
-
-        removeColumnOrder(getColumnOrderType());
-
-        runColumnAction();
-
-        mainController.setContentsMaskerPaneVisible(false);
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                setDefaultTableColumnOrder(new ResourceUtil().getDefaultColumnOrderResourcePath(panel));
+                mainController.setContentsMaskerPaneVisible(false);
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     @FXML
     public void excelDownload() {
-        Map<String, Object> params = new HashMap<>();
-        Map<String, List<Object>> filterList = new HashMap<>();
-        setFilterItem(filterList);
-        params.put("exportFields", getExportFields());
-        WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportSampleData("EXCEL", filterList, params, this.getMainApp(), sample);
+        fileDownload("EXCEL");
     }
 
     @FXML
     public void csvDownload() {
+        fileDownload("CSV");
+    }
+
+    private void fileDownload(String fileType) {
         Map<String, Object> params = new HashMap<>();
         Map<String, List<Object>> filterList = new HashMap<>();
         setFilterItem(filterList);
         params.put("exportFields", getExportFields());
         WorksheetUtil worksheetUtil = new WorksheetUtil();
-        worksheetUtil.exportSampleData("CSV", filterList, params, this.getMainApp(), sample);
+        worksheetUtil.exportSampleData(fileType, filterList, params, this.getMainApp(), sample);
     }
 
     private String getExportFields() {
-//        StringBuilder stringBuilder = new StringBuilder();
-
-        return variantListTableView.getColumns().stream().filter(TableColumn::isVisible).filter(c -> c.getId() != null)
+        return variantListTableView.getColumns().stream().filter(TableColumn::isVisible)
+                .filter(c -> c.getId() != null && c.getWidth() > 0)
                 .map(TableColumn::getId).collect(Collectors.joining(","));
-//                .forEach(column -> {
-//            if(StringUtils.isNotEmpty(column.getId()) && column.isVisible()) {
-//                stringBuilder.append("," + column.getId());
-//            }
-//        });
-
-//        stringBuilder.deleteCharAt(0);
-//        return stringBuilder.toString();
     }
 
     @FXML
@@ -1117,7 +1128,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             variantFilterController.setSnvController(this);
             variantFilterController.setPanel(panel);
             variantFilterController.show((Parent) node);
-            statisticsTitledPane.setContent(node);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1130,58 +1140,41 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
 
-    private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName,
+    private void   createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String tooltipName,
                                    Double size, String id) {
         Label label = new Label(name);
+        ContextMenu contextMenu = new ContextMenu();
+        contextMenu.getStyleClass().add("font_size_11");
+        MenuItem moveToEndMenuItem = new MenuItem("Move to end");
+        MenuItem moveToFrontMenuItem = new MenuItem("Move to front");
+        contextMenu.getItems().add(moveToEndMenuItem);
+        contextMenu.getItems().add(new SeparatorMenuItem());
+        contextMenu.getItems().add(moveToFrontMenuItem);
+
+        moveToEndMenuItem.setOnAction(e -> {
+            variantListTableView.getColumns().remove(column);
+            variantListTableView.getColumns().add(column);
+        });
+        moveToFrontMenuItem.setOnAction(e -> {
+            variantListTableView.getColumns().remove(column);
+            variantListTableView.getColumns().add(1, column);
+        });
+
+
+        label.setContextMenu(contextMenu);
+        if(StringUtils.isNotEmpty(tooltipName)) label.setTooltip(new Tooltip(tooltipName));
         label.setPrefHeight(Double.MAX_VALUE);
-        //column.setSortable(false);
-//        if(StringUtils.isNotEmpty(sortName)) {
-//            //column.getStyleClass().add("sort_icon");
-//            label.setOnMouseClicked(e -> {
-//                if(e.getButton() == MouseButton.PRIMARY) {
-//                    sortTable(sortName);
-//                }
-//            });
-//        }
         column.setGraphic(label);
 
         if(id != null) column.setId(id);
-        column.setMinWidth(50.0);
-        column.widthProperty().addListener((ob, ov, nv) -> {
-            label.setMinWidth(column.getWidth());
-        });
+        //column.setMinWidth(50.0);
+        column.widthProperty().addListener((ob, ov, nv) -> label.setMinWidth(column.getWidth()));
 
         if(size != null) column.setPrefWidth(size);
         columnMap.put(name, column);
     }
 
-    /*private void createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String sortName, Double size) {
-        column.setText(name);
-
-
-        if(StringUtils.isEmpty(sortName)) {
-            column.setSortable(false);
-        } else {
-            column.setComparator((v1, v2) -> 0);
-            column.sortTypeProperty().addListener((ob, ov, nv) -> {
-                sortMap.clear();
-                if(nv.name().equals("ASCENDING")) {
-                    sortMap.put(sortName, "ASC");
-                } else if(nv.name().equals("DESCENDING")) {
-                    sortMap.put(sortName, "DESC");
-                }
-                showVariantList(currentPageIndex + 1, 0);
-            });
-            //label.setOnMouseClicked(e -> sortTable(sortName));
-
-        }
-
-        if(size != null) column.setPrefWidth(size);
-
-        variantListTableView.getColumns().add(column);
-    }*/
-
-    private void createCheckBoxTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, Double size) {
+    private void createCheckBoxTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column) {
         HBox hBox = new HBox();
         hBox.setPrefHeight(Double.MAX_VALUE);
         hBox.setAlignment(Pos.CENTER);
@@ -1202,7 +1195,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         column.widthProperty().addListener((ob, ov, nv) -> hBox.setMinWidth(column.getWidth()));
         column.setResizable(false);
 
-        if(size != null) column.setPrefWidth(size);
+        column.setPrefWidth(30d);
 
         variantListTableView.getColumns().add(column);
     }
@@ -1212,18 +1205,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         String centerStyleClass = "alignment_center";
 
         TableColumn<VariantAndInterpretationEvidence, Boolean> checkBoxColumn = new TableColumn<>("");
-        createCheckBoxTableHeader(checkBoxColumn, 50d);
+        createCheckBoxTableHeader(checkBoxColumn);
         //checkBoxColumn.impl_setReorderable(false); 컬럼 이동 방지 코드
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
+        double predictionColumnSize = 30d;
         String columnName = "Pathogenicity";
-        String filterPredictionName = "pathogenicity";
+        //String filterPredictionName = "pathogenicity";
         if(panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
+            //predictionColumnSize = 30d;
             columnName = "Tier";
-            filterPredictionName = "tier";
+            //filterPredictionName = "tier";
         }
         TableColumn<VariantAndInterpretationEvidence, String> predictionColumn = new TableColumn<>(columnName);
-        createTableHeader(predictionColumn, columnName, filterPredictionName ,70d, columnName.toLowerCase());
+        createTableHeader(predictionColumn, columnName, columnName, predictionColumnSize, columnName.toLowerCase());
         if (panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
             predictionColumn.setCellValueFactory(cellData ->
                     new SimpleStringProperty(
@@ -1248,30 +1243,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     || o1.equals(VariantLevelCode.TIER_FOUR.getAlias())) {
                 return o1.compareTo(o2);
             } else {
-                String o1Level;
-                String o2Level;
-                if (o1.equals(VariantLevelCode.PREDICTION_A.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_A.getCode();
-                } else if (o1.equals(VariantLevelCode.PREDICTION_B.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_B.getCode();
-                } else if (o1.equals(VariantLevelCode.PREDICTION_C.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_C.getCode();
-                } else if (o1.equals(VariantLevelCode.PREDICTION_D.getAlias())) {
-                    o1Level = VariantLevelCode.PREDICTION_D.getCode();
-                } else {
-                    o1Level = VariantLevelCode.PREDICTION_E.getCode();
-                }
-                if (o2.equals(VariantLevelCode.PREDICTION_A.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_A.getCode();
-                } else if (o2.equals(VariantLevelCode.PREDICTION_B.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_B.getCode();
-                } else if (o2.equals(VariantLevelCode.PREDICTION_C.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_C.getCode();
-                } else if (o2.equals(VariantLevelCode.PREDICTION_D.getAlias())) {
-                    o2Level = VariantLevelCode.PREDICTION_D.getCode();
-                } else {
-                    o2Level = VariantLevelCode.PREDICTION_E.getCode();
-                }
+                String o1Level = VariantLevelCode.getPathogenicityCodeFromAlias(o1);
+                String o2Level  = VariantLevelCode.getPathogenicityCodeFromAlias(o2);
                 return o1Level.compareTo(o2Level);
             }
         });
@@ -1318,7 +1291,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warning");
-        createTableHeader(warn, "Warning", "hasWarning" ,55., "warningReason");
+        createTableHeader(warn, "Warning", "Warning" , 30., "warningReason");
         warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1327,59 +1300,48 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic((StringUtils.isNotEmpty(item)) ? SNPsINDELsList.getWarningReasonPopOver(item, panel) : null);
             }
         });
-        if(panel != null && (AnalysisTypeCode.SOMATIC.getDescription().equalsIgnoreCase(panel.getAnalysisType())) ||
-                (AnalysisTypeCode.GERMLINE.getDescription().equalsIgnoreCase(panel.getAnalysisType()) &&
-                        LibraryTypeCode.HYBRIDIZATION_CAPTURE.getDescription().equalsIgnoreCase(panel.getLibraryType()))) {
-            TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
-            createTableHeader(falsePositive, "False", "isFalse",55., "falseReason");
-            falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
-            falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    Label label = null;
-                    getStyleClass().add(centerStyleClass);
-                    if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                        VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
-                        label = new Label("F");
-                        label.getStyleClass().remove("label");
-                        label.getStyleClass().add("tier_FP");
-                        label.setCursor(Cursor.HAND);
-                        PopOverUtil.openFalsePopOver(label, variant.getSnpInDel().getFalseReason());
-                    }
-                    setGraphic(label);
-                }
-            });
-            falsePositive.setVisible(false);
-            showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-                falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
-                showVariantList(0);
-            });
-        } else {
-            showFalseVariantsCheckBox.setVisible(false);
-            falsePositiveButton.setVisible(false);
-        }
 
-
-        /*TableColumn<VariantAndInterpretationEvidence, String> report = new TableColumn<>("Report");
-        createTableHeader(report, "Report", "includedInReport" ,55., "includedInReport");
-        report.getStyleClass().add(centerStyleClass);
-        report.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
-        report.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+        TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
+        createTableHeader(falsePositive, "False", "",55., "falseReason");
+        falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
+        falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 Label label = null;
+                getStyleClass().add(centerStyleClass);
                 if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                    label = new Label("R");
+                    VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
+                    label = new Label("F");
                     label.getStyleClass().remove("label");
-                    label.getStyleClass().add("report_check");
+                    label.getStyleClass().add("tier_FP");
+                    label.setCursor(Cursor.HAND);
+                    PopOverUtil.openFalsePopOver(label, variant.getSnpInDel().getFalseReason());
                 }
                 setGraphic(label);
             }
         });
-        report.setVisible(false);*/
+        //falsePositive.setVisible(false);
+        showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
+            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+            if(showFalseVariantsCheckBox.isSelected()) {
+                falsePositive.setMinWidth(40);
+                falsePositive.setMaxWidth(40);
+                falsePositive.setPrefWidth(40);
+            } else {
+                falsePositive.setMinWidth(0);
+                falsePositive.setMaxWidth(0);
+                falsePositive.setPrefWidth(0);
+            }
+            Platform.runLater(() -> showVariantList(0));
+        });
+
+        //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+        falsePositive.setPrefWidth(0);
+        falsePositive.setMinWidth(0);
+        falsePositive.setMaxWidth(0);
 
         TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
-        createTableHeader(reportTest, "Report", "includedInReport" ,55. , "includedInReport");
+        createTableHeader(reportTest, "Report", "Report", 30., "includedInReport");
         reportTest.getStyleClass().add(centerStyleClass);
         reportTest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         reportTest.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1400,20 +1362,45 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
                 label.setCursor(Cursor.HAND);
                 label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
-                    try {
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("sampleId", sample.getId());
-                        params.put("snpInDelIds", variant.getSnpInDel().getId().toString());
-                        params.put("comment", "N/A");
-                        if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
-                            params.put("includeInReport", "N");
-                        } else {
-                            params.put("includeInReport", "Y");
+                    if (ev.getClickCount() == 1) {
+                        String changeReportText = "Y".equals(item)
+                                ? "Do you want to exclude the selected variant from the report?"
+                                : "Do you want to include the selected variant in your report?";
+                        Alert alert = DialogUtil.generalShow(Alert.AlertType.CONFIRMATION, "Report", changeReportText, getMainApp().getPrimaryStage(), true);
+                        if(alert.getResult() == ButtonType.OK) {
+                            Task<Void> task = new Task<Void>() {
+                                @Override
+                                protected Void call() throws Exception {
+                                    Map<String, Object> params = new HashMap<>();
+                                    params.put("sampleId", sample.getId());
+                                    params.put("snpInDelIds", variant.getSnpInDel().getId().toString());
+                                    params.put("comment", "N/A");
+                                    if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
+                                        params.put("includeInReport", "N");
+                                    } else {
+                                        params.put("includeInReport", "Y");
+                                    }
+                                    apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+                                    return null;
+                                }
+
+                                @Override
+                                protected void succeeded() {
+                                    super.succeeded();
+                                    refreshTable();
+                                }
+
+                                @Override
+                                protected void failed() {
+                                    super.failed();
+                                    getMainController().setMainMaskerPane(false);
+                                    DialogUtil.showWebApiException(getException(), getMainApp().getPrimaryStage());
+                                }
+                            };
+                            getMainController().setMainMaskerPane(true);
+                            Thread thread = new Thread(task);
+                            thread.start();
                         }
-                        apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
-                        refreshTable();
-                    } catch (WebAPIException wae) {
-                        wae.printStackTrace();
                     }
                 });
                 setGraphic(label);
@@ -1421,14 +1408,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         });
 
         TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
-        createTableHeader(gene, "Gene", "gene" ,null, "gene");
+        createTableHeader(gene, "Gene", "" ,null, "gene");
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         gene.setCellFactory(column ->
             new TableCell<VariantAndInterpretationEvidence, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    getStyleClass().add(centerStyleClass);
                     if(item == null || empty) {
                         setText(null);
                     } else {
@@ -1456,12 +1442,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         proteinAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getProteinAccession()));
 
         TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
-        type.getStyleClass().add(centerStyleClass);
-        createTableHeader(type, "Type", "variantType" ,null, "variantType");
+        createTableHeader(type, "Type", "" ,null, "variantType");
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
 
         TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
-        codCons.getStyleClass().add(centerStyleClass);
         createTableHeader(codCons, "Consequence", null ,140., "codingConsequence");
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
@@ -1484,13 +1468,34 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter()));
 
         TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
-        createTableHeader(chr, "Chr", "chromosome" ,null, "chromosome");
+        createTableHeader(chr, "Chr", "" ,null, "chromosome");
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
         TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("Start Position");
-        genomicCoordinate.setStyle("-fx-alignment : baseline-right;");
-        createTableHeader(genomicCoordinate, "Start Position", "startPosition" ,null, "startPosition");
+        genomicCoordinate.setStyle(genomicCoordinate.getStyle() + "-fx-alignment : baseline-right;");
+        createTableHeader(genomicCoordinate, "Start Position", "" ,null, "startPosition");
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
+        genomicCoordinate.setCellFactory(column ->
+                new TableCell<VariantAndInterpretationEvidence, Integer>() {
+                    @Override
+                    protected void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setStyle(getStyle() + "; -fx-alignment : baseline-right;");
+                        if(item == null || empty) {
+                            setText(null);
+                        } else {
+                            VariantAndInterpretationEvidence evidence = this.getTableView().getItems().get(this.getIndex());
+                            setText(item.toString());
+                            if(evidence != null && StringUtils.isNotEmpty(evidence.getSnpInDel().getWarningReason())
+                                    && evidence.getSnpInDel().getWarningReason().contains("consecutive_variants")) {
+                                setTextFill(Color.RED);
+                            } else {
+                                setTextFill(Color.BLACK);
+                            }
+                        }
+                    }
+                }
+        );
 
         TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
         createTableHeader(ref, "Ref", null ,null, "refSequence");
@@ -1501,22 +1506,45 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
-        fraction.setStyle(fraction.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(fraction, "Fraction", "alleleFraction" ,null, "alleleFraction");
+        createTableHeader(fraction, "Fraction", "" ,null, "alleleFraction");
         fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
+        fraction.setCellFactory(column ->
+                new TableCell<VariantAndInterpretationEvidence, BigDecimal>() {
+                    @Override
+                    protected void updateItem(BigDecimal item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setStyle(getStyle() + "; -fx-alignment : baseline-right;");
+                        if(item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(item.toString());
+                            if(PipelineCode.isBRCAPipeline(panel.getCode()) || PipelineCode.isHeredPipeline(panel.getCode())) {
+                                double doubleVal = item.doubleValue();
+                                if ((doubleVal >= 5 && doubleVal <= 40) || (doubleVal >= 60 && doubleVal <= 95)) {
+                                    setTextFill(Color.RED);
+                                } else {
+                                    setTextFill(Color.BLACK);
+                                }
+                            } else {
+                                setTextFill(Color.BLACK);
+                            }
+                        }
+                    }
+                }
+        );
 
         TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>("Depth");
         depth.setStyle(depth.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(depth, "Depth", "readDepth" ,null, "readDepth");
+        createTableHeader(depth, "Depth", "" ,null, "readDepth");
         depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getReadDepth()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, Integer> refNum = new TableColumn<>("Ref Count");
         refNum.setStyle(refNum.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(refNum, "Ref Count", "refReadNum" ,null, "refReadNum");
+        createTableHeader(refNum, "Ref Count", "" ,null, "refReadNum");
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getRefReadNum()).asObject());
 
         TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>("Alt Count");
-        createTableHeader(altNum, "Alt Count", "altReadNum" ,null, "altReadNum");
+        createTableHeader(altNum, "Alt Count", "" ,null, "altReadNum");
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum()).asObject());
         altNum.setCellFactory(column ->
                 new TableCell<VariantAndInterpretationEvidence, Integer>() {
@@ -1550,123 +1578,146 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(cosmicIds, "COSMIC ID", null ,null, "cosmicIds");
         cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Accession");
-        createTableHeader(clinVarAcc, "ClinVar Accession", null ,150d, "clinVarAcc");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Submitted Accession");
+        createTableHeader(clinVarAcc, "ClinVar Submitted Accession", null ,150d, "clinVarSubmittedAcc");
         clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarAcc()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Class");
-        createTableHeader(clinVarClass, "ClinVar Class", null ,150d, "clinVarClass");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Submitted Class");
+        createTableHeader(clinVarClass, "ClinVar Submitted Class", null ,150d, "clinVarSubmittedClass");
         clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarClass()));
 
         TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>("ClinVar Review Status");
         createTableHeader(clinVarReviewStatus, "ClinVar Review Status", null ,150d, "clinVarReviewStatus");
         clinVarReviewStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarReviewStatus()));
+        clinVarReviewStatus.setCellFactory(cell -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item == null || empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    String[] text = item.split(":");
+                    if(text.length >= 2) {
+                        setText(text[0]);
+                        setTooltip(new Tooltip(text[1]));
+                    } else {
+                        setText(item);
+                        setTooltip(null);
+                    }
+                }
+            }
+        });
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Disease");
-        createTableHeader(clinVarDisease, "ClinVar Disease", null ,150d, "clinVarDisease");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Submitted Disease");
+        createTableHeader(clinVarDisease, "ClinVar Submitted Disease", null ,150d, "clinVarSubmittedDisease");
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar Trait OMIM");
-        createTableHeader(clinVarTraitOMIM, "ClinVar Trait OMIM", null, null, "clinVarTraitOMIM");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDrugResponse = new TableColumn<>("ClinVar Condition");
+        createTableHeader(clinVarDrugResponse, "ClinVar Condition", null ,150d, "clinVarDrugResponse");
+        clinVarDrugResponse.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDrugResponse()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar Submitted OMIM");
+        createTableHeader(clinVarTraitOMIM, "ClinVar Submitted OMIM", null, null, "clinVarSubmittedOMIM");
         clinVarTraitOMIM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarTraitOMIM()));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000All = new TableColumn<>("1KGP All");
-        createTableHeader(g1000All, "1KGP All", null ,null, "g1000All");
+        createTableHeader(g1000All, "1KGP All", "1000 genomes : All" ,null, "g1000All");
         g1000All.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAll())));
         g1000All.setCellFactory(cell -> new PopTableCell("g1000.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000African = new TableColumn<>("1KGP African");
-        createTableHeader(g1000African, "1KGP African", null ,null, "g1000African");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000African = new TableColumn<>("1KGP AFR");
+        createTableHeader(g1000African, "1KGP AFR", "1000 genomes : African" ,null, "g1000African");
         g1000African.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAfrican())));
         g1000African.setCellFactory(cell -> new PopTableCell("g1000.african"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000American = new TableColumn<>("1KGP American");
-        createTableHeader(g1000American, "1KGP American", null ,null, "g1000American");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000American = new TableColumn<>("1KGP AMR");
+        createTableHeader(g1000American, "1KGP AMR", "1000 genomes : American" ,null, "g1000American");
         g1000American.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAmerican())));
         g1000American.setCellFactory(cell -> new PopTableCell("g1000.american"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000EastAsian = new TableColumn<>("1KGP East Asian");
-        createTableHeader(g1000EastAsian, "1KGP East Asian", null ,null, "g1000EastAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000EastAsian = new TableColumn<>("1KGP EAS");
+        createTableHeader(g1000EastAsian, "1KGP EAS", "1000 genomes : East Asian" ,null, "g1000EastAsian");
         g1000EastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEastAsian())));
         g1000EastAsian.setCellFactory(cell -> new PopTableCell("g1000.eastAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000European = new TableColumn<>("1KGP European");
-        createTableHeader(g1000European, "1KGP European", null ,null, "g1000European");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000European = new TableColumn<>("1KGP EUR");
+        createTableHeader(g1000European, "1KGP EUR", "1000 genomes : European" ,null, "g1000European");
         g1000European.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEuropean())));
         g1000European.setCellFactory(cell -> new PopTableCell("g1000.european"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000SouthAsian = new TableColumn<>("1KGP South Asian");
-        createTableHeader(g1000SouthAsian, "1KGP South Asian", null ,null, "g1000SouthAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000SouthAsian = new TableColumn<>("1KGP SAS");
+        createTableHeader(g1000SouthAsian, "1KGP SAS", "1000 genomes : South Asian" ,null, "g1000SouthAsian");
         g1000SouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getSouthAsian())));
         g1000SouthAsian.setCellFactory(cell -> new PopTableCell("g1000.southAsian"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> espAll = new TableColumn<>("ESP All");
-        createTableHeader(espAll, "ESP All", null ,null, "esp6500All");
+        createTableHeader(espAll, "ESP All", "Exome Sequencing Project : All" ,null, "esp6500All");
         espAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAll())));
         espAll.setCellFactory(cell -> new PopTableCell("esp6500.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espaa = new TableColumn<>("ESP African American");
-        createTableHeader(espaa, "ESP African American", null ,null, "esp6500aa");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espaa = new TableColumn<>("ESP AA");
+        createTableHeader(espaa, "ESP AA", "ESP : African American" ,null, "esp6500aa");
         espaa.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAa())));
         espaa.setCellFactory(cell -> new PopTableCell("esp6500.aa"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>("ESP European American");
-        createTableHeader(espea, "ESP European American", null ,null, "esp6500ea");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>("ESP EA");
+        createTableHeader(espea, "ESP EA", "ESP : European American" ,null, "esp6500ea");
         espea.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getEa())));
         espea.setCellFactory(cell -> new PopTableCell("esp6500.ea"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>("ExAC");
-        createTableHeader(exac, "ExAC", null ,null, "exac");
+        createTableHeader(exac, "ExAC", "Exome Aggregation Consortium : All" ,null, "exac");
         exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getExac())));
         exac.setCellFactory(cell -> new PopTableCell("exac"));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAll = new TableColumn<>("gnomAD All");
-        createTableHeader(gnomadAll, "gnomAD All", null, null, "gnomADall");
+        createTableHeader(gnomadAll, "gnomAD All", "gnomAD : All", null, "gnomADall");
         gnomadAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAll())));
         gnomadAll.setCellFactory(cell -> new PopTableCell("gnomAD.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAdmixedAmerican = new TableColumn<>("gnomAD Admixed American");
-        createTableHeader(gnomadAdmixedAmerican, "gnomAD Admixed American", null, null, "gnomADadmixedAmerican");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAdmixedAmerican = new TableColumn<>("gnomAD AMR");
+        createTableHeader(gnomadAdmixedAmerican, "gnomAD AMR", "gnomAD : Admixed American", null, "gnomADadmixedAmerican");
         gnomadAdmixedAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));
         gnomadAdmixedAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.admixedAmerican"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAfricanAfricanAmerican = new TableColumn<>("gnomAD African African American");
-        createTableHeader(gnomadAfricanAfricanAmerican, "gnomAD African African American", null, null, "gnomADafricanAfricanAmerican");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAfricanAfricanAmerican = new TableColumn<>("gnomAD AFR");
+        createTableHeader(gnomadAfricanAfricanAmerican, "gnomAD AFR", "gnomAD : African, African American", null, "gnomADafricanAfricanAmerican");
         gnomadAfricanAfricanAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAfricanAfricanAmerican())));
         gnomadAfricanAfricanAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.africanAfricanAmerican"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD East Asian");
-        createTableHeader(gnomadEastAsian, "gnomAD East Asian", null, null, "gnomADeastAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD EAS");
+        createTableHeader(gnomadEastAsian, "gnomAD EAS", "gnomAD : East Asian", null, "gnomADeastAsian");
         gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getEastAsian())));
         gnomadEastAsian.setCellFactory(cell -> new PopTableCell("gnomAD.eastAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD Finnish");
-        createTableHeader(gnomadFinnish, "gnomAD Finnish", null, null, "gnomADfinnish");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD FIN");
+        createTableHeader(gnomadFinnish, "gnomAD FIN", "gnomAD : Finnish", null, "gnomADfinnish");
         gnomadFinnish.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getFinnish())));
         gnomadFinnish.setCellFactory(cell -> new PopTableCell("gnomAD.finnish"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadNonFinnishEuropean = new TableColumn<>("gnomAD Non Finnish European");
-        createTableHeader(gnomadNonFinnishEuropean, "gnomAD Non Finnish European", null, null, "gnomADnonFinnishEuropean");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadNonFinnishEuropean = new TableColumn<>("gnomAD NFE");
+        createTableHeader(gnomadNonFinnishEuropean, "gnomAD NFE", "gnomAD : Non-Finnsh European", null, "gnomADnonFinnishEuropean");
         gnomadNonFinnishEuropean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getNonFinnishEuropean())));
         gnomadNonFinnishEuropean.setCellFactory(cell -> new PopTableCell("gnomAD.nonFinnishEuropean"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadOthers = new TableColumn<>("gnomAD Others");
-        createTableHeader(gnomadOthers, "gnomAD Others", null, null, "gnomADothers");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadOthers = new TableColumn<>("gnomAD OTH");
+        createTableHeader(gnomadOthers, "gnomAD OTH", "gnomAD : Other", null, "gnomADothers");
         gnomadOthers.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getOthers())));
         gnomadOthers.setCellFactory(cell -> new PopTableCell("gnomAD.others"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadSouthAsian = new TableColumn<>("gnomAD South Asian");
-        createTableHeader(gnomadSouthAsian, "gnomAD South Asian", null, null, "gnomADsouthAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadSouthAsian = new TableColumn<>("gnomAD SAS");
+        createTableHeader(gnomadSouthAsian, "gnomAD SAS", "gnomAD : South Asian", null, "gnomADsouthAsian");
         gnomadSouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getSouthAsian())));
         gnomadSouthAsian.setCellFactory(cell -> new PopTableCell("gnomAD.southAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("Korean Reference Genome Database");
-        createTableHeader(koreanReferenceDatabase, "Korean Reference Genome Database", null ,null, "koreanReferenceGenomeDatabase");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("KRGDB");
+        createTableHeader(koreanReferenceDatabase, "KRGDB", "Korean Reference Genome Database" ,null, "koreanReferenceGenomeDatabase");
         koreanReferenceDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanReferenceGenomeDatabase())));
         koreanReferenceDatabase.setCellFactory(cell -> new PopTableCell("koreanReferenceGenomeDatabase"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("Korean Exom Information Database");
-        createTableHeader(koreanExomInformationDatabase, "Korean Exom Information Database", null ,null, "koreanExomInformationDatabase");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("KoEXID");
+        createTableHeader(koreanExomInformationDatabase, "KoEXID", "Korean Exome Information Database" ,null, "koreanExomInformationDatabase");
         koreanExomInformationDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
         koreanExomInformationDatabase.setCellFactory(cell -> new PopTableCell("koreanExomInformationDatabase"));
 
@@ -1680,19 +1731,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
         createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70., "variantTypeExtension");
-        typeExtension.getStyleClass().clear();
         typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
 
         TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
         createTableHeader(exonBic, "Exon (BIC)", null ,null, "exonNumBic");
         exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zigosity");
-        createTableHeader(zigosity, "Zigosity", null, null, "zygosity");
+        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zygosity");
+        createTableHeader(zigosity, "Zygosity", null, null, "zygosity");
         zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
 
         TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");
-        createTableHeader(siftPrediction, "SIFT Prediction", null,null, "siftPrediction");
+        createTableHeader(siftPrediction, "SIFT Prediction", null,100., "siftPrediction");
         siftPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getSiftPrediction()));
 
@@ -1703,153 +1753,178 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationTasterPrediction()));
 
         TableColumn<VariantAndInterpretationEvidence, String> gerpNrScore = new TableColumn<>("GERP++ NR");
-        createTableHeader(gerpNrScore, "GERP++ NR", null,null, "gerpNrScore");
+        createTableHeader(gerpNrScore, "GERP++ NR", "Genomic Evolutionary Rate Profiling++ NR",null, "gerpNrScore");
         gerpNrScore.getStyleClass().clear();
         gerpNrScore.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpNrScore()));
+        gerpNrScore.setCellFactory(cell -> new GERPTableCell());
 
         TableColumn<VariantAndInterpretationEvidence, String> gerpRsScore = new TableColumn<>("GERP++ RS");
-        createTableHeader(gerpRsScore, "GERP++ RS", null,null, "gerpRsScore");
+        createTableHeader(gerpRsScore, "GERP++ RS", "Genomic Evolutionary Rate Profiling++ RS",null, "gerpRsScore");
         gerpRsScore.getStyleClass().clear();
         gerpRsScore.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpRsScore()));
+        gerpRsScore.setCellFactory(cell -> new GERPTableCell());
 
         TableColumn<VariantAndInterpretationEvidence, String> fathmmPrediction = new TableColumn<>("FATHMM Prediction");
-        createTableHeader(fathmmPrediction, "FATHMM Prediction", null,null, "fathmmPrediction");
+        createTableHeader(fathmmPrediction, "FATHMM Prediction", "Functional Analysis through Hidden Markov Models Prediction",null, "fathmmPrediction");
         fathmmPrediction.getStyleClass().clear();
         fathmmPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getFathmmPrediction()));
 
         TableColumn<VariantAndInterpretationEvidence, String> lrtPrediction = new TableColumn<>("LRT Prediction");
-        createTableHeader(lrtPrediction, "LRT Prediction", null,null, "lrtPrediction");
+        createTableHeader(lrtPrediction, "LRT Prediction", "Likelihood Ratio Test Prediction",null, "lrtPrediction");
         lrtPrediction.getStyleClass().clear();
         lrtPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getLrtPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> mutationAssessorPrediction = new TableColumn<>("MutationAssessor Prediction");
-        createTableHeader(mutationAssessorPrediction, "MutationAssessor Prediction", null,null, "mutationAssessorPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> mutationAssessorPrediction = new TableColumn<>("Mutation Assessor Prediction");
+        createTableHeader(mutationAssessorPrediction, "Mutation Assessor Prediction", null,null, "mutationAssessorPrediction");
         mutationAssessorPrediction.getStyleClass().clear();
         mutationAssessorPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationAssessorPrediction()));
 
         TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC Occurrence");
-        createTableHeader(cosmicOccurrence, "COSMIC Occurrence", null ,null, "cosmicOccurrence");
+        createTableHeader(cosmicOccurrence, "COSMIC Occurrence", "Catalogue Of Somatic Mutations In Cancer Occurrence" ,null, "cosmicOccurrence");
         cosmicOccurrence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicOccurrence()));
 
         TableColumn<VariantAndInterpretationEvidence, String> cosmicCount = new TableColumn<>("COSMIC Count");
-        createTableHeader(cosmicCount, "COSMIC Count", null ,null, "cosmicCount");
+        createTableHeader(cosmicCount, "COSMIC Count", "Catalogue Of Somatic Mutations In Cancer Count" ,null, "cosmicCount");
         cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicCount()));
 
 
         TableColumn<VariantAndInterpretationEvidence, String> bicCategory = new TableColumn<>("BIC Category");
-        createTableHeader(bicCategory, "BIC Category", null ,null, "bicCategory");
+        createTableHeader(bicCategory, "BIC Category", "Breast Cancer Information Core Category" ,null, "bicCategory");
         bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicCategory()));
 
         TableColumn<VariantAndInterpretationEvidence, String> bicClass = new TableColumn<>("BIC Class");
-        createTableHeader(bicClass, "BIC Class", null ,null, "bicClass");
+        createTableHeader(bicClass, "BIC Class", "Breast Cancer Information Core Class" ,null, "bicClass");
         bicClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicClass()));
 
         TableColumn<VariantAndInterpretationEvidence, String> bicDesignation = new TableColumn<>("BIC Designation");
-        createTableHeader(bicDesignation, "BIC Designation", null ,null, "bicDesignation");
+        createTableHeader(bicDesignation, "BIC Designation", "Breast Cancer Information Core Designation" ,null, "bicDesignation");
         bicDesignation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicDesignation()));
 
         TableColumn<VariantAndInterpretationEvidence, String> bicImportance = new TableColumn<>("BIC Importance");
-        createTableHeader(bicImportance, "BIC Importance", null ,null, "bicImportance");
+        createTableHeader(bicImportance, "BIC Importance", "Breast Cancer Information Core Importance" ,null, "bicImportance");
         bicImportance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicImportance()));
 
         TableColumn<VariantAndInterpretationEvidence, String> bicNt = new TableColumn<>("BIC NT");
-        createTableHeader(bicNt, "BIC NT", null ,null, "bicNt");
+        createTableHeader(bicNt, "BIC NT", "Breast Cancer Information Core NT" ,null, "bicNt");
         bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicNt()));
 
         TableColumn<VariantAndInterpretationEvidence, BigDecimal> kohbraFrequency = new TableColumn<>("KOHBRA Frequency");
-        createTableHeader(kohbraFrequency, "KOHBRA Frequency", null, null, "kohbraFreq");
+        createTableHeader(kohbraFrequency, "KOHBRA Frequency", "The Korean Hereditary Breast Cancer Frequency", null, "kohbraFreq");
         kohbraFrequency.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKohbraFreq())));
 
         TableColumn<VariantAndInterpretationEvidence, String> kohbraPatient = new TableColumn<>("KOHBRA Patient");
-        createTableHeader(kohbraPatient, "KOHBRA Patient", null, null, "kohbraPatient");
+        createTableHeader(kohbraPatient, "KOHBRA Patient", "The Korean Hereditary Breast Cancer Patient", null, "kohbraPatient");
         kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getKohbraPatient()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beBicCategory = new TableColumn<>("Be BIC Category");
-        createTableHeader(beBicCategory, "Be BIC Category", null ,null, "beBicCategory");
+        createTableHeader(beBicCategory, "Be BIC Category", "BRCA Exchange BIC Category",null, "beBicCategory");
         beBicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicCategory()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beBicEthnic = new TableColumn<>("Be BIC Ethnic");
-        createTableHeader(beBicEthnic, "Be BIC Ethnic", null ,null, "beBicEthnic");
+        createTableHeader(beBicEthnic, "Be BIC Ethnic", "BRCA Exchange BIC Ethnic" ,null, "beBicEthnic");
         beBicEthnic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicNationality()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beBicNationality = new TableColumn<>("Be BIC Nationality");
-        createTableHeader(beBicNationality, "Be BIC Nationality", null ,null, "beBicNationality");
+        createTableHeader(beBicNationality, "Be BIC Nationality", "BRCA Exchange BIC Nationality" ,null, "beBicNationality");
         beBicNationality.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicNationality()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beBicPathogenicity = new TableColumn<>("Be BIC Pathogenicity");
-        createTableHeader(beBicPathogenicity, "Be BIC Pathogenicity", null ,null, "beBicPathogenicity");
+        createTableHeader(beBicPathogenicity, "Be BIC Pathogenicity", "BRCA Exchange BIC Pathogenicity" ,null, "beBicPathogenicity");
         beBicPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicPathogenicity()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beClinVarMethod = new TableColumn<>("Be ClinVar Method");
-        createTableHeader(beClinVarMethod, "Be ClinVar Method", null ,null, "beClinVarMethod");
+        createTableHeader(beClinVarMethod, "Be ClinVar Method", "BRCA Exchange ClinVar Method" ,null, "beClinVarMethod");
         beClinVarMethod.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarMethod()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beClinVarOrigin = new TableColumn<>("Be ClinVar Origin");
-        createTableHeader(beClinVarOrigin, "Be ClinVar Origin", null ,null, "beClinVarOrigin");
+        createTableHeader(beClinVarOrigin, "Be ClinVar Origin", "BRCA Exchange ClinVar Origin" ,null, "beClinVarOrigin");
         beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarOrigin()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beClinVarPathogenicity = new TableColumn<>("Be ClinVar Pathogenicity");
-        createTableHeader(beClinVarPathogenicity, "Be ClinVar Pathogenicity", null ,null, "beEnigmaPathogenicity");
+        createTableHeader(beClinVarPathogenicity, "Be ClinVar Pathogenicity", "BRCA Exchange ClinVar Pathogenicity" ,null, "beClinVarPathogenicity");
         beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarPathogenicity()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beClinVarUpdate = new TableColumn<>("Be ClinVar Update");
-        createTableHeader(beClinVarUpdate, "Be ClinVar Update", null ,null, "beClinVarUpdate");
+        createTableHeader(beClinVarUpdate, "Be ClinVar Update", "BRCA Exchange ClinVar Update" ,null, "beClinVarUpdate");
         beClinVarUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarUpdate()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beEnigmaCondition = new TableColumn<>("Be ENIGMA Condition");
-        createTableHeader(beEnigmaCondition, "Be ENIGMA Condition", null ,null, "beEnigmaCondition");
+        createTableHeader(beEnigmaCondition, "Be ENIGMA Condition", "BRCA Exchange ENIGMA Condition" ,null, "beEnigmaCondition");
         beEnigmaCondition.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaCondition()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beEnigmaPathogenicity = new TableColumn<>("Be ENIGMA Pathogenicity");
-        createTableHeader(beEnigmaPathogenicity, "Be ENIGMA Pathogenicity", null ,null, "beEnigmaPathogenicity");
+        createTableHeader(beEnigmaPathogenicity, "Be ENIGMA Pathogenicity", "BRCA Exchange ENIGMA Pathogenicity" ,null, "beEnigmaPathogenicity");
         beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beEnigmaUpdate = new TableColumn<>("Be ENIGMA Update");
-        createTableHeader(beEnigmaUpdate, "Be ENIGMA Update", null ,null, "beEnigmaUpdate");
+        createTableHeader(beEnigmaUpdate, "Be ENIGMA Update", "BRCA Exchange ENIGMA Update" ,null, "beEnigmaUpdate");
         beEnigmaUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaUpdate()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beGene = new TableColumn<>("Be Gene");
-        createTableHeader(beGene, "Be Gene", null ,null, "beGene");
+        createTableHeader(beGene, "Be Gene", "BRCA Exchange Gene" ,null, "beGene");
         beGene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeGene()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beNt = new TableColumn<>("Be NT");
-        createTableHeader(beNt, "Be NT", null ,null, "beNt");
+        createTableHeader(beNt, "Be NT", "BRCA Exchange NT",null, "beNt");
         beNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeNt()));
 
         TableColumn<VariantAndInterpretationEvidence, String> beTranscript = new TableColumn<>("Be Transcript");
-        createTableHeader(beTranscript, "Be Transcript", null ,null, "beTranscript");
+        createTableHeader(beTranscript, "Be Transcript", "BRCA Exchange Transcript",null, "beTranscript");
         beTranscript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeTranscript()));
 
         TableColumn<VariantAndInterpretationEvidence, String> enigma = new TableColumn<>("ENIGMA");
-        createTableHeader(enigma, "ENIGMA", null ,null, "enigma");
-        enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
+        createTableHeader(enigma, "ENIGMA", "Evidence-based Network for the Interpretation of Germline Mutant Alleles" ,null, "enigma");
+        enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getEnigma()));
 
+        TableColumn<VariantAndInterpretationEvidence, Integer> clinVarVariationId = new TableColumn<>("ClinVar Variation ID");
+        createTableHeader(clinVarVariationId, "ClinVar Variation ID", null ,null, "clinVarVariationId");
+        clinVarVariationId.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarVariationId()));
 
-//        TableColumn<VariantAndInterpretationEvidence, String> refGenomeVer = new TableColumn<>("RefGenomeVer");
-//        createTableHeader(refGenomeVer, "RefGenomeVer", null ,null);
-//        refGenomeVer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRefGenomeVer()));
-//        refGenomeVer.setVisible(false);
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarInterpretation = new TableColumn<>("ClinVar Interpretation");
+        createTableHeader(clinVarInterpretation, "ClinVar Interpretation", null ,null, "clinVarInterpretation");
+        clinVarInterpretation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarInterpretation()));
 
-//        TableColumn<VariantAndInterpretationEvidence, String> leftSequence = new TableColumn<>("LeftSequence");
-//        createTableHeader(leftSequence, "LeftSequence", null ,null);
-//        leftSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getLeftSequence()));
-//        leftSequence.setVisible(false);
-//
-//        TableColumn<VariantAndInterpretationEvidence, String> rightSequence = new TableColumn<>("RightSequence");
-//        createTableHeader(rightSequence, "RightSequence", null ,null);
-//        rightSequence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getRightSequence()));
-//        rightSequence.setVisible(false);
+        TableColumn<VariantAndInterpretationEvidence, String> metaSvmPrediction = new TableColumn<>("metaSVM Prediction");
+        createTableHeader(metaSvmPrediction, "metaSVM Prediction", null ,null, "metaSvmPrediction");
+        metaSvmPrediction.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMetaSvmPrediction()));
 
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvAdaScore = new TableColumn<>("dbscSNV ADA Score");
+        createTableHeader(dbscSnvAdaScore, "dbscSNV ADA Score", null ,null, "dbscSnvAdaScore");
+        dbscSnvAdaScore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getDbscSnvAdaScore()));
 
-        /*TableColumn<VariantAndInterpretationEvidence, Integer> variantNum = new TableColumn<>("VariantNum");
-        createTableHeader(variantNum, "VariantNum", null ,null);
-        variantNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getVariantNum()).asObject());
-        variantNum.setVisible(false);*/
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvRfScore = new TableColumn<>("dbscSNV RF Score");
+        createTableHeader(dbscSnvRfScore, "dbscSNV RF Score", null ,null, "dbscSnvRfScore");
+        dbscSnvRfScore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getDbscSnvRfScore()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> inheritance = new TableColumn<>("Inheritance");
+        createTableHeader(inheritance, "Inheritance", null ,null, "inheritance");
+        inheritance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getInheritance()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> commonVariants = new TableColumn<>("Common Variants");
+        createTableHeader(commonVariants, "Common Variants", null ,null, "commonVariants");
+        commonVariants.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getCommonVariants()));
+        commonVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
+            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+            if(commonVariantsCheckBox.isSelected()) {
+                commonVariants.setMinWidth(80);
+                commonVariants.setMaxWidth(300);
+                commonVariants.setPrefWidth(80);
+            } else {
+                commonVariants.setMinWidth(0);
+                commonVariants.setMaxWidth(0);
+                commonVariants.setPrefWidth(0);
+            }
+            Platform.runLater(() -> showVariantList(0));
+        });
+
+        commonVariants.setMinWidth(0);
+        commonVariants.setMaxWidth(0);
+        commonVariants.setPrefWidth(0);
 
         variantListTableView.getStyleClass().clear();
         variantListTableView.getStyleClass().add("table-view");
@@ -1866,58 +1941,88 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
             });
         });
-
-        runColumnAction();
-
     }
 
-
-
-    private void compareColumnOrder() {
-        mainController.setContentsMaskerPaneVisible(true);
-        if(variantListTableView.getColumns().size() == 1) return;
-        String columnString = variantListTableView.getColumns().stream()
-                .filter(column -> StringUtils.isNotEmpty(column.getText())).map(column -> {
-                    if (column.isVisible()) {
-                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":Y";
-                    } else {
-                        return column.getText() + ":" + variantListTableView.getColumns().indexOf(column) + ":N";
-                    }
-                }).collect(Collectors.joining(","));
-        HttpClientResponse response = null;
-        try {
-            response = apiService.get("/member/memberOption/" + getColumnOrderType(), null, null, null);
-        } catch (WebAPIException wae) { }
-
-        if(response != null && response.getStatus() == 200) {
-            if(StringUtils.isEmpty(response.getContentString())) {
-                String str = "";
-                if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
-                } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
-                } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);
-                } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
-                        || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
-                } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-                    str = PropertiesUtil.getJsonString(CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
-                }
-
-                if(!str.equals(columnString)) {
-                    deleteColumn();
-                    runColumnAction();
-                }
-            } else if(!columnString.equals(response.getContentString())) {
-                deleteColumn();
-                runColumnAction();
-            }
+    private String getDefaultColumnOrderKey(Panel panel) {
+        String key = null;
+        if(PipelineCode.isHemePipeline(panel.getCode())) {
+            key = "hemeColumnOrder";
+        } else if(PipelineCode.isSolidPipeline(panel.getCode())) {
+            key = "solidColumnOrder";
+        } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+            key = "tstDNAColumnOrder";
+        } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
+            key = "brcaColumnOrder";
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
+            key = "heredColumnOrder";
         }
-        mainController.setContentsMaskerPaneVisible(false);
+        return key;
     }
 
-    private void deleteColumn() {
+    private void initColumnOrderAndVariantList() {
+        String path = new ResourceUtil().getDefaultColumnOrderResourcePath(panel);
+
+        Task<Void> task = new Task<Void>() {
+            String[] columnList;
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    HttpClientResponse response;
+                    String key = getDefaultColumnOrderKey(panel);
+                    response = apiService.get("/member/memberOption/" + key, null, null, null);
+                    if(response != null && response.getStatus() == 200) {
+                        columnList = response.getContentString().split(",");
+                    }
+                } catch (WebAPIException wae) {
+                    if (wae.getResponse().getStatus() != 404) throw wae;
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                try {
+                    if (columnList != null && columnList.length > 0) {
+                        List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
+                                .map(v -> v.split(":"))
+                                .filter(v -> v.length == 3 && !v[1].equals("0"))
+                                .map(v -> {
+                                    TableColumnInfo tableColumnInfo = new TableColumnInfo();
+                                    tableColumnInfo.setVisible(v[2].equals("Y"));
+                                    tableColumnInfo.setColumnName(v[0]);
+                                    tableColumnInfo.setOrder(Integer.parseInt(v[1]));
+                                    return tableColumnInfo;
+                                }).collect(Collectors.toList());
+                        addAColumnToTable(tableColumnInfos);
+                    } else {
+                        //removeColumnOrder(key);
+                        setDefaultTableColumnOrder(path);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    setDefaultTableColumnOrder(path);
+                }
+                variantListTableView.getColumns().addListener(tableColumnListChangeListener);
+                Platform.runLater(() -> showVariantList(0));
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                mainController.setMainMaskerPane(false);
+                setDefaultTableColumnOrder(path);
+                variantListTableView.getColumns().addListener(tableColumnListChangeListener);
+                DialogUtil.showWebApiException(getException(), getMainController().getPrimaryStage());
+                Platform.runLater(() -> showVariantList(0));
+            }
+        };
+        mainController.setMainMaskerPane(true);
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
+    private void removeVariantTableColumns() {
         variantListTableView.getColumns().removeListener(tableColumnListChangeListener);
         int columnSize = variantListTableView.getColumns().size();
 
@@ -1926,31 +2031,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    private void runColumnAction() {
-        if(panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
-            putTableColumn("hemeColumnOrder", CommonConstants.BASE_HEME_COLUMN_ORDER_PATH);
-        } else if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
-            putTableColumn("solidColumnOrder", CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH);
-        } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-            putTableColumn("tstDNAColumnOrder", CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH);
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode())
-                || panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
-            putTableColumn("brcaColumnOrder", CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH);
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
-            putTableColumn("heredColumnOrder", CommonConstants.BASE_HERED_COLUMN_ORDER_PATH);
-        }
-        variantListTableView.getColumns().addListener(tableColumnListChangeListener);
-    }
-
-    private void removeColumnOrder(String key) {
-        try {
-            apiService.delete("/member/memberOption/" + key);
-        } catch (WebAPIException wae) {
-            if (wae.getResponse() == null || wae.getResponse().getStatus() != 404) {
-                logger.error(wae.getMessage());
-            }
-        }
-    }
 
     private void saveColumnInfoToServer() {
         String columnString = variantListTableView.getColumns().stream()
@@ -1964,53 +2044,41 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         logger.debug(columnString);
         Map<String, Object> map = new HashMap<>();
         map.put("value", columnString);
-        try {
-            apiService.put("/member/memberOption/" + getColumnOrderType(), map, null, true);
-        } catch (WebAPIException wae) {
-            logger.error(wae.getMessage());
-        }
-    }
-
-    private void putTableColumn(String key, String path) {
-        try {
-            HttpClientResponse response = apiService.get("/member/memberOption/" + key, null, null, null);
-            if(response != null && response.getStatus() == 200) {
-                String[] columnList = response.getContentString().split(",");
-                if (StringUtils.isNotEmpty(response.getContentString()) && columnList.length > 0) {
-                    List<TableColumnInfo> tableColumnInfos = Arrays.stream(columnList)
-                            .map(v -> v.split(":"))
-                            .filter(v -> v.length == 3 && !v[1].equals("0"))
-                            .map(v -> {
-                                TableColumnInfo tableColumnInfo = new TableColumnInfo();
-                                tableColumnInfo.setVisible(v[2].equals("Y"));
-                                tableColumnInfo.setColumnName(v[0]);
-                                tableColumnInfo.setOrder(Integer.parseInt(v[1]));
-                                return tableColumnInfo;
-                            }).collect(Collectors.toList());
-                    addAColumnToTable(tableColumnInfos);
-                } else {
-                    removeColumnOrder(key);
-                    setDefaultTableColumnOrder(path);
-                }
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                apiService.put("/member/memberOption/" + getColumnOrderType(), map, null, true);
+                return null;
             }
-        } catch (WebAPIException wae) {
-            setDefaultTableColumnOrder(path);
-        }
 
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                setMaskerPaneVisable(false);
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                setMaskerPaneVisable(false);
+            }
+        };
+        setMaskerPaneVisable(true);
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     private String getColumnOrderType() {
         String columnOrderType = "";
-        if (panel.getCode().equals(PipelineCode.HEME_ACCUTEST_DNA.getCode())) {
+        if(PipelineCode.isHemePipeline(panel.getCode())) {
             columnOrderType = "hemeColumnOrder";
-        } else if (panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_DNA.getCode())) {
+        } else if(PipelineCode.isSolidPipeline(panel.getCode())) {
             columnOrderType = "solidColumnOrder";
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             columnOrderType = "tstDNAColumnOrder";
-        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_DNA.getCode()) ||
-                panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_DNA.getCode())) {
+        } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             columnOrderType = "brcaColumnOrder";
-        } else if(panel.getCode().equals(PipelineCode.HERED_ACCUTEST_DNA.getCode())) {
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
             columnOrderType = "heredColumnOrder";
         }
 
@@ -2018,27 +2086,37 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     }
 
     private void addAColumnToTable(List<TableColumnInfo> columnInfos) {
-        columnInfos.sort(Comparator.comparing(TableColumnInfo::getOrder));
-
-        for(TableColumnInfo info : columnInfos) {
-            if(columnMap.containsKey(info.getColumnName())) {
-                columnMap.get(info.getColumnName()).visibleProperty()
-                        .removeListener(tableColumnVisibilityChangeListener);
-                columnMap.get(info.getColumnName()).setVisible(info.isVisible());
-                columnMap.get(info.getColumnName()).visibleProperty()
-                        .addListener(tableColumnVisibilityChangeListener);
-                variantListTableView.getColumns().add(columnMap.get(info.getColumnName()));
-            }
-        }
+        List<TableColumnInfo> cols = columnInfos.stream()
+                .filter(item -> columnMap.containsKey(item.getColumnName()))
+                .sorted(Comparator.comparing(TableColumnInfo::getOrder)).collect(Collectors.toList());
+//        for(TableColumnInfo info : cols) {
+//                columnMap.get(info.getColumnName()).visibleProperty()
+//                        .removeListener(tableColumnVisibilityChangeListener);
+//                columnMap.get(info.getColumnName()).setVisible(info.isVisible());
+//                columnMap.get(info.getColumnName()).visibleProperty()
+//                        .addListener(tableColumnVisibilityChangeListener);
+//        }
+        ArrayList visibleTableColumns = cols.stream().filter(tableColumnInfo -> tableColumnInfo.isVisible() ||
+                tableColumnInfo.getColumnName().equals("False"))
+                .map(item -> columnMap.get(item.getColumnName()))
+                .collect(Collectors.toCollection(ArrayList::new));
+        //컬럼 리셋을 했을 때 Visible 이 false인 컬럼을 뒤쪽으로 이동
+        ArrayList invisibleTableColumns = cols.stream().filter(tableColumnInfo -> !tableColumnInfo.isVisible()
+                && !tableColumnInfo.getColumnName().equals("False"))
+                .map(item -> columnMap.get(item.getColumnName()))
+                .collect(Collectors.toCollection(ArrayList::new));
+        variantListTableView.getColumns().addAll(visibleTableColumns);
+        variantListTableView.getColumns().addAll(invisibleTableColumns);
         logger.debug("Column Count = " + variantListTableView.getColumns().size());
     }
 
+    @SuppressWarnings("unchecked")
     private void setDefaultTableColumnOrder(String path) {
         String str = PropertiesUtil.getJsonString(path);
-
         List<TableColumnInfo> columnInfos = (List<TableColumnInfo>)JsonUtil.getObjectList(str, TableColumnInfo.class);
 
         if (columnInfos != null) {
+            removeVariantTableColumns();
             addAColumnToTable(columnInfos);
         }
     }
@@ -2046,6 +2124,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
     class BooleanCell extends LockedTableCell<VariantAndInterpretationEvidence, Boolean> {
         private CheckBox checkBox = new CheckBox();
         private BooleanCell() {
+            super(true);
             checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 VariantAndInterpretationEvidence evidence = BooleanCell.this.getTableView().getItems().get(
                         BooleanCell.this.getIndex());
@@ -2071,10 +2150,36 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
+    public static class GERPTableCell extends TableCell<VariantAndInterpretationEvidence, String> {
+
+        GERPTableCell() {   }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null || empty) {
+                setText(null);
+                setTooltip(null);
+            } else if(StringUtils.isNotEmpty(item)){
+                try {
+                    DecimalFormat df = new DecimalFormat();
+                    df.setMinimumFractionDigits(2);
+                    df.setMaximumFractionDigits(2);
+                    setText(df.format(new BigDecimal(item)));
+                    setTooltip(new Tooltip(item));
+                } catch (Exception e) {
+                    setText(item);
+                    setTooltip(null);
+                }
+
+            }
+        }
+    }
+
     public class PopTableCell extends TableCell<VariantAndInterpretationEvidence, BigDecimal> {
         String type;
 
-        public PopTableCell(String type) {
+        private PopTableCell(String type) {
             this.type = type;
             //this.setStyle(this.getStyle()+"; -fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
         }
@@ -2085,6 +2190,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             setStyle(this.getStyle()+";-fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
             if(item == null || empty) {
                 setText(null);
+                setTooltip(null);
             } else {
                 DecimalFormat df = new DecimalFormat();
                 df.setMinimumFractionDigits(3);
@@ -2108,35 +2214,26 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    public abstract class LockedTableCell<T, S> extends TableCell<T, S> {
-
-        {
-
-            Platform.runLater(() -> {
-
-                ScrollBar sc = (ScrollBar) getTableView().queryAccessibleAttribute(AccessibleAttribute.HORIZONTAL_SCROLLBAR);
-
-                TableHeaderRow thr = (TableHeaderRow) getTableView().queryAccessibleAttribute(AccessibleAttribute.HEADER);
-
-                Region headerNode = thr.getColumnHeaderFor(this.getTableColumn());
-
-                sc.valueProperty().addListener((ob, o, n) -> {
-
-                    double doubleValue = n.doubleValue();
-
-                    headerNode.setTranslateX(doubleValue);
-
-                    headerNode.toFront();
-
-                    this.setTranslateX(doubleValue);
-
-                    this.toFront();
-
-                });
-
-            });
-
+    private abstract class LockedTableCell<T, S> extends TableCell<T, S> {
+        private ChangeListener<Number> getNumberChangeListener(Region headerNode) {
+            return (ob, o, n) -> {
+                double doubleValue = n.doubleValue();
+                headerNode.setTranslateX(doubleValue);
+                headerNode.toFront();
+                this.setTranslateX(doubleValue);
+                this.toFront();
+            };
         }
 
+        LockedTableCell(boolean lockEnabled) {
+            if (lockEnabled) {
+                Platform.runLater(() -> {
+                    ScrollBar sc = (ScrollBar) getTableView().queryAccessibleAttribute(AccessibleAttribute.HORIZONTAL_SCROLLBAR);
+                    TableHeaderRow thr = (TableHeaderRow) getTableView().queryAccessibleAttribute(AccessibleAttribute.HEADER);
+                    Region headerNode = thr.getColumnHeaderFor(this.getTableColumn());
+                    sc.valueProperty().addListener(getNumberChangeListener(headerNode));
+                });
+            }
+        }
     }
 }

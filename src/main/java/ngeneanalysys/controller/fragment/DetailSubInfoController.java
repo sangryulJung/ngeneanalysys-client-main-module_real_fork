@@ -12,6 +12,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import ngeneanalysys.code.constants.FXMLConstants;
+import ngeneanalysys.code.enums.AnalysisTypeCode;
+import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
@@ -77,26 +79,7 @@ public class DetailSubInfoController extends SubPaneController {
         alamutService.setMainController(getMainController());
 
         showDbLinkLisk();
-        // showPopulationFrequency();
-        //if(panel != null && panel.getAnalysisType().equalsIgnoreCase(AnalysisTypeCode.GERMLINE.getDescription())) {
-            showInSilicoPredictions();
-        //}
-
-
-    }
-
-    private void showInSilicoPredictions() {
-        try {
-            FXMLLoader loader = getMainApp().load(FXMLConstants.ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS);
-            Node node = loader.load();
-            InSilicoPredictionsController controller = loader.getController();
-            controller.setMainController(this.getMainController());
-            controller.setParamMap(paramMap);
-            controller.show((Parent) node);
-            mainVBox.getChildren().add(0, node);
-        } catch (Exception e) {
-            logger.debug(e.getMessage());
-        }
+        showPopulationFrequency();
     }
 
     @SuppressWarnings("unchecked")
@@ -130,215 +113,177 @@ public class DetailSubInfoController extends SubPaneController {
                 dbLinkGridPane.getChildren().remove(2);
             }
         }
-        double rowHeight = 15.0;
-        // String[] germlineLink = {"exAC", "brcaExchange", "ncbi", "ucsc", "alamut"};
-        // String[] somaticLink = {"dbSNP", "clinvar", "cosmic", "ncbi", "gnomes", "exAC", "gnomAD", "koEXID", "oncoKB", "ucsc"};
+        double rowHeight = 20.0;
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
-            String exacFormat = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_format") : null;
-            String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
-            Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
-            Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
+        Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
 
-            if (!StringUtils.isEmpty(rsId)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("dbSNP");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label(rsId);
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("dbSNP");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (!StringUtils.isEmpty(geneId)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("NCBI");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label(geneId);
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("NCBI");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (!StringUtils.isEmpty(exacFormat)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("ExAC");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label(exacFormat);
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("ExAC");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (!StringUtils.isEmpty(exacFormat)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("gnomAD");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label(exacFormat);
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("gnomAD");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
+        String rsId = selectedAnalysisResultVariant.getSnpInDel().getDbSNP().getDbSnpRsId(); // (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+        Integer variationId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getClinVar().getClinVarVariationId();
+        String exacFormat = (variantInformationMap.containsKey("exac_format")) ? (String) variantInformationMap.get("exac_format") : null;
+        String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
+        Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
+        Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
+        String chromosome = (genomicCoordinateMap != null && genomicCoordinateMap.containsKey("chromosome"))
+                ? (String) genomicCoordinateMap.get("chromosome") : null;
+        Integer gPos = (genomicCoordinateMap != null && genomicCoordinateMap.containsKey("g.pos"))
+                ? (Integer) genomicCoordinateMap.get("g.pos") : null;
 
+        String cursorHand = "cursor_hand";
+        String titleCss = "title2";
+
+        if (variationId != null) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("ClinVar(" + variationId + ")", "ClinVar");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+
+        if (!StringUtils.isEmpty(rsId)) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("dbSNP(" + rsId + ")", "dbSNP");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getG1000().getAll() != null &&
+                !StringUtils.isEmpty(rsId)) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("1000G(" + rsId + ")", "1000G");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase() != null &&
+                !StringUtils.isEmpty(rsId)) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("KoEXID(" + rsId + ")", "KoEXID");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+
+        if (!StringUtils.isEmpty(geneId)) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("NCBI(" + geneId + ")", "NCBI");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getExac() != null &&
+                !StringUtils.isEmpty(exacFormat)) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("ExAC(" + exacFormat + ")", "ExAC");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+        if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getGnomAD().getAll() != null &&
+                !StringUtils.isEmpty(exacFormat)) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("gnomAD(" + exacFormat + ")", "gnomAD");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+
+        if (start != null && end != null) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label dbContentLabel = createLinkLabel("UCSC(" + start + "-" + end + ")", "UCSC");
+            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+
+        if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if (!StringUtils.isEmpty(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("COSMIC");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label(selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds());
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("COSMIC");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (start != null && end != null) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("UCSC");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label("View");
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("UCSC");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = createLinkLabel("COSMIC", "COSMIC");
+                dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+                dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
 
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
-            String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
-            String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
-            String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
-            String urlNCBI = (variantInformationMap.containsKey("ncbi_url")) ? (String) variantInformationMap.get("ncbi_url") : null;
-            String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
-
-            if (!StringUtils.isEmpty(urlExAC)) {
+            if (!StringUtils.isEmpty(chromosome) && gPos != null
+                    && !PipelineCode.isHeredPipeline(panel.getCode())) {
                 dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("ExAC");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label("View");
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("ExAC");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (!StringUtils.isEmpty(urlBRCAExchange)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("BRCA Exchange");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label("View");
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("BRCA Exchange");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (!StringUtils.isEmpty(urlClinvar)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("ClinVar");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label("View");
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("ClinVar");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (!StringUtils.isEmpty(urlNCBI)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("NCBI");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label("View");
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("NCBI");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-            }
-            if (!StringUtils.isEmpty(urlUCSC)) {
-                dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                Label dbNameLabel = new Label("UCSC");
-                dbNameLabel.getStyleClass().add("title1");
-                dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                Label dbContentLabel = new Label("View");
-                dbContentLabel.getStyleClass().add("title1");
-                dbContentLabel.setOnMouseClicked(event -> {
-                    showBrowser("UCSC");
-                });
-                dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                Label dbContentLabel = createLinkLabel("BRCA Exchange", "BRCA Exchange");
+                dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+                dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
             }
             Map<String, Object> geneMap = returnResultsAfterSearch("gene");
             if (geneMap != null && !geneMap.isEmpty() && geneMap.containsKey("transcript")) {
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
                 if (!transcriptDataMap.isEmpty()) {
                     dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-                    Label dbNameLabel = new Label("ALAMUT");
-                    dbNameLabel.getStyleClass().add("title1");
-                    dbLinkGridPane.add(dbNameLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-                    Label dbContentLabel = new Label("View");
-                    dbContentLabel.getStyleClass().add("title1");
-                    dbContentLabel.setOnMouseClicked(event -> {
-                        showBrowser("ALAMUT");
-                    });
-                    dbLinkGridPane.add(dbContentLabel, 1, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+                    Label dbContentLabel = createLinkLabel("ALAMUT", "ALAMUT");
+                    dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
+                    dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
                 }
             }
         }
-
     }
 
     @SuppressWarnings("unchecked")
-    public void showBrowser(String item) {
+    private void showBrowser(String item) {
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
-        if(panel.getAnalysisType().equalsIgnoreCase("SOMATIC")) {
-            if("dbSNP".equalsIgnoreCase(item)) {
-                String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+        Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
+        if(variantInformationMap == null || genomicCoordinateMap == null) return;
+        if("dbSNP".equalsIgnoreCase(item)) {
+            String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+            if(StringUtils.isNotEmpty(rsId)) {
                 String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
                 openBrowser(fullUrlDBsnp);
-            } else if("ClinVar".equalsIgnoreCase(item)) {
-                String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
-                String fullUrlClinvar = "http://www.ncbi.nlm.nih.gov/clinvar?term=" + rsId;
-                openBrowser(fullUrlClinvar);
-            } else if("1000G".equalsIgnoreCase(item)) {
-                String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
-                String fullUrl1000G = "http://grch37.ensembl.org/Homo_sapiens/Variation/Population?db=core;v="
-                        + rsId + ";vdb=variation";
-                openBrowser(fullUrl1000G);
-            } else if("KoEXID".equalsIgnoreCase(item)) {
-                String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
-                String fullUrlKoKEXID = "http://koex.snu.ac.kr/koex_main.php?section=search&db_code=15&keyword_class=varid&search_keyword="
-                        + rsId;
-                openBrowser(fullUrlKoKEXID);
-            } else if("NCBI".equalsIgnoreCase(item)) {
-                String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
-                String fullUrlNCBI = "http://www.ncbi.nlm.nih.gov/gene/" + geneId;
-                openBrowser(fullUrlNCBI);
-            } else if("ExAC".equalsIgnoreCase(item)) {
-                String exacFormat = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_format") : null;
-                String fullUrlExAC = "http://exac.broadinstitute.org/variant/"
-                        + exacFormat;
-                openBrowser(fullUrlExAC);
-            } else if("gnomAD".equalsIgnoreCase(item)) {
-                String exacFormat = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_format") : null;
-                String fullUrlExAC = "http://gnomad.broadinstitute.org/variant/"
-                        + exacFormat;
-                openBrowser(fullUrlExAC);
-            } else if("COSMIC".equalsIgnoreCase(item)) {
+            }
+        } else if("ClinVar".equalsIgnoreCase(item)) {
+            String variationId = (variantInformationMap.containsKey("variation_id")) ? (String) variantInformationMap.get("variation_id") : null;
+            String fullUrlClinVar = "https://www.ncbi.nlm.nih.gov/clinvar/variation/" + variationId + "/";
+            openBrowser(fullUrlClinVar);
+        } else if("1000G".equalsIgnoreCase(item)) {
+            String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+            String fullUrl1000G = "http://grch37.ensembl.org/Homo_sapiens/Variation/Population?db=core;v="
+                    + rsId + ";vdb=variation";
+            openBrowser(fullUrl1000G);
+        } else if("KoEXID".equalsIgnoreCase(item)) {
+            String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
+            String fullUrlKoKEXID = "http://koex.snu.ac.kr/koex_main.php?section=search&db_code=15&keyword_class=varid&search_keyword="
+                    + rsId;
+            openBrowser(fullUrlKoKEXID);
+        } else if("NCBI".equalsIgnoreCase(item)) {
+            String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
+            String fullUrlNCBI = "http://www.ncbi.nlm.nih.gov/gene/" + geneId;
+            openBrowser(fullUrlNCBI);
+        } else if("ExAC".equalsIgnoreCase(item)) {
+            String exacFormat = (variantInformationMap.containsKey("exac_format")) ? (String) variantInformationMap.get("exac_format") : null;
+            String fullUrlExAC = "http://exac.broadinstitute.org/variant/" + exacFormat;
+            openBrowser(fullUrlExAC);
+        } else if("gnomAD".equalsIgnoreCase(item)) {
+            String exacFormat = (variantInformationMap.containsKey("exac_format")) ? (String) variantInformationMap.get("exac_format") : null;
+            String fullUrlExAC = "http://gnomad.broadinstitute.org/variant/"
+                    + exacFormat;
+            openBrowser(fullUrlExAC);
+        } else if("UCSC".equalsIgnoreCase(item)) {
+            Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
+            Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
+            StringBuilder insertStart = new StringBuilder(start != null ? start.toString() : "");
+            StringBuilder insertEnd = new StringBuilder(end != null ? end.toString() : "");
+            int startLength = insertStart.length();
+            int endLength = insertEnd.length();
+            for (int i = 1; i < startLength; i++) {
+                if (i % 3 == 0) insertStart.insert(startLength - i, ",");
+            }
+            for (int i = 1; i < endLength; i++) {
+                if (i % 3 == 0) insertEnd.insert(endLength - i, ",");
+            }
+            if(start == null) start = 0;
+            if(end == null) end = 0;
+            Integer startMinus = start - 30;
+            Integer endPlus = end + 30;
+            String fullUrlUCSC = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19."
+                    + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome() + "%3A"
+                    + insertStart + "-"
+                    + insertEnd + "&position="
+                    + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome() + "%3A"
+                    + startMinus + "-"
+                    + endPlus;
+
+            openBrowser(fullUrlUCSC);
+        } else if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
+            if("COSMIC".equalsIgnoreCase(item)) {
                 String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
                 if (cosmicId.contains("|")) {
                     String[] ids = cosmicId.split("\\|");
@@ -360,48 +305,21 @@ public class DetailSubInfoController extends SubPaneController {
                     String fullUrlCOSMIC = "http://cancer.sanger.ac.uk/cosmic/mutation/overview?genome=37&id=" + cosmicId;
                     openBrowser(fullUrlCOSMIC);
                 }
-            } else if("UCSC".equalsIgnoreCase(item)) {
-                Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
-                Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
-                StringBuilder insertStart = new StringBuilder(start.toString());
-                StringBuilder insertEnd = new StringBuilder(end.toString());
-                int startLength = insertStart.length();
-                int endLength = insertEnd.length();
-                for (int i = 1; i < startLength; i++) {
-                    if (i % 3 == 0) insertStart.insert(startLength - i, ",");
-                }
-                for (int i = 1; i < endLength; i++) {
-                    if (i % 3 == 0) insertEnd.insert(endLength - i, ",");
-                }
-                Integer startMinus = start - 30;
-                Integer endPlus = end + 30;
-                String fullUrlUCSC = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19."
-                        + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome() + "%3A"
-                        + insertStart + "-"
-                        + insertEnd + "&position="
-                        + selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome() + "%3A"
-                        + startMinus + "-"
-                        + endPlus;
-
-                openBrowser(fullUrlUCSC);
             }
         } else if(panel.getAnalysisType().equalsIgnoreCase("GERMLINE")) {
             if("BRCA Exchange".equalsIgnoreCase(item)) {
-                String urlBRCAExchange = (variantInformationMap.containsKey("brca_exchange_url")) ? (String) variantInformationMap.get("brca_exchange_url") : null;
+                String chromosome = (genomicCoordinateMap.containsKey("chromosome"))
+                        ? (String) genomicCoordinateMap.get("chromosome") : null;
+                Integer gPos = (genomicCoordinateMap.containsKey("g.pos"))
+                        ? (Integer) genomicCoordinateMap.get("g.pos") : null;
+
+                String urlBRCAExchange = "http://brcaexchange.org/variants?search=" + chromosome + ":g." + gPos;
+
                 openBrowser(urlBRCAExchange);
-            } else if("ClinVar".equalsIgnoreCase(item)) {
-                String urlClinvar = (variantInformationMap.containsKey("clinvar_url")) ? (String) variantInformationMap.get("clinvar_url") : null;
-                openBrowser(urlClinvar);
-            } else if("NCBI".equalsIgnoreCase(item)) {
-                String urlNCBI = (variantInformationMap.containsKey("ncbi_url")) ? (String) variantInformationMap.get("ncbi_url") : null;
-                openBrowser(urlNCBI);
-            } else if("UCSC".equalsIgnoreCase(item)) {
-                String urlUCSC = (variantInformationMap.containsKey("ucsc_url")) ? (String) variantInformationMap.get("ucsc_url") : null;
-                openBrowser(urlUCSC);
             } else if("ALAMUT".equalsIgnoreCase(item)) {
                 Map<String, Object> geneMap = returnResultsAfterSearch("gene");
                 Map<String, Map<String, String>> transcriptDataMap = (Map<String, Map<String, String>>) geneMap.get("transcript");
-                if (!transcriptDataMap.isEmpty() && transcriptDataMap.size() > 0) {
+                if (transcriptDataMap != null && !transcriptDataMap.isEmpty()) {
                     int selectedIdx = this.analysisDetailVariantNomenclatureController.getTranscriptComboBoxSelectedIndex();
                     logger.debug(String.format("selected transcript combobox idx : %s", selectedIdx));
                     Map<String, String> map = transcriptDataMap.get(String.valueOf(selectedIdx));
@@ -413,9 +331,6 @@ public class DetailSubInfoController extends SubPaneController {
                         loadAlamut(transcript, cDNA, sampleId, bamFileName);
                     }
                 }
-            } else if("ExAC".equalsIgnoreCase(item)) {
-                String urlExAC = (variantInformationMap.containsKey("exac_url")) ? (String) variantInformationMap.get("exac_url") : null;
-                openBrowser(urlExAC);
             }
         }
     }
@@ -436,7 +351,6 @@ public class DetailSubInfoController extends SubPaneController {
     @FXML
     public void showIGV() {
         String sampleId = sample.getId().toString();
-        String variantId = selectedAnalysisResultVariant.getSnpInDel().getId().toString();
         String gene = selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getGene();
         String locus = String.format("%s:%,d-%,d",
                 selectedAnalysisResultVariant.getSnpInDel().getGenomicCoordinate().getChromosome(),
@@ -446,15 +360,24 @@ public class DetailSubInfoController extends SubPaneController {
         String humanGenomeVersion = (refGenome.contains("hg19")) ? "hg19" : "hg18";
 
         try {
-            loadIGV(sampleId, sample.getName(), variantId, gene, locus, humanGenomeVersion);
+            loadIGV(sampleId, sample.getName(), gene, locus, humanGenomeVersion);
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
         } catch (Exception e) {
-            DialogUtil.generalShow(Alert.AlertType.ERROR, "IGV launch fail", "IGV software doesn't launch.",
+            DialogUtil.generalShow(Alert.AlertType.ERROR, "IGV software doesn't launch.", e.getMessage(),
                     getMainApp().getPrimaryStage(), true);
         }
 
+    }
+
+    private Label createLinkLabel(final String title, final String link) {
+        Label label = new Label();
+        label.setText(title);
+        label.getStyleClass().addAll("title1", "cursor_hand");
+        label.setOnMouseClicked(event -> showBrowser(link));
+
+        return label;
     }
 
 
@@ -462,13 +385,12 @@ public class DetailSubInfoController extends SubPaneController {
      * IGV 실행 및 데이터 로드
      * @param sampleId String
      * @param sampleName String
-     * @param variantId String
      * @param gene String
      * @param locus String
      * @param genome String
      */
-    public void loadIGV(String sampleId, String sampleName, String variantId, String gene, String locus, String genome) throws Exception {
-        igvService.load(sampleId, sampleName, variantId, gene, locus, genome);
+    private void loadIGV(String sampleId, String sampleName, String gene, String locus, String genome) throws Exception {
+        igvService.load(sampleId, sampleName, gene, locus, genome);
     }
 
     /**
@@ -478,11 +400,12 @@ public class DetailSubInfoController extends SubPaneController {
      * @param sampleId String
      * @param bamFileName String
      */
-    public void loadAlamut(String transcript, String cDNA, String sampleId, String bamFileName) {
+    private void loadAlamut(String transcript, String cDNA, String sampleId, String bamFileName) {
         alamutService.call(transcript, cDNA, sampleId, bamFileName);
     }
 
-    public Map<String, Object> returnResultsAfterSearch(String key) {
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> returnResultsAfterSearch(String key) {
         List<SnpInDelExtraInfo> detail = (List<SnpInDelExtraInfo>)paramMap.get("detail");
 
         if(detail != null && !detail.isEmpty()) {

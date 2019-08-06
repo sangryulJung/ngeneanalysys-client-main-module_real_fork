@@ -1,6 +1,5 @@
 package ngeneanalysys.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -28,6 +27,7 @@ public class SnpInDel {
 	private String includedInReport;
 	private String hasWarning;
 	private String warningReason;
+	private String commonVariants;
 	private Integer variantNum;
 	private String comment;
 	private String isFalse;
@@ -45,6 +45,13 @@ public class SnpInDel {
 
 	//private Integer interpretationEvidenceId;
 	private String ntChangeBRCA;
+
+	/**
+	 * @return commonVariants
+	 */
+	public String getCommonVariants() {
+		return commonVariants;
+	}
 
 	/**
 	 * @return isFalse

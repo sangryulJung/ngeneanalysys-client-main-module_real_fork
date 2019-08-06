@@ -3,7 +3,6 @@ package ngeneanalysys.controller;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -62,10 +61,14 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
 
     private int sampleId;
 
-    void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController) {
+    private String title;
+
+    void settingItem(int sampleId, List<VariantAndInterpretationEvidence> variantList, AnalysisDetailSNVController snvController,
+                     String title) {
         this.sampleId = sampleId;
         this.variantList = variantList;
         this.snvController = snvController;
+        this.title = title;
     }
 
     @Override
@@ -78,7 +81,7 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > Change Pathogenicity");
+        dialogStage.setTitle(CommonConstants.SYSTEM_NAME + " > " + title);
         // OS가 Window인 경우 아이콘 출력.
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
             dialogStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
@@ -125,7 +128,7 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
             params.put("sampleId", sampleId);
             params.put("snpInDelIds", stringBuilder.toString());
             params.put("pathogenicity", returnSelectPathogenicity());
-            params.put("comment", comment.isEmpty() ? "N/A" : comment);
+            params.put("comment", comment.isEmpty() ? "Not applicable" : comment);
             apiService.put("analysisResults/snpInDels/updatePathogenicity", params, null, true);
             snvController.refreshTable();
             dialogStage.close();

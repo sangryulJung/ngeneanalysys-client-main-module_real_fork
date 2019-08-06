@@ -61,9 +61,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     @FXML
     private TabPane topTabPane;
 
-    /** 현재 샘플의 고유 아아디 */
-    private Integer sampleId;
-
     private SampleView sampleView;
 
     private Panel panel;
@@ -82,9 +79,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
 
     private AnalysisDetailTSTRNAOverviewController tstrnaOverviewController;
 
-    /** API 서버 통신 서비스 */
-    private APIService apiService;
-
     @FXML
     private Button rawDataDownload;
 
@@ -93,10 +87,10 @@ public class AnalysisDetailLayoutController extends SubPaneController {
     public void show(Parent root) throws IOException {
         mainController.setContentsMaskerPaneVisible(true);
         logger.debug("show..");
-        apiService = APIService.getInstance();
+        APIService apiService = APIService.getInstance();
         apiService.setStage(getMainController().getPrimaryStage());
 
-        sampleId = (int) getParamMap().get("id");
+        Integer sampleId = (int) getParamMap().get("id");
         Platform.runLater(() -> {
         try {
             HttpClientResponse response = apiService.get("samples/" + sampleId, null, null, true);
@@ -181,7 +175,6 @@ public class AnalysisDetailLayoutController extends SubPaneController {
         if (idx == 0)
             setTabContent(tab);
         topTabPane.getTabs().add(tab);
-        //topTabPane.setStyle("-fx-font-family: Noto Sans KR Bold");
     }
 
     /**
@@ -263,21 +256,20 @@ public class AnalysisDetailLayoutController extends SubPaneController {
      */
     private void executeReloadByTab(Tab tab) {
         // 보고서 탭인 경우 reported variant list 갱신함.
-
         if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_SOMATIC.name())) {
-            analysisDetailOverviewController.setDisplayItem();
+            Platform.runLater(() -> analysisDetailOverviewController.setDisplayItem());
         } else if (tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_GERMLINE.name())) {
-            analysisDetailOverviewGermlineController.setDisplayItem();
+            Platform.runLater(() -> analysisDetailOverviewGermlineController.setDisplayItem());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_SOMATIC.name())) {
             logger.debug("report tab reported variant list reload...");
-            analysisDetailReportController.setVariantsList();
+            Platform.runLater(() -> analysisDetailReportController.setVariantsList());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_GERMLINE.name())) {
             logger.debug("germline report tab reported variant list reload...");
-            analysisDetailReportGermlineController.setVariantsList();
+            Platform.runLater(() -> analysisDetailReportGermlineController.setVariantsList());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_REPORT_TST_RNA.name())) {
-            tstrnaReportController.setVariantsList();
+            Platform.runLater(() -> tstrnaReportController.setVariantsList());
         } else if(tab.getId().equals(AnalysisDetailTabMenuCode.TAB_OVERVIEW_TST_RNA.name())) {
-            tstrnaOverviewController.setDisplayItem();
+            Platform.runLater(() -> tstrnaOverviewController.setDisplayItem());
         }
     }
 

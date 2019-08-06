@@ -1,5 +1,6 @@
 package ngeneanalysys.controller;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import java.awt.Toolkit;
 import javafx.scene.Parent;
@@ -11,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import ngeneanalysys.model.NGeneAnalySysVersion;
+import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpStatus;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.BaseStageController;
@@ -44,7 +47,10 @@ public class LoginController extends BaseStageController {
 	private static final Logger logger = LoggerUtil.getLogger();
 
 	@FXML
-	private Label CapsLock;
+	private Label versionLabel;
+
+	@FXML
+	private Label capsLock;
 	
 	@FXML
 	private GridPane contentsWrapper;
@@ -69,8 +75,8 @@ public class LoginController extends BaseStageController {
 	private Label labelPassword;
 
 	/** 서버 URL 변경 창 출력 버튼 */
-	@FXML
-	private Button settingURLButton;
+	/*@FXML
+	private Button settingURLButton;*/
 
 	/** 처리진행중 표시 객체 */
 	@FXML
@@ -95,11 +101,6 @@ public class LoginController extends BaseStageController {
 	
 	@FXML
 	public void changePwIcon(KeyEvent ke) {
-		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
-			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
-		}else {
-			CapsLock.setStyle("");
-		}
 		if(inputPassword.getText().isEmpty()) {
 			inputPassword.setStyle("-fx-background-image:url('layout/images/renewal/login_password_icon.png')");
 		}else {
@@ -160,15 +161,15 @@ public class LoginController extends BaseStageController {
 						DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(), getMainApp().getPrimaryStage(), true);
 					}
 				} catch (Exception e){
-					logger.error("Unknown Error", e);
-					DialogUtil.error("Unknown Error", e.getMessage(), getMainApp().getPrimaryStage(), true);
+					logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+					DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
 				} finally {
 					progress.setVisible(false);
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Unknown Error", e);
-			DialogUtil.error(null, "error!!!", mainApp.getPrimaryStage(), true);
+			logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+			DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), mainApp.getPrimaryStage(), true);
 			logger.error(e.getMessage(), e);
 		}
 
@@ -184,10 +185,10 @@ public class LoginController extends BaseStageController {
 	}
 
 	private void showCapLock() {
-		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK) ) {
-			CapsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
+		if (Toolkit.getDefaultToolkit().getLockingKeyState(java.awt.event.KeyEvent.VK_CAPS_LOCK)) {
+			capsLock.setStyle("-fx-background-image:url('layout/images/renewal/upper_case_icon.png');-fx-background-repeat: no-repeat;-fx-background-position: center;");
 		}else {
-			CapsLock.setStyle("");
+			capsLock.setStyle("");
 		}
 	}
 	
@@ -214,26 +215,29 @@ public class LoginController extends BaseStageController {
 			}
 		});
 
-		settingURLButton.setVisible(true);
+		/*settingURLButton.setVisible(true);*/
 
 		primaryStage.setScene(scene);
 		
 		primaryStage.setTitle(CommonConstants.SYSTEM_NAME + " Login");
-
+		int otherAreas = 0;
 		if(System.getProperty("os.name").toLowerCase().contains("window")) {
 			primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
+			otherAreas = 20;
 		}
 		primaryStage.setMaximized(false);
 		primaryStage.setMinWidth(430);
 		primaryStage.setWidth(430);
 		primaryStage.setMaxWidth(430);
-		primaryStage.setMinHeight(410);
-		primaryStage.setHeight(410);
-		primaryStage.setMaxHeight(410);
+		primaryStage.setMinHeight(410 + otherAreas);
+		primaryStage.setHeight(410 + otherAreas);
+		primaryStage.setMaxHeight(410 + otherAreas);
 		primaryStage.setResizable(false);
 		primaryStage.centerOnScreen();
 		primaryStage.show();
 		logger.debug(String.format("start %s", primaryStage.getTitle()));
+
+		getSoftwareVersionInfo();
 
 		// 창 닫기 이벤트 바인딩
 		primaryStage.setOnCloseRequest(event -> {
@@ -244,6 +248,35 @@ public class LoginController extends BaseStageController {
 			primaryStage.close();
 		});
 
+	}
+
+	private void getSoftwareVersionInfo() {
+		Task task = new Task() {
+			NGeneAnalySysVersion nGeneAnalySysVersion;
+
+			@Override
+			protected Object call() throws Exception {
+				APIService apiService = APIService.getInstance();
+				HttpClientResponse response = HttpClientUtil
+						.get(apiService.getConvertConnectURL(""), null, null, false);
+				nGeneAnalySysVersion = response.getObjectBeforeConvertResponseToJSON(NGeneAnalySysVersion.class);
+				return null;
+			}
+
+			@Override
+			protected void succeeded() {
+				super.succeeded();
+				versionLabel.setText("System version : " + nGeneAnalySysVersion.getSystem());
+			}
+
+			@Override
+			protected void failed() {
+				super.failed();
+				getException().printStackTrace();
+			}
+		};
+		Thread thread = new Thread(task);
+		thread.start();
 	}
 
 	private boolean validateLoginID() {

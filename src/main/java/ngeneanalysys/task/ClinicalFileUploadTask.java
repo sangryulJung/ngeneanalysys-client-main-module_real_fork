@@ -20,12 +20,7 @@ public class ClinicalFileUploadTask extends Task {
     /** 컨트롤러 클래스 */
     private MainController controller;
 
-    /** 프로세스 정상 실행 여부 */
-    private boolean isExecute = true;
-
     private ClinicalVariantFileService clinicalVariantFileService;
-
-    private int panelId;
 
     private File bedFile;
 
@@ -34,7 +29,6 @@ public class ClinicalFileUploadTask extends Task {
 
     public ClinicalFileUploadTask(File bedFile) {
         clinicalVariantFileService = ClinicalVariantFileService.getInstance();
-        this.panelId = panelId;
         this.bedFile = bedFile;
     }
 
@@ -58,7 +52,7 @@ public class ClinicalFileUploadTask extends Task {
     @Override
     protected void failed() {
         logger.error(String.format("bed bedFile upload task fail!!"));
-        DialogUtil.error("bed bedFile upload fail", "bed bedFile upload fail.", controller.getMainApp().getPrimaryStage(), true);
+        DialogUtil.error("", "bed bedFile upload fail.", controller.getMainApp().getPrimaryStage(), true);
         controller.removeProgressTaskItemById(progressBoxId);
     }
 

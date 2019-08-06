@@ -14,6 +14,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.paged.PagedReportTemplate;
@@ -144,6 +145,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     private File wordCreatorJar;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("system manager report template init");
@@ -173,18 +175,18 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         editReportTemplateTableColumn.setCellFactory(param -> new ReportTemplateModifyButton());
 
         createdAtTableColumn.setCellValueFactory(item -> new SimpleStringProperty(DateFormatUtils.format(
-                item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd")));
+                item.getValue().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT)));
         updatedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getUpdatedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getUpdatedAt().toDate(), "yyyy-MM-dd"));
+                        item.getValue().getUpdatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
         deletedAtTableColumn.setCellValueFactory(item -> {
             if (item.getValue().getDeletedAt() != null )
                 return new SimpleStringProperty(DateFormatUtils.format(
-                        item.getValue().getDeletedAt().toDate(), "yyyy-MM-dd"));
+                        item.getValue().getDeletedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
             else
                 return new SimpleStringProperty("");
         });
@@ -199,7 +201,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         setDisabledItem(true);
 
         variableListComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
-            if (oldIdx != newIdx) {
+            if (!oldIdx.equals(newIdx)) {
                 Map<String, String> item = (Map<String, String>) variableList.get(variableListComboBox.getSelectionModel().getSelectedItem());
 
                 if(item != null) {
@@ -236,7 +238,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         });
     }
 
-    public void setReportTableList(int page) {
+    void setReportTableList(int page) {
 
         int totalCount = 0;
         int limit = 17;
@@ -299,7 +301,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
 
         if(file != null && (file.getName().toLowerCase().endsWith(".vm"))) {
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"))){
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), CommonConstants.ENCODING_TYPE_UTF))){
                 final StringBuilder sb = new StringBuilder();
                 in.lines().forEach(s -> sb.append(s).append("\n"));
                 if(sb.length() > 0) contents = sb.toString();
@@ -664,7 +666,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     response = apiService.get("reportTemplate/" + reportTemplate.getId(), null, null, false);
 
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
-                    logger.info(reportContents.getReportTemplate().getCustomFields());
+                    logger.debug(reportContents.getReportTemplate().getCustomFields());
                     List<ReportImage> imageList = reportContents.getReportImages();
                     //이미지 리스트 설정
                     currentImageList.addAll(imageList);
@@ -733,8 +735,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
             box.setAlignment(Pos.CENTER);
 
             box.setSpacing(10);
-            img1.setStyle("-fx-cursor:hand;");
-            img2.setStyle("-fx-cursor:hand;");
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
             box.getChildren().add(img1);
             box.getChildren().add(img2);
 

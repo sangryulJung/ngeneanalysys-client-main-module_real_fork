@@ -1,8 +1,5 @@
 package ngeneanalysys.code.constants;
 
-import ngeneanalysys.code.enums.AnalysisTypeCode;
-import ngeneanalysys.code.enums.LibraryTypeCode;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,7 +78,7 @@ public class CommonConstants {
 	public static final String HOMEPAGE_URL = "http://www.ngenebio.com";
 	
 	/** 시스템 사용 메뉴얼 문서 경로 */
-	public static final String MANUAL_DOC_PATH_OPERATION = "NGene_AnalySys_User_Manual_v1.3.pdf";
+	public static final String MANUAL_DOC_PATH_OPERATION = "NGene_AnalySys_User_Manual_v1.4.2.0.pdf";
 	
 	/** 프로그램 릴리즈 노트 페이지 url */
 	public static final String RELEASE_NOTE_URL = "http://ngenebio.com/releasenote";
@@ -90,39 +87,57 @@ public class CommonConstants {
 	public static final int HTTP_PROXY_SERVER_PORT = 19799;
 	
 	/** IGV File name */
-	public static final String IGV_FILE_NAME = "IGV_2.4.1.zip";
+	public static final String IGV_FILE_NAME = "IGV_2.4.16.zip";
 
-	public static final String IGV_PATH = "IGV_2.4.1";
+	public static final String IGV_PATH = "IGV_2.4.16";
 	
 	/** [Windows] JRE Package File name */
-	public static final String JRE_FILE_NAME_FOR_WIN = "jre-8u144-windows-i586.tar.gz";
+	public static final String JRE_FILE_NAME_FOR_WIN = "jre-8u192-windows-i586.tar.gz";
 	
 	/** [Windows] JRE Package Path */
-	public static final String JRE_PATH_FOR_WIN = "jre1.8.0_144";
+	public static final String JRE_PATH_FOR_WIN = "jre1.8.0_192";
 	
 	/** [Windows] JRE Package Path */
 	public static final String JRE_BIN_PATH_FOR_WIN = JRE_PATH_FOR_WIN + "/bin";
 	
 	/** [MAC OS] JRE Package File name */
-	public static final String JRE_FILE_NAME_FOR_MAC = "jre-8u144-macosx-x64.tar.gz";
+	public static final String JRE_FILE_NAME_FOR_MAC = "jre-8u192-macosx-x64.tar.gz";
 	
 	/** [MAC OS] JRE Package Path */
-	public static final String JRE_PATH_FOR_MAC = "jre1.8.0_144.jre";
+	public static final String JRE_PATH_FOR_MAC = "jre1.8.0_192.jre";
 	
 	/** [MAC OS] JRE Package Path */
 	public static final String JRE_BIN_PATH_FOR_MAC = JRE_PATH_FOR_MAC + "/Contents/Home/bin";
 	
 	public static final String BIRTHDAY_PATTERN = "^(18|19|20|21)[0-9][0-9]-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])";
 
+	public static final String DEFAULT_DAY_FORMAT = "yyyy-MM-dd";
+
+	public static final String NUMBER_PATTERN = "[0-9]*";
+
+	public static final String DEFAULT_WARNING_MGS = "Unknown Error";
+
+	public static final String ENCODING_TYPE_UTF = "UTF-8";
+
 	public static final String EHCACHE_PATH =  "/config/ehcache.xml";
 
-	public static final String BRCA_ACCUTEST_DNA_PIPELINE ="BRCAaccuTest_DNA_Pipeline";
-	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE ="BRCAaccuTest_PLUS_DNA_Pipeline";
-	public static final String HEME_ACCUTEST_DNA_PIPELINE ="HEMEaccuTest_DNA_Pipeline";
-	public static final String SOLID_ACCUTEST_DNA_PIPELINE ="SOLIDaccuTest_DNA_Pipeline";
-	public static final String TST170_DNA_PIPELINE ="TST170_DNA_Pipeline";
-	public static final String TST170_RNA_PIPELINE ="TST170_RNA_Pipeline";
-	public static final String HERED_ACCUTEST_PIPELINE ="HEREDaccuTest_DNA_Pipeline";
-	public static final String ANALYSIS_TARGET_DNA ="DNA";
-	public static final String ANALYSIS_TARGET_RNA ="RNA";
+	public static final String BRCA_ACCUTEST_DNA_PIPELINE = "BRCAaccuTest_DNA_Pipeline";
+	public static final String BRCA_ACCUTEST_DNA_CNV_PIPELINE = "BRCAaccuTest_DNA_CNV_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_PIPELINE = "BRCAaccuTest_PLUS_DNA_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE = "BRCAaccuTest_PLUS_DNA_CNV_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE = "BRCAaccuTest_PLUS_DNA_V2_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE = "BRCAaccuTest_PLUS_DNA_CNV_V2_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE = "BRCAaccuTest_PLUS_DNA_CMC_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_V3_PIPELINE = "BRCAaccuTest_PLUS_DNA_V3_Pipeline";
+	public static final String HEME_ACCUTEST_DNA_PIPELINE = "HEMEaccuTest_DNA_Pipeline";
+	public static final String HEME_ACCUTEST_DNA_CNV_PIPELINE = "HEMEaccuTest_DNA_CNV_Pipeline";
+	public static final String SOLID_ACCUTEST_DNA_PIPELINE = "SOLIDaccuTest_DNA_Pipeline";
+	public static final String SOLID_ACCUTEST_DNA_CNV_PIPELINE = "SOLIDaccuTest_DNA_CNV_Pipeline";
+	public static final String TST170_DNA_PIPELINE = "TST170_DNA_Pipeline";
+	public static final String TST170_RNA_PIPELINE = "TST170_RNA_Pipeline";
+	public static final String HERED_ACCUTEST_PIPELINE = "HEREDaccuTest_DNA_Pipeline";
+	public static final String HERED_ACCUTEST_CNV_PIPELINE = "HEREDaccuTest_DNA_CNV_Pipeline";
+	public static final String HERED_ACCUTEST_AMC_CNV_PIPELINE = "HEREDaccuTest_DNA_AMC_CNV_Pipeline";
+	public static final String ANALYSIS_TARGET_DNA = "DNA";
+	public static final String ANALYSIS_TARGET_RNA = "RNA";
 }

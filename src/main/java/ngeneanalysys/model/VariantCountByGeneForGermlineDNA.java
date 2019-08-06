@@ -18,6 +18,24 @@ public class VariantCountByGeneForGermlineDNA implements Comparable<VariantCount
     private Integer benignInDelCount;
     private Integer falseCount;
 
+    public VariantCountByGeneForGermlineDNA() { }
+
+    public VariantCountByGeneForGermlineDNA(String geneSymbol) {
+        this.geneSymbol = geneSymbol;
+        pathogenicSnpCount = 0;
+        likelyPathogenicSnpCount = 0;
+        uncertainSignificanceSnpCount = 0;
+        likelyBenignSnpCount = 0;
+        benignSnpCount = 0;
+        pathogenicInDelCount = 0;
+        likelyPathogenicInDelCount = 0;
+        uncertainSignificanceInDelCount = 0;
+        likelyBenignInDelCount = 0;
+        benignInDelCount = 0;
+        falseCount = 0;
+
+    }
+
     /**
      * @return falsePositiveCount
      */

@@ -138,7 +138,6 @@ public class SparkHttpProxyServer {
                                 outputStream.write(buffer, 0, len);
                             }
                             outputStream.flush();
-                            outputStream.close();
                         }
                     }
                     response.type("application/octet-stream;charset=UTF-8");
