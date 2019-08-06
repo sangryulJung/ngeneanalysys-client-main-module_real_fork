@@ -3,6 +3,7 @@ package ngeneanalysys.controller.systemManager;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -31,6 +32,7 @@ import ngeneanalysys.controller.VirtualPanelEditController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
+import ngeneanalysys.model.paged.PagedCustomDatabase;
 import ngeneanalysys.model.paged.PagedPanel;
 import ngeneanalysys.model.paged.PagedPanelView;
 import ngeneanalysys.model.paged.PagedReportTemplate;
@@ -43,6 +45,7 @@ import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.controlsfx.control.CheckComboBox;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -239,6 +242,18 @@ public class SystemManagerPanelController extends SubPaneController {
     private TextField mappingQuality60PercentageTextField;
 
     @FXML
+    private Button customDatabaseAddBtn;
+
+    @FXML
+    private TableView<CustomDatabase> customDatabaseTable;
+    @FXML
+    private TableColumn<CustomDatabase, String> customDatabaseTitleColumn;
+    @FXML
+    private TableColumn<CustomDatabase, DateTime> customDatabaseUpdatedAtColumn;
+    @FXML
+    private TableColumn<CustomDatabase, Boolean> customDatabaseEditColumn;
+
+    @FXML
     private Button saveTextFile;
 
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
@@ -279,6 +294,12 @@ public class SystemManagerPanelController extends SubPaneController {
         libraryTypeTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getLibraryType()));
         deletedTableColumn.setCellValueFactory(item -> new SimpleStringProperty((item.getValue().getDeleted() == 0) ? "N" : "Y"));
         sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDefaultSampleSource()));
+
+        customDatabaseTitleColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTitle()));
+        customDatabaseUpdatedAtColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getUpdatedAt()));
+        customDatabaseEditColumn.setSortable(false);
+        customDatabaseEditColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
+        customDatabaseEditColumn.setCellFactory(param -> new CustomDatabaseModifyButton());
 
         warningMAFTextField.setTextFormatter(returnFormatter());
 
@@ -1306,6 +1327,19 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
+    private void refreshCustomDatabaseTable() {
+        if(!customDatabaseTable.getItems().isEmpty()) {
+            customDatabaseTable.getItems().removeAll(customDatabaseTable.getItems());
+        }
+        try {
+            HttpClientResponse response = apiService.get("/admin/panels/customDatabase/" + panelId, null, null, true);
+            PagedCustomDatabase pagedCustomDatabase = response.getObjectBeforeConvertResponseToJSON(PagedCustomDatabase.class);
+            customDatabaseTable.getItems().addAll(pagedCustomDatabase.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void resetItem() {
         reportTemplateComboBoxSetting();
         setPanelAndDisease();
@@ -1356,6 +1390,7 @@ public class SystemManagerPanelController extends SubPaneController {
         exonCnpThresholdTextField.setText("");
         distributionAmpliconCnpAlgorithmRadioButton.setSelected(false);
         simpleCutoffAmpliconCnpAlgorithmRadioButton.setSelected(false);
+        customDatabaseTable.getItems().removeAll(customDatabaseTable.getItems());
     }
 
     void setDisabledItem(boolean condition) {
@@ -1398,6 +1433,8 @@ public class SystemManagerPanelController extends SubPaneController {
         clinVarDrugResponseCheckBox.setDisable(condition);
         lowConfidenceCnvDeletionTextField.setDisable(condition);
         lowConfidenceCnvDuplicationTextField.setDisable(condition);
+        customDatabaseAddBtn.setDisable(condition);
+        customDatabaseTable.setDisable(condition);
     }
 
     @FXML
@@ -1405,6 +1442,9 @@ public class SystemManagerPanelController extends SubPaneController {
         titleLabel.setText("Panel Add");
         panelId = 0;
         setDisabledItem(false);
+        //새로 추가하는 패널에 경우 panel id가 존재하지 않으므로 custom db를 생성해둘 수 없음
+        customDatabaseAddBtn.setDisable(true);
+        customDatabaseTable.setDisable(true);
         basicInformationTitlePane.setExpanded(true);
     }
 
@@ -1601,6 +1641,9 @@ public class SystemManagerPanelController extends SubPaneController {
                                 defaultDiseaseComboBox.getSelectionModel().select(comboBoxItem));
                     }
                 }
+
+                refreshCustomDatabaseTable();
+
                 basicInformationTitlePane.setExpanded(true);
                 roiFileSelectionButton.setDisable(false);
                 panelSaveButton.setDisable(false);
@@ -1678,6 +1721,78 @@ public class SystemManagerPanelController extends SubPaneController {
             }
         }
 
+    }
+
+    private class CustomDatabaseModifyButton extends TableCell<CustomDatabase, Boolean> {
+        HBox box = null;
+        final ImageView img1 = new ImageView(resourceUtil.getImage("/layout/images/modify.png", 18, 18));
+        final ImageView img2 = new ImageView(resourceUtil.getImage("/layout/images/delete.png", 18, 18));
+
+        private CustomDatabaseModifyButton() {
+
+            img1.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                CustomDatabase customDatabase = CustomDatabaseModifyButton.this.getTableView().getItems().get(
+                        CustomDatabaseModifyButton.this.getIndex());
+
+                try {
+                    FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MANAGER_CUSTOM_DATABASE);
+                    Node root = loader.load();
+                    SystemManagerCustomDatabaseController customDatabaseController = loader.getController();
+                    customDatabaseController.setMainController(getMainController());
+                    customDatabaseController.setCustomDatabase(customDatabase);
+                    customDatabaseController.show((Parent) root);
+                    refreshCustomDatabaseTable();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                DialogUtil.setIcon(alert);
+                String alertContentText = "Are you sure to delete this custom database?";
+
+                alert.setTitle("Confirmation Dialog");
+                CustomDatabase customDatabase = CustomDatabaseModifyButton.this.getTableView().getItems().get(
+                        CustomDatabaseModifyButton.this.getIndex());
+                alert.setHeaderText(customDatabase.getTitle());
+                alert.setContentText(alertContentText);
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.isPresent() && result.get() == ButtonType.OK) {
+                    try {
+                        apiService.delete("/admin/panels/customDatabase/" + panelId + "/" + customDatabase.getId());
+                        refreshCustomDatabaseTable();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    logger.debug(result.get() + " : button select");
+                    alert.close();
+                }
+            });
+        }
+
+        @Override
+        protected void updateItem(Boolean item, boolean empty) {
+            super.updateItem(item, empty);
+            if(item == null) {
+                setGraphic(null);
+                return;
+            }
+
+            box = new HBox();
+
+            box.setAlignment(Pos.CENTER);
+
+            box.setSpacing(10);
+            img1.getStyleClass().add("cursor_hand");
+            img2.getStyleClass().add("cursor_hand");
+            box.getChildren().add(img1);
+            box.getChildren().add(img2);
+
+            setGraphic(box);
+
+        }
     }
 
     private class VirtualPanelButton extends TableCell<PanelView, Boolean> {
@@ -1821,6 +1936,21 @@ public class SystemManagerPanelController extends SubPaneController {
             }
         }
 
+    }
+
+    @FXML
+    private void customDatabaseAdd() {
+        try {
+            FXMLLoader loader = mainApp.load(FXMLConstants.SYSTEM_MANAGER_CUSTOM_DATABASE);
+            Node root = loader.load();
+            SystemManagerCustomDatabaseController customDatabaseController = loader.getController();
+            customDatabaseController.setMainController(this.getMainController());
+            customDatabaseController.setPanelId(panelId);
+            customDatabaseController.show((Parent) root);
+            refreshCustomDatabaseTable();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

@@ -8,10 +8,10 @@ import ngeneanalysys.exceptions.NullResponseException;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.IGVService;
+import ngeneanalysys.service.SSLConnectService;
 import ngeneanalysys.util.CompressUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -137,7 +137,7 @@ public class IGVInstallTask extends Task<Void> {
                     }
                 }
 
-                httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+                httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
                 if (httpclient != null) {
                     response = httpclient.execute(get);
                 } else {

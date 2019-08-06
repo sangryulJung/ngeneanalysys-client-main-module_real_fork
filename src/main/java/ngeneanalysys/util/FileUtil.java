@@ -4,7 +4,7 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.model.ReportTemplate;
 import ngeneanalysys.service.APIService;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
+import ngeneanalysys.service.SSLConnectService;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -135,7 +135,7 @@ public class FileUtil {
                 }
             }
 
-            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
             if (httpclient != null)
                 response = httpclient.execute(get);
             if (response == null){

@@ -70,7 +70,7 @@ public class BedFileService {
 
             post.setEntity(reqEntity);
 
-            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
             if(httpclient != null) response = httpclient.execute(post);
             if(response == null) return null;
             result = HttpClientUtil.getHttpClientResponse(response);

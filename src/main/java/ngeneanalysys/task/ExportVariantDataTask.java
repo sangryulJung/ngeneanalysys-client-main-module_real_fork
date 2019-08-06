@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import ngeneanalysys.service.SSLConnectService;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
@@ -130,7 +131,7 @@ public class ExportVariantDataTask extends Task<Void> {
 				}
 			}
 
-			httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+			httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
 			if (httpclient != null)
 				response = httpclient.execute(get);
 			if (response == null){
