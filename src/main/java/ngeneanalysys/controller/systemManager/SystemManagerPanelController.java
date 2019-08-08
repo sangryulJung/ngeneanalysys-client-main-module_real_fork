@@ -256,6 +256,9 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private Button saveTextFile;
 
+    @FXML
+    private TitledPane customDatabaseTitledPane;
+
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
 
     private CheckComboBox<ComboBoxItem> diseaseCheckComboBox = null;
@@ -418,6 +421,8 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     private void setTST170Default() {
+        customDatabaseTitledPane.setVisible(false);
+        customDatabaseTable.getItems().removeAll(customDatabaseTable.getItems());
         cnvForBrcaAaccuTestTitledPane.setDisable(true);
         warningMAFTextField.setText("");
         warningReadDepthTextField.setText("");
@@ -478,6 +483,9 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     private void setHeredDefault() {
+
+        customDatabaseTitledPane.setVisible(false);
+        customDatabaseTable.getItems().removeAll(customDatabaseTable.getItems());
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
         cnvForBrcaAaccuTestTitledPane.setDisable(true);
@@ -519,6 +527,8 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     private void setHemeDefault() {
+        customDatabaseTitledPane.setVisible(false);
+        customDatabaseTable.getItems().removeAll(customDatabaseTable.getItems());
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
         cnvForBrcaAaccuTestTitledPane.setDisable(true);
@@ -559,6 +569,8 @@ public class SystemManagerPanelController extends SubPaneController {
     }
 
     private void setSolidDefault() {
+        customDatabaseTitledPane.setVisible(false);
+        customDatabaseTable.getItems().removeAll(customDatabaseTable.getItems());
         canonicalTranscriptTextArea.setText("");
         canonicalTranscriptTextArea.setDisable(false);
         cnvForBrcaAaccuTestTitledPane.setDisable(true);
@@ -619,6 +631,11 @@ public class SystemManagerPanelController extends SubPaneController {
             lowConfidenceCnvDuplicationTextField.setText("");
             lowConfidenceCnvDeletionTextField.setText("");
         }
+
+        customDatabaseTitledPane
+                .setVisible(code.equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode()));
+
+        customDatabaseTable.getItems().removeAll(customDatabaseTable.getItems());
 
         warningReadDepthTextField.setText("");
         warningReadDepthTextField.setDisable(true);
@@ -1641,8 +1658,9 @@ public class SystemManagerPanelController extends SubPaneController {
                                 defaultDiseaseComboBox.getSelectionModel().select(comboBoxItem));
                     }
                 }
-
-                refreshCustomDatabaseTable();
+                if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())) {
+                    refreshCustomDatabaseTable();
+                }
 
                 basicInformationTitlePane.setExpanded(true);
                 roiFileSelectionButton.setDisable(false);

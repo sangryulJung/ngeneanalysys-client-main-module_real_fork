@@ -1894,6 +1894,10 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> commonVariants = new TableColumn<>("Common Variants");
         createTableHeader(commonVariants, "Common Variants", null ,null, "commonVariants");
         commonVariants.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getCommonVariants()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> customDatabase = new TableColumn<>("Custom Database");
+        createTableHeader(customDatabase, "Custom Database", null ,null, "customDatabase");
+        customDatabase.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCustomDatabase()));
         commonVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
             //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
             if(commonVariantsCheckBox.isSelected()) {
@@ -1937,6 +1941,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             key = "solidColumnOrder";
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             key = "tstDNAColumnOrder";
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())) {
+            key = "brcaSnuColumnOrder";
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             key = "brcaColumnOrder";
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
@@ -1982,7 +1988,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                                 }).collect(Collectors.toList());
                         addAColumnToTable(tableColumnInfos);
                     } else {
-                        //removeColumnOrder(key);
                         setDefaultTableColumnOrder(path);
                     }
                 } catch (Exception e) {
@@ -2062,6 +2067,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             columnOrderType = "solidColumnOrder";
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             columnOrderType = "tstDNAColumnOrder";
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())) {
+            columnOrderType = "brcaSnuColumnOrder";
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             columnOrderType = "brcaColumnOrder";
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
@@ -2075,13 +2082,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         List<TableColumnInfo> cols = columnInfos.stream()
                 .filter(item -> columnMap.containsKey(item.getColumnName()))
                 .sorted(Comparator.comparing(TableColumnInfo::getOrder)).collect(Collectors.toList());
-//        for(TableColumnInfo info : cols) {
-//                columnMap.get(info.getColumnName()).visibleProperty()
-//                        .removeListener(tableColumnVisibilityChangeListener);
-//                columnMap.get(info.getColumnName()).setVisible(info.isVisible());
-//                columnMap.get(info.getColumnName()).visibleProperty()
-//                        .addListener(tableColumnVisibilityChangeListener);
-//        }
+
         ArrayList visibleTableColumns = cols.stream().filter(tableColumnInfo -> tableColumnInfo.isVisible() ||
                 tableColumnInfo.getColumnName().equals("False"))
                 .map(item -> columnMap.get(item.getColumnName()))
