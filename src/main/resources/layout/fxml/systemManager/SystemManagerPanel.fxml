@@ -407,11 +407,15 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button fx:id="customDatabaseAddBtn" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#customDatabaseAdd" prefHeight="25.0" styleClass="submitBtn" text="Add" />
+                                    <Button fx:id="customDatabaseAddBtn" maxHeight="25.0" minHeight="25.0" mnemonicParsing="false" onAction="#customDatabaseAdd" prefHeight="25.0" styleClass="submitBtn" text="Add">
+                                       <GridPane.margin>
+                                          <Insets bottom="5.0" />
+                                       </GridPane.margin></Button>
                                     <TableView fx:id="customDatabaseTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                       <columns>
-                                        <TableColumn fx:id="customDatabaseTitleColumn" prefWidth="75.0" text="title" />
-                                        <TableColumn fx:id="customDatabaseUpdatedAtColumn" prefWidth="75.0" text="updatedAt" />
+                                        <TableColumn fx:id="customDatabaseTitleColumn" prefWidth="100.0" text="Title" />
+                                          <TableColumn fx:id="customDatabaseCreatedAtColumn" prefWidth="140.0" text="Created At" />
+                                        <TableColumn fx:id="customDatabaseUpdatedAtColumn" prefWidth="140.0" text="Updated At" />
                                           <TableColumn fx:id="customDatabaseEditColumn" prefWidth="75.0" />
                                       </columns>
                                     </TableView>

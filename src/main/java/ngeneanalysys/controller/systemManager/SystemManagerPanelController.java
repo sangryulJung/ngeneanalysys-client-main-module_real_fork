@@ -3,7 +3,6 @@ package ngeneanalysys.controller.systemManager;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -249,7 +248,9 @@ public class SystemManagerPanelController extends SubPaneController {
     @FXML
     private TableColumn<CustomDatabase, String> customDatabaseTitleColumn;
     @FXML
-    private TableColumn<CustomDatabase, DateTime> customDatabaseUpdatedAtColumn;
+    private TableColumn<CustomDatabase, String> customDatabaseUpdatedAtColumn;
+    @FXML
+    private TableColumn<CustomDatabase, String> customDatabaseCreatedAtColumn;
     @FXML
     private TableColumn<CustomDatabase, Boolean> customDatabaseEditColumn;
 
@@ -299,7 +300,8 @@ public class SystemManagerPanelController extends SubPaneController {
         sampleSourceTableColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getDefaultSampleSource()));
 
         customDatabaseTitleColumn.setCellValueFactory(item -> new SimpleStringProperty(item.getValue().getTitle()));
-        customDatabaseUpdatedAtColumn.setCellValueFactory(item -> new SimpleObjectProperty<>(item.getValue().getUpdatedAt()));
+        customDatabaseUpdatedAtColumn.setCellValueFactory(item -> item.getValue().getUpdatedAt() != null ? new SimpleStringProperty(DateFormatUtils.format(item.getValue().getUpdatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")) : null);
+        customDatabaseCreatedAtColumn.setCellValueFactory(item -> item.getValue().getCreatedAt() != null ? new SimpleStringProperty(DateFormatUtils.format(item.getValue().getCreatedAt().toDate(), "yyyy-MM-dd HH:mm:ss")) : null);
         customDatabaseEditColumn.setSortable(false);
         customDatabaseEditColumn.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue() != null));
         customDatabaseEditColumn.setCellFactory(param -> new CustomDatabaseModifyButton());
@@ -724,6 +726,8 @@ public class SystemManagerPanelController extends SubPaneController {
             panelListTable.getItems().removeAll(panelListTable.getItems());
             panelListTable.refresh();
         }
+
+        customDatabaseTitledPane.setVisible(false);
 
         int totalCount = 0;
         int limit = 11;

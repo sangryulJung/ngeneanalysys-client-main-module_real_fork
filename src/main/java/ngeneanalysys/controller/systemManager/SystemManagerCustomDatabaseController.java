@@ -1,26 +1,26 @@
 package ngeneanalysys.controller.systemManager;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.model.CustomDatabase;
+import ngeneanalysys.model.CustomDatabaseContents;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /**
  * @author Jang
@@ -36,13 +36,17 @@ public class SystemManagerCustomDatabaseController extends SubPaneController {
     private TextField descriptionTextField;
 
     @FXML
-    private TextArea contentsTextArea;
-
+    private TableView<CustomDatabaseContents> customDbTable;
     @FXML
-    private Button saveBtn;
-
+    private TableColumn<CustomDatabaseContents, String> chrTableColumn;
     @FXML
-    private Button cancelBtn;
+    private TableColumn<CustomDatabaseContents, String> startTableColumn;
+    @FXML
+    private TableColumn<CustomDatabaseContents, String> refTableColumn;
+    @FXML
+    private TableColumn<CustomDatabaseContents, String> altTableColumn;
+    @FXML
+    private TableColumn<CustomDatabaseContents, String> annotationTableColumn;
 
     private APIService apiService;
 
@@ -52,24 +56,45 @@ public class SystemManagerCustomDatabaseController extends SubPaneController {
 
     private Integer customDatabaseId = 0;
 
+    private String customDatabaseContentsText;
+
     /**
-     * @param panelId
+     * @param panelId Panel id
      */
     public void setPanelId(Integer panelId) {
         this.panelId = panelId;
     }
 
-    public void setCustomDatabase(CustomDatabase customDatabase) {
+    void setCustomDatabase(CustomDatabase customDatabase) {
         this.panelId = customDatabase.getPanelId();
         titleTextField.setText(customDatabase.getTitle());
         descriptionTextField.setText(customDatabase.getDescription());
-        contentsTextArea.setText(customDatabase.getContents());
+        initTableContents(customDatabase.getContents());
         customDatabaseId = customDatabase.getId();
     }
 
     @Override
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
+
+        chrTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChr()));
+        startTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartPosition()));
+        refTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRef()));
+        altTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAlt()));
+        annotationTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAnnotation()));
+        annotationTableColumn.setCellFactory(cell -> new TableCell<CustomDatabaseContents, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item == null || empty) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    setText(item);
+                    setTooltip(new Tooltip(item));
+                }
+            }
+        });
 
         dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.DECORATED);
@@ -92,27 +117,74 @@ public class SystemManagerCustomDatabaseController extends SubPaneController {
                 && str[3].matches("[A-Za-z]*") && str[4].matches("[^;:=]*");
     }
 
-    @FXML
-    private void save() {
-        String title = titleTextField.getText();
-        String description = descriptionTextField.getText();
-        String contents = contentsTextArea.getText();
-
+    private String addHeader(String contents) {
         if(!contents.split("\t")[0].equalsIgnoreCase("Chr")) {
             contents = "Chr\tStart\tRef\tAlt\tAnnotaion\n" + contents;
         }
+        return contents;
+    }
 
+    @FXML
+    private void upload() {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"));
+        fileChooser.setTitle("format file");
+        fileChooser.setInitialFileName("SampleSheet");
+        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+
+        if(file != null) {
+            StringBuilder contentsSB = new StringBuilder();
+            try (FileReader fr = new FileReader(file);
+                 BufferedReader br = new BufferedReader(fr)){
+                String line;
+                while((line = br.readLine()) != null) {
+                    contentsSB.append(line).append("\n");
+                }
+
+                String contents = addHeader(contentsSB.toString());
+
+                initTableContents(contents);
+
+            } catch (Exception e) {
+                DialogUtil.error("Invalid content", "Please check the contents.", mainApp.getPrimaryStage(), true);
+            }
+
+        }
+    }
+
+    private void initTableContents(String contents) {
         String[] lineSplit = contents.split("\n");
         String[] testLine = Arrays.copyOfRange(lineSplit, 1, lineSplit.length);
 
-        if(StringUtils.isNotEmpty(title) &&
-                Arrays.stream(testLine).map(t -> t.split("\t")).allMatch(this::stringCheck)) {
-            logger.info("success");
+        if(Arrays.stream(testLine).map(t -> t.split("\t")).allMatch(this::stringCheck)) {
+            logger.debug("contents test success");
+            customDatabaseContentsText = contents;
+            List<CustomDatabaseContents> contentsList = new ArrayList<>();
+            Arrays.stream(testLine).forEach(line -> {
+                String[] model = line.split("\t");
+                contentsList.add(new CustomDatabaseContents(model[0],
+                        model[1],model[2], model[3], model[4]));
+            });
+            customDbTable.getItems().removeAll(customDbTable.getItems());
+            customDbTable.getItems().addAll(contentsList);
+        } else {
+            DialogUtil.error("Invalid content", "Please check the contents.", mainApp.getPrimaryStage(), true);
+        }
+    }
+
+    @FXML
+    public void save() {
+        String title = titleTextField.getText();
+        String description = descriptionTextField.getText();
+
+        if(StringUtils.isNotEmpty(title) && StringUtils.isNotEmpty(customDatabaseContentsText)) {
             Map<String, Object> params = new HashMap<>();
             params.put("panelId", panelId);
             params.put("title", title);
             params.put("description", description);
-            params.put("contents", contents);
+            params.put("contents", customDatabaseContentsText);
             if(customDatabaseId > 0) {
                 try {
                     params.put("id", customDatabaseId);
@@ -130,12 +202,12 @@ public class SystemManagerCustomDatabaseController extends SubPaneController {
                 }
             }
         } else {
-            logger.info("failed");
+            DialogUtil.error("Contents Error", "Please enter Title and Contents.", mainApp.getPrimaryStage(), true);
         }
     }
 
     @FXML
-    private void cancel() {
+    public void cancel() {
         dialogStage.close();
     }
 }
