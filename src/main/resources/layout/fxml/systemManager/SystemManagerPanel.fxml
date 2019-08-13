@@ -413,10 +413,10 @@
                                        </GridPane.margin></Button>
                                     <TableView fx:id="customDatabaseTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                       <columns>
-                                        <TableColumn fx:id="customDatabaseTitleColumn" prefWidth="100.0" text="Title" />
-                                          <TableColumn fx:id="customDatabaseCreatedAtColumn" prefWidth="140.0" text="Created At" />
-                                        <TableColumn fx:id="customDatabaseUpdatedAtColumn" prefWidth="140.0" text="Updated At" />
-                                          <TableColumn fx:id="customDatabaseEditColumn" prefWidth="75.0" />
+                                        <TableColumn fx:id="customDatabaseTitleColumn" prefWidth="100.0" style="-fx-alignment: center-left;" text="Title" />
+                                          <TableColumn fx:id="customDatabaseCreatedAtColumn" prefWidth="140.0" style="-fx-alignment: center-left;" text="Created At" />
+                                        <TableColumn fx:id="customDatabaseUpdatedAtColumn" prefWidth="140.0" style="-fx-alignment: center-left;" text="Updated At" />
+                                          <TableColumn fx:id="customDatabaseEditColumn" prefWidth="75.0" style="-fx-alignment: center-left;" />
                                       </columns>
                                     </TableView>
                                  </children>

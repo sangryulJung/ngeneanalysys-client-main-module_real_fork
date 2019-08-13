@@ -13,8 +13,8 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="620.0" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerCustomDatabaseController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="500.0" prefWidth="500.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="530.0" minWidth="530.0" prefWidth="530.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -49,7 +49,7 @@
          <children>
             <Button fx:id="saveBtn1" mnemonicParsing="false" onAction="#upload" styleClass="submitBtn" text="Upload">
                <HBox.margin>
-                  <Insets right="290.0" />
+                  <Insets right="320.0" />
                </HBox.margin>
             </Button>
             <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#save" styleClass="submitBtn" text="Submit" />

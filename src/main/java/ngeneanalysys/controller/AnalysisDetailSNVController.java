@@ -1198,11 +1198,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
         double predictionColumnSize = 30d;
         String columnName = "Pathogenicity";
-        //String filterPredictionName = "pathogenicity";
         if(panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
-            //predictionColumnSize = 30d;
             columnName = "Tier";
-            //filterPredictionName = "tier";
         }
         TableColumn<VariantAndInterpretationEvidence, String> predictionColumn = new TableColumn<>(columnName);
         createTableHeader(predictionColumn, columnName, columnName, predictionColumnSize, columnName.toLowerCase());
@@ -1898,8 +1895,29 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> customDatabase = new TableColumn<>("Custom Database");
         createTableHeader(customDatabase, "Custom Database", null ,null, "customDatabase");
         customDatabase.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCustomDatabase()));
+        customDatabase.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item == null || empty) {
+                    setText(null);
+                    setTooltip(null);
+                    this.setOnMouseClicked(null);
+                    this.getStyleClass().remove("cursor_hand");
+                } else {
+                    setText(Arrays.stream(item.split(";"))
+                            .map(cdb -> cdb.substring(cdb.indexOf(": ") + 1))
+                            .collect(Collectors.joining("; ")));
+                    this.setOnMouseClicked(ev -> SNPsINDELsList.showItem(item, this));
+                    this.getStyleClass().add("cursor_hand");
+
+                    setTooltip(null);
+                }
+            }
+        });
+
+
         commonVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
             if(commonVariantsCheckBox.isSelected()) {
                 commonVariants.setMinWidth(80);
                 commonVariants.setMaxWidth(300);
@@ -2168,7 +2186,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         private PopTableCell(String type) {
             this.type = type;
-            //this.setStyle(this.getStyle()+"; -fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
         }
 
         @Override

@@ -2024,3 +2024,21 @@ Button {
     -fx-background-radius : 20;
     -fx-padding : 2 5 2 5;
 }
+
+#customDbTable .column-header .label {
+   -fx-alignment: center-left;
+}
+
+#customDatabaseTable .column-header .label {
+   -fx-alignment: center-left;
+}
+
+.customDatabaseLabel {
+    -fx-text-fill : black;
+    -fx-font: 13px "Noto Sans KR Light";
+    /*-fx-min-width : 400;
+    -fx-pref-width : 400;
+    -fx-max-width : 400;
+    -fx-wrap-text : true;
+    -fx-word-wrap: break-word;*/
+}
