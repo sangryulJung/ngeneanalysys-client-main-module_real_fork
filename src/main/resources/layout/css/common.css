@@ -2034,11 +2034,8 @@ Button {
 }
 
 .customDatabaseLabel {
-    -fx-text-fill : black;
     -fx-font: 13px "Noto Sans KR Light";
-    /*-fx-min-width : 400;
-    -fx-pref-width : 400;
-    -fx-max-width : 400;
-    -fx-wrap-text : true;
-    -fx-word-wrap: break-word;*/
+    -fx-min-width : 370;
+    -fx-pref-width : 370;
+    -fx-max-width : 370;
 }

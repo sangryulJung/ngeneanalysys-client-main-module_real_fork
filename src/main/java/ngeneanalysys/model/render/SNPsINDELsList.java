@@ -109,31 +109,30 @@ public class SNPsINDELsList {
 		mainContents.setContent(vBox);
 		vBox.setStyle("-fx-padding:10;");
 		String[] cDbs = text.split(";");
-
+		String labelStyleClass = "label";
 		Arrays.stream(cDbs).forEach(cDb -> {
 			String[] contents = cDb.split(": ");
 			if(contents.length == 2) {
 				Label title = new Label(contents[0]);
-				title.getStyleClass().addAll("bold", "txt_black");
+				title.getStyleClass().remove(labelStyleClass);
+				title.getStyleClass().addAll("bold");
 				Label content = new Label(contents[1]);
-				content.getStyleClass().addAll("customDatabaseLabel", "label");
-				content.setAlignment(Pos.TOP_LEFT);
+				content.getStyleClass().remove(labelStyleClass);
+				content.getStyleClass().addAll("customDatabaseLabel");
 				content.setWrapText(true);
-				content.setMinWidth(370);
-				content.setPrefWidth(370);
-				content.setMaxWidth(370);
-				content.setMinHeight(20 * Math.ceil(content.getText().length() / 60.));
-				//content.setPrefHeight(20 * Math.ceil(content.getText().length() / 60.));
-				content.setPrefHeight(Region.USE_COMPUTED_SIZE);
-				content.setMaxHeight(Region.USE_COMPUTED_SIZE);
+				content.setAlignment(Pos.TOP_LEFT);
 
 				vBox.getChildren().addAll(title, content);
-				VBox.setMargin(content, new Insets(0, 0, 5, 5));
+				VBox.setMargin(content, new Insets(0, 0, 10, 5));
 			} else {
 				Label cDbLabel = new Label(cDb);
-				cDbLabel.getStyleClass().addAll("customDatabaseLabel", "label");
+				cDbLabel.getStyleClass().remove(labelStyleClass);
+				cDbLabel.getStyleClass().addAll("customDatabaseLabel");
+				cDbLabel.setWrapText(true);
+				cDbLabel.setAlignment(Pos.TOP_LEFT);
+
 				vBox.getChildren().add(cDbLabel);
-				VBox.setMargin(cDbLabel, new Insets(0, 0, 5, 5));
+				VBox.setMargin(cDbLabel, new Insets(0, 0, 10, 5));
 			}
 		});
 

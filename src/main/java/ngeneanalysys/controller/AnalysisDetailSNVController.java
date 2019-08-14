@@ -1916,7 +1916,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-
         commonVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
             if(commonVariantsCheckBox.isSelected()) {
                 commonVariants.setMinWidth(80);
