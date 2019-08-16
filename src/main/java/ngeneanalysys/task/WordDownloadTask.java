@@ -155,6 +155,8 @@ public class WordDownloadTask extends Task {
                     os.flush();
                     if (httpclient != null) httpclient.close();
                     if (response != null) response.close();
+                } else {
+                    throw new IOException();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

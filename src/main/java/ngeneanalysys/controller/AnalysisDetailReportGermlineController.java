@@ -948,7 +948,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                             .filter(item -> item.getName().contains("boxplot.png")).findFirst();
 
                      if(optionalAnalysisFile.isPresent()) {
-                        contentsMap.put("cnvPlotImagePath", optionalAnalysisFile.get().getName());
+                        contentsMap.put("cnvPlotImagePath", sample.getId() + "_" + optionalAnalysisFile.get().getName());
                         FileUtil.downloadCNVImage(optionalAnalysisFile.get());
                     }
 
@@ -956,7 +956,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                             .filter(item -> item.getName().contains("vafplot.png")).findFirst();
 
                     if(optionalVafFiles.isPresent()) {
-                        contentsMap.put("cnvVafImagePath", optionalVafFiles.get().getName());
+                        contentsMap.put("cnvVafImagePath", sample.getId() + "_" + optionalVafFiles.get().getName());
                         FileUtil.downloadCNVImage(optionalVafFiles.get());
                     }
 
@@ -982,7 +982,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                             .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
 
                     if (optionalAnalysisFile.isPresent()) {
-                        contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+                        contentsMap.put("cnvImagePath", sample.getId() + "_" + optionalAnalysisFile.get().getName());
                         FileUtil.downloadCNVImage(optionalAnalysisFile.get());
                     }
 

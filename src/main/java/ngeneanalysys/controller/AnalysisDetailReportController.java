@@ -1001,7 +1001,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
 
             if(optionalAnalysisFile.isPresent()) {
-                contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
+                contentsMap.put("cnvImagePath", sample.getId() + "_" + optionalAnalysisFile.get().getName());
                 FileUtil.downloadCNVImage(optionalAnalysisFile.get());
             }
             if(analysisDetailSolidCNVReportController != null) {
