@@ -193,7 +193,7 @@ public class APIService {
 
             logger.debug("POST:" + post.getURI());
 
-            httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+            httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
             try {
                 response = httpclient.execute(post);
             } catch (IOException e) {

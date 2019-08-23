@@ -172,15 +172,12 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     private final ListChangeListener<TableColumn<VariantAndInterpretationEvidence, ?>> tableColumnListChangeListener =
             c -> Platform.runLater(this::saveColumnInfoToServer);
-//    private final ChangeListener<Boolean> tableColumnVisibilityChangeListener = (observable, oldValue, newValue) -> {
-//        if(!oldValue.equals(newValue)) Platform.runLater(this::saveColumnInfoToServer);
-//    };
+
     private ChangeListener<ComboBoxItem> filterComboBoxValuePropertyChangeListener = (ob, ov, nv) -> {
         if (!nv.equals(ov)) {
             Platform.runLater(() -> showVariantList(0));
         }
-        /*String[] defaultFilterName = {"Tier I", "Tier II", "Tier III", "Tier IV", "Pathogenic", "Likely Pathogenic",
-                "Uncertain Significance", "Likely Benign", "Benign", "Tier 1", "Tier 2", "Tier 3", "Tier 4", "All"};*/
+
         viewAppliedFiltersLabel.setDisable(nv.getValue().equalsIgnoreCase("All"));
         if (nv.getValue().equalsIgnoreCase("All")) {
             viewAppliedFiltersLabel.setOpacity(0);
@@ -922,15 +919,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         }
     }
 
-    /*private void setSortItem(Map<String, List<Object>> list) {
-        Set<Map.Entry<String, String>> entrySet = sortMap.entrySet();
-        List<Object> sortList = new ArrayList<>();
-        for(Map.Entry<String, String> entry : entrySet) {
-            sortList.add(entry.getKey() + " " + entry.getValue());
-        }
-        if(!sortList.isEmpty()) list.put("sort", sortList);
-    }*/
-
     private void setFilterItem(Map<String, List<Object>> list) {
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
         if(comboBoxItem != null && filterList.containsKey(comboBoxItem.getValue())) {
@@ -971,7 +959,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, Object> params = new HashMap<>();
         Map<String, List<Object>> sortAndSearchItem = new HashMap<>();
 
-        //setSortItem(sortAndSearchItem);
         setFilterItem(sortAndSearchItem);
         Task<Void> task = new Task<Void>() {
 
@@ -1211,11 +1198,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
         double predictionColumnSize = 30d;
         String columnName = "Pathogenicity";
-        //String filterPredictionName = "pathogenicity";
         if(panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
-            //predictionColumnSize = 30d;
             columnName = "Tier";
-            //filterPredictionName = "tier";
         }
         TableColumn<VariantAndInterpretationEvidence, String> predictionColumn = new TableColumn<>(columnName);
         createTableHeader(predictionColumn, columnName, columnName, predictionColumnSize, columnName.toLowerCase());
@@ -1320,9 +1304,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 setGraphic(label);
             }
         });
-        //falsePositive.setVisible(false);
+
         showFalseVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
+
             if(showFalseVariantsCheckBox.isSelected()) {
                 falsePositive.setMinWidth(40);
                 falsePositive.setMaxWidth(40);
@@ -1335,7 +1319,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             Platform.runLater(() -> showVariantList(0));
         });
 
-        //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
         falsePositive.setPrefWidth(0);
         falsePositive.setMinWidth(0);
         falsePositive.setMaxWidth(0);
@@ -1908,8 +1891,32 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         TableColumn<VariantAndInterpretationEvidence, String> commonVariants = new TableColumn<>("Common Variants");
         createTableHeader(commonVariants, "Common Variants", null ,null, "commonVariants");
         commonVariants.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getCommonVariants()));
+
+        TableColumn<VariantAndInterpretationEvidence, String> customDatabase = new TableColumn<>("Custom Database");
+        createTableHeader(customDatabase, "Custom Database", null ,null, "customDatabase");
+        customDatabase.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCustomDatabase()));
+        customDatabase.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if(item == null || empty) {
+                    setText(null);
+                    setTooltip(null);
+                    this.setOnMouseClicked(null);
+                    this.getStyleClass().remove("cursor_hand");
+                } else {
+                    setText(Arrays.stream(item.split(";"))
+                            .map(cdb -> cdb.substring(cdb.indexOf(": ") + 1))
+                            .collect(Collectors.joining("; ")));
+                    this.setOnMouseClicked(ev -> SNPsINDELsList.showItem(item, this));
+                    this.getStyleClass().add("cursor_hand");
+
+                    setTooltip(null);
+                }
+            }
+        });
+
         commonVariantsCheckBox.addEventFilter(MouseEvent.MOUSE_CLICKED, ev -> {
-            //falsePositive.setVisible(showFalseVariantsCheckBox.isSelected());
             if(commonVariantsCheckBox.isSelected()) {
                 commonVariants.setMinWidth(80);
                 commonVariants.setMaxWidth(300);
@@ -1951,6 +1958,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             key = "solidColumnOrder";
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             key = "tstDNAColumnOrder";
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())) {
+            key = "brcaSnuColumnOrder";
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             key = "brcaColumnOrder";
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
@@ -1996,7 +2005,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                                 }).collect(Collectors.toList());
                         addAColumnToTable(tableColumnInfos);
                     } else {
-                        //removeColumnOrder(key);
                         setDefaultTableColumnOrder(path);
                     }
                 } catch (Exception e) {
@@ -2076,6 +2084,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             columnOrderType = "solidColumnOrder";
         } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
             columnOrderType = "tstDNAColumnOrder";
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())) {
+            columnOrderType = "brcaSnuColumnOrder";
         } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
             columnOrderType = "brcaColumnOrder";
         } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
@@ -2089,13 +2099,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         List<TableColumnInfo> cols = columnInfos.stream()
                 .filter(item -> columnMap.containsKey(item.getColumnName()))
                 .sorted(Comparator.comparing(TableColumnInfo::getOrder)).collect(Collectors.toList());
-//        for(TableColumnInfo info : cols) {
-//                columnMap.get(info.getColumnName()).visibleProperty()
-//                        .removeListener(tableColumnVisibilityChangeListener);
-//                columnMap.get(info.getColumnName()).setVisible(info.isVisible());
-//                columnMap.get(info.getColumnName()).visibleProperty()
-//                        .addListener(tableColumnVisibilityChangeListener);
-//        }
+
         ArrayList visibleTableColumns = cols.stream().filter(tableColumnInfo -> tableColumnInfo.isVisible() ||
                 tableColumnInfo.getColumnName().equals("False"))
                 .map(item -> columnMap.get(item.getColumnName()))
@@ -2181,7 +2185,6 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         private PopTableCell(String type) {
             this.type = type;
-            //this.setStyle(this.getStyle()+"; -fx-alignment:baseline-right; -fx-padding: 0 10 0 0;");
         }
 
         @Override

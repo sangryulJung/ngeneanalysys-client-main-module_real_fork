@@ -6,27 +6,27 @@ package ngeneanalysys.code.constants;
  *
  */
 public class FXMLConstants {
-	
+
 	private FXMLConstants() { throw new IllegalAccessError("FXMLConstants class"); }
 
 	/** 서버 설정 화면 */
 	public static final String SERVER_URL_SETTING = "/layout/fxml/ServerURLSetting.fxml";
-	
+
 	/** System Menu > 사용자 정보 변경 화면 */
 	public static final String SYSTEM_MENU_EDIT = "/layout/fxml/SystemMenu-Edit.fxml";
-	
+
 	/** System Menu > 시스템 설정 화면 */
 	public static final String SYSTEM_MENU_SETTING = "/layout/fxml/SystemMenu-Setting.fxml";
-	
+
 	/** System Menu > Support 화면 */
 	public static final String SYSTEM_MENU_SUPPORT = "/layout/fxml/SystemMenu-Support.fxml";
-	
+
 	/** System Menu > License 화면 */
 	public static final String SYSTEM_MENU_LICENSE = "/layout/fxml/SystemMenu-License.fxml";
 
 	/** System Menu > License 화면 */
 	public static final String SYSTEM_MENU_SOFTWARE_VERSION = "/layout/fxml/SystemMenu-SoftwareVersion.fxml";
-	
+
 	/** System Menu > Public Databases 정보 화면 */
 	public static final String SYSTEM_MENU_PUBLIC_DATABASES = "/layout/fxml/SystemMenu-PublicDatabases.fxml";
 
@@ -53,16 +53,16 @@ public class FXMLConstants {
 
 	/** FAST 파일 업로드 창 3 */
 	public static final String ANALYSIS_SAMPLE_UPLOAD_FIRST = "/layout/fxml/SampleUploadScreenFirst.fxml";
-	
+
 	/** FAST 파일 업로드 창 */
 	public static final String ANALYSIS_SAMPLE_UPLOAD_PROGRESS_TASK = "/layout/fxml/AnalysisSampleUploadProgressTask.fxml";
-	
+
 	/** 분석 상세 레이아웃 화면 */
 	public static final String ANALYSIS_DETAIL_LAYOUT = "/layout/fxml/AnalysisDetailLayout.fxml";
-	
+
 	/** 분석 상세 > Raw data 화면 */
 	public static final String ANALYSIS_DETAIL_RAW_DATA = "/layout/fxml/AnalysisDetail-RawData.fxml";
-	
+
 	/** 분석 상세 > Report 화면 */
 	public static final String ANALYSIS_DETAIL_REPORT = "/layout/fxml/AnalysisDetail-Report.fxml";
 
@@ -71,7 +71,7 @@ public class FXMLConstants {
 
 	/** 분석 상세 > Report 화면 */
 	public static final String ANALYSIS_DETAIL_TST_RNA_REPORT = "/layout/fxml/AnalysisDetail-TSTRNAReport.fxml";
-	
+
 	/** 분석 상세 > OverView 화면 */
 	public static final String ANALYSIS_DETAIL_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview.fxml";
 
@@ -192,4 +192,6 @@ public class FXMLConstants {
 	public static final String ANALYSIS_DETAIL_SOLID_CNV_OVERVIEW = "/layout/fxml/AnalysisDetail-Overview-Solid-CNV.fxml";
 
 	public static final String BATCH_BRCA_CNV = "/layout/fxml/BatchChangeBrcaCnvDialog.fxml";
+
+	public static final String SYSTEM_MANAGER_CUSTOM_DATABASE = "/layout/fxml/systemManager/customDatabase.fxml";
 }

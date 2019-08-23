@@ -25,6 +25,9 @@ public class CommonConstants {
 	public static final String BASE_BRCA_COLUMN_ORDER_PATH = "/layout/column/brca";
 
 	/** 기본 프로퍼티 파일 경로 */
+	public static final String BASE_BRCA_SNU_COLUMN_ORDER_PATH = "/layout/column/brcaSnu";
+
+	/** 기본 프로퍼티 파일 경로 */
 	public static final String BASE_HERED_COLUMN_ORDER_PATH = "/layout/column/hered";
 
 	/** 기본 프로퍼티 파일 경로 */
@@ -129,6 +132,7 @@ public class CommonConstants {
 	public static final String BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE = "BRCAaccuTest_PLUS_DNA_CNV_V2_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE = "BRCAaccuTest_PLUS_DNA_CMC_Pipeline";
 	public static final String BRCA_ACCUTEST_PLUS_DNA_V3_PIPELINE = "BRCAaccuTest_PLUS_DNA_V3_Pipeline";
+	public static final String BRCA_ACCUTEST_PLUS_DNA_CNV_V2_SNU_PIPELINE = "BRCAaccuTest_PLUS_DNA_CNV_V2_SNU_Pipeline";
 	public static final String HEME_ACCUTEST_DNA_PIPELINE = "HEMEaccuTest_DNA_Pipeline";
 	public static final String HEME_ACCUTEST_DNA_CNV_PIPELINE = "HEMEaccuTest_DNA_CNV_Pipeline";
 	public static final String SOLID_ACCUTEST_DNA_PIPELINE = "SOLIDaccuTest_DNA_Pipeline";

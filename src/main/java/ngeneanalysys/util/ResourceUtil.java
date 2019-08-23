@@ -50,6 +50,8 @@ public class ResourceUtil {
 			path = CommonConstants.BASE_SOLID_COLUMN_ORDER_PATH;
 		} else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
 			path = CommonConstants.BASE_TSTDNA_COLUMN_ORDER_PATH;
+		} else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())) {
+			path = CommonConstants.BASE_BRCA_SNU_COLUMN_ORDER_PATH;
 		} else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
 			path = CommonConstants.BASE_BRCA_COLUMN_ORDER_PATH;
 		} else if(PipelineCode.isHeredPipeline(panel.getCode())) {

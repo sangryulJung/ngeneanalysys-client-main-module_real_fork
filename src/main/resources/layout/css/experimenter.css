@@ -545,7 +545,8 @@
 #panelEditAccordion .titled-pane > .title {
     -fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0, 1, 2;
-    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; /* 2 10 3 10 */
+    /*-fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;*/ /* 2 10 3 10 */
+    -fx-padding: 2 5 2 5
 }
 
 .hered_cnv_plot_box .hbox {

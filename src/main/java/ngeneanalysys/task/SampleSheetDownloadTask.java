@@ -6,9 +6,9 @@ import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.controller.SampleUploadController;
 import ngeneanalysys.controller.SampleUploadScreenFirstController;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.SSLConnectService;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -74,7 +74,7 @@ public class SampleSheetDownloadTask extends Task {
                     }
                 }
 
-                httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+                httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
                 if (httpclient != null)
                     response = httpclient.execute(get);
                 if (response == null) {

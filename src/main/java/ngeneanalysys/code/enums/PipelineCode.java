@@ -23,6 +23,7 @@ public enum PipelineCode {
 	BRCA_ACCUTEST_PLUS_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE, "BRCAaccuTest PLUS DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_CMC_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE, "BRCAaccuTest PLUS CMC DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_DNA_V3(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_V3_PIPELINE, "BRCAaccuTest PLUS DNA V3", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
+	BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_SNU_PIPELINE, "BRCAaccuTest PLUS DNA CNV V2 SNU", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_DNA_V2(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE, "BRCAaccuTest PLUS DNA V2", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_CNV_DNA_V2(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE, "BRCAaccuTest PLUS DNA CNV V2", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
 	BRCA_ACCUTEST_PLUS_CNV_DNA(CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_PIPELINE, "BRCAaccuTest PLUS CNV DNA", AnalysisTypeCode.GERMLINE, LibraryTypeCode.AMPLICON_BASED, CommonConstants.ANALYSIS_TARGET_DNA),
@@ -78,6 +79,7 @@ public enum PipelineCode {
 			case CommonConstants.BRCA_ACCUTEST_DNA_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_V3_PIPELINE:
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_SNU_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CMC_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_V2_PIPELINE:
 			case CommonConstants.BRCA_ACCUTEST_DNA_CNV_PIPELINE:
@@ -173,6 +175,9 @@ public enum PipelineCode {
 			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_PIPELINE:
 				returnPipeline = BRCA_ACCUTEST_PLUS_CNV_DNA_V2;
 				break;
+			case CommonConstants.BRCA_ACCUTEST_PLUS_DNA_CNV_V2_SNU_PIPELINE:
+				returnPipeline = BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU;
+				break;
 			default:
 				returnPipeline = null;
 		}
@@ -216,6 +221,7 @@ public enum PipelineCode {
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V3.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V2.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_CNV_DNA_V2.getCode()));
 	}
@@ -225,6 +231,7 @@ public enum PipelineCode {
 				|| code.equals(BRCA_ACCUTEST_CNV_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_CNV_DNA_V2.getCode())
+				|| code.equals(BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())
 				|| code.equals(BRCA_ACCUTEST_PLUS_DNA_V3.getCode()));
 	}
 
