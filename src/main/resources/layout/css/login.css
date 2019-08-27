@@ -1,7 +1,6 @@
 #contentsWrapper {
 	-fx-background-color:transparent ;
 	-fx-background-image:url('../images/renewal/main_background.png');
-	/*-fx-background-size: no-repeat;*/
 }
 
 .text-field, .password-field {
@@ -69,9 +68,6 @@
 
 #settingURLButton {
     -fx-graphic: url("../images/renewal/preference_icon.png");
-	/*-fx-background-image:url('../images/renewal/preference.png');
-	-fx-background-size: 24 24;
-	-fx-background-repeat: no-repeat;*/
 	-fx-background-color:transparent;
 	-fx-background-insets:0;
 	-fx-border-width:0;

@@ -262,7 +262,7 @@ public class AnalysisDetailTSTRNAOverviewController extends AnalysisDetailCommon
             return "Median CV Coverage";
         }
 
-        return value.replaceAll("_", " ");
+        return value.replace("_", " ");
     }
 
     private void addQCGrid(SampleQC sampleQC, int col) {

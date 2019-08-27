@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemManager;
+package ngeneanalysys.controller.manager;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -290,23 +290,6 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         }
     }
 
-    /** 작업 삭제 */
-    private void deleteRun(Integer id) {
-        try {
-            HttpClientResponse response = apiService.delete("/admin/runs/"+id);
-            logger.debug("status code : " + response.getStatus());
-            listTable.getItems().clear();
-            search();
-        } catch (WebAPIException wae) {
-            DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
-                    getMainApp().getPrimaryStage(), true);
-            wae.printStackTrace();
-        } catch (Exception e) {
-            logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
-            DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
-        }
-    }
-
     /** 삭제 버튼 생성 */
     private class DeleteButtonCreate extends TableCell<Run, Boolean> {
         HBox box = null;
@@ -332,6 +315,23 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
                     alert.close();
                 }
             });
+        }
+
+        /** 작업 삭제 */
+        private void deleteRun(Integer id) {
+            try {
+                HttpClientResponse response = apiService.delete("/admin/runs/"+id);
+                logger.debug("status code : " + response.getStatus());
+                listTable.getItems().clear();
+                search();
+            } catch (WebAPIException wae) {
+                DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
+                        getMainApp().getPrimaryStage(), true);
+                wae.printStackTrace();
+            } catch (Exception e) {
+                logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
+                DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
+            }
         }
 
         @Override
@@ -368,30 +368,19 @@ public class SystemManagerAnalysisStatusController extends SubPaneController {
         UpdateButtonCreate() {
             img.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Run run = UpdateButtonCreate.this.getTableView().getItems().get(UpdateButtonCreate.this.getIndex());
-                //if (AnalysisJobStatusCode.JOB_RUN_GROUP_FAIL.equals(run.getRunStatus().getStatus())) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    DialogUtil.setIcon(alert);
-                    String alertContentText = "Are you sure to restart this run?";
-                    alert.setTitle("Confirmation Dialog");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                DialogUtil.setIcon(alert);
+                String alertContentText = "Are you sure to restart this run?";
+                alert.setTitle("Confirmation Dialog");
 
-                    alert.setHeaderText(run.getName());
-                    alert.setContentText(alertContentText);
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if(result.isPresent() && result.get() == ButtonType.OK) {
-                        restartRun(run.getId());
-                    } else {
-                        alert.close();
-                    }
-                /*} else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    DialogUtil.setIcon(alert);
-                    String alertContentText = "Only the failed analysis can be restarted.";
-                    alert.setTitle("Warning Dialog");
-
-                    alert.setHeaderText(run.getName());
-                    alert.setContentText(alertContentText);
-                    alert.showAndWait();
-                }*/
+                alert.setHeaderText(run.getName());
+                alert.setContentText(alertContentText);
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.isPresent() && result.get() == ButtonType.OK) {
+                    restartRun(run.getId());
+                } else {
+                    alert.close();
+                }
             });
 
         }

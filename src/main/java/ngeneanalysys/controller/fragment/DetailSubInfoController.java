@@ -284,7 +284,7 @@ public class DetailSubInfoController extends SubPaneController {
             openBrowser(fullUrlUCSC);
         } else if(AnalysisTypeCode.SOMATIC.getDescription().equals(panel.getAnalysisType())) {
             if("COSMIC".equalsIgnoreCase(item)) {
-                String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replaceAll("COSM", "");
+                String cosmicId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getCosmic().getCosmicIds().replace("COSM", "");
                 if (cosmicId.contains("|")) {
                     String[] ids = cosmicId.split("\\|");
 

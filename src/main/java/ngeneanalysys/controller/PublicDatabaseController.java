@@ -124,13 +124,13 @@ public class PublicDatabaseController extends SubPaneController {
     private void setList(String id) {
         if(toolsContentsGridPane.getChildren() != null && !toolsContentsGridPane.getChildren().isEmpty()) {
             toolsContentsGridPane.getChildren().removeAll(toolsContentsGridPane.getChildren());
-            while(toolsContentsGridPane.getRowConstraints().size() > 0) {
+            while(Boolean.FALSE.equals(toolsContentsGridPane.getRowConstraints().isEmpty())) {
                 toolsContentsGridPane.getRowConstraints().remove(0);
             }
         }
         if(databaseContentsGridPane.getChildren() != null && !databaseContentsGridPane.getChildren().isEmpty()) {
             databaseContentsGridPane.getChildren().removeAll(databaseContentsGridPane.getChildren());
-            while(databaseContentsGridPane.getRowConstraints().size() > 0) {
+            while(Boolean.FALSE.equals(databaseContentsGridPane.getRowConstraints().isEmpty())) {
                 databaseContentsGridPane.getRowConstraints().remove(0);
             }
         }

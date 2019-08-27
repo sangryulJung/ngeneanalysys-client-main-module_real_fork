@@ -69,12 +69,12 @@ public class PropertiesUtil {
 	 * @param map Map<String,String>
 	 */
 	public static void saveProperties(File propertiesFile, Map<String,String> map) {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), CommonConstants.ENCODING_TYPE_UTF))){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(propertiesFile), StandardCharsets.UTF_8))){
 			// 기존 설정 파일 내용
 			String fileContent = FileUtils.readFileToString(propertiesFile);
 			
 			if(StringUtils.isEmpty(fileContent)) {
-				FileUtils.write(propertiesFile, "", CommonConstants.ENCODING_TYPE_UTF);
+				FileUtils.write(propertiesFile, "", StandardCharsets.UTF_8);
 			}	
 			Properties properties = new Properties();
 			properties.load(reader);
@@ -83,7 +83,7 @@ public class PropertiesUtil {
 				properties.setProperty(entry.getKey(), entry.getValue());
 			}
 				
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), CommonConstants.ENCODING_TYPE_UTF));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(propertiesFile, false), StandardCharsets.UTF_8));
 			properties.store(writer, "Update Settings");
 			writer.close();
 		} catch (UnsupportedEncodingException e) {
@@ -104,7 +104,7 @@ public class PropertiesUtil {
 	public static Properties getSystemDefaultProperties() {
 		Properties config = getPropertiesByPath(CommonConstants.BASE_PROPERTIES_PATH);
 		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))){
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8))){
 			// 서버 정보 설정 파일에 입력 받은 내용을 기록
 			Properties properties = new Properties();
 			properties.load(reader);
@@ -121,5 +121,39 @@ public class PropertiesUtil {
 			e.printStackTrace();
 		}
 		return config;
+	}
+
+	public static void saveLoginId(String id) {
+		File configFile = new File(CommonConstants.BASE_FULL_PATH, CommonConstants.CONFIG_PROPERTIES);
+
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8))){
+			// 기존 설정 파일 내용
+			String fileContent = FileUtils.readFileToString(configFile);
+
+			if(StringUtils.isEmpty(fileContent)) {
+				FileUtils.write(configFile, "", StandardCharsets.UTF_8);
+			}
+			Properties properties = new Properties();
+
+			properties.load(reader);
+
+			if(StringUtils.isNotEmpty(id)) {
+				properties.setProperty("login.id.save", id);
+			} else {
+				properties.remove("login.id.save");
+			}
+
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile, false), StandardCharsets.UTF_8));
+			properties.store(writer, "Update Settings");
+			writer.close();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

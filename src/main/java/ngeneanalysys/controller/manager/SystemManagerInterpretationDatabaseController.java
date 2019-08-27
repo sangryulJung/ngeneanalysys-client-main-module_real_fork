@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemManager;
+package ngeneanalysys.controller.manager;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -549,7 +549,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 }
             });
             textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
-                if (!arg2) {
+                if (Boolean.FALSE.equals(arg2)) {
                     Integer value;
                     try {
                         value = Integer.parseInt(textField.getText());
@@ -626,7 +626,7 @@ public class SystemManagerInterpretationDatabaseController extends SubPaneContro
                 }
             });
             textField.focusedProperty().addListener((arg0, arg1, arg2) -> {
-                if (!arg2) {
+                if (Boolean.FALSE.equals(arg2)) {
                     commitEdit(textField.getText());
                     addModifiedList(variant);
                 }

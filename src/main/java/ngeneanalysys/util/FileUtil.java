@@ -14,6 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -71,7 +72,7 @@ public class FileUtil {
 
         File file = new File(path);
 
-        try(BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), CommonConstants.ENCODING_TYPE_UTF))) {
+        try(BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), StandardCharsets.UTF_8))) {
             fw.write(reportTemplate.getContents());
             fw.flush();
         } catch (IOException ioe) {

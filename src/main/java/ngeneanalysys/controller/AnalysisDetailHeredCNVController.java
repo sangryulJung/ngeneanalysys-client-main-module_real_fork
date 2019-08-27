@@ -285,7 +285,6 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
             protected void succeeded() {
                 if(inputStream != null) {
                     plotImageView.setImage(new Image(inputStream));
-                    //plotImageView.fitWidthProperty().bind(imageHBox.widthProperty());
                     plotImageView.setFitWidth(imageHBox.getWidth());
                     imageHBox.widthProperty().addListener((observable, oldValue, newValue) ->
                             plotImageView.setFitWidth((Double) newValue));
@@ -337,7 +336,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
     private void autoTableSelectEvent(MouseEvent mouseEvent) {
         String id = ((Node)mouseEvent.getSource()).getParent().getId();
         if(StringUtils.isNotEmpty(id)) {
-            int number = Integer.parseInt(id.replaceAll("exon_", ""));
+            int number = Integer.parseInt(id.replace("exon_", ""));
             if(snpVariantAlleleFractionTable.getItems() != null) {
                 snpVariantAlleleFractionTable.getSelectionModel().select(number - 1);
                 snpVariantAlleleFractionTable.scrollTo(number - 1);
@@ -352,7 +351,7 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
 
     private void setHBoxColor(Node item, List<SnpVariantAlleleFraction> list) {
         if(StringUtils.isNotEmpty(item.getId()) && item.getId().startsWith("exon_")) {
-            int number = Integer.parseInt(item.getId().replaceAll("exon_", ""));
+            int number = Integer.parseInt(item.getId().replace("exon_", ""));
             Optional<SnpVariantAlleleFraction> optionalSnpVariantAlleleFaction =
                     list.stream().filter(snpVaf -> snpVaf.getNumber() == number).findFirst();
 
@@ -402,7 +401,6 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         mainVBox.setPrefWidth(400);
         mainVBox.setPrefHeight(140);
         mainVBox.setPadding(new Insets(10, 0, 0, 0));
-        //HBox titleBox = createTitleBox("icon", "explain");
         HBox homoRefBox = createContentsBox(0, 0, "Homozygous Reference");
         HBox homoVaBox = createContentsBox(45, 360, "Homozygous Variant");
         HBox heteroVaBox = createContentsBox(270, 180, "Heterozygous Variant");
@@ -421,23 +419,6 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
         popOver.setTitle("SNP-Level CNV Legend");
         popOver.show((Node)event.getSource());
     }
-
-    /*private HBox createTitleBox(String title, String contents) {
-        HBox box = new HBox();
-        box.setPrefWidth(400);
-        Label titleLabel = new Label(title);
-        titleLabel.setAlignment(Pos.CENTER);
-        titleLabel.setPrefWidth(60);
-        titleLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
-        Label contentsLabel = new Label(contents);
-        contentsLabel.setPrefWidth(340);
-        contentsLabel.setAlignment(Pos.CENTER);
-        contentsLabel.setStyle("-fx-border-color : black; -fx-border-width : 0.5;");
-
-        box.getChildren().addAll(titleLabel, contentsLabel);
-
-        return box;
-    }*/
 
     private HBox createContentsBox(double startAngle, double arcExtent, String contents) {
         HBox box = new HBox();

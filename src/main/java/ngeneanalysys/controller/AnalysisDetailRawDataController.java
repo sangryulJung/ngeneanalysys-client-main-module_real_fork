@@ -96,8 +96,8 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy/MM/dd")));
         sizeColumn.setComparator((o1, o2) -> {
 
-            String[] item1 = o1.replaceAll(",", "").split(" ");
-            String[] item2 = o2.replaceAll(",", "").split(" ");
+            String[] item1 = o1.replace(",", "").split(" ");
+            String[] item2 = o2.replace(",", "").split(" ");
             BigDecimal value1 = returnData(item1[0] ,item1[1]);
             BigDecimal value2 = returnData(item2[0] ,item2[1]);
             return value1.compareTo(value2);

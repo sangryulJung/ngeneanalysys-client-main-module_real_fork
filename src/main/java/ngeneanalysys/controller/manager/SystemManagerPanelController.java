@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemManager;
+package ngeneanalysys.controller.manager;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -44,7 +44,6 @@ import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.controlsfx.control.CheckComboBox;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;

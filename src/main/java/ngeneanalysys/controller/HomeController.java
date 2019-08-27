@@ -23,7 +23,7 @@ import ngeneanalysys.animaition.HddStatusTimer;
 import ngeneanalysys.code.AnalysisJobStatusCode;
 import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.controller.extend.SubPaneController;
-import ngeneanalysys.controller.systemMenu.SystemMenuPublicDatabasesController;
+import ngeneanalysys.controller.menu.SystemMenuPublicDatabasesController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedNotice;
 import ngeneanalysys.model.paged.PagedRun;
@@ -31,7 +31,6 @@ import ngeneanalysys.service.APIService;
 import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -60,9 +59,6 @@ public class HomeController extends SubPaneController{
 
     @FXML
     private HBox runListHBox;
-
-    /*@FXML
-    private Label noticeTitleLabel;*/
 
     @FXML
     private HBox toggleGroupHBox;
@@ -286,7 +282,6 @@ public class HomeController extends SubPaneController{
                         radioButton.setToggleGroup(newsTipGroup);
                         toggleGroupHBox.getChildren().add(radioButton);
                     }
-                    //noticeTitleLabel.setText(noticeView.getTitle());
 
                     noticeTitleLabel.setText(noticeList.get(index).getTitle());
                     noticeContentsTextArea.setText(noticeList.get(index).getContents());
@@ -304,18 +299,6 @@ public class HomeController extends SubPaneController{
         Thread thread = new Thread(task);
         thread.start();
     }
-
-//    private boolean noticeLabelSetting(int index) {
-//        if(noticeList == null || index > noticeList.size() -1) return false;
-//        NoticeView noticeView = noticeList.get(index);
-//        //noticeTitleLabel.setText(noticeView.getTitle());
-//
-//        dateLabel.setText(DateFormatUtils.format(
-//                noticeView.getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
-//        noticeTitleLabel.setText(noticeView.getTitle());
-//        noticeContentsTextArea.setText(noticeView.getContents());
-//        return true;
-//    }
 
     private void hddCheck() {
         Task<Void> task = new Task<Void>() {
@@ -559,7 +542,6 @@ public class HomeController extends SubPaneController{
             statusLabel.setText("");
             String commonLabelStyleClass = "label";
             statusLabel.getStyleClass().removeAll(statusLabel.getStyleClass());
-            //statusLabel.setTooltip(new Tooltip(run.getRunStatus().getProgressPercentage() + "%"));
             switch (run.getRunStatus().getStatus().toUpperCase()) {
                 case AnalysisJobStatusCode.SAMPLE_ANALYSIS_STATUS_QUEUED:
                     statusLabel.getStyleClass().addAll(commonLabelStyleClass, "queued_icon");
@@ -614,12 +596,8 @@ public class HomeController extends SubPaneController{
                 itemVBox.getChildren().add(finishDateHBox);
             if(!itemVBox.getChildren().contains(completeHBox))
                 itemVBox.getChildren().add(completeHBox);
-            /*if(!itemVBox.getChildren().contains(runningHBox))
-                itemVBox.getChildren().add(runningHBox);*/
             if(!itemVBox.getChildren().contains(queuedHBox))
                 itemVBox.getChildren().add(queuedHBox);
-            /*if(!itemVBox.getChildren().contains(failedHBox))
-                itemVBox.getChildren().add(failedHBox);*/
             if(!itemVBox.getChildren().contains(progressHBox)) {
                 itemVBox.getChildren().add(progressHBox);
             }
@@ -642,7 +620,6 @@ public class HomeController extends SubPaneController{
             run = null;
             this.setCursor(Cursor.DEFAULT);
             this.removeEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
-            //itemVBox.getChildren().removeAll(itemVBox.getChildren());
         }
 
     }

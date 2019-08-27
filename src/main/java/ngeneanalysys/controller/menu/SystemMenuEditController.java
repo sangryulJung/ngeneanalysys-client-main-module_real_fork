@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemMenu;
+package ngeneanalysys.controller.menu;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -87,7 +87,7 @@ public class SystemMenuEditController extends SubPaneController {
 
         // 새 비밀번호 입력란 포커스 이동시 리스너 바인딩
         newPasswordField.focusedProperty().addListener((ov, t,t1) -> {
-                if(!t1) {	// focus out
+                if(Boolean.FALSE.equals(t1)) {	// focus out
                     if(!StringUtils.isEmpty(newPasswordField.getText())) {
                         validNewPwdInput();
                     }
@@ -96,7 +96,7 @@ public class SystemMenuEditController extends SubPaneController {
 
         // 새 비밀번호 확인 입력란 포커스 이동시 리스너 바인딩
         confirmPasswordField.focusedProperty().addListener((ov, t, t1) -> {
-                if(!t1) {	// focus out
+                if(Boolean.FALSE.equals(t1)) {	// focus out
                     if(!StringUtils.isEmpty(confirmPasswordField.getText()) && !StringUtils.isEmpty(newPasswordField.getText())) {
                         validConfirmPwdInput();
                     }

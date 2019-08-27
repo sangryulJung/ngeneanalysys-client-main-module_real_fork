@@ -372,7 +372,7 @@ public class PopOverUtil {
         }else if(key.equalsIgnoreCase("gnomADsouthAsian")) {
             createHBox("gnomAD SouthAsian",setFeqTextField(value), box);
         }else if(key.equalsIgnoreCase("cosmicOccurrence")) {
-            createHBox("cosmic Occurrence", value.replaceAll("_", " "), box);
+            createHBox("cosmic Occurrence", value.replace("_", " "), box);
         }else if(key.equalsIgnoreCase("lowConfidence")) {
             createHBox("Low Confidence", value, box);
         }else if(key.equalsIgnoreCase("readDepth")) {

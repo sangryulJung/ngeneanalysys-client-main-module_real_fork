@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemManager;
+package ngeneanalysys.controller.manager;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

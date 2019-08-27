@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemManager;
+package ngeneanalysys.controller.manager;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -33,6 +33,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -196,8 +197,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
             return new VBox();
         });
 
-        //variableListComboBox.addEventHandler();
-
         setDisabledItem(true);
 
         variableListComboBox.getSelectionModel().selectedIndexProperty().addListener((ov, oldIdx, newIdx) -> {
@@ -301,7 +300,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
         File file = fileChooser.showOpenDialog(mainController.getPrimaryStage());
 
         if(file != null && (file.getName().toLowerCase().endsWith(".vm"))) {
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), CommonConstants.ENCODING_TYPE_UTF))){
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))){
                 final StringBuilder sb = new StringBuilder();
                 in.lines().forEach(s -> sb.append(s).append("\n"));
                 if(sb.length() > 0) contents = sb.toString();
@@ -318,7 +317,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
     @FXML
     public void saveReportTemplate() {
-        //mainController.setContentsMaskerPaneVisible(true);
         String reportName = reportNameTextField.getText();
         boolean isPut = false;
         if(!StringUtils.isEmpty(reportName) && !StringUtils.isEmpty(contents)) {
@@ -371,7 +369,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     task.setOnSucceeded(ev -> {
                         setReportTableList(1);
                         setDisabledItem(true);
-                        //mainController.setContentsMaskerPaneVisible(false);
                     });
                 } else {
                     if (!this.imageList.isEmpty()) {
@@ -389,7 +386,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                     } else {
                         setReportTableList(1);
                         setDisabledItem(true);
-                        //mainController.setContentsMaskerPaneVisible(false);
                     }
                 }
 
@@ -693,7 +689,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
             img2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 DialogUtil.setIcon(alert);
-                String alertHeaderText = "";
                 String alertContentText = "Are you sure to delete this panel?";
 
                 alert.setTitle("Confirmation Dialog");
@@ -703,7 +698,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
                 alert.setContentText(alertContentText);
                 logger.debug(reportTemplate.getId() + " : present id");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if(result.isPresent() && result.get() == ButtonType.OK) {
                     deleteReportTemplate(reportTemplate.getId());
                     resetItem();
                     setDisabledItem(true);

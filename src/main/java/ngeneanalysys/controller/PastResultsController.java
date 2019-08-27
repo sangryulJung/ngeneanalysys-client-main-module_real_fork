@@ -88,8 +88,6 @@ public class PastResultsController extends SubPaneController {
 
 	private int itemCountPerPage;
 
-	//private List<RunStatusGirdPane> runStatusGirdPanes;
-
 	private boolean oneItem = false;
 
 	private Map<String, String> searchOption = new HashMap<>();
@@ -117,8 +115,6 @@ public class PastResultsController extends SubPaneController {
 		apiService = APIService.getInstance();
 		apiService.setStage(getMainController().getPrimaryStage());
 
-		//runStatusGirdPanes = new ArrayList<>();
-
 		// masker pane init
 		experimentPastResultsWrapper.add(maskerPane, 0, 0, 6, 6);
 		maskerPane.setPrefWidth(getMainController().getMainFrame().getWidth());
@@ -145,17 +141,7 @@ public class PastResultsController extends SubPaneController {
 			filterSearchArea.getChildren().removeAll(filterSearchArea.getChildren());
 			if(newV.getValue().equalsIgnoreCase("String")) {
 				CustomTextField textField = new CustomTextField();
-				/*ImageView imageView = new ImageView(resourceUtil.getImage("/layout/images/renewal/search_icon.png"));
-				imageView.setStyle("-fx-cursor:hand;");
-				imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-					if(StringUtils.isEmpty(textField.getText())) {
-						oneItem = false;
-					} else {
-						oneItem = true;
-					}
-					search();
-				});
-				textField.setRight(imageView);*/
+
 				if(provider != null) provider = null;
 
 				if (searchComboBox.getSelectionModel().getSelectedItem().getText().equalsIgnoreCase("PANEL")) {
@@ -509,7 +495,6 @@ public class PastResultsController extends SubPaneController {
 		if (list != null && !list.isEmpty()) {
 			for(RunSampleView runSampleView : list) {
 				RunStatusGirdPane gridPane = new RunStatusGirdPane();
-				//runStatusGirdPanes.add(gridPane);
 				resultVBox.getChildren().add(gridPane);
 				gridPane.setLabel(runSampleView);
 				setVBoxPrefSize(gridPane);
@@ -834,11 +819,7 @@ public class PastResultsController extends SubPaneController {
 					}
 
 				});
-				/*itemHBox.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-					if(event.getClickCount() == 1) {
 
-					}
-				});*/
 				String styleClass = "result_sample_name";
 				Label name = new Label(sampleView.getName());
 				name.setTooltip(new Tooltip(sampleView.getName()));

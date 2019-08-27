@@ -103,7 +103,7 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
     }
 
     public CompositeCmtCnvResult getCompositeCmtCnvResult() {
-        if(heredAmcCnvResultTable.getItems() != null && heredAmcCnvResultTable.getItems().size() > 0) {
+        if(heredAmcCnvResultTable.getItems() != null && !heredAmcCnvResultTable.getItems().isEmpty()) {
             return heredAmcCnvResultTable.getItems().get(0);
         } else {
             return null;

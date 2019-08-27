@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ngeneanalysys.model.NGeneAnalySysVersion;
+import ngeneanalysys.service.PropertiesService;
+import ngeneanalysys.util.PropertiesUtil;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpStatus;
 import ngeneanalysys.code.constants.CommonConstants;
@@ -83,6 +85,9 @@ public class LoginController extends BaseStageController {
 	private ProgressIndicator progress;
 
 	@FXML
+	private CheckBox test;
+
+	@FXML
 	public void checkValidateLoginID(KeyEvent ke) {
 		boolean valid = validateLoginID();
 		if(ke.getCode().equals(KeyCode.ENTER) && valid) {
@@ -134,6 +139,14 @@ public class LoginController extends BaseStageController {
 				Map<String, Object> params = new HashMap<>();
 				params.put("id", inputLoginID.getText());
 				params.put("password", inputPassword.getText());
+
+				if(test.isSelected()) {
+					PropertiesService.getInstance().getConfig().setProperty("login.id.save", inputLoginID.getText());
+					PropertiesUtil.saveLoginId(inputLoginID.getText());
+				} else {
+					PropertiesService.getInstance().getConfig().remove("login.id.save");
+					PropertiesUtil.saveLoginId(null);
+				}
 
 				HttpClientResponse response = null;
 				try {
@@ -199,6 +212,13 @@ public class LoginController extends BaseStageController {
                 event -> showCapLock());
 		scene.addEventFilter(MouseEvent.ANY,
                 event -> showCapLock());
+
+		PropertiesService propertiesService = PropertiesService.getInstance();
+		String loginId = propertiesService.getConfig().getProperty("login.id.save");
+		if(StringUtils.isNotEmpty(loginId)) {
+			test.selectedProperty().setValue(true);
+			inputLoginID.setText(loginId);
+		}
 	    
 		scene.getFocusOwner();
 		scene.setFill(Color.TRANSPARENT);
@@ -206,16 +226,14 @@ public class LoginController extends BaseStageController {
 		Stage primaryStage = this.mainApp.getPrimaryStage();
 
 		inputLoginID.focusedProperty().addListener((ov, t, t1) -> {
-			if(t1) validateLoginID();
+			if(Boolean.TRUE.equals(t1)) validateLoginID();
 		});
 
 		inputPassword.focusedProperty().addListener((ov, t, t1) -> {
-			if(t1) {
+			if(Boolean.TRUE.equals(t1)) {
 				validatePassword();
 			}
 		});
-
-		/*settingURLButton.setVisible(true);*/
 
 		primaryStage.setScene(scene);
 		
@@ -229,9 +247,9 @@ public class LoginController extends BaseStageController {
 		primaryStage.setMinWidth(430);
 		primaryStage.setWidth(430);
 		primaryStage.setMaxWidth(430);
-		primaryStage.setMinHeight(410 + otherAreas);
-		primaryStage.setHeight(410 + otherAreas);
-		primaryStage.setMaxHeight(410 + otherAreas);
+		primaryStage.setMinHeight(410. + otherAreas);
+		primaryStage.setHeight(410. + otherAreas);
+		primaryStage.setMaxHeight(410. + otherAreas);
 		primaryStage.setResizable(false);
 		primaryStage.centerOnScreen();
 		primaryStage.show();

@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemManager;
+package ngeneanalysys.controller.manager;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

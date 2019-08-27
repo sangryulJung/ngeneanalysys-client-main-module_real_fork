@@ -1,4 +1,4 @@
-package ngeneanalysys.controller.systemMenu;
+package ngeneanalysys.controller.menu;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +20,7 @@ import ngeneanalysys.util.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -77,28 +78,9 @@ public class SystemMenuSettingController extends SubPaneController {
     @Override
     public void show(Parent root) throws IOException {
         logger.debug("show..");
-        
-        windowTheme.valueProperty().addListener(new ChangeListener<Object>() {
-			@Override
-			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-				getMainController().applyTheme(windowTheme.getValue());
-				//getLoginController().applyLoginTheme(windowTheme.getValue());
-				
-				
-//				try {
-//                    FXMLLoader loader = mainApp.load(FXMLConstants.MAIN);
-//                    Node node = loader.load();
-//                    MainController mainController = loader.getController();
-//                    mainController.applyTheme();
-//                   
-//                    
-//                   
-//                } catch (IOException ioe) {
-//                    ioe.printStackTrace();
-//                }
 
-			}
-		});
+        windowTheme.valueProperty().addListener((observable, oldValue, newValue) ->
+                getMainController().applyTheme(windowTheme.getValue()));
         
         config = PropertiesUtil.getSystemDefaultProperties();
         serverURLManageService = ServerURLManageService.getInstance();
@@ -125,7 +107,6 @@ public class SystemMenuSettingController extends SubPaneController {
         windowTheme.getItems().addAll(CommonConstants.WINDOW_THEME);
 
         windowTheme.setValue(config.getProperty("window.theme"));
-        //System.out.println(windowTheme.getValue());
 
         // Create the dialog Stage
         dialogStage = new Stage();
@@ -216,13 +197,13 @@ public class SystemMenuSettingController extends SubPaneController {
             Map<String,String> map = new HashMap<>();
             map.put("default.server.host", serverURLTextField.getText());
             map.put("analysis.job.auto.refresh", Boolean.toString(autoRefreshCheckBox.isSelected()));
-            map.put("analysis.job.auto.refresh.period", autoRefreshPeriodComboBox.getValue().replaceAll(" second", ""));
+            map.put("analysis.job.auto.refresh.period", autoRefreshPeriodComboBox.getValue().replace(" second", ""));
             map.put("window.theme", windowTheme.getValue());
             PropertiesUtil.saveProperties(configFile, map);
            
 
             // 현재 설정된 프로퍼티 설정 갱신
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), CommonConstants.ENCODING_TYPE_UTF))){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8))){
                 Properties properties = new Properties();
                 properties.load(reader);
                 for (Map.Entry<Object, Object> entry : properties.entrySet()) {
@@ -243,7 +224,7 @@ public class SystemMenuSettingController extends SubPaneController {
                 PropertiesService propertiesService = PropertiesService.getInstance();
 
                 propertiesService.getConfig().setProperty("analysis.job.auto.refresh", Boolean.toString(autoRefreshCheckBox.isSelected()));
-                propertiesService.getConfig().setProperty("analysis.job.auto.refresh.period", autoRefreshPeriodComboBox.getValue().replaceAll(" second", ""));
+                propertiesService.getConfig().setProperty("analysis.job.auto.refresh.period", autoRefreshPeriodComboBox.getValue().replace(" second", ""));
                 propertiesService.getConfig().setProperty("window.theme", windowTheme.getValue());
 
                 if(pastURL.equals(presentURL)) {

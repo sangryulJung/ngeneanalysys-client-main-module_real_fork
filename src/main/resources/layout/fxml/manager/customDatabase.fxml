@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="620.0" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.systemManager.SystemManagerCustomDatabaseController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="620.0" stylesheets="@../../css/common.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.manager.SystemManagerCustomDatabaseController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="530.0" minWidth="530.0" prefWidth="530.0" />

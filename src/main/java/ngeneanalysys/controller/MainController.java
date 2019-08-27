@@ -21,11 +21,11 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
 import ngeneanalysys.code.enums.UserTypeBit;
 import ngeneanalysys.controller.extend.BaseStageController;
-import ngeneanalysys.controller.systemManager.SystemManagerHomeController;
-import ngeneanalysys.controller.systemMenu.SystemMenuEditController;
-import ngeneanalysys.controller.systemMenu.SystemMenuLicenseController;
-import ngeneanalysys.controller.systemMenu.SystemMenuSettingController;
-import ngeneanalysys.controller.systemMenu.SystemMenuSupportController;
+import ngeneanalysys.controller.manager.SystemManagerHomeController;
+import ngeneanalysys.controller.menu.SystemMenuEditController;
+import ngeneanalysys.controller.menu.SystemMenuLicenseController;
+import ngeneanalysys.controller.menu.SystemMenuSettingController;
+import ngeneanalysys.controller.menu.SystemMenuSupportController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
@@ -199,8 +199,8 @@ public class MainController extends BaseStageController {
             primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
 
-        primaryStage.setMinHeight(setWindowHeight + 35);
-        primaryStage.setHeight(setWindowHeight + 35);
+        primaryStage.setMinHeight(setWindowHeight + 35.);
+        primaryStage.setHeight(setWindowHeight + 35.);
         primaryStage.setMaxHeight(Double.MAX_VALUE);
         primaryStage.setMinWidth(1280);
         primaryStage.setWidth(1280);
@@ -241,7 +241,6 @@ public class MainController extends BaseStageController {
             } else {
                 closeEvent(event);
             }
-            //closeEvent(event);
         });
 
         //로그인 사용자 세션
@@ -976,7 +975,6 @@ public class MainController extends BaseStageController {
      * 진행 상태 출력 영역 초기화
      */
     void clearProgressTaskArea(Node node) {
-        //progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
         progressTaskContentArea.getChildren().remove(node);
         if(analysisSampleUploadProgressTaskController != null) {
             this.analysisSampleUploadProgressTaskController = null;
@@ -992,7 +990,7 @@ public class MainController extends BaseStageController {
      * @param id String
      */
     public void removeProgressTaskItemById(String id) {
-        if(this.progressTaskContentArea.getChildren() != null && this.progressTaskContentArea.getChildren().size() > 0) {
+        if(this.progressTaskContentArea.getChildren() != null && !this.progressTaskContentArea.getChildren().isEmpty()) {
             int idx = 0;
             for(Node node : this.progressTaskContentArea.getChildren()) {
                 if(StringUtils.isNotEmpty(node.getId()) && id.equals(node.getId())) {
