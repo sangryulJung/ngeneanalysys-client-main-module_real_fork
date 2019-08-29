@@ -29,9 +29,6 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.ExcelConvertReportInformationService;
-import ngeneanalysys.service.ImageService;
-import ngeneanalysys.service.PDFCreateService;
-import ngeneanalysys.task.ImageFileDownloadTask;
 import ngeneanalysys.task.WordDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -59,11 +56,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     /** api service */
     private APIService apiService;
-
-    private PDFCreateService pdfCreateService;
-
-    /** Velocity Util */
-    private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
     private Label tierCountLabel;
@@ -159,8 +151,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         apiService.setStage(getMainController().getPrimaryStage());
 
         loginSession = LoginSessionUtil.getCurrentLoginSession();
-
-        pdfCreateService = PDFCreateService.getInstance();
 
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
@@ -1002,7 +992,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             if(optionalAnalysisFile.isPresent()) {
                 contentsMap.put("cnvImagePath", sample.getId() + "_" + optionalAnalysisFile.get().getName());
-                FileUtil.downloadCNVImage(optionalAnalysisFile.get());
             }
             if(analysisDetailSolidCNVReportController != null) {
                 try {
@@ -1081,33 +1070,23 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                 Map<String, Object> contentsMap = contents();
                 contentsMap.put("isDraft", isDraft);
 
-                String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
-                String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
-                String testInformationText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/test_information1.png"));
-                String pathogenicMutationsDetectedText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pathogenic_mutations_detected1.png"));
-                String pertinetNegativeText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pertinent_negative.png"));
-                String variantDetailText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/variant_detail.png"));
-                String dataQcText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/data_qc.png"));
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);
-                model.put("draftImageURL", draftImageStr);
-                model.put("ngenebioLogo", ngenebioLogo);
-                model.put("testInformationText", testInformationText);
-                model.put("pathogenicMutationsDetectedText", pathogenicMutationsDetectedText);
-                model.put("pertinetNegativeText", pertinetNegativeText);
-                model.put("variantDetailText", variantDetailText);
-                model.put("dataQcText", dataQcText);
                 model.put("contents", contentsMap);
 
-                String contents = "";
                 if(panel.getReportTemplateId() == null) {
+                    String jsonStr = JsonUtil.toJsonIncludeNullValue(model);
                     if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-                        contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", CommonConstants.ENCODING_TYPE_UTF, model);
+                        Task<Void> task = new WordDownloadTask(this, null, jsonStr, file, "TST170_DNA");
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
                     } else {
-                        contents = velocityUtil.getContents("/layout/velocity/report.vm", CommonConstants.ENCODING_TYPE_UTF, model);
+                        Task<Void> task = new WordDownloadTask(this, null, jsonStr, file, "STANDARD");
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
                     }
-                    created = pdfCreateService.createPDF(file, contents);
-                    createdCheck(created, file);
                 } else {
                     for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                         Object gridObject = customFieldGridPane.getChildren().get(i);
@@ -1137,7 +1116,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         List<ReportComponent> components = reportContents.getReportComponents();
 
                         if(components == null || components.isEmpty()) throw new Exception();
-                        final Comparator<ReportComponent> comp = (p1, p2) -> Integer.compare( p1.getId(), p2.getId());
+                        final Comparator<ReportComponent> comp = Comparator.comparingInt(ReportComponent::getId);
                         final ReportComponent component = components.stream().max(comp).get();
 
                         String test = JsonUtil.toJsonIncludeNullValue(contentsMap);
@@ -1148,55 +1127,24 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         downloadThread.start();
 
                     } else {
-                        List<ReportImage> images = reportContents.getReportImages();
-
-                        for (ReportImage image : images) {
-                            String path = "url('file:/" + CommonConstants.BASE_FULL_PATH + File.separator + "fop" + File.separator + image.getReportTemplateId()
-                                    + File.separator + image.getName() + "')";
-                            path = path.replaceAll("\\\\", "/");
-                            String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.debug(name + " : " + path);
-                            model.put(name, path);
-                        }
-
-                        FileUtil.saveVMFile(reportContents.getReportTemplate());
-
-                        Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
-
-                        Thread thread = new Thread(task);
-                        thread.setDaemon(true);
-                        thread.start();
-
-                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", CommonConstants.ENCODING_TYPE_UTF, model);
-                        task.setOnSucceeded(ev -> {
-                            try {
-                                if(reportContents.getReportTemplate().getOutputType() != null
-                                        && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("PDF")) {
-                                    final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                                    createdCheck(created1, file);
-                                } else {
-                                    String path = CommonConstants.BASE_FULL_PATH + File.separator + "temp" + File.separator + "tempPDF.pdf";
-                                    File tempPDFFile = new File(path);
-                                    final boolean created1 = pdfCreateService.createPDF(tempPDFFile, contents1);
-                                    createdCheck(created1, tempPDFFile);
-                                    ImageService.convertPDFtoImage(tempPDFFile, sample.getName(), file);
-                                }
-
-                            } catch (Exception e) {
-                                DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-                                e.printStackTrace();
-                            }
-                        });
+                        String test = JsonUtil.toJsonIncludeNullValue(model);
+                        Task<Void> task = new WordDownloadTask(this, reportContents.getReportTemplate(), test, file, "CUSTOM");
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
                     }
                 }
             }
         } catch(FileNotFoundException fnfe){
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
+            mainController.setMainMaskerPane(false);
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
+            mainController.setMainMaskerPane(false);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
+            mainController.setMainMaskerPane(false);
             created = false;
         }
 

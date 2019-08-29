@@ -218,6 +218,7 @@ public class LoginController extends BaseStageController {
 		if(StringUtils.isNotEmpty(loginId)) {
 			test.selectedProperty().setValue(true);
 			inputLoginID.setText(loginId);
+			inputPassword.requestFocus();
 		}
 	    
 		scene.getFocusOwner();

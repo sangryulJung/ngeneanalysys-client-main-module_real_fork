@@ -6,9 +6,10 @@ import ngeneanalysys.controller.AnalysisDetailReportController;
 import ngeneanalysys.controller.AnalysisDetailReportGermlineController;
 import ngeneanalysys.controller.AnalysisDetailTSTRNAReportController;
 import ngeneanalysys.model.ReportComponent;
+import ngeneanalysys.model.ReportTemplate;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.service.SSLConnectService;
 import ngeneanalysys.util.LoggerUtil;
-import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -42,13 +43,19 @@ public class WordDownloadTask extends Task {
 
     private ReportComponent component;
 
+    private ReportTemplate reportTemplate;
+
     private String value;
 
     private File file;
 
+    private boolean pdfFlag = false;
+
+    private String code;
+
     /** 진행상태 박스 id */
     private String progressBoxId;
-
+    /* WORD용 생성자 */
     public WordDownloadTask(AnalysisDetailReportController controller, ReportComponent component, String value,
                             File file) {
         this.controller = controller;
@@ -76,9 +83,43 @@ public class WordDownloadTask extends Task {
         this.file = file;
     }
 
+    /* PDF용 생성자 */
+    public WordDownloadTask(AnalysisDetailReportController controller, ReportTemplate reportTemplate, String value,
+                            File file, String code) {
+        this.controller = controller;
+        this.reportTemplate = reportTemplate;
+        progressBoxId = "DOWNLOAD PDF";
+        this.value = value;
+        this.file = file;
+        this.code = code;
+        pdfFlag = true;
+    }
+
+    public WordDownloadTask(AnalysisDetailReportGermlineController controller, ReportTemplate reportTemplate, String value,
+                            File file, String code) {
+        this.analysisDetailReportGermlineController = controller;
+        this.reportTemplate = reportTemplate;
+        progressBoxId = "DOWNLOAD PDF";
+        this.value = value;
+        this.file = file;
+        this.code = code;
+        pdfFlag = true;
+    }
+
+    public WordDownloadTask(AnalysisDetailTSTRNAReportController controller, ReportTemplate reportTemplate, String value,
+                            File file, String code) {
+        this.tstrnaReportController = controller;
+        this.reportTemplate = reportTemplate;
+        progressBoxId = "DOWNLOAD PDF";
+        this.value = value;
+        this.file = file;
+        this.code = code;
+        pdfFlag = true;
+    }
+
     @Override
     protected Void call() throws Exception {
-        if(component != null) {
+        if(component != null || pdfFlag) {
             APIService apiService = APIService.getInstance();
             if(controller != null) {
                 apiService.setStage(controller.getMainController().getPrimaryStage());
@@ -91,8 +132,9 @@ public class WordDownloadTask extends Task {
             CloseableHttpClient httpclient = null;
             CloseableHttpResponse response = null;
 
+            String downloadUrl = "/wordReport/";
 
-            String downloadUrl = "/reportTest/";
+            if(pdfFlag) downloadUrl = "/pdfReport/";
 
             OutputStream os = null;
             try {
@@ -113,8 +155,19 @@ public class WordDownloadTask extends Task {
 
                 Map<String, Object> params = new HashMap<>();
                 params.put("value", value);
-                params.put("reportId", component.getId());
-                params.put("reportName", component.getName());
+                if(pdfFlag) {
+                    if(reportTemplate != null) {
+                        params.put("reportId", reportTemplate.getId());
+                        params.put("reportName", reportTemplate.getName());
+                    } else {
+                        params.put("reportId", null);
+                        params.put("reportName", null);
+                    }
+                    params.put("code", code);
+                } else {
+                    params.put("reportId", component.getId());
+                    params.put("reportName", component.getName());
+                }
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 String jsonStr = objectMapper.writeValueAsString(params);
@@ -122,7 +175,7 @@ public class WordDownloadTask extends Task {
 
                 post.setEntity(stringEntity);
 
-                httpclient = HttpClients.custom().setSSLSocketFactory(HttpClientUtil.getSSLSocketFactory()).build();
+                httpclient = HttpClients.custom().setSSLSocketFactory(SSLConnectService.getInstance().getSSLFactory()).build();
                 if (httpclient != null)
                     response = httpclient.execute(post);
                 if (response == null) {
