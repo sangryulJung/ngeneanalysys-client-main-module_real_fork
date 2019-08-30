@@ -349,6 +349,7 @@ public class MainController extends BaseStageController {
                     box.setOnMouseClicked(event -> {
                         if(itemProperty() == null) return;
                         while(sampleList.getItems().size() > 1) {
+                            showTopMenuContents(1);
                             ComboBoxItem comboBoxItem = sampleList.getItems().get(1);
                             removeTopMenu(comboBoxItem.getValue());
                             sampleList.getItems().remove(comboBoxItem);
