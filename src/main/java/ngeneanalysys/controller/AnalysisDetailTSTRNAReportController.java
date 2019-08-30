@@ -790,58 +790,57 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         contentsMap.put("evidenceDCount", evidenceDCount);
         contentsMap.put("negativeList", negativeResult);
 
-            HttpClientResponse response;
-            if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
-                response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
-                        null, null, false);
+        HttpClientResponse response;
+        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+            response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                    null, null, false);
 
-                VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+            VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
 
-                Set<String> list = new HashSet<>();
+            Set<String> list = new HashSet<>();
 
-                list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
-                        .split(",")).collect(Collectors.toSet()));
+            list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                    .split(",")).collect(Collectors.toSet()));
 
-                Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+            Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
-                contentsMap.put("essentialGenes", list);
-                contentsMap.put("allGeneList", allGeneList);
-                contentsMap.put("virtualPanelName", virtualPanel.getName());
+            contentsMap.put("essentialGenes", list);
+            contentsMap.put("allGeneList", allGeneList);
+            contentsMap.put("virtualPanelName", virtualPanel.getName());
 
-            }
+        }
 
-            String runSequencer = sample.getRun().getSequencingPlatform();
+        String runSequencer = sample.getRun().getSequencingPlatform();
 
-            if(runSequencer.equalsIgnoreCase("MISEQ")) {
-                contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+        if(runSequencer.equalsIgnoreCase("MISEQ")) {
+            contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+        } else {
+            contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+        }
+
+        response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
+                null, false);
+
+        List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
+
+        contentsMap.put("readsPF",findQCResult(qcList, "Reads_PF"));
+        contentsMap.put("medianInsertSize",findQCResult(qcList, "Median_Insert_Size"));
+        contentsMap.put("medianCVCoverage",findQCResult(qcList, "Median_CV_Coverage_1000x"));
+        contentsMap.put("q30ScoreRead1",findQCResult(qcList, "Q30_score_read1"));
+        contentsMap.put("q30ScoreRead2",findQCResult(qcList, "Q30_score_read2"));
+
+        List<String> conclusionLineList = null;
+        if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
+            conclusionLineList = new ArrayList<>();
+            String[] lines = conclusionsTextArea.getText().split("\n");
+            if(lines != null && lines.length > 0) {
+                conclusionLineList.addAll(Arrays.asList(lines));
             } else {
-                contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+                conclusionLineList.add(conclusionsTextArea.getText());
             }
+        }
+        contentsMap.put("conclusions", conclusionLineList);
 
-            response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
-                    null, false);
-
-            List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
-
-            contentsMap.put("readsPF",findQCResult(qcList, "Reads_PF"));
-            contentsMap.put("medianInsertSize",findQCResult(qcList, "Median_Insert_Size"));
-            contentsMap.put("medianCVCoverage",findQCResult(qcList, "Median_CV_Coverage_1000x"));
-            contentsMap.put("q30ScoreRead1",findQCResult(qcList, "Q30_score_read1"));
-            contentsMap.put("q30ScoreRead2",findQCResult(qcList, "Q30_score_read2"));
-
-            List<String> conclusionLineList = null;
-            if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
-                conclusionLineList = new ArrayList<>();
-                String[] lines = conclusionsTextArea.getText().split("\n");
-                if(lines != null && lines.length > 0) {
-                    conclusionLineList.addAll(Arrays.asList(lines));
-                } else {
-                    conclusionLineList.add(conclusionsTextArea.getText());
-                }
-            }
-            contentsMap.put("conclusions", conclusionLineList);
-
-        //}
 
         return contentsMap;
     }

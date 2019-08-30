@@ -214,14 +214,14 @@ public class AnalysisDetailGermlineCNVReportController extends SubPaneController
         if(!brcaCnvExonDeletionList.isEmpty()) {
             BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.COPY_LOSS.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDeletionList.stream().map(BrcaCnvExon::getExon)
-                            .collect(Collectors.toList()), gene));
+                            .collect(Collectors.toList())));
             brcaCnvResultList.add(brcaCnvResult);
         }
 
         if(!brcaCnvExonDuplicationList.isEmpty()) {
             BrcaCnvResult brcaCnvResult = new BrcaCnvResult(gene, WordUtils.capitalize(BrcaCNVCode.COPY_GAIN.getCode()),
                     ConvertUtil.convertBrcaCnvRegion(brcaCnvExonDuplicationList.stream().map(BrcaCnvExon::getExon)
-                            .collect(Collectors.toList()), gene));
+                            .collect(Collectors.toList())));
             brcaCnvResultList.add(brcaCnvResult);
         }
     }

@@ -169,7 +169,6 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
                             Thread.sleep(100);
                             if (currentDownloadGroupId > 0) {
                                 // 현재 업로드중인 분석 요청 그룹 데이터 삭제
-                                //analysisRequestService.removeRequestedJob(currentDownloadGroupId);
                                 this.controller.clearWhenUploadTaskSucceeded();
                             }
                         }

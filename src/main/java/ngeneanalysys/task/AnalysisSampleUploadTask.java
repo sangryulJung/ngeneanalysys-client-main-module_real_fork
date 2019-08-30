@@ -131,12 +131,9 @@ public class AnalysisSampleUploadTask extends FileUploadTask<Void>{
                     Thread.sleep(100);
                     if (currentUploadGroupId > 0) {
                         // 현재 업로드중인 분석 요청 그룹 데이터 삭제
-                        //analysisRequestService.removeRequestedJob(currentUploadGroupId);
                         this.analysisSampleUploadProgressTaskController.clearWhenUploadTaskSucceeded();
                     }
                 }
-
-                //completeFile.add(fileData);
             }
         } catch (Exception e) {
             logger.debug(e.getMessage());

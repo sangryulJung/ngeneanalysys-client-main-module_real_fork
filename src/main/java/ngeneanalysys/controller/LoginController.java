@@ -76,10 +76,6 @@ public class LoginController extends BaseStageController {
 	@FXML
 	private Label labelPassword;
 
-	/** 서버 URL 변경 창 출력 버튼 */
-	/*@FXML
-	private Button settingURLButton;*/
-
 	/** 처리진행중 표시 객체 */
 	@FXML
 	private ProgressIndicator progress;

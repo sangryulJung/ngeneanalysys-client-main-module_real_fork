@@ -1,7 +1,5 @@
 package ngeneanalysys.util;
 
-import org.slf4j.Logger;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +8,6 @@ import java.util.stream.Collectors;
  * @since 2017-08-23
  */
 public class FileUtil {
-    private static Logger logger = LoggerUtil.getLogger();
     private FileUtil() {}
 
     /**
