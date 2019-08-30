@@ -156,8 +156,6 @@ public class VirtualPanelEditController extends SubPaneController {
             dialogStage.close();
         } catch (WebAPIException wae) {
             wae.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
         }
     }
 

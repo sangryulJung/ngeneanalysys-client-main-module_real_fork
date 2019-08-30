@@ -63,9 +63,7 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
 
                 HttpClientResponse response;
                 response = apiService.get("/analysisResults/compositeCmtCnvResult/" + sample.getId(), null, null, null);
-                CompositeCmtCnvResult compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
-
-                this.compositeCmtCnvResult = compositeCmtCnvResult;
+                this.compositeCmtCnvResult  = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
 
                 return null;
             }

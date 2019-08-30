@@ -392,9 +392,6 @@ public class SystemManagerReportTemplateController extends SubPaneController{
             } catch (WebAPIException wae) {
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
                 wae.printStackTrace();
-            } catch (IOException ioe) {
-                DialogUtil.error(ioe.getMessage(), ioe.getMessage(), mainController.getPrimaryStage(), true);
-                ioe.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }

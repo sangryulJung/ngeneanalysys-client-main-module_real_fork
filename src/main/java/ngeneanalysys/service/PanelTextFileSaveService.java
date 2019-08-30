@@ -18,7 +18,6 @@ import java.util.Map;
  * @since 2018-08-17
  */
 public class PanelTextFileSaveService {
-    private static final Logger logger = LoggerUtil.getLogger();
 
     private String[] viewList = new String[]{"name", "code", "target", "analysisType", "libraryType", "memberGroupIds",
             "diseaseIds", "defaultDiseaseId", "defaultSampleSource", "reportTemplate", "canonicalTranscripts",

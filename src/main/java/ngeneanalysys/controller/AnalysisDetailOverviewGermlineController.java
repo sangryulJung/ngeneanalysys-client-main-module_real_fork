@@ -128,8 +128,6 @@ public class AnalysisDetailOverviewGermlineController extends AnalysisDetailComm
         aaChangeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
         setBrcaCnvOverview();
-
-        //Platform.runLater(this::setDisplayItem);
     }
 
     private void setBrcaCnvOverview() {

@@ -1,6 +1,5 @@
 package ngeneanalysys.service;
 
-import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.AnalysisFile;
 import ngeneanalysys.task.RawDataDownloadTask;
 import ngeneanalysys.util.LoggerUtil;
@@ -42,7 +41,7 @@ public class RawDataDownloadService {
     }
 
     public boolean downloadFile(AnalysisFile analysisResultFile, File folder,
-                                RawDataDownloadTask task, Long start, Long end) throws WebAPIException {
+                                RawDataDownloadTask task, Long start, Long end) {
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
 
@@ -117,7 +116,7 @@ public class RawDataDownloadService {
         return true;
     }
 
-    public ByteArrayInputStream getImageStream(AnalysisFile analysisResultFile) throws WebAPIException {
+    public ByteArrayInputStream getImageStream(AnalysisFile analysisResultFile) {
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
 

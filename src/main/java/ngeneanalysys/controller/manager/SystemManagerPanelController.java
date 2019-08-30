@@ -883,33 +883,30 @@ public class SystemManagerPanelController extends SubPaneController {
 
                 diseaseCheckComboBox.getItems().addAll(items);
 
-                diseaseCheckComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<ComboBoxItem>() {
-                    @Override
-                    public void onChanged(Change<? extends ComboBoxItem> c) {
-                        List<ComboBoxItem> selectedItem = new ArrayList<>(diseaseCheckComboBox.getCheckModel().getCheckedItems());
-                        if(defaultDiseaseComboBox.getItems().isEmpty()) {
-                            defaultDiseaseComboBox.getItems().addAll(selectedItem);
-                        } else {
-                            for(ComboBoxItem comboBoxItem : selectedItem) {
-                                Optional<ComboBoxItem> combo  = defaultDiseaseComboBox.getItems().stream()
-                                        .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
-                                        .findFirst();
-                                if(!combo.isPresent()) {
-                                    defaultDiseaseComboBox.getItems().add(comboBoxItem);
-                                }
+                diseaseCheckComboBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<ComboBoxItem>) c -> {
+                    List<ComboBoxItem> selectedItem = new ArrayList<>(diseaseCheckComboBox.getCheckModel().getCheckedItems());
+                    if(defaultDiseaseComboBox.getItems().isEmpty()) {
+                        defaultDiseaseComboBox.getItems().addAll(selectedItem);
+                    } else {
+                        for(ComboBoxItem comboBoxItem : selectedItem) {
+                            Optional<ComboBoxItem> combo  = defaultDiseaseComboBox.getItems().stream()
+                                    .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
+                                    .findFirst();
+                            if(!combo.isPresent()) {
+                                defaultDiseaseComboBox.getItems().add(comboBoxItem);
                             }
-                            List<ComboBoxItem> removeList = new ArrayList<>();
-
-                            for(ComboBoxItem comboBoxItem : defaultDiseaseComboBox.getItems()) {
-                                Optional<ComboBoxItem> combo  = selectedItem.stream()
-                                        .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
-                                        .findFirst();
-                                if(!combo.isPresent()) {
-                                    removeList.add(comboBoxItem);
-                                }
-                            }
-                            defaultDiseaseComboBox.getItems().removeAll(removeList);
                         }
+                        List<ComboBoxItem> removeList = new ArrayList<>();
+
+                        for(ComboBoxItem comboBoxItem : defaultDiseaseComboBox.getItems()) {
+                            Optional<ComboBoxItem> combo  = selectedItem.stream()
+                                    .filter(item -> item.getValue().equalsIgnoreCase(comboBoxItem.getValue()))
+                                    .findFirst();
+                            if(!combo.isPresent()) {
+                                removeList.add(comboBoxItem);
+                            }
+                        }
+                        defaultDiseaseComboBox.getItems().removeAll(removeList);
                     }
                 });
 
@@ -1341,8 +1338,6 @@ public class SystemManagerPanelController extends SubPaneController {
             } catch (WebAPIException wae) {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
-            } catch (IOException ioe) {
-                DialogUtil.error(ioe.getMessage(), ioe.getMessage(), mainController.getPrimaryStage(), true);
             }
         }
     }
@@ -1510,7 +1505,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 selectPipelineComboBox(panel.getCode());
 
                 panelNameTextField.setText(panel.getName());
-                //panelCodeTextField.setText(panel.getCode());
+
                 if(panel.getWarningMAF() != null) {
                     warningMAFTextField.setDisable(false);
                     warningMAFTextField.setText(panel.getWarningMAF().toString());
@@ -1589,7 +1584,6 @@ public class SystemManagerPanelController extends SubPaneController {
                 if(variantFilter.getPopulationFrequencyDBs() != null) {
                     String[] freqDBs = panel.getVariantFilter().getPopulationFrequencyDBs().split(",");
                     for(String freqDB : freqDBs) {
-                        //frequencyDBCheckComboBox.getCheckModel().check(freqDB);
                         Optional<ComboBoxItem> comboBoxItem = frequencyDBCheckComboBox.getItems().stream().filter(item
                                 -> item.getValue().equalsIgnoreCase(freqDB)).findFirst();
                         comboBoxItem.ifPresent(item -> frequencyDBCheckComboBox.getCheckModel().check(item));

@@ -1004,9 +1004,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     uploadFileData.add(fileData);
                 } catch (WebAPIException e) {
                     DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
-                } catch (IOException e) {
-                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
-                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
             }
@@ -1031,9 +1028,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
                     uploadFileData.add(fileData);
                 } catch (WebAPIException e) {
                     DialogUtil.error(e.getHeaderText(), e.getMessage(), getMainApp().getPrimaryStage(), true);
-                } catch (IOException e) {
-                    logger.error(CommonConstants.DEFAULT_WARNING_MGS, e);
-                    DialogUtil.error(CommonConstants.DEFAULT_WARNING_MGS, e.getMessage(), getMainApp().getPrimaryStage(), true);
                 }
 
             }

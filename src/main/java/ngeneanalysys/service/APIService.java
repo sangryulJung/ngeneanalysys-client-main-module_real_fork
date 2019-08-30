@@ -123,7 +123,7 @@ public class APIService {
         return HttpClientUtil.get(connectURL, params, headerMap, isJsonRequest);
     }
 
-    public HttpClientResponse post(String url, Map<String,Object> params, Map<String,Object> headers, boolean isJsonRequest) throws WebAPIException, IOException {
+    public HttpClientResponse post(String url, Map<String,Object> params, Map<String,Object> headers, boolean isJsonRequest) throws WebAPIException {
         logger.debug("APIService.post..[" + url + "]");
         String connectURL = getConvertConnectURL(url);
         // 헤더 삽입 정보 설정
@@ -142,7 +142,7 @@ public class APIService {
      * @return
      * @throws WebAPIException
      */
-    public HttpClientResponse postNotContainToken(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException, IOException {
+    public HttpClientResponse postNotContainToken(String url, Map<String, Object> params, Map<String, Object> headers, boolean isJsonRequest) throws WebAPIException {
         logger.debug("APIService.postNotContainToken..[" + url + "]");
         String connectURL = getConvertConnectURL(url);
 

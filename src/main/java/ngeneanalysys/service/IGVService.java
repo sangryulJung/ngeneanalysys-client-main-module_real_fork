@@ -109,10 +109,10 @@ public class IGVService {
         box.setId(progressBoxId);
         box.getStyleClass().add("general_progress");
 
-        if(mainProgressTaskPane.getChildren().size() > 0) {
+        if(!mainProgressTaskPane.getChildren().isEmpty()) {
             Label separatorLabel = new Label("|");
             box.getChildren().add(separatorLabel);
-            box.setMargin(separatorLabel, new Insets(0, 0, 0, 5));
+            HBox.setMargin(separatorLabel, new Insets(0, 0, 0, 5));
         }
 
         // 타이틀 : 다운로드 파일명 출력
@@ -145,13 +145,13 @@ public class IGVService {
         });
 
         box.getChildren().add(titleLabel);
-        box.setMargin(titleLabel, new Insets(0, 0, 0, 5));
+        HBox.setMargin(titleLabel, new Insets(0, 0, 0, 5));
         box.getChildren().add(progressBar);
-        box.setMargin(progressBar, new Insets(0, 0, 0, 5));
+        HBox.setMargin(progressBar, new Insets(0, 0, 0, 5));
         box.getChildren().add(messageLabel);
-        box.setMargin(messageLabel, new Insets(0, 0, 0, 5));
+        HBox.setMargin(messageLabel, new Insets(0, 0, 0, 5));
         box.getChildren().add(cancelButton);
-        box.setMargin(cancelButton, new Insets(0, 0, 0, 5));
+        HBox.setMargin(cancelButton, new Insets(0, 0, 0, 5));
 
         // 메인 화면 Progress Task 영역에 화면 출력
         mainProgressTaskPane.getChildren().add(box);
@@ -199,7 +199,7 @@ public class IGVService {
                 box.setId(progressBoxId);
                 box.getStyleClass().add("general_progress");
 
-                if(mainProgressTaskPane.getChildren().size() > 0) {
+                if(!mainProgressTaskPane.getChildren().isEmpty()) {
                     Label separatorLabel = new Label("|");
                     box.getChildren().add(separatorLabel);
                     box.setMargin(separatorLabel, new Insets(0, 0, 0, 5));
@@ -282,7 +282,6 @@ public class IGVService {
         try {
             logger.info(String.format("request igv [sample id : %s, bam file : %s, genome : %s, locus : %s, gene : %s]", this.sampleId, this.bamFileName, this.genome, this.locus, this.gene));
 
-            //String name = String.format("[%s:%s:%s]", this.sampleId, this.sampleName, this.variantId);
             String finalBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_final.bam");
             String mutectBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_mutect.bam");
             String hcBamFileUrl = String.format("http://127.0.0.1:%s/analysisFiles/%s/%s", CommonConstants.HTTP_PROXY_SERVER_PORT, this.sampleId, this.bamFileName + "_hc.bam");
@@ -300,7 +299,6 @@ public class IGVService {
                 throw new Exception("Can not find BAM file.");
             }
 
-            //params.put("name", name);
             params.put("genome", this.genome);
             params.put("merge", "false");
             if(StringUtils.isNotEmpty(this.gene)) {
@@ -346,7 +344,6 @@ public class IGVService {
             isStartOfIGV = true;
             logger.debug(String.format("jre binary path : %s", jreBinPath.getAbsolutePath()));
             this.sampleId = sampleId;
-            //this.bamFileName = sampleName + "_final.bam";
             this.bamFileName = sampleName;
             this.gene = gene;
             this.locus = locus;

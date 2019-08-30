@@ -227,11 +227,10 @@ public class AnalysisDetailHeredCNVController extends AnalysisDetailCommonContro
                 PagedNormalizedCoverage pagedNormalizedCoverage = response.getObjectBeforeConvertResponseToJSON(PagedNormalizedCoverage.class);
 
                 response = apiService.get("/analysisResults/compositeCmtCnvResult/" + sample.getId(), null, null, null);
-                CompositeCmtCnvResult compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
+                this.compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
 
                 snpVariantAlleleFractionList = pagedSnpVariantAlleleFraction.getResult();
                 normalizedCoverageList = pagedNormalizedCoverage.getResult();
-                this.compositeCmtCnvResult = compositeCmtCnvResult;
 
                 return null;
             }

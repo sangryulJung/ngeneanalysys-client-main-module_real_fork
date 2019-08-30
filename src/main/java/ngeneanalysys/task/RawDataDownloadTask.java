@@ -130,7 +130,7 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
                             try {
                                 rawDataDownloadService.downloadFile(file, folder, this, sizeSum, size);
                                 completeSize.add(file.getSize());
-                            } catch (WebAPIException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 

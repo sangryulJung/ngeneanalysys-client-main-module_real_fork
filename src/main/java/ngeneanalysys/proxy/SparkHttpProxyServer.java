@@ -78,7 +78,7 @@ public class SparkHttpProxyServer {
                         }
                     } };
 
-                    SSLContext sc = SSLContext.getInstance("SSL");
+                    SSLContext sc = SSLContext.getInstance("TLSv1.2");
                     sc.init(null, trustAllCerts, new SecureRandom());
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 

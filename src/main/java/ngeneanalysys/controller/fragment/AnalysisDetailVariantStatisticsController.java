@@ -64,15 +64,12 @@ public class AnalysisDetailVariantStatisticsController extends SubPaneController
     public void show(Parent root) throws IOException {
         apiService = APIService.getInstance();
         showVariantStatistics();
-        runSampleHelpLabel.setOnMouseClicked(e -> {
-            openPopOver(runSampleHelpLabel, "The proportion of the samples with corresponding variant within the same run.");
-        });
-        panelSampleHelpLabel.setOnMouseClicked(e -> {
-            openPopOver(panelSampleHelpLabel, "Describes the use of the same panel, and the proportion of the samples having the same variant as the corresponding variant.");
-        });
-        groupSampleHelpLabel.setOnMouseClicked(e -> {
-            openPopOver(groupSampleHelpLabel, "The proportion of the samples having the same variant as the corresponding variant within the user group.");
-        });
+        runSampleHelpLabel.setOnMouseClicked(e ->
+            openPopOver(runSampleHelpLabel, "The proportion of the samples with corresponding variant within the same run."));
+        panelSampleHelpLabel.setOnMouseClicked(e ->
+            openPopOver(panelSampleHelpLabel, "Describes the use of the same panel, and the proportion of the samples having the same variant as the corresponding variant."));
+        groupSampleHelpLabel.setOnMouseClicked(e ->
+            openPopOver(groupSampleHelpLabel, "The proportion of the samples having the same variant as the corresponding variant within the user group."));
     }
 
     /**

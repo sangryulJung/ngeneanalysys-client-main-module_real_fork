@@ -84,8 +84,6 @@ public class ImageUploadService {
 
             FileBody fileParam = new FileBody(imageFile);
 
-            //HttpEntity reqEntity = EntityBuilder.create()
-            //        .setFile(imageFile).build();
             HttpEntity reqEntity = MultipartEntityBuilder.create()
                     .addPart("file", fileParam)
                     .build();

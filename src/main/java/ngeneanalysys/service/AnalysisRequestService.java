@@ -62,7 +62,6 @@ public class AnalysisRequestService {
 
         try {
             String connectURL = apiService.getConvertConnectURL(url);
-            //HttpPost post = new HttpPost(connectURL);
             HttpPut put = new HttpPut(connectURL);
 
             Map<String, Object> headerMap = apiService.getDefaultHeaders(true);
@@ -79,13 +78,9 @@ public class AnalysisRequestService {
 
             FileBody fileParam = new ProgressFileBody(file, task);
 
-            //HttpEntity reqEntity = EntityBuilder.create()
-            //        .setFile(file).build();
             HttpEntity reqEntity = MultipartEntityBuilder.create()
                     .addPart("file", fileParam)
                     .build();
-
-            //HttpEntity progressInputStreamEntity = new ProgressInputStreamEntity(reqEntity.getContent(), file.length(), null, task);
 
             put.setEntity(reqEntity);
 

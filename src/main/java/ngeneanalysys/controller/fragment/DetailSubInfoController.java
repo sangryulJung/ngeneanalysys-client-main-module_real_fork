@@ -226,7 +226,7 @@ public class DetailSubInfoController extends SubPaneController {
         if("dbSNP".equalsIgnoreCase(item)) {
             String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
             if(StringUtils.isNotEmpty(rsId)) {
-                String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replaceAll("rs", "");
+                String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replace("rs", "");
                 openBrowser(fullUrlDBsnp);
             }
         } else if("ClinVar".equalsIgnoreCase(item)) {

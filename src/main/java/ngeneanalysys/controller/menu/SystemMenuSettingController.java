@@ -1,7 +1,5 @@
 package ngeneanalysys.controller.menu;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -89,10 +87,6 @@ public class SystemMenuSettingController extends SubPaneController {
         originServerURL = config.getProperty("default.server.host");
         serverURLTextField.setText(config.getProperty("default.server.host"));
 
-        // 어플리케이션이 "RUO" 모드인 경우 서버 URL 설정 비활성화 처리함.
-        //serverURLTextField.setDisable(true);
-        //serverURLConfirmButton.setDisable(true);
-
         // check auto refresh
         autoRefreshCheckBox.setSelected("true".equals(config.getProperty("analysis.job.auto.refresh")));
 
@@ -153,7 +147,7 @@ public class SystemMenuSettingController extends SubPaneController {
 
         logger.debug("settings save start..");
 
-        if(mainController.getProgressTaskContentArea().getChildren().size() != 0) {
+        if(!mainController.getProgressTaskContentArea().getChildren().isEmpty()) {
             return;
         }
 
