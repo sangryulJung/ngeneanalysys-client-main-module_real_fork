@@ -113,14 +113,14 @@
                      </HBox.margin>
                   </Label>
                   <Label fx:id="releaseDateLabel" text="(release date)" />
-                  <Label text="Create Date">
+                  <Label text="Create Date:">
                      <HBox.margin>
-                        <Insets left="40.0" />
+                        <Insets left="20.0" right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="createDateLabel" text="Label">
+                  <Label fx:id="createDateLabel" text="(create date)">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets />
                      </HBox.margin>
                   </Label>
                </children>
