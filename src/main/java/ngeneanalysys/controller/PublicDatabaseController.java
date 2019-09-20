@@ -65,7 +65,7 @@ public class PublicDatabaseController extends SubPaneController {
     private Label releaseNoteLabel;
 
     @FXML
-    private Label createDateLabel;
+    private Label installationDateLabel;
     
     @FXML
     private ScrollPane releaseNoteScrollPane;
@@ -111,7 +111,7 @@ public class PublicDatabaseController extends SubPaneController {
                         releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
                     }
                     releaseDateLabel.setText(optionalPipelineVersionView.get().getReleaseDate());
-                    createDateLabel.setText(DateFormatUtils.format(
+                    installationDateLabel.setText(DateFormatUtils.format(
                             optionalPipelineVersionView.get().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
 
                 }
