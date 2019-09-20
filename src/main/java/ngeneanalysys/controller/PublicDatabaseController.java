@@ -28,6 +28,7 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -62,6 +63,9 @@ public class PublicDatabaseController extends SubPaneController {
 
     @FXML
     private Label releaseNoteLabel;
+
+    @FXML
+    private Label installationDateLabel;
     
     @FXML
     private ScrollPane releaseNoteScrollPane;
@@ -107,6 +111,9 @@ public class PublicDatabaseController extends SubPaneController {
                         releaseNoteLabel.setText(optionalPipelineVersionView.get().getReleaseNote());
                     }
                     releaseDateLabel.setText(optionalPipelineVersionView.get().getReleaseDate());
+                    installationDateLabel.setText(DateFormatUtils.format(
+                            optionalPipelineVersionView.get().getCreatedAt().toDate(), CommonConstants.DEFAULT_DAY_FORMAT));
+
                 }
                 setList(nv.getValue());
             }

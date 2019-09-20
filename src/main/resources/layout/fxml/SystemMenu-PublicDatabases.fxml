@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="536.0" minWidth="1030.0" prefHeight="536.0" prefWidth="1030.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="536.0" minWidth="1030.0" prefHeight="536.0" prefWidth="1030.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PublicDatabaseController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -93,7 +93,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label  styleClass="font_size_15" text="Pipeline Information">
+                  <Label styleClass="font_size_15" text="Pipeline Information">
                      <HBox.margin>
                         <Insets bottom="10.0" />
                      </HBox.margin>
@@ -105,7 +105,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="1010.0">
                <children>
-                  <Label  text="Pipeline version:   " />
+                  <Label text="Pipeline version:   " />
                   <ComboBox fx:id="versionComboBox" prefWidth="84.0" />
                   <Label text="Release Date: ">
                      <HBox.margin>
@@ -113,6 +113,16 @@
                      </HBox.margin>
                   </Label>
                   <Label fx:id="releaseDateLabel" text="(release date)" />
+                  <Label text="Installation Date:">
+                     <HBox.margin>
+                        <Insets left="20.0" right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="installationDateLabel" text="(installation date)">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
                </children>
                <padding>
                   <Insets left="10.0" />
@@ -120,7 +130,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="31.0" prefWidth="1010.0">
                <children>
-                  <Label  text="Release Note" />
+                  <Label text="Release Note" />
                </children>
                <padding>
                   <Insets left="10.0" />
