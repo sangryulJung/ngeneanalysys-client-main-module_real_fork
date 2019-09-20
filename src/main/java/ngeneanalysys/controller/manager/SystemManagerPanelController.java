@@ -1044,7 +1044,6 @@ public class SystemManagerPanelController extends SubPaneController {
         return qcPassConfig;
     }
 
-
     @FXML
     public void showSaveTextFile() {
         if(panelId == 0) {
@@ -1196,6 +1195,14 @@ public class SystemManagerPanelController extends SubPaneController {
 
             PipelineCode pipelineCode = PipelineCode.getPipelineCode(code);
 
+            if(Boolean.FALSE.equals(checkTranscript())) {
+                DialogUtil.alert("Invalid format.",
+                        "It will be automatically modified to suit the format.",
+                        this.getMainApp().getPrimaryStage(), true);
+                transcriptNormalization();
+                return;
+            }
+
             if(pipelineCode != null) {
                 params.put("target", pipelineCode.getAnalysisTarget());
                 params.put("analysisType", pipelineCode.getAnalysisType());
@@ -1339,6 +1346,39 @@ public class SystemManagerPanelController extends SubPaneController {
                 wae.printStackTrace();
                 DialogUtil.error(wae.getHeaderText(), wae.getContents(), mainController.getPrimaryStage(), true);
             }
+        }
+    }
+
+    private boolean checkTranscript() {
+        if(canonicalTranscriptTextArea.getText().isEmpty()) {
+            return true;
+        } else {
+            String[] lines = canonicalTranscriptTextArea.getText().split("\n");
+            if(Arrays.stream(lines).allMatch(item -> item.split("\t").length == 2)) {
+                return Arrays.stream(lines).allMatch(item -> !item.split("\t")[1].contains("."));
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private void transcriptNormalization() {
+        if(!canonicalTranscriptTextArea.getText().isEmpty()) {
+            String[] lines = canonicalTranscriptTextArea.getText().split("\n");
+            List<String> newLines = new ArrayList<>();
+            Arrays.stream(lines)
+                    .forEach(item -> {
+                        String[] tempItem = item.split("\t");
+                        String transcript;
+                        if(tempItem[1].contains(".")) {
+                            transcript = tempItem[1].substring(0, tempItem[1].indexOf("."));
+                        } else {
+                            transcript = tempItem[1];
+                        }
+                        newLines.add(tempItem[0] + "\t" + transcript);
+                    });
+
+            canonicalTranscriptTextArea.setText(String.join("\n", newLines));
         }
     }
 

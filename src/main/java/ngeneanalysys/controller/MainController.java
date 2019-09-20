@@ -443,27 +443,42 @@ public class MainController extends BaseStageController {
             @Override
             protected Object call() throws Exception {
                 HttpClientResponse response;
-                response = apiService.get("member/memberOption/hemeFilter", null, null, null);
-                basicInformationMap.put("hemeFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/solidFilter", null, null, null);
-                basicInformationMap.put("solidFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
-                basicInformationMap.put("tstDNAFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/brcaFilter", null, null, null);
-                basicInformationMap.put("brcaFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/heredFilter", null, null, null);
-                basicInformationMap.put("heredFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                try {
+                    response = apiService.get("member/memberOption/hemeFilter", null, null, null);
+                    basicInformationMap.put("hemeFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("hemeFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/solidFilter", null, null, null);
+                    basicInformationMap.put("solidFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("solidFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
+                    basicInformationMap.put("tstDNAFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("tstDNAFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/brcaFilter", null, null, null);
+                    basicInformationMap.put("brcaFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("brcaFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/heredFilter", null, null, null);
+                    basicInformationMap.put("heredFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("heredFilter", new HashMap<>());
+                }
                 return null;
             }
 
             @Override
             protected void failed() {
                 super.failed();
-                basicInformationMap.put("hemeFilter", new HashMap<>());
-                basicInformationMap.put("solidFilter", new HashMap<>());
-                basicInformationMap.put("tstDNAFilter", new HashMap<>());
-                basicInformationMap.put("brcaFilter", new HashMap<>());
-                basicInformationMap.put("heredFilter", new HashMap<>());
             }
         };
         Thread thread = new Thread(task);

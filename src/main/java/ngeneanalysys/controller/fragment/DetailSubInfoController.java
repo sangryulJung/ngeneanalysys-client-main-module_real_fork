@@ -131,6 +131,27 @@ public class DetailSubInfoController extends SubPaneController {
         String cursorHand = "cursor_hand";
         String titleCss = "title2";
 
+        if(selectedAnalysisResultVariant != null) {
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            String titleText;
+            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter())) {
+                titleText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange()
+                        + " " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
+            } else {
+                titleText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange();
+            }
+            Label googleLabel = createLinkLabel(
+                    "Google(" +  titleText  + ")", "Google");
+            googleLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(googleLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+
+            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
+            Label ncbiLabel = createLinkLabel(
+                    "NCBI(" +  titleText  + ")", "NCBI");
+            ncbiLabel.getStyleClass().addAll(titleCss, cursorHand);
+            dbLinkGridPane.add(ncbiLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
+        }
+
         if (variationId != null) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("ClinVar(" + variationId + ")", "ClinVar");
@@ -161,12 +182,12 @@ public class DetailSubInfoController extends SubPaneController {
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
 
-        if (!StringUtils.isEmpty(geneId)) {
+        /*if (!StringUtils.isEmpty(geneId)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             Label dbContentLabel = createLinkLabel("NCBI(" + geneId + ")", "NCBI");
             dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-        }
+        }*/
         if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getExac() != null &&
                 !StringUtils.isEmpty(exacFormat)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
@@ -223,7 +244,27 @@ public class DetailSubInfoController extends SubPaneController {
         Map<String, Object> variantInformationMap = returnResultsAfterSearch("variant_information");
         Map<String, Object> genomicCoordinateMap = returnResultsAfterSearch("genomic_coordinate");
         if(variantInformationMap == null || genomicCoordinateMap == null) return;
-        if("dbSNP".equalsIgnoreCase(item)) {
+        if(selectedAnalysisResultVariant != null && item.equals("Google")) {
+            String searchText;
+            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter())) {
+                searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange()
+                        + " " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
+            } else {
+                searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange();
+            }
+            String googleSearch = "https://www.google.com/search?q=" + searchText;
+            openBrowser(googleSearch);
+        } else if(selectedAnalysisResultVariant != null && item.equals("NCBI")) {
+            String searchText;
+            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter())) {
+                searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange()
+                        + " OR " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
+            } else {
+                searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange();
+            }
+            String ncbiSearch = "https://www.ncbi.nlm.nih.gov/search/all/?term=" + searchText;
+            openBrowser(ncbiSearch);
+        } else if("dbSNP".equalsIgnoreCase(item)) {
             String rsId = (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
             if(StringUtils.isNotEmpty(rsId)) {
                 String fullUrlDBsnp = "https://www.ncbi.nlm.nih.gov/projects/SNP/snp_ref.cgi?rs=" + rsId.replace("rs", "");
