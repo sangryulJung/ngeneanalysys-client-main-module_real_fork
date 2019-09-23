@@ -1196,8 +1196,13 @@ public class SystemManagerPanelController extends SubPaneController {
             PipelineCode pipelineCode = PipelineCode.getPipelineCode(code);
 
             if(Boolean.FALSE.equals(checkTranscript())) {
-                DialogUtil.alert("The canonical transcript format is invalid.",
-                        "Please enter a valid format.",
+                DialogUtil.warning("The format of Canonical Transcript entered is not valid.",
+                        "Please enter each of Gene and Transcript ID excluding version information.\n" +
+                                "The delimiter between Gene and transcript ID is “Tab”.\n" +
+                                "e.g.\n" +
+                                "ASXL1   NM_015338\n" +
+                                "FLT3   NM_004119\n" +
+                                "JAK2     NM_004972",
                         this.getMainApp().getPrimaryStage(), true);
                 //transcriptNormalization();
                 return;
