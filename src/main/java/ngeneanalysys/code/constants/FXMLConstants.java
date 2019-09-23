@@ -103,31 +103,31 @@ public class FXMLConstants {
 	public static final String SYSTEM_MANAGER_HOME = "/layout/fxml/SystemManagerHome.fxml";
 
 	/** 시스템 매니저 사용자 정보 화면 */
-	public static final String SYSTEM_MANAGER_USER_ACCOUNT = "/layout/fxml/systemManager/SystemManagerUserAccount.fxml";
+	public static final String SYSTEM_MANAGER_USER_ACCOUNT = "/layout/fxml/manager/SystemManagerUserAccount.fxml";
 
 	/** 시스템 매니저 분석 상태 화면 */
-	public static final String SYSTEM_MANAGER_ANALYSIS_STATUS = "/layout/fxml/systemManager/SystemManagerAnalysisStatus.fxml";
+	public static final String SYSTEM_MANAGER_ANALYSIS_STATUS = "/layout/fxml/manager/SystemManagerAnalysisStatus.fxml";
 
 	/** 시스템 매니저 로그 정보 화면 */
-	public static final String SYSTEM_MANAGER_LOG_LIST = "/layout/fxml/systemManager/SystemManagerSystemLogs.fxml";
+	public static final String SYSTEM_MANAGER_LOG_LIST = "/layout/fxml/manager/SystemManagerSystemLogs.fxml";
 
 	/** 시스템 매니저 패널 관리 */
-	public static final String SYSTEM_MANAGER_PANEL = "/layout/fxml/systemManager/SystemManagerPanel.fxml";
+	public static final String SYSTEM_MANAGER_PANEL = "/layout/fxml/manager/SystemManagerPanel.fxml";
 
 	/** 시스템 매니저 리포트 양식 관리 */
-	public static final String SYSTEM_MANAGER_REPORT_TEMPLATE = "/layout/fxml/systemManager/SystemManagerReportTemplate.fxml";
+	public static final String SYSTEM_MANAGER_REPORT_TEMPLATE = "/layout/fxml/manager/SystemManagerReportTemplate.fxml";
 
 	/** 시스템 매니저 Evidence Database 관리 */
-	public static final String SYSTEM_MANAGER_NEWS_AND_TIPS = "/layout/fxml/systemManager/SystemManagerNewsAndTips.fxml";
+	public static final String SYSTEM_MANAGER_NEWS_AND_TIPS = "/layout/fxml/manager/SystemManagerNewsAndTips.fxml";
 
 	/** 시스템 매니저 Evidence Database 관리 */
-	public static final String SYSTEM_MANAGER_INTERPRETATION_DATABASE = "/layout/fxml/systemManager/SystemManagerInterpretationDatabase.fxml";
+	public static final String SYSTEM_MANAGER_INTERPRETATION_DATABASE = "/layout/fxml/manager/SystemManagerInterpretationDatabase.fxml";
 
 	/** 사용자 추가/수정 화면 */
-	public static final String USER_ACCOUNT = "/layout/fxml/systemManager/UserAccount.fxml";
+	public static final String USER_ACCOUNT = "/layout/fxml/manager/UserAccount.fxml";
 
 	/** 사용자 추가/수정 화면 */
-	public static final String GROUP_ADD = "/layout/fxml/systemManager/GroupAdd.fxml";
+	public static final String GROUP_ADD = "/layout/fxml/manager/GroupAdd.fxml";
 
 	public static final String EXCLUDE_REPORT = "/layout/fxml/ExcludeReportDialog.fxml";
 
@@ -149,25 +149,25 @@ public class FXMLConstants {
 
 	public static final String ANALYSIS_DETAIL_VARIANTS_SNV = "/layout/fxml/AnalysisDetail-SNV.fxml";
 
-	public static final String ANALYSIS_DETAIL_INTERPRETATION_LOGS = "/layout/fxml/variantDetail/AnalysisDetail-SNPs-INDELs-Memo.fxml";
+	public static final String ANALYSIS_DETAIL_INTERPRETATION_LOGS = "/layout/fxml/detail/AnalysisDetail-SNPs-INDELs-Memo.fxml";
 
-	public static final String ANALYSIS_DETAIL_INTERPRETATION = "/layout/fxml/variantDetail/AnalysisDetail-Interpretation.fxml";
+	public static final String ANALYSIS_DETAIL_INTERPRETATION = "/layout/fxml/detail/AnalysisDetail-Interpretation.fxml";
 
-	public static final String ANALYSIS_DETAIL_VARIANT_STATISTICS = "/layout/fxml/variantDetail/VariantStatistics.fxml";
+	public static final String ANALYSIS_DETAIL_VARIANT_STATISTICS = "/layout/fxml/detail/VariantStatistics.fxml";
 
-	public static final String ANALYSIS_DETAIL_CLINICAL_SIGNIFICANT = "/layout/fxml/variantDetail/ClinicalSignificant.fxml";
+	public static final String ANALYSIS_DETAIL_CLINICAL_SIGNIFICANT = "/layout/fxml/detail/ClinicalSignificant.fxml";
 
-	public static final String ANALYSIS_DETAIL_VARIANT_DETAIL = "/layout/fxml/variantDetail/VariantDetail.fxml";
+	public static final String ANALYSIS_DETAIL_VARIANT_DETAIL = "/layout/fxml/detail/VariantDetail.fxml";
 
-	public static final String ANALYSIS_DETAIL_READ_DEPTH = "/layout/fxml/variantDetail/ReadDepthVariantFraction.fxml";
+	public static final String ANALYSIS_DETAIL_READ_DEPTH = "/layout/fxml/detail/ReadDepthVariantFraction.fxml";
 
-	public static final String ANALYSIS_DETAIL_VARIANT_NOMENCLATURE = "/layout/fxml/variantDetail/VariantNomenclature.fxml";
+	public static final String ANALYSIS_DETAIL_VARIANT_NOMENCLATURE = "/layout/fxml/detail/VariantNomenclature.fxml";
 
-	public static final String ANALYSIS_DETAIL_POPULATION_FREQUENCIES = "/layout/fxml/variantDetail/PopulationFrequencies.fxml";
+	public static final String ANALYSIS_DETAIL_POPULATION_FREQUENCIES = "/layout/fxml/detail/PopulationFrequencies.fxml";
 
-	public static final String ANALYSIS_DETAIL_DETAIL_SUB_INFO = "/layout/fxml/variantDetail/DetailSubInfo.fxml";
+	public static final String ANALYSIS_DETAIL_DETAIL_SUB_INFO = "/layout/fxml/detail/DetailSubInfo.fxml";
 
-	public static final String ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS = "/layout/fxml/variantDetail/InSilicoPredictions.fxml";
+	public static final String ANALYSIS_DETAIL_IN_SILICO_PREDICTIONS = "/layout/fxml/detail/InSilicoPredictions.fxml";
 
 	public static final String ANALYSIS_DETAIL_VARIANT_FILTER = "/layout/fxml/VariantFilter.fxml";
 
@@ -193,5 +193,5 @@ public class FXMLConstants {
 
 	public static final String BATCH_BRCA_CNV = "/layout/fxml/BatchChangeBrcaCnvDialog.fxml";
 
-	public static final String SYSTEM_MANAGER_CUSTOM_DATABASE = "/layout/fxml/systemManager/customDatabase.fxml";
+	public static final String SYSTEM_MANAGER_CUSTOM_DATABASE = "/layout/fxml/manager/customDatabase.fxml";
 }

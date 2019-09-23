@@ -104,7 +104,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
             // 콤보박스 아이템 목록 생성
             for(SnpInDelTranscript snpInDelTranscript : transcriptDataList) {
                 comboItemList.add(snpInDelTranscript.getTranscriptId());
-                if(snpInDelTranscript.getIsDefault()) {
+                if(Boolean.TRUE.equals(snpInDelTranscript.getIsDefault())) {
                     defaultTranscript = snpInDelTranscript.getTranscriptId();
                 }
             }
@@ -199,7 +199,7 @@ public class AnalysisDetailVariantNomenclatureController extends SubPaneControll
         logger.debug("text length : " + textLength);
 
         if(alt.length() > 21 && (textLength - left22Bp.length()) < alt.length()){
-            setScrollBoxSize(alt.length() - 21);
+            setScrollBoxSize(alt.length() - 21.);
         } else if(textLength > 31) {
             setScrollBoxSize(textLength - 31);
         }

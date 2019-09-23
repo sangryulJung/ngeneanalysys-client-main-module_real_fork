@@ -83,7 +83,6 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
         // 애니메이션 타이머 실행
         AnimationTimer depthGraphAnimationTimer = new AnimationTimer() {
             private double idx = 0;
-            private double maxLeftMarginForImage = 26;
             private double step = depthValueHeight / gaugeSpeed;
             {
                 if (step < 1) {
@@ -103,7 +102,7 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
 
                 // 설명 라벨 위치 1pixel씩 증가
                 double lableBottomMargin = idx - 2;
-                // double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/depthValueHeight));
+
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
                 depthLegendVBox.setMargin(depthLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
@@ -140,7 +139,6 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
         // 애니메이션 타이머 실행
         AnimationTimer fractionGraphAnimationTimer = new AnimationTimer() {
             private double idx = 0;
-            private double maxLeftMarginForImage = 26;
             private double step = fractionValueHeight / gaugeSpeed;
             {
                 if (step < 1) {
@@ -160,9 +158,8 @@ public class AnalysisDetailReadDepthVariantFractionController extends SubPaneCon
 
                 // 설명 라벨 위치 1pixel씩 증가
                 double lableBottomMargin = idx - 2;
-                // double imageLeftMargin = Math.round(idx*(maxLeftMarginForImage/fractionValueHeight));
                 if(lableBottomMargin < -6) lableBottomMargin = -8;
-                fractionLegendVBox.setMargin(fractionLegendBox, new Insets(0, 0, lableBottomMargin, 0));
+                VBox.setMargin(fractionLegendBox, new Insets(0, 0, lableBottomMargin, 0));
                 idx += step;
                 if (idx > fractionValueHeight) {
                     idx = fractionValueHeight;

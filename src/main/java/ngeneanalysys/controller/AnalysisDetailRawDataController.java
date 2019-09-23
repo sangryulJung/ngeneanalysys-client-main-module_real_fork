@@ -96,8 +96,8 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
         createdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(DateFormatUtils.format(cellData.getValue().getCreatedAt().toDate(), "yyyy/MM/dd")));
         sizeColumn.setComparator((o1, o2) -> {
 
-            String[] item1 = o1.replaceAll(",", "").split(" ");
-            String[] item2 = o2.replaceAll(",", "").split(" ");
+            String[] item1 = o1.replace(",", "").split(" ");
+            String[] item2 = o2.replace(",", "").split(" ");
             BigDecimal value1 = returnData(item1[0] ,item1[1]);
             BigDecimal value2 = returnData(item2[0] ,item2[1]);
             return value1.compareTo(value2);
@@ -191,7 +191,7 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                     displayList = FXCollections.observableArrayList(totalList);
                 }
                 // 목록 초기화
-                if(rawListTableView.getItems() != null && rawListTableView.getItems().size() > 0) {
+                if(rawListTableView.getItems() != null && !rawListTableView.getItems().isEmpty()) {
                     rawListTableView.getItems().clear();
                 }
                 rawListTableView.setItems(displayList);
@@ -263,10 +263,10 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 box.setId(taskID);
                 box.getStyleClass().add("general_progress");
 
-                if(mainProgressTaskPane.getChildren().size() > 0) {
+                if(!mainProgressTaskPane.getChildren().isEmpty()) {
                     Label separatorLabel = new Label("|");
                     box.getChildren().add(separatorLabel);
-                    box.setMargin(separatorLabel, new Insets(0, 0, 0, 5));
+                    HBox.setMargin(separatorLabel, new Insets(0, 0, 0, 5));
                 }
 
                 Label titleLabel = new Label("Download Files");
@@ -294,13 +294,13 @@ public class AnalysisDetailRawDataController extends AnalysisDetailCommonControl
                 });
 
                 box.getChildren().add(titleLabel);
-                box.setMargin(titleLabel, new Insets(0, 0, 0, 5));
+                HBox.setMargin(titleLabel, new Insets(0, 0, 0, 5));
                 box.getChildren().add(progressBar);
-                box.setMargin(progressBar, new Insets(0, 0, 0, 5));
+                HBox.setMargin(progressBar, new Insets(0, 0, 0, 5));
                 box.getChildren().add(messageLabel);
-                box.setMargin(messageLabel, new Insets(0, 0, 0, 5));
+                HBox.setMargin(messageLabel, new Insets(0, 0, 0, 5));
                 box.getChildren().add(cancelButton);
-                box.setMargin(cancelButton, new Insets(0, 0, 0, 5));
+                HBox.setMargin(cancelButton, new Insets(0, 0, 0, 5));
 
                 // 메인 화면 Progress Task 영역에 화면 출력
                 mainProgressTaskPane.getChildren().add(box);

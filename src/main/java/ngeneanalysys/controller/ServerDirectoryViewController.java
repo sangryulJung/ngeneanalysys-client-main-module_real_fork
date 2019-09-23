@@ -82,7 +82,6 @@ public class ServerDirectoryViewController extends BaseStageController {
         // Create the dialog Stage
         currentStage = new Stage();
         currentStage.setResizable(false);
-        //currentStage.initStyle(StageStyle.DECORATED);
         currentStage.initStyle(StageStyle.TRANSPARENT);
         currentStage.initModality(Modality.APPLICATION_MODAL);
         currentStage.setTitle(CommonConstants.SYSTEM_NAME + " > server folder");
@@ -117,7 +116,7 @@ public class ServerDirectoryViewController extends BaseStageController {
 
             serverItemTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if(newValue != null && newValue.getValue() != null && newValue.getValue().getIsFile() != null &&
-                        !newValue.getValue().getIsFile()) {
+                        Boolean.FALSE.equals(newValue.getValue().getIsFile())) {
                     try {
                         if(/*!isRun && */(newValue.getChildren() == null || newValue.getChildren().isEmpty())) {
                             Map<String, Object> params = new HashMap<>();
@@ -150,7 +149,7 @@ public class ServerDirectoryViewController extends BaseStageController {
                 .collect(Collectors.toList());
         for(ServerFile file : sortedServerFiles) {
             TreeItem<ServerFile> leaf = null;
-            if(!file.getIsFile()) {
+            if(Boolean.FALSE.equals(file.getIsFile())) {
                 leaf = new TreeItem<>(file, new ImageView(folderImage));
             } else if(!isRun && file.getName().toLowerCase().endsWith(".fastq.gz")){
                 leaf = new TreeItem<>(file, new ImageView(fastqImage));
@@ -165,7 +164,7 @@ public class ServerDirectoryViewController extends BaseStageController {
     @FXML
     private void submit() {
         if(serverItemTreeView.getSelectionModel().getSelectedItems() != null &&
-                serverItemTreeView.getSelectionModel().getSelectedItems().size() > 0) {
+                !serverItemTreeView.getSelectionModel().getSelectedItems().isEmpty()) {
 
             if(isRun) {
                 TreeItem<ServerFile> current = serverItemTreeView.getSelectionModel().getSelectedItem();
@@ -184,7 +183,7 @@ public class ServerDirectoryViewController extends BaseStageController {
                         if(filteredFiles2 != null && !filteredFiles2.isEmpty() && !otherFile.isPresent()) {
                             Boolean isValidPair = FileUtil.isValidPairedFastqFiles(
                                     filteredFiles2.stream().map(item -> item.getValue().getName()).collect(Collectors.toList()));
-                            if(isValidPair) {
+                            if(Boolean.TRUE.equals(isValidPair)) {
                                 sampleUploadScreenFirstController.setServerFASTQ(getPathRemoveRoot(parent),
                                         filteredFiles2.stream().map(TreeItem::getValue).collect(Collectors.toList()));
                                 closeDialog();

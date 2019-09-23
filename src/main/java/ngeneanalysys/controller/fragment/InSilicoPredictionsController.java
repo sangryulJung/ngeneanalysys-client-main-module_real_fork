@@ -119,8 +119,6 @@ public class InSilicoPredictionsController extends SubPaneController {
                 }
             } else if (siftMap.containsKey("radar")) {
                 siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get("radar"))) / 100.0;
-                // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
-                // Tooltip((String) siftMap.get("radar")));
             } else {
                 logger.debug("sift score or radar value was not found.");
                 siftValue = -1.0;
@@ -147,8 +145,6 @@ public class InSilicoPredictionsController extends SubPaneController {
                 }
             } else if (polyphenMap.containsKey("radar")) {
                 polyphenValue = convertRadarItemPercentageByLevelForPathogenic(checkType(polyphenMap.get("radar"))) / 100.0;
-                // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
-                // Tooltip((String) siftMap.get("radar")));
             } else {
                 logger.debug("metaSVM score or radar value was not found.");
                 polyphenValue = -1.0;
@@ -161,8 +157,6 @@ public class InSilicoPredictionsController extends SubPaneController {
         if (mtMap != null && !mtMap.isEmpty()) {
             if (mtMap.containsKey("radar")) {
                 mtValue = convertRadarItemPercentageByLevelForPathogenic(checkType(mtMap.get("radar"))) / 100.0;
-                // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
-                // Tooltip((String) siftMap.get("radar")));
             } else {
                 logger.debug("mt score or radar value was not found.");
                 mtValue = -1.0;

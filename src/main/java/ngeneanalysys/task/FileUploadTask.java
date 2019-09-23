@@ -31,10 +31,12 @@ public abstract class FileUploadTask<T> extends Task<T> {
         this.completeWorkCount = completeWorkCount;
     }
 
+    @Override
     public void updateProgress(long workDone, long max) {
         super.updateProgress(workDone, max);
     }
 
+    @Override
     public void updateProgress(double workDone, double max) {
         super.updateProgress(workDone, max);
     }

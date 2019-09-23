@@ -121,7 +121,7 @@ public class BatchChangePathogenicityDialogController extends SubPaneController 
         try {
             StringBuilder stringBuilder = new StringBuilder();
 
-            variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId() + ","));
+            variantList.forEach(item -> stringBuilder.append(item.getSnpInDel().getId()).append(","));
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
             Map<String, Object> params = new HashMap<>();

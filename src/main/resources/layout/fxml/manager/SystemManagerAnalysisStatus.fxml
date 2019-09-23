@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="558.0" prefWidth="1280.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.manager.SystemManagerAnalysisStatusController">
+   <children>
+      <VBox layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="592.0" prefWidth="1180.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <children>
+            <VBox prefHeight="30.0" prefWidth="1280.0">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="1280.0" spacing="1.0">
+                     <children>
+                        <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#reset" styleClass="cancelBtn" text="Reset" visible="false" />
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="137.0" spacing="5.0" visible="false">
+                           <children>
+                              <Label maxHeight="-Infinity" maxWidth="-Infinity" text="Run ID" HBox.hgrow="NEVER" />
+                              <TextField fx:id="runIdText" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="23.0" prefWidth="78.0" HBox.hgrow="NEVER" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="207.0" spacing="5.0" visible="false">
+                           <children>
+                              <Label text="Run Name" />
+                              <TextField fx:id="runNameText" prefHeight="23.0" prefWidth="127.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="161.0" spacing="5.0" visible="false">
+                           <children>
+                              <Label text="Status" />
+                              <ComboBox fx:id="searchStatus" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="162.0" spacing="5.0" visible="false">
+                           <children>
+                              <Label text="User ID" />
+                              <TextField fx:id="userIdText" prefHeight="23.0" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="186.0" spacing="5.0" visible="false">
+                           <children>
+                              <Label text="User Name" />
+                              <TextField fx:id="userNameText" prefHeight="23.0" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="200.0" spacing="5.0" visible="false">
+                           <children>
+                              <Label text="Panel contain" />
+                              <ComboBox fx:id="searchPanelContain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#search" styleClass="submitBtn" text="Refresh" />
+                     </children>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+            <TableView fx:id="listTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="id" prefWidth="100.0" text="Run ID" />
+                  <TableColumn fx:id="runName" prefWidth="300.0" text="Run Name" />
+                  <TableColumn fx:id="status" prefWidth="75.0" text="Status" />
+                  <TableColumn fx:id="loginIdColumn" prefWidth="75.0" text="Login ID" />
+                  <TableColumn fx:id="memberNameColumn" prefWidth="100.0" text="User" />
+                  <TableColumn fx:id="groupNameColumn" prefWidth="100.0" text="Group" />
+                  <TableColumn fx:id="createAt" prefWidth="150.0" text="Date" />
+                  <TableColumn fx:id="restart" prefWidth="75.0" text="Restart" />
+                  <TableColumn fx:id="delete" prefWidth="75.0" text="Delete" />
+               </columns>
+            </TableView>
+            <HBox alignment="CENTER" prefHeight="48.0" prefWidth="900.0" spacing="5.0" VBox.vgrow="NEVER">
+               <children>
+                  <Button fx:id="prevBtn" mnemonicParsing="false" onAction="#prevMove" styleClass="submitBtn" text="&lt;&lt;" />
+                  <Pagination fx:id="paginationList" pageCount="100" />
+                  <Button fx:id="nextBtn" mnemonicParsing="false" onAction="#nextMove" styleClass="submitBtn" text="&gt;&gt;" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Page" />
+                        <TextField fx:id="pageText" prefHeight="23.0" prefWidth="74.0" />
+                        <Button fx:id="pageButton" mnemonicParsing="false" onAction="#pageMove" prefHeight="23.0" prefWidth="41.0" styleClass="submitBtn" text="GO" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../css/common.css" />
+      <URL value="@../../css/experimenter.css" />
+   </stylesheets>
+</AnchorPane>

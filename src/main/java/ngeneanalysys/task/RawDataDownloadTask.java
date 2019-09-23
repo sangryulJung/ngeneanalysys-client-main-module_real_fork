@@ -130,7 +130,7 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
                             try {
                                 rawDataDownloadService.downloadFile(file, folder, this, sizeSum, size);
                                 completeSize.add(file.getSize());
-                            } catch (WebAPIException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -169,7 +169,6 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
                             Thread.sleep(100);
                             if (currentDownloadGroupId > 0) {
                                 // 현재 업로드중인 분석 요청 그룹 데이터 삭제
-                                //analysisRequestService.removeRequestedJob(currentDownloadGroupId);
                                 this.controller.clearWhenUploadTaskSucceeded();
                             }
                         }

@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polyline;
 import ngeneanalysys.code.constants.FXMLConstants;
@@ -160,7 +161,7 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             double widthSize = 250;
             scrollPane.setMinSize(widthSize, 200);
-            scrollPane.setMaxSize(widthSize, Control.USE_COMPUTED_SIZE);
+            scrollPane.setMaxSize(widthSize, Region.USE_COMPUTED_SIZE);
             acmgVBox.heightProperty().addListener((observable, oldValue, newValue) ->
                     scrollPane.setPrefHeight(newValue.doubleValue()));
             VBox box = new VBox();
@@ -357,25 +358,11 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
      */
     @SuppressWarnings("unchecked")
     private void showClinicalSignificantGraph() {
-        Map<String,Object> inSilicoPredictionMap = returnResultsAfterSearch("in_silico_prediction");
         Map<String,Object> variantClassifierMap = returnResultsAfterSearch("variant_classifier");
         Map<String,Object> clinicalMap = returnResultsAfterSearch("clinical_variation");
         Map<String,Object> breastCancerInformationCoreMap = returnResultsAfterSearch("breast_cancer_information_core");
-        Map<String,Object> siftMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("SIFT")) ? (Map<String,Object>) inSilicoPredictionMap.get("SIFT") : null;
-        Map<String,Object> polyphenMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("PolyPhen2")) ? (Map<String,Object>) inSilicoPredictionMap.get("PolyPhen2") : null;
-        Map<String,Object> mtMap = (inSilicoPredictionMap != null && inSilicoPredictionMap.containsKey("mt")) ? (Map<String,Object>) inSilicoPredictionMap.get("mt") : null;
         Map<String,Object> enigmaMap = returnResultsAfterSearch("ENIGMA");
 
-        // SIFT
-        double siftValue = -1;
-        // POLYPHEN2
-        double polyphenValue = -1;
-        double mtValue = -1;
-        String siftText = "";
-        String polyphenText = "";
-        String mtText = "";
-        String siftScore = null;
-        String polyphenScore = null;
         String radar = "radar";
         // BIC
         if(txtCheck(radar, breastCancerInformationCoreMap)) {
@@ -401,76 +388,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", (String) variantClassifierMap.get(radar));
         } else if(enigmaMap == null && variantClassifierMap == null){
             renderClinicalPathogenicityData(pathogenicityPredictionHBox, "PREDICTION", null);
-        }
-        // SIFT
-        if (siftMap != null && !siftMap.isEmpty()) {
-            if (siftMap.containsKey("score")) {
-                siftScore = (String)siftMap.get("score");
-                if (siftScore != null && !siftScore.trim().isEmpty() ) {
-                    siftScore = siftScore.trim();
-                    try {
-                        siftValue = 1.0 - Double.valueOf(siftScore);
-                    } catch (NumberFormatException e) {
-                        logger.debug("sift score value is invalid " + siftScore);
-                        siftValue = -1.0;
-                    }
-                } else {
-                    logger.debug("sift score value is null");
-                    siftValue = -1.0;
-                }
-            } else if (siftMap.containsKey(radar)) {
-                siftValue = convertRadarItemPercentageByLevelForPathogenic(checkType(siftMap.get(radar))) / 100.0;
-                // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
-                // Tooltip((String) siftMap.get("radar")));
-            } else {
-                logger.debug("sift score or radar value was not found.");
-                siftValue = -1.0;
-            }
-            if (siftMap.containsKey("text") && siftMap.get("text") != null) {
-                // siftText = (String)siftMap.get("text");
-            }
-        }
-        // metaSVM
-        if (polyphenMap != null && !polyphenMap.isEmpty()) {
-            if (polyphenMap.containsKey("score")) {
-                polyphenScore = (String)polyphenMap.get("score");
-                if (polyphenScore != null && !polyphenScore.trim().isEmpty() ) {
-                    polyphenScore = polyphenScore.trim();
-                    try {
-                        polyphenValue = Double.valueOf(polyphenScore);
-                    } catch (NumberFormatException e) {
-                        logger.debug("metaSVM score value is invalid " + polyphenScore);
-                        polyphenValue = -1.0;
-                    }
-                } else {
-                    logger.debug("metaSVM value is null");
-                    polyphenValue = -1.0;
-                }
-            } else if (polyphenMap.containsKey("radar")) {
-                polyphenValue = convertRadarItemPercentageByLevelForPathogenic(checkType(polyphenMap.get("radar"))) / 100.0;
-                // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
-                // Tooltip((String) siftMap.get("radar")));
-            } else {
-                logger.debug("metaSVM score or radar value was not found.");
-                polyphenValue = -1.0;
-            }
-            if (polyphenMap.containsKey("text") && polyphenMap.get("text") != null) {
-                // polyphenText = (String)polyphenMap.get("text");
-            }
-        }
-        // POLYPHEN2
-        if (mtMap != null && !mtMap.isEmpty()) {
-            if (mtMap.containsKey("radar")) {
-                // mtValue = convertRadarItemPercentageByLevelForPathogenic(checkType(mtMap.get("radar"))) / 100.0;
-                // clinicalSignificantPathogenicitySiftLabel.setTooltip(new
-                // Tooltip((String) siftMap.get("radar")));
-            } else {
-                logger.debug("mt score or radar value was not found.");
-                // mtValue = -1.0;
-            }
-            if (mtMap.containsKey("text") && mtMap.get("text") != null) {
-                // mtText = (String)mtMap.get("text");
-            }
         }
 
         double[] frequencyValue = new double[6];
@@ -522,13 +439,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
         clinicalSignificant.getChildren().remove(pathogenicityEnigmaHBox);
     }
 
-    private String checkType(Object obj) {
-        if(obj instanceof Integer) {
-            return String.valueOf(obj);
-        }
-        return (String) obj;
-    }
-
     /**
      * 지정 기관의 지정 지역의 Population Frequency 정보 반환
      * @param orgKey String
@@ -556,28 +466,6 @@ public class AnalysisDetailClinicalSignificantController extends SubPaneControll
             }
         }
         return percentage;
-    }
-
-    /**
-     * Pathogenic Radar 차트 레벨에 따른 출력 퍼센트로 변환 반환
-     * @param level String
-     * @return double
-     */
-    private double convertRadarItemPercentageByLevelForPathogenic(String level) {
-        if(StringUtils.isEmpty(level)) {
-            return -1d;
-        } else if("1".equals(level)) {
-            return 20d;
-        } else if("2".equals(level)) {
-            return 40d;
-        } else if("3".equals(level)) {
-            return 60d;
-        } else if("4".equals(level)) {
-            return 80d;
-        } else if("5".equals(level)) {
-            return 100d;
-        }
-        return 4d;
     }
 
     @SuppressWarnings("unchecked")

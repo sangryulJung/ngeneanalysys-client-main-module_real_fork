@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import ngeneanalysys.model.NGeneAnalySysVersion;
+import ngeneanalysys.service.PropertiesService;
+import ngeneanalysys.util.PropertiesUtil;
 import ngeneanalysys.util.httpclient.HttpClientUtil;
 import org.apache.http.HttpStatus;
 import ngeneanalysys.code.constants.CommonConstants;
@@ -74,13 +76,12 @@ public class LoginController extends BaseStageController {
 	@FXML
 	private Label labelPassword;
 
-	/** 서버 URL 변경 창 출력 버튼 */
-	/*@FXML
-	private Button settingURLButton;*/
-
 	/** 처리진행중 표시 객체 */
 	@FXML
 	private ProgressIndicator progress;
+
+	@FXML
+	private CheckBox loginIdSaveCheckBox;
 
 	@FXML
 	public void checkValidateLoginID(KeyEvent ke) {
@@ -153,6 +154,14 @@ public class LoginController extends BaseStageController {
 					mainApp.getProxyServer().setApiServerHost(this.mainApp.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY));
 					mainApp.getProxyServer().setAuthToken(loginSession.getToken());
 
+					if(loginIdSaveCheckBox.isSelected()) {
+						PropertiesService.getInstance().getConfig().setProperty("login.id.save", inputLoginID.getText());
+						PropertiesUtil.saveLoginId(inputLoginID.getText());
+					} else {
+						PropertiesService.getInstance().getConfig().remove("login.id.save");
+						PropertiesUtil.saveLoginId(null);
+					}
+
 					mainApp.showMain();
 				} catch (WebAPIException wae){
 					if (wae.getResponse() != null && wae.getResponse().getStatus() == HttpStatus.SC_BAD_REQUEST) {
@@ -199,6 +208,18 @@ public class LoginController extends BaseStageController {
                 event -> showCapLock());
 		scene.addEventFilter(MouseEvent.ANY,
                 event -> showCapLock());
+
+		if(loginIdSaveCheckBox.getTooltip() == null) {
+			loginIdSaveCheckBox.setTooltip(new Tooltip("If checked, the login ID is saved."));
+		}
+
+		PropertiesService propertiesService = PropertiesService.getInstance();
+		String loginId = propertiesService.getConfig().getProperty("login.id.save");
+		if(StringUtils.isNotEmpty(loginId)) {
+			loginIdSaveCheckBox.selectedProperty().setValue(true);
+			inputLoginID.setText(loginId);
+			inputPassword.requestFocus();
+		}
 	    
 		scene.getFocusOwner();
 		scene.setFill(Color.TRANSPARENT);
@@ -206,16 +227,14 @@ public class LoginController extends BaseStageController {
 		Stage primaryStage = this.mainApp.getPrimaryStage();
 
 		inputLoginID.focusedProperty().addListener((ov, t, t1) -> {
-			if(t1) validateLoginID();
+			if(Boolean.TRUE.equals(t1)) validateLoginID();
 		});
 
 		inputPassword.focusedProperty().addListener((ov, t, t1) -> {
-			if(t1) {
+			if(Boolean.TRUE.equals(t1)) {
 				validatePassword();
 			}
 		});
-
-		/*settingURLButton.setVisible(true);*/
 
 		primaryStage.setScene(scene);
 		
@@ -229,9 +248,9 @@ public class LoginController extends BaseStageController {
 		primaryStage.setMinWidth(430);
 		primaryStage.setWidth(430);
 		primaryStage.setMaxWidth(430);
-		primaryStage.setMinHeight(410 + otherAreas);
-		primaryStage.setHeight(410 + otherAreas);
-		primaryStage.setMaxHeight(410 + otherAreas);
+		primaryStage.setMinHeight(410. + otherAreas);
+		primaryStage.setHeight(410. + otherAreas);
+		primaryStage.setMaxHeight(410. + otherAreas);
 		primaryStage.setResizable(false);
 		primaryStage.centerOnScreen();
 		primaryStage.show();

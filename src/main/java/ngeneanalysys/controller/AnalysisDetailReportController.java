@@ -29,21 +29,14 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.ExcelConvertReportInformationService;
-import ngeneanalysys.service.ImageService;
-import ngeneanalysys.service.PDFCreateService;
-import ngeneanalysys.task.ImageFileDownloadTask;
-import ngeneanalysys.task.JarDownloadTask;
+import ngeneanalysys.task.WordDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 
 import java.io.*;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.math.RoundingMode;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -63,11 +56,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
     /** api service */
     private APIService apiService;
-
-    private PDFCreateService pdfCreateService;
-
-    /** Velocity Util */
-    private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
     private Label tierCountLabel;
@@ -163,8 +151,6 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         apiService.setStage(getMainController().getPrimaryStage());
 
         loginSession = LoginSessionUtil.getCurrentLoginSession();
-
-        pdfCreateService = PDFCreateService.getInstance();
 
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
@@ -1005,8 +991,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     .filter(item -> item.getName().contains("cnv_plot.png")).findFirst();
 
             if(optionalAnalysisFile.isPresent()) {
-                contentsMap.put("cnvImagePath", optionalAnalysisFile.get().getName());
-                FileUtil.downloadCNVImage(optionalAnalysisFile.get());
+                contentsMap.put("cnvImagePath", sample.getId() + "_" + optionalAnalysisFile.get().getName());
             }
             if(analysisDetailSolidCNVReportController != null) {
                 try {
@@ -1081,37 +1066,27 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
 
             if(file != null) {
-
+                mainController.setMainMaskerPane(true);
                 Map<String, Object> contentsMap = contents();
                 contentsMap.put("isDraft", isDraft);
 
-                String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
-                String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
-                String testInformationText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/test_information1.png"));
-                String pathogenicMutationsDetectedText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pathogenic_mutations_detected1.png"));
-                String pertinetNegativeText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pertinent_negative.png"));
-                String variantDetailText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/variant_detail.png"));
-                String dataQcText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/data_qc.png"));
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);
-                model.put("draftImageURL", draftImageStr);
-                model.put("ngenebioLogo", ngenebioLogo);
-                model.put("testInformationText", testInformationText);
-                model.put("pathogenicMutationsDetectedText", pathogenicMutationsDetectedText);
-                model.put("pertinetNegativeText", pertinetNegativeText);
-                model.put("variantDetailText", variantDetailText);
-                model.put("dataQcText", dataQcText);
                 model.put("contents", contentsMap);
 
-                String contents = "";
                 if(panel.getReportTemplateId() == null) {
+                    String jsonStr = JsonUtil.toJsonIncludeNullValue(model);
                     if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
-                        contents = velocityUtil.getContents("/layout/velocity/report_tst.vm", CommonConstants.ENCODING_TYPE_UTF, model);
+                        Task<Void> task = new WordDownloadTask(this, null, jsonStr, file, "TST170_DNA");
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
                     } else {
-                        contents = velocityUtil.getContents("/layout/velocity/report.vm", CommonConstants.ENCODING_TYPE_UTF, model);
+                        Task<Void> task = new WordDownloadTask(this, null, jsonStr, file, "STANDARD");
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
                     }
-                    created = pdfCreateService.createPDF(file, contents);
-                    createdCheck(created, file);
                 } else {
                     for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                         Object gridObject = customFieldGridPane.getChildren().get(i);
@@ -1141,133 +1116,42 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                         List<ReportComponent> components = reportContents.getReportComponents();
 
                         if(components == null || components.isEmpty()) throw new Exception();
-                        final Comparator<ReportComponent> comp = (p1, p2) -> Integer.compare( p1.getId(), p2.getId());
+                        final Comparator<ReportComponent> comp = Comparator.comparingInt(ReportComponent::getId);
                         final ReportComponent component = components.stream().max(comp).get();
-                        final String filePath = CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + component.getId();
-                        File jarFile = new File(filePath, component.getName());
 
-                        components.remove(component);
+                        String test = JsonUtil.toJsonIncludeNullValue(contentsMap);
 
-                        if(!components.isEmpty()) {
-                            for (ReportComponent cmp : components) {
-                                File oldVersionFolder = new File(CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + cmp.getId());
-                                if(oldVersionFolder.exists()) {
-                                    FileUtils.deleteQuietly(oldVersionFolder);
-                                }
-                            }
-                        }
-
-                        if(!jarFile.exists()) {
-                            File folder = new File(filePath);
-                            if (!folder.exists()){
-                                if(!folder.mkdirs()) {
-                                    throw new Exception("Fail to make jarFile directory");
-                                }
-                            }
-
-                            Task task = new JarDownloadTask(this, component);
-
-                            Thread thread = new Thread(task);
-                            thread.setDaemon(true);
-                            thread.start();
-
-                            task.setOnSucceeded(ev -> {
-                                try {
-                                    final File jarFile1 = new File(filePath, component.getName());
-                                    URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
-                                    createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
-                                } catch (MalformedURLException murle) {
-                                    DialogUtil.error("Report Generation Fail", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
-                                    murle.printStackTrace();
-                                }
-                            });
-                            task.exceptionProperty().addListener((observable, oldValue, newValue) ->
-                                DialogUtil.error("Report Generation Fail",
-                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false));
-                        } else {
-                            URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
-                            createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
-                        }
+                        Task<Void> task = new WordDownloadTask(this, component, test, file);
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
 
                     } else {
-                        List<ReportImage> images = reportContents.getReportImages();
-
-                        for (ReportImage image : images) {
-                            String path = "url('file:/" + CommonConstants.BASE_FULL_PATH + File.separator + "fop" + File.separator + image.getReportTemplateId()
-                                    + File.separator + image.getName() + "')";
-                            path = path.replaceAll("\\\\", "/");
-                            String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.debug(name + " : " + path);
-                            model.put(name, path);
-                        }
-
-                        FileUtil.saveVMFile(reportContents.getReportTemplate());
-
-                        Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
-
-                        Thread thread = new Thread(task);
-                        thread.setDaemon(true);
-                        thread.start();
-
-                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", CommonConstants.ENCODING_TYPE_UTF, model);
-                        task.setOnSucceeded(ev -> {
-                            try {
-                                if(reportContents.getReportTemplate().getOutputType() != null
-                                        && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("PDF")) {
-                                    final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                                    createdCheck(created1, file);
-                                } else {
-                                    String path = CommonConstants.BASE_FULL_PATH + File.separator + "temp" + File.separator + "tempPDF.pdf";
-                                    File tempPDFFile = new File(path);
-                                    final boolean created1 = pdfCreateService.createPDF(tempPDFFile, contents1);
-                                    createdCheck(created1, tempPDFFile);
-                                    ImageService.convertPDFtoImage(tempPDFFile, sample.getName(), file);
-                                }
-
-                            } catch (Exception e) {
-                                DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-                                e.printStackTrace();
-                            }
-                        });
+                        String test = JsonUtil.toJsonIncludeNullValue(model);
+                        Task<Void> task = new WordDownloadTask(this, reportContents.getReportTemplate(), test, file, "CUSTOM");
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
                     }
                 }
             }
         } catch(FileNotFoundException fnfe){
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
+            mainController.setMainMaskerPane(false);
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
+            mainController.setMainMaskerPane(false);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
+            mainController.setMainMaskerPane(false);
             created = false;
         }
 
         return created;
     }
 
-    @SuppressWarnings("unchecked")
-    private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-
-        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
-            Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.debug("application init..");
-            Method setParams = classToLoad.getMethod("setParams", Map.class);
-            Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
-            Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
-            Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
-            Object application = classToLoad.newInstance();
-            setParams.invoke(application, contentsMap);
-            setWriteFilePath.invoke(application, file.getPath());
-            updateEmbeddedDoc.invoke(application);
-            updateWordFile.invoke(application);
-            createdCheck(true, file);
-        } catch (Exception e) {
-            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-            e.printStackTrace();
-        }
-    }
-
-    private void createdCheck(boolean created, File file) {
+    public void createdCheck(boolean created, File file) {
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1291,6 +1175,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
             DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
                     getMainApp().getPrimaryStage(), false);
         }
+        mainController.setMainMaskerPane(false);
     }
 
     private SampleQC findQCResult(List<SampleQC> qcList, String qc) {
@@ -1302,10 +1187,10 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     double value = Double.parseDouble(number);
                 if(qc.equalsIgnoreCase("total_base")) {
                     qcData.setQcUnit("Mb");
-                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, BigDecimal.ROUND_FLOOR));
+                    qcData.setQcValue(BigDecimal.valueOf(value / 1000 / 1000).setScale(1, RoundingMode.FLOOR));
                     return qcData;
                 }
-                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, BigDecimal.ROUND_FLOOR));
+                qcData.setQcValue(BigDecimal.valueOf(value).setScale(1, RoundingMode.FLOOR));
                 return qcData;
             }
         }

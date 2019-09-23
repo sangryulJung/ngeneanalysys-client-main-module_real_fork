@@ -220,11 +220,6 @@ public class SampleUploadController extends BaseStageController{
         textFieldRunName.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
                 textFieldRunName.setText(oldValue);
-                /*Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("text error");
-                alert.setContentText("");
-
-                alert.showAndWait();*/
             }
         });
 
@@ -307,7 +302,6 @@ public class SampleUploadController extends BaseStageController{
         Map<String, Object> params = new HashMap<>();
         try {
             APIService apiService = APIService.getInstance();
-            params.clear();
             params.put("runId", run.getId());
             HttpClientResponse response = apiService.get("/samples", params, null, false);
 

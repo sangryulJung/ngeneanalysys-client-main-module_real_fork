@@ -27,6 +27,26 @@ public class JsonUtil {
 	}
 	
 	private JsonUtil() { throw new IllegalAccessError("JsonUtil class"); }
+
+	/**
+	 * 지정 객체를 Json String으로 변환하여 반환
+	 * @param jsonElement T
+	 * @return String
+	 */
+	public static <T> String toJsonIncludeNullValue(T jsonElement) {
+		objectMapper.setSerializationInclusion(Include.ALWAYS);
+		String result = null;
+
+		try {
+			result = objectMapper.writeValueAsString(jsonElement);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		} finally {
+			objectMapper.setSerializationInclusion(Include.NON_NULL);
+		}
+
+		return result;
+	}
 	
 	/**
 	 * 지정 객체를 Json String으로 변환하여 반환

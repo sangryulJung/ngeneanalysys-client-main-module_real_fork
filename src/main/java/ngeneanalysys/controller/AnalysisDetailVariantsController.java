@@ -71,8 +71,6 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private Panel panel;
 
-    //private Label snvLabel;
-
     /**
      * @return detailContents
      */
@@ -93,16 +91,6 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         showTopMenuContents(null, 0);
 
     }
-
-    /*void setSNVTabName(String text) {
-        if(snvLabel != null) {
-            if (StringUtils.isNotEmpty(text)) {
-                snvLabel.setText("SNV/Indel : " + text);
-            } else {
-                snvLabel.setText("SNV/Indel");
-            }
-        }
-    }*/
 
     private boolean checkSomaticCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
@@ -266,16 +254,11 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
                 region.getStyleClass().removeAll(region.getStyleClass());
                 menuName.getStyleClass().removeAll(menuName.getStyleClass());
-                /*if(topMenu.getMenuName().equals("SNV")) {
-                    snvLabel = menuName;
-                    menu.getStyleClass().add("group-big");
-                    region.getStyleClass().add("region-big");
-                    menuName.getStyleClass().add("label-big");
-                } else {*/
+
                 menu.getStyleClass().add("group-small");
                 region.getStyleClass().add("region-small");
                 menuName.getStyleClass().add("label-small");
-                //}
+
                 menuName.getStyleClass().addAll("bold", "cursor_hand");
                 menu.getChildren().setAll(region, menuName);
                 menu.setOnMouseClicked(event -> showTopMenuContents(topMenu, selectIdx));
@@ -381,17 +364,6 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 } else {
                     detailContents.setCenter(topMenuContent[menu.getDisplayOrder()]);
                 }
-
-                /*if(currentShowFrameId != null) {
-                    String snvWrapper = "snvWrapper";
-                    if (!currentShowFrameId.equals(detailContents.getCenter().getId())) {
-                        if (currentShowFrameId.equals(snvWrapper) && !detailContents.getCenter().getId().equals(snvWrapper)) {
-                            snvLabel.setText("SNV/Indel");
-                        } else if (!currentShowFrameId.equals(snvWrapper) && detailContents.getCenter().getId().equals(snvWrapper)) {
-                            snvController.setSNVTabName();
-                        }
-                    }
-                }*/
 
                 currentShowFrameId = detailContents.getCenter().getId();
             }

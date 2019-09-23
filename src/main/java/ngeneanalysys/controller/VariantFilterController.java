@@ -407,9 +407,6 @@ public class VariantFilterController extends SubPaneController {
 
         this.dialogStage = dialogStage;
 
-        //setFormat(startFractionTextField);
-        //setFormat(endFractionTextField);\
-
         createLowConfidence();
 
         createFrequency();
@@ -439,42 +436,42 @@ public class VariantFilterController extends SubPaneController {
             integerCheck(altEndCountTextField, oldValue, newValue));
 
         startFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
+            if(Boolean.FALSE.equals(nv) && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
                         && checkInequality(startFractionTextField, endFractionTextField)) {
                 startFractionTextField.setText("");
             }
         });
 
         endFractionTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
+            if(Boolean.FALSE.equals(nv) && checkNotEmptyTextField(startFractionTextField, endFractionTextField)
                     && checkInequality(startFractionTextField, endFractionTextField)) {
                 endFractionTextField.setText("");
             }
         });
 
         altCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
+            if(Boolean.FALSE.equals(nv) && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
                     && checkInequality(altCountTextField, altEndCountTextField)) {
                 altCountTextField.setText("");
             }
         });
 
         altEndCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
+            if(Boolean.FALSE.equals(nv) && checkNotEmptyTextField(altCountTextField, altEndCountTextField)
                     && checkInequality(altCountTextField, altEndCountTextField)) {
                 altEndCountTextField.setText("");
             }
         });
 
         depthCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
+            if(Boolean.FALSE.equals(nv) && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
                     && checkInequality(depthCountTextField, depthEndCountTextField)) {
                 depthCountTextField.setText("");
             }
         });
 
         depthEndCountTextField.focusedProperty().addListener((ol, ov, nv) -> {
-            if(!nv && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
+            if(Boolean.FALSE.equals(nv) && checkNotEmptyTextField(depthCountTextField, depthEndCountTextField)
                     && checkInequality(depthCountTextField, depthEndCountTextField)) {
                 depthEndCountTextField.setText("");
             }
@@ -661,9 +658,7 @@ public class VariantFilterController extends SubPaneController {
         Set<String> keySet = filter.keySet();
 
         for(String key : keySet) {
-            //if(Arrays.stream(defaultFilterName).noneMatch(item -> item.equals(key))) {
             filterNameComboBox.getItems().add(key);
-            //}
         }
     }
 
@@ -731,7 +726,6 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void setCurrentOption(List<Object> currentFilter, String filterName) {
-        //filterNameTextField.setVisible(false);
         newFilterNameLabel.setVisible(false);
         saveBtn.setDisable(false);
         resetFilterList();
@@ -885,7 +879,6 @@ public class VariantFilterController extends SubPaneController {
     }
 
     private void alleSet(String value, TextField startTextField, TextField endTextField) {
-        //Pattern p = Pattern.compile("\\d*|\\d+\\.\\d*");
         Pattern p = Pattern.compile("\\d+");
         Matcher m;
         List<String> values = new ArrayList<>();
@@ -986,7 +979,7 @@ public class VariantFilterController extends SubPaneController {
             alert.setHeaderText(alertHeaderText);
             alert.setContentText(alertContentText);
             Optional<ButtonType> result = alert.showAndWait();
-            if(result.get() == ButtonType.OK) {
+            if(result.isPresent() && result.get() == ButtonType.OK) {
                 filter.remove(filterNameComboBox.getSelectionModel().getSelectedItem());
                 String name = filterNameComboBox.getSelectionModel().getSelectedItem();
                 filterNameComboBox.getSelectionModel().clearSelection();
@@ -1029,7 +1022,6 @@ public class VariantFilterController extends SubPaneController {
     @FXML
     public void addFilter() {
         filterNameComboBox.getSelectionModel().clearSelection();
-        //filterNameTextField.setVisible(true);
         filterNameTextField.setText("");
         newFilterNameLabel.setVisible(true);
         saveBtn.setDisable(true);
@@ -1053,7 +1045,7 @@ public class VariantFilterController extends SubPaneController {
             return;
         }
         filterName = filterNameTextField.getText();
-        //if(filterNameTextField.isVisible()) {
+
         if(StringUtils.isEmpty(filterName)) {
             DialogUtil.alert("No filter name found", "Please enter a filter name", mainApp.getPrimaryStage(), true);
             filterNameTextField.requestFocus();
@@ -1064,9 +1056,7 @@ public class VariantFilterController extends SubPaneController {
             filterNameTextField.requestFocus();
             return;
         }
-        /*} else {
-            filterName = filterNameComboBox.getSelectionModel().getSelectedItem();
-        }*/
+
         filter.remove(currentFilterName);
         filter.put(filterName, list);
 
@@ -1272,7 +1262,6 @@ public class VariantFilterController extends SubPaneController {
             list.add("codingConsequence upstream_gene_variant");
         }
 
-
     }
 
     private void variantTabSave(List<Object> list) {
@@ -1329,7 +1318,7 @@ public class VariantFilterController extends SubPaneController {
 
         if(StringUtils.isNotEmpty(geneTextField.getText())) {
 
-            String[] geneList = geneTextField.getText().replaceAll(" ", "").split(",");
+            String[] geneList = geneTextField.getText().replace(" ", "").split(",");
 
             for(String gene : geneList) {
                 list.add("gene " + gene);
@@ -1338,7 +1327,7 @@ public class VariantFilterController extends SubPaneController {
 
         if(StringUtils.isNotEmpty(chromosomeTextField.getText())) {
 
-            String[] chrList = chromosomeTextField.getText().replaceAll(" ", "").split(",");
+            String[] chrList = chromosomeTextField.getText().replace(" ", "").split(",");
 
             for(String chr : chrList) {
                 list.add("chromosome " + chr);
@@ -1410,7 +1399,6 @@ public class VariantFilterController extends SubPaneController {
         filterNameTextField.setText("");
         geneTextField.setText("");
         chromosomeTextField.setText("");
-        //snvCheckBox.setSelected(false);
         snvCheckBox.selectedProperty().setValue(false);
         indelCheckBox.setSelected(false);
         delCheckBox.setSelected(false);

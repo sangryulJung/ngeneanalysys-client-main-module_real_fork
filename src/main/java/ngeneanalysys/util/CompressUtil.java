@@ -86,15 +86,14 @@ public class CompressUtil {
 		// tarIn is a TarArchiveInputStream
 		while (tarEntry != null) { // create a file with the same name as the tarEntry
 			File destPath = new File(dest, tarEntry.getName());
-			//System.out.println("working: " + destPath.getCanonicalPath());
+
 			if (tarEntry.isDirectory()) {
 				destPath.mkdirs();
 			} else {
 				destPath.createNewFile();
-				// byte [] btoRead = new byte[(int)tarEntry.getSize()];
+
 				byte[] btoRead = new byte[1024];
-				// FileInputStream fin
-				// = new FileInputStream(destPath.getCanonicalPath());
+
 				BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(destPath));
 				int len = 0;
 

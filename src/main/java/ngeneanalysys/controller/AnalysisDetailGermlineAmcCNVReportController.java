@@ -19,7 +19,7 @@ import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -63,9 +63,7 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
 
                 HttpClientResponse response;
                 response = apiService.get("/analysisResults/compositeCmtCnvResult/" + sample.getId(), null, null, null);
-                CompositeCmtCnvResult compositeCmtCnvResult = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
-
-                this.compositeCmtCnvResult = compositeCmtCnvResult;
+                this.compositeCmtCnvResult  = response.getObjectBeforeConvertResponseToJSON(CompositeCmtCnvResult.class);
 
                 return null;
             }
@@ -103,7 +101,7 @@ public class AnalysisDetailGermlineAmcCNVReportController extends SubPaneControl
     }
 
     public CompositeCmtCnvResult getCompositeCmtCnvResult() {
-        if(heredAmcCnvResultTable.getItems() != null && heredAmcCnvResultTable.getItems().size() > 0) {
+        if(heredAmcCnvResultTable.getItems() != null && !heredAmcCnvResultTable.getItems().isEmpty()) {
             return heredAmcCnvResultTable.getItems().get(0);
         } else {
             return null;

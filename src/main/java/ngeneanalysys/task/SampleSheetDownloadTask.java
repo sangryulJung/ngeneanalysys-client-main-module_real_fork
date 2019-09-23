@@ -53,9 +53,7 @@ public class SampleSheetDownloadTask extends Task {
 
             CloseableHttpClient httpclient;
             CloseableHttpResponse response = null;
-
-
-            //String downloadUrl = "/sampleSheet?runDir=" + runDir;
+            
             String downloadUrl = "runDir/sampleSheet?runDir=" + runDir;
             String path = CommonConstants.BASE_FULL_PATH  + File.separator + "SampleSheet.csv";
             OutputStream os = null;
@@ -133,7 +131,6 @@ public class SampleSheetDownloadTask extends Task {
      */
     @Override
     protected void failed() {
-        //controller.getMainController().removeProgressTaskItemById(progressBoxId);
         if ("Not Found".equals(this.getException().getMessage())) {
             DialogUtil.warning("TST170 SampleSheet Download", "No sample sheet file.", (Stage)controller.getWindow(), true);
         } else {

@@ -21,11 +21,11 @@ import ngeneanalysys.code.constants.FXMLConstants;
 import ngeneanalysys.code.enums.SystemMenuCode;
 import ngeneanalysys.code.enums.UserTypeBit;
 import ngeneanalysys.controller.extend.BaseStageController;
-import ngeneanalysys.controller.systemManager.SystemManagerHomeController;
-import ngeneanalysys.controller.systemMenu.SystemMenuEditController;
-import ngeneanalysys.controller.systemMenu.SystemMenuLicenseController;
-import ngeneanalysys.controller.systemMenu.SystemMenuSettingController;
-import ngeneanalysys.controller.systemMenu.SystemMenuSupportController;
+import ngeneanalysys.controller.manager.SystemManagerHomeController;
+import ngeneanalysys.controller.menu.SystemMenuEditController;
+import ngeneanalysys.controller.menu.SystemMenuLicenseController;
+import ngeneanalysys.controller.menu.SystemMenuSettingController;
+import ngeneanalysys.controller.menu.SystemMenuSupportController;
 import ngeneanalysys.model.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
@@ -199,8 +199,8 @@ public class MainController extends BaseStageController {
             primaryStage.getIcons().add(resourceUtil.getImage(CommonConstants.SYSTEM_FAVICON_PATH));
         }
 
-        primaryStage.setMinHeight(setWindowHeight + 35);
-        primaryStage.setHeight(setWindowHeight + 35);
+        primaryStage.setMinHeight(setWindowHeight + 35.);
+        primaryStage.setHeight(setWindowHeight + 35.);
         primaryStage.setMaxHeight(Double.MAX_VALUE);
         primaryStage.setMinWidth(1280);
         primaryStage.setWidth(1280);
@@ -241,7 +241,6 @@ public class MainController extends BaseStageController {
             } else {
                 closeEvent(event);
             }
-            //closeEvent(event);
         });
 
         //로그인 사용자 세션
@@ -350,6 +349,7 @@ public class MainController extends BaseStageController {
                     box.setOnMouseClicked(event -> {
                         if(itemProperty() == null) return;
                         while(sampleList.getItems().size() > 1) {
+                            showTopMenuContents(1);
                             ComboBoxItem comboBoxItem = sampleList.getItems().get(1);
                             removeTopMenu(comboBoxItem.getValue());
                             sampleList.getItems().remove(comboBoxItem);
@@ -443,27 +443,42 @@ public class MainController extends BaseStageController {
             @Override
             protected Object call() throws Exception {
                 HttpClientResponse response;
-                response = apiService.get("member/memberOption/hemeFilter", null, null, null);
-                basicInformationMap.put("hemeFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/solidFilter", null, null, null);
-                basicInformationMap.put("solidFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
-                basicInformationMap.put("tstDNAFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/brcaFilter", null, null, null);
-                basicInformationMap.put("brcaFilter", JsonUtil.fromJsonToMap(response.getContentString()));
-                response = apiService.get("member/memberOption/heredFilter", null, null, null);
-                basicInformationMap.put("heredFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                try {
+                    response = apiService.get("member/memberOption/hemeFilter", null, null, null);
+                    basicInformationMap.put("hemeFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("hemeFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/solidFilter", null, null, null);
+                    basicInformationMap.put("solidFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("solidFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/tstDNAFilter", null, null, null);
+                    basicInformationMap.put("tstDNAFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("tstDNAFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/brcaFilter", null, null, null);
+                    basicInformationMap.put("brcaFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("brcaFilter", new HashMap<>());
+                }
+                try {
+                    response = apiService.get("member/memberOption/heredFilter", null, null, null);
+                    basicInformationMap.put("heredFilter", JsonUtil.fromJsonToMap(response.getContentString()));
+                } catch (Exception e) {
+                    basicInformationMap.put("heredFilter", new HashMap<>());
+                }
                 return null;
             }
 
             @Override
             protected void failed() {
                 super.failed();
-                basicInformationMap.put("hemeFilter", new HashMap<>());
-                basicInformationMap.put("solidFilter", new HashMap<>());
-                basicInformationMap.put("tstDNAFilter", new HashMap<>());
-                basicInformationMap.put("brcaFilter", new HashMap<>());
-                basicInformationMap.put("heredFilter", new HashMap<>());
             }
         };
         Thread thread = new Thread(task);
@@ -976,7 +991,6 @@ public class MainController extends BaseStageController {
      * 진행 상태 출력 영역 초기화
      */
     void clearProgressTaskArea(Node node) {
-        //progressTaskContentArea.getChildren().removeAll(progressTaskContentArea.getChildren());
         progressTaskContentArea.getChildren().remove(node);
         if(analysisSampleUploadProgressTaskController != null) {
             this.analysisSampleUploadProgressTaskController = null;
@@ -992,7 +1006,7 @@ public class MainController extends BaseStageController {
      * @param id String
      */
     public void removeProgressTaskItemById(String id) {
-        if(this.progressTaskContentArea.getChildren() != null && this.progressTaskContentArea.getChildren().size() > 0) {
+        if(this.progressTaskContentArea.getChildren() != null && !this.progressTaskContentArea.getChildren().isEmpty()) {
             int idx = 0;
             for(Node node : this.progressTaskContentArea.getChildren()) {
                 if(StringUtils.isNotEmpty(node.getId()) && id.equals(node.getId())) {

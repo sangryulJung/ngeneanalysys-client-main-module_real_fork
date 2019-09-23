@@ -60,11 +60,10 @@ public final class ClinicalSignificantTimer extends AnimationTimer {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.setFont(Font.font(8));
-		//gc2.strokeText("Hello", defaultMargin, defaultMargin);
+
 		gc.setFill(Color.BLACK);
 		gc.fillText(labelText1, this.defaultMarginX + (this.outerCircleSize / 2.0), this.defaultMarginY + this.outerCircleSize + 10);
 		if (value >= 0.0) {
-			//gc.fillText((int)(value) + " %", defaultMarginX + (outerCircleSize / 2.0), defaultMarginY + (outerCircleSize / 2.0));
 			gc.fillText(labelText2.replace(" ", "\n"), this.defaultMarginX + (this.outerCircleSize / 2.0), this.defaultMarginY + (this.outerCircleSize / 2.0));
 		} else {
 			gc.fillText("N/A", this.defaultMarginX + (this.outerCircleSize / 2.0), this.defaultMarginY + (this.outerCircleSize / 2.0));

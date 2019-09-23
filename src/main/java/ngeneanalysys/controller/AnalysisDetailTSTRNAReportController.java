@@ -22,27 +22,15 @@ import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.model.render.DatepickerConverter;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.ExcelConvertReportInformationService;
-import ngeneanalysys.service.PDFCreateService;
-import ngeneanalysys.task.ImageFileDownloadTask;
-import ngeneanalysys.task.JarDownloadTask;
+import ngeneanalysys.task.WordDownloadTask;
 import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
-import org.apache.commons.io.FileUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
 import org.slf4j.Logger;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -61,11 +49,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     /** api service */
     private APIService apiService;
-
-    private PDFCreateService pdfCreateService;
-
-    /** Velocity Util */
-    private VelocityUtil velocityUtil = new VelocityUtil();
 
     @FXML
     private Label tierCountLabel;
@@ -163,8 +146,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         apiService.setStage(getMainController().getPrimaryStage());
 
         loginSession = LoginSessionUtil.getCurrentLoginSession();
-
-        pdfCreateService = PDFCreateService.getInstance();
 
         customFieldGridPane.getChildren().clear();
         customFieldGridPane.setPrefHeight(0);
@@ -549,8 +530,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
     private List<VariantAndInterpretationEvidence> settingTierList(List<VariantAndInterpretationEvidence> allTierList, String tier) {
         if(!StringUtils.isEmpty(tier)) {
-            return allTierList.stream().filter(item -> ((tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
-                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier)))))
+            return allTierList.stream().filter(item -> (tier.equalsIgnoreCase(item.getSnpInDel().getExpertTier()) ||
+                    (StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && item.getSnpInDel().getSwTier().equalsIgnoreCase(tier))))
                     .collect(Collectors.toList());
         }
 
@@ -746,7 +727,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
         clinicalVariantList.addAll(variantList);
 
-        //if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree);
         if(tierThree != null && !tierThree.isEmpty()) variantList.addAll(tierThree.stream().filter(tierThree ->
                 tierThree.getSnpInDel().getIncludedInReport().equalsIgnoreCase("Y")).collect(Collectors.toList()));
 
@@ -775,8 +755,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                     } else if(snpInDelEvidence.getEvidenceLevel().equals("D")) {
                         evidenceDCount++;
                     }
-                    /*if("T2".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelB())) evidenceBCount++;*/
                 }
             }
         }
@@ -795,8 +773,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                     } else if(snpInDelEvidence.getEvidenceLevel().equals("D")) {
                         evidenceDCount++;
                     }
-                    /*if("T1".equals(variant.getSnpInDel().getSwTier())
-                            && StringUtils.isEmpty(variant.getInterpretationEvidence().getTherapeuticEvidence().getLevelD())) evidenceDCount++;*/
                 }
             }
         }
@@ -814,85 +790,57 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         contentsMap.put("evidenceDCount", evidenceDCount);
         contentsMap.put("negativeList", negativeResult);
 
-        //Genes in panel
+        HttpClientResponse response;
+        if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
+            response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
+                    null, null, false);
 
-        /*HttpClientResponse response = apiService.get("/analysisResults/variantCountByGeneForSomaticRNA/" + sample.getId(),
-                null, null, false);
-        if (response != null) {
-            List<VariantCountByGene> variantCountByGenes = (List<VariantCountByGene>) response
-                    .getMultiObjectBeforeConvertResponseToJSON(VariantCountByGene.class,
-                            false);
+            VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
 
-            variantCountByGenes = filteringGeneList(variantCountByGenes);
+            Set<String> list = new HashSet<>();
 
-            variantCountByGenes = variantCountByGenes.stream().sorted(Comparator.comparing(VariantCountByGene::getGeneSymbol)).collect(Collectors.toList());
+            list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
+                    .split(",")).collect(Collectors.toSet()));
 
-            contentsMap.put("variantCountByGenes", variantCountByGenes);
-            int geneTableMaxRowCount = (int)Math.ceil(variantCountByGenes.size() / 7.0);
-            int geneTableMaxRowCount4 = (int)Math.ceil(variantCountByGenes.size() / 4.0);
-            contentsMap.put("geneTableCount", (7 * geneTableMaxRowCount) - 1);
-            contentsMap.put("geneTableCount4", (4 * geneTableMaxRowCount4) - 1);
+            Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
 
-            int tableOneSize = (int)Math.ceil((double)variantCountByGenes.size() / 3);
-            int tableTwoSize = (int)Math.ceil((double)(variantCountByGenes.size() - tableOneSize) / 2);
+            contentsMap.put("essentialGenes", list);
+            contentsMap.put("allGeneList", allGeneList);
+            contentsMap.put("virtualPanelName", virtualPanel.getName());
 
-            Object[] genesInPanelTableOne = variantCountByGenes.toArray();
-            //Gene List를 3등분함
-            contentsMap.put("genesInPanelTableOne", Arrays.copyOfRange(genesInPanelTableOne, 0, tableOneSize));
-            contentsMap.put("genesInPanelTableTwo", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize, tableOneSize + tableTwoSize));
-            contentsMap.put("genesInPanelTableThree", Arrays.copyOfRange(genesInPanelTableOne, tableOneSize + tableTwoSize, variantCountByGenes.size()));*/
-            HttpClientResponse response;
-            if(!StringUtils.isEmpty(virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue())) {
-                response = apiService.get("virtualPanels/" + virtualPanelComboBox.getSelectionModel().getSelectedItem().getValue(),
-                        null, null, false);
+        }
 
-                VirtualPanel virtualPanel = response.getObjectBeforeConvertResponseToJSON(VirtualPanel.class);
+        String runSequencer = sample.getRun().getSequencingPlatform();
 
-                Set<String> list = new HashSet<>();
+        if(runSequencer.equalsIgnoreCase("MISEQ")) {
+            contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+        } else {
+            contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+        }
 
-                list.addAll(Arrays.stream(virtualPanel.getEssentialGenes().replaceAll("\\p{Z}", "")
-                        .split(",")).collect(Collectors.toSet()));
+        response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
+                null, false);
 
-                Set<String> allGeneList = returnGeneList(virtualPanel.getEssentialGenes(), virtualPanel.getOptionalGenes());
+        List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
 
-                contentsMap.put("essentialGenes", list);
-                contentsMap.put("allGeneList", allGeneList);
-                contentsMap.put("virtualPanelName", virtualPanel.getName());
+        contentsMap.put("readsPF",findQCResult(qcList, "Reads_PF"));
+        contentsMap.put("medianInsertSize",findQCResult(qcList, "Median_Insert_Size"));
+        contentsMap.put("medianCVCoverage",findQCResult(qcList, "Median_CV_Coverage_1000x"));
+        contentsMap.put("q30ScoreRead1",findQCResult(qcList, "Q30_score_read1"));
+        contentsMap.put("q30ScoreRead2",findQCResult(qcList, "Q30_score_read2"));
 
-            }
-
-            String runSequencer = sample.getRun().getSequencingPlatform();
-
-            if(runSequencer.equalsIgnoreCase("MISEQ")) {
-                contentsMap.put("sequencer",SequencerCode.MISEQ.getDescription());
+        List<String> conclusionLineList = null;
+        if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
+            conclusionLineList = new ArrayList<>();
+            String[] lines = conclusionsTextArea.getText().split("\n");
+            if(lines != null && lines.length > 0) {
+                conclusionLineList.addAll(Arrays.asList(lines));
             } else {
-                contentsMap.put("sequencer",SequencerCode.MISEQ_DX.getDescription());
+                conclusionLineList.add(conclusionsTextArea.getText());
             }
+        }
+        contentsMap.put("conclusions", conclusionLineList);
 
-            response = apiService.get("/analysisResults/sampleQCs/" + sample.getId(), null,
-                    null, false);
-
-            List<SampleQC> qcList = (List<SampleQC>) response.getMultiObjectBeforeConvertResponseToJSON(SampleQC.class, false);
-
-            contentsMap.put("readsPF",findQCResult(qcList, "Reads_PF"));
-            contentsMap.put("medianInsertSize",findQCResult(qcList, "Median_Insert_Size"));
-            contentsMap.put("medianCVCoverage",findQCResult(qcList, "Median_CV_Coverage_1000x"));
-            contentsMap.put("q30ScoreRead1",findQCResult(qcList, "Q30_score_read1"));
-            contentsMap.put("q30ScoreRead2",findQCResult(qcList, "Q30_score_read2"));
-
-            List<String> conclusionLineList = null;
-            if(!StringUtils.isEmpty(conclusionsTextArea.getText())) {
-                conclusionLineList = new ArrayList<>();
-                String[] lines = conclusionsTextArea.getText().split("\n");
-                if(lines != null && lines.length > 0) {
-                    conclusionLineList.addAll(Arrays.asList(lines));
-                } else {
-                    conclusionLineList.add(conclusionsTextArea.getText());
-                }
-            }
-            contentsMap.put("conclusions", conclusionLineList);
-
-        //}
 
         return contentsMap;
     }
@@ -926,34 +874,21 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
             if(file != null) {
 
+                mainController.setMainMaskerPane(true);
+
                 Map<String, Object> contentsMap = contents();
                 contentsMap.put("isDraft", isDraft);
 
-                String draftImageStr = String.format("url('%s')", this.getClass().getClassLoader().getResource("layout/images/DRAFT.png"));
-                String ngenebioLogo = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/ngenebio_logo.png"));
-                String testInformationText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/test_information1.png"));
-                String pathogenicMutationsDetectedText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pathogenic_mutations_detected1.png"));
-                String pertinetNegativeText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/pertinent_negative.png"));
-                String variantDetailText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/variant_detail.png"));
-                String dataQcText = String.format("%s", this.getClass().getClassLoader().getResource("layout/images/data_qc.png"));
                 Map<String, Object> model = new HashMap<>();
                 model.put("isDraft", isDraft);
-                //model.put("qcResult", sample.getQc());
-                model.put("draftImageURL", draftImageStr);
-                model.put("ngenebioLogo", ngenebioLogo);
-                model.put("testInformationText", testInformationText);
-                model.put("pathogenicMutationsDetectedText", pathogenicMutationsDetectedText);
-                model.put("pertinetNegativeText", pertinetNegativeText);
-                model.put("variantDetailText", variantDetailText);
-                model.put("dataQcText", dataQcText);
                 model.put("contents", contentsMap);
 
-                String contents = "";
                 if(panel.getReportTemplateId() == null) {
-                    contents = velocityUtil.getContents("/layout/velocity/report_tst_rna.vm", CommonConstants.ENCODING_TYPE_UTF, model);
-                    created = pdfCreateService.createPDF(file, contents);
-                    createdCheck(created, file);
-                    //convertPDFtoImage(file, sample.getName());
+                    String jsonStr = JsonUtil.toJsonIncludeNullValue(model);
+                    Task<Void> task = new WordDownloadTask(this, null, jsonStr, file, "TST170_RNA");
+                    final Thread downloadThread = new Thread(task);
+                    downloadThread.setDaemon(true);
+                    downloadThread.start();
                 } else {
                     for (int i = 0; i < customFieldGridPane.getChildren().size(); i++) {
                         Object gridObject = customFieldGridPane.getChildren().get(i);
@@ -983,125 +918,42 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                         List<ReportComponent> components = reportContents.getReportComponents();
 
                         if(components == null || components.isEmpty()) throw new Exception();
-                        final Comparator<ReportComponent> comp = (p1, p2) -> Integer.compare( p1.getId(), p2.getId());
+                        final Comparator<ReportComponent> comp = Comparator.comparingInt(ReportComponent::getId);
                         final ReportComponent component = components.stream().max(comp).get();
-                        final String filePath = CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + component.getId();
-                        File jarFile = new File(filePath, component.getName());
 
-                        components.remove(component);
+                        String jsonStr = JsonUtil.toJsonIncludeNullValue(contentsMap);
 
-                        if(!components.isEmpty()) {
-                            for (ReportComponent cmp : components) {
-                                File oldVersionFolder = new File(CommonConstants.BASE_FULL_PATH + File.separator + "word" + File.separator + cmp.getId());
-                                if(oldVersionFolder.exists()) {
-                                    FileUtils.deleteQuietly(oldVersionFolder);
-                                }
-                            }
-                        }
-
-                        if(!jarFile.exists()) {
-                            File folder = new File(filePath);
-                            if (!folder.exists()){
-                                if(!folder.mkdirs()) {
-                                    throw new Exception("Fail to make jarFile directory");
-                                }
-                            }
-
-                            Task task = new JarDownloadTask(this, component);
-
-                            Thread thread = new Thread(task);
-                            thread.setDaemon(true);
-                            thread.start();
-
-                            task.setOnSucceeded(ev -> {
-                                try {
-                                    final File jarFile1 = new File(filePath, component.getName());
-                                    URL[] jarUrls = new URL[]{jarFile1.toURI().toURL()};
-                                    createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
-                                } catch (MalformedURLException murle) {
-                                    DialogUtil.error("Report Generation Fail", reportCreationErrorMsg + "\n" + murle.getMessage(), getMainApp().getPrimaryStage(), false);
-                                    murle.printStackTrace();
-                                }
-                            });
-                            task.exceptionProperty().addListener((observable, oldValue, newValue) -> {
-                                DialogUtil.error("Report Generation Fail",
-                                        ((Exception)newValue).getMessage(), getMainApp().getPrimaryStage(), false);
-                            });
-                        } else {
-                            URL[] jarUrls = new URL[]{jarFile.toURI().toURL()};
-                            createWordFile(jarUrls, file, contentsMap, reportCreationErrorMsg);
-                        }
+                        Task<Void> task = new WordDownloadTask(this, component, jsonStr, file);
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
 
                     } else {
-                        List<ReportImage> images = reportContents.getReportImages();
-
-                        for (ReportImage image : images) {
-                            String path = "url('file:/" + CommonConstants.BASE_FULL_PATH + File.separator + "fop" + File.separator + image.getReportTemplateId()
-                                    + File.separator + image.getName() + "')";
-                            path = path.replaceAll("\\\\", "/");
-                            String name = image.getName().substring(0, image.getName().lastIndexOf('.'));
-                            logger.debug(name + " : " + path);
-                            model.put(name, path);
-                        }
-
-                        FileUtil.saveVMFile(reportContents.getReportTemplate());
-
-                        Task task = new ImageFileDownloadTask(this, reportContents.getReportImages());
-
-                        Thread thread = new Thread(task);
-                        thread.setDaemon(true);
-                        thread.start();
-
-                        final String contents1 = velocityUtil.getContents(reportContents.getReportTemplate().getId() + "/" + reportContents.getReportTemplate().getName() + ".vm", CommonConstants.ENCODING_TYPE_UTF, model);
-                        task.setOnSucceeded(ev -> {
-                            try {
-                                final boolean created1 = pdfCreateService.createPDF(file, contents1);
-                                createdCheck(created1, file);
-
-                            } catch (Exception e) {
-                                DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-                                e.printStackTrace();
-                            }
-                        });
+                        String jsonStr = JsonUtil.toJsonIncludeNullValue(model);
+                        Task<Void> task = new WordDownloadTask(this, reportContents.getReportTemplate(), jsonStr, file, "CUSTOM");
+                        final Thread downloadThread = new Thread(task);
+                        downloadThread.setDaemon(true);
+                        downloadThread.start();
                     }
                 }
             }
         } catch(FileNotFoundException fnfe){
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + fnfe.getMessage(), getMainApp().getPrimaryStage(), false);
+            mainController.setMainMaskerPane(false);
         } catch (WebAPIException wae) {
             DialogUtil.generalShow(wae.getAlertType(), wae.getHeaderText(), wae.getContents(),
                     getMainApp().getPrimaryStage(), true);
+            mainController.setMainMaskerPane(false);
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
+            mainController.setMainMaskerPane(false);
             created = false;
         }
 
         return created;
     }
 
-    @SuppressWarnings("unchecked")
-    private void createWordFile(URL[] jarUrls, File file , Map<String, Object> contentsMap, String reportCreationErrorMsg) {
-
-        try (URLClassLoader classLoader = new URLClassLoader(jarUrls, ClassLoader.getSystemClassLoader())) {
-            Class classToLoad = Class.forName("word.create.App", true, classLoader);
-            logger.debug("application init..");
-            Method setParams = classToLoad.getMethod("setParams", Map.class);
-            Method updateEmbeddedDoc = classToLoad.getMethod("updateEmbeddedDoc");
-            Method updateWordFile = classToLoad.getDeclaredMethod("updateWordFile");
-            Method setWriteFilePath = classToLoad.getDeclaredMethod("setWriteFilePath", String.class);
-            Object application = classToLoad.newInstance();
-            setParams.invoke(application, contentsMap);
-            setWriteFilePath.invoke(application, file.getPath());
-            updateEmbeddedDoc.invoke(application);
-            updateWordFile.invoke(application);
-            createdCheck(true, file);
-        } catch (Exception e) {
-            DialogUtil.error("Save Fail.", reportCreationErrorMsg + "\n" + e.getMessage(), getMainApp().getPrimaryStage(), false);
-            e.printStackTrace();
-        }
-    }
-
-    private void createdCheck(boolean created, File file) {
+    public void createdCheck(boolean created, File file) {
         try {
             if (created) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1124,6 +976,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         } catch (Exception e) {
             DialogUtil.error("Save Fail.", "An error occurred during the creation of the report document.",
                     getMainApp().getPrimaryStage(), false);
+        } finally {
+            mainController.setMainMaskerPane(false);
         }
     }
 

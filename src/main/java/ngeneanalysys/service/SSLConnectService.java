@@ -46,7 +46,7 @@ public class SSLConnectService {
                         }
                     } };
 
-            SSLContext sc = SSLContext.getInstance("SSL");
+            SSLContext sc = SSLContext.getInstance("TLSv1.2");
             sc.init(null, trustAllCerts, new SecureRandom());
             factory = new SSLConnectionSocketFactory(sc, NoopHostnameVerifier.INSTANCE);
         } catch (Exception e) {

@@ -1119,7 +1119,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         Label normalBox = new Label();
         normalBox.setMinSize(70, 15);
         normalBox.setPrefSize(70, 15);
-        //normalBox.setStyle("-fx-background-color : #30a1c2; -fx-border-color : gray; -fx-border-width : 0 0.5 0 0.5;");
         normalBox.setStyle("-fx-background-color : linear-gradient(to right, white, #30a1c2, white); -fx-border-color : gray; -fx-border-width : 0.5 0 0.5 0;");
         box.getChildren().add(normalBox);
         Label position = new Label();
@@ -1129,8 +1128,8 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
         Label warningLabel = new Label();
         if(StringUtils.isNotEmpty(amplicon.getWarning())) {
             warningLabel.setText(amplicon.getWarning()
-                    .replaceAll("low_confidence: ", "")
-                    .replaceAll(" Amplicon", ""));
+                    .replace("low_confidence: ", "")
+                    .replace(" Amplicon", ""));
         }
         reSizeNodeWidth(warningLabel, 200);
         warningLabel.setAlignment(Pos.CENTER);

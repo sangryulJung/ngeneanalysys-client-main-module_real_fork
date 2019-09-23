@@ -5,12 +5,11 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.model.SnpInDelEvidence;
-import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 /**
  * 값 변환 Util Class
@@ -155,7 +154,7 @@ public class ConvertUtil {
 	public static SnpInDelEvidence findPrimaryEvidence(List<SnpInDelEvidence> snpInDelEvidenceList) {
 		if (snpInDelEvidenceList == null || snpInDelEvidenceList.isEmpty()) return null;
 		for(SnpInDelEvidence snpInDelEvidence : snpInDelEvidenceList) {
-			if(snpInDelEvidence.getPrimaryEvidence()) return snpInDelEvidence;
+			if(Boolean.TRUE.equals(snpInDelEvidence.getPrimaryEvidence())) return snpInDelEvidence;
 		}
 		return null;
 	}
@@ -167,8 +166,6 @@ public class ConvertUtil {
 				"Ile", "Leu", "Lys", "Met","Phe", "Pro", "Ser", "Thr", "Trp", "Tyr", "Val"};
 		String[] pattern2 = {"A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V"};
 
-		/*if(aminoAcid.startsWith("p."))
-			aminoAcid = aminoAcid.replaceFirst("p.", "");*/
 		return StringUtils.replaceEach(aminoAcid, pattern1, pattern2);
 	}
 
@@ -185,10 +182,10 @@ public class ConvertUtil {
 			return "ROI Coverage";
 		}
 
-		return WordUtils.capitalize(value.replaceAll("_", " "));
+		return WordUtils.capitalize(value.replace("_", " "));
 	}
 
-	public static String convertBrcaCnvRegion(List<String> list, final String gene) {
+	public static String convertBrcaCnvRegion(List<String> list) {
 		final StringBuilder sb = new StringBuilder();
 		LinkedList<String> tempList = new LinkedList<>();
 		list.remove("Promoter");
@@ -211,8 +208,7 @@ public class ConvertUtil {
 						} else {
 							int lastInt = Integer.parseInt(last);
 							int currentInt = Integer.parseInt(item);
-							if (lastInt == currentInt - 1/* ||
-                                    ("BRCA1".equals(gene) && lastInt == 3 && currentInt == 5)*/) {
+							if (lastInt == currentInt - 1) {
 								tempList.add(item);
 							} else if (tempList.size() > 1) {
 								sb.append(tempList.getFirst()).append(" ~ ").append(tempList.getLast()).append(", ");
