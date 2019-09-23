@@ -120,7 +120,6 @@ public class DetailSubInfoController extends SubPaneController {
         String rsId = selectedAnalysisResultVariant.getSnpInDel().getDbSNP().getDbSnpRsId(); // (variantInformationMap.containsKey("rs_id")) ? (String) variantInformationMap.get("rs_id") : null;
         Integer variationId = selectedAnalysisResultVariant.getSnpInDel().getClinicalDB().getClinVar().getClinVarVariationId();
         String exacFormat = (variantInformationMap.containsKey("exac_format")) ? (String) variantInformationMap.get("exac_format") : null;
-        String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
         Integer start = (variantInformationMap.containsKey("start")) ? (Integer) variantInformationMap.get("start") : null;
         Integer end = (variantInformationMap.containsKey("stop")) ? (Integer) variantInformationMap.get("stop") : null;
         String chromosome = (genomicCoordinateMap != null && genomicCoordinateMap.containsKey("chromosome"))
@@ -181,13 +180,6 @@ public class DetailSubInfoController extends SubPaneController {
             dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
             dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
         }
-
-        /*if (!StringUtils.isEmpty(geneId)) {
-            dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
-            Label dbContentLabel = createLinkLabel("NCBI(" + geneId + ")", "NCBI");
-            dbContentLabel.getStyleClass().addAll(titleCss, cursorHand);
-            dbLinkGridPane.add(dbContentLabel, 0, dbLinkGridPane.getRowConstraints().size() - 1, 1, 1);
-        }*/
         if (selectedAnalysisResultVariant.getSnpInDel().getPopulationFrequency().getExac() != null &&
                 !StringUtils.isEmpty(exacFormat)) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
@@ -284,10 +276,6 @@ public class DetailSubInfoController extends SubPaneController {
             String fullUrlKoKEXID = "http://koex.snu.ac.kr/koex_main.php?section=search&db_code=15&keyword_class=varid&search_keyword="
                     + rsId;
             openBrowser(fullUrlKoKEXID);
-        } else if("NCBI".equalsIgnoreCase(item)) {
-            String geneId = (variantInformationMap.containsKey("geneid")) ? (String) variantInformationMap.get("geneid") : null;
-            String fullUrlNCBI = "http://www.ncbi.nlm.nih.gov/gene/" + geneId;
-            openBrowser(fullUrlNCBI);
         } else if("ExAC".equalsIgnoreCase(item)) {
             String exacFormat = (variantInformationMap.containsKey("exac_format")) ? (String) variantInformationMap.get("exac_format") : null;
             String fullUrlExAC = "http://exac.broadinstitute.org/variant/" + exacFormat;

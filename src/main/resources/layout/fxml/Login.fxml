@@ -37,7 +37,7 @@
             <HBox alignment="CENTER_RIGHT">
                <children>
                   <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" onKeyReleased="#changeIdIcon" pickOnBounds="false" promptText="User Name" styleClass="bold" />
-                  <CheckBox fx:id="test" mnemonicParsing="false" style="-fx-text-fill: white;">
+                  <CheckBox fx:id="loginIdSaveCheckBox" focusTraversable="false" mnemonicParsing="false" style="-fx-text-fill: white;">
                      <HBox.margin>
                         <Insets left="17.0" />
                      </HBox.margin>

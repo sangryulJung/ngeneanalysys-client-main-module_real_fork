@@ -1196,10 +1196,10 @@ public class SystemManagerPanelController extends SubPaneController {
             PipelineCode pipelineCode = PipelineCode.getPipelineCode(code);
 
             if(Boolean.FALSE.equals(checkTranscript())) {
-                DialogUtil.alert("Invalid format.",
-                        "It will be automatically modified to suit the format.",
+                DialogUtil.alert("The canonical transcript format is invalid.",
+                        "Please enter a valid format.",
                         this.getMainApp().getPrimaryStage(), true);
-                transcriptNormalization();
+                //transcriptNormalization();
                 return;
             }
 

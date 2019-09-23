@@ -81,7 +81,7 @@ public class LoginController extends BaseStageController {
 	private ProgressIndicator progress;
 
 	@FXML
-	private CheckBox test;
+	private CheckBox loginIdSaveCheckBox;
 
 	@FXML
 	public void checkValidateLoginID(KeyEvent ke) {
@@ -136,14 +136,6 @@ public class LoginController extends BaseStageController {
 				params.put("id", inputLoginID.getText());
 				params.put("password", inputPassword.getText());
 
-				if(test.isSelected()) {
-					PropertiesService.getInstance().getConfig().setProperty("login.id.save", inputLoginID.getText());
-					PropertiesUtil.saveLoginId(inputLoginID.getText());
-				} else {
-					PropertiesService.getInstance().getConfig().remove("login.id.save");
-					PropertiesUtil.saveLoginId(null);
-				}
-
 				HttpClientResponse response = null;
 				try {
 					response = apiService.postNotContainToken("/auth/token", params, null, true);
@@ -161,6 +153,14 @@ public class LoginController extends BaseStageController {
 					}
 					mainApp.getProxyServer().setApiServerHost(this.mainApp.getProperty(CommonConstants.DEFAULT_SERVER_HOST_KEY));
 					mainApp.getProxyServer().setAuthToken(loginSession.getToken());
+
+					if(loginIdSaveCheckBox.isSelected()) {
+						PropertiesService.getInstance().getConfig().setProperty("login.id.save", inputLoginID.getText());
+						PropertiesUtil.saveLoginId(inputLoginID.getText());
+					} else {
+						PropertiesService.getInstance().getConfig().remove("login.id.save");
+						PropertiesUtil.saveLoginId(null);
+					}
 
 					mainApp.showMain();
 				} catch (WebAPIException wae){
@@ -212,7 +212,7 @@ public class LoginController extends BaseStageController {
 		PropertiesService propertiesService = PropertiesService.getInstance();
 		String loginId = propertiesService.getConfig().getProperty("login.id.save");
 		if(StringUtils.isNotEmpty(loginId)) {
-			test.selectedProperty().setValue(true);
+			loginIdSaveCheckBox.selectedProperty().setValue(true);
 			inputLoginID.setText(loginId);
 			inputPassword.requestFocus();
 		}
