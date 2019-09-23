@@ -209,6 +209,10 @@ public class LoginController extends BaseStageController {
 		scene.addEventFilter(MouseEvent.ANY,
                 event -> showCapLock());
 
+		if(loginIdSaveCheckBox.getTooltip() == null) {
+			loginIdSaveCheckBox.setTooltip(new Tooltip("If checked, the login ID is saved."));
+		}
+
 		PropertiesService propertiesService = PropertiesService.getInstance();
 		String loginId = propertiesService.getConfig().getProperty("login.id.save");
 		if(StringUtils.isNotEmpty(loginId)) {
