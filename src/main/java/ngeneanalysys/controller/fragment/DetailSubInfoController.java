@@ -133,9 +133,9 @@ public class DetailSubInfoController extends SubPaneController {
         if(selectedAnalysisResultVariant != null) {
             dbLinkGridPane.getRowConstraints().add(new RowConstraints(rowHeight,rowHeight, rowHeight));
             String titleText;
-            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter())) {
+            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChange())) {
                 titleText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange()
-                        + " " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
+                        + " " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChange();
             } else {
                 titleText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange();
             }
@@ -238,9 +238,9 @@ public class DetailSubInfoController extends SubPaneController {
         if(variantInformationMap == null || genomicCoordinateMap == null) return;
         if(selectedAnalysisResultVariant != null && item.equals("Google")) {
             String searchText;
-            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter())) {
+            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChange())) {
                 searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange()
-                        + " " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
+                        + " " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChange();
             } else {
                 searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange();
             }
@@ -248,9 +248,9 @@ public class DetailSubInfoController extends SubPaneController {
             openBrowser(googleSearch);
         } else if(selectedAnalysisResultVariant != null && item.equals("NCBI")) {
             String searchText;
-            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter())) {
+            if(StringUtils.isNotEmpty(selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChange())) {
                 searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange()
-                        + " OR " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter();
+                        + " OR " + selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getAaChange();
             } else {
                 searchText = selectedAnalysisResultVariant.getSnpInDel().getSnpInDelExpression().getNtChange();
             }
