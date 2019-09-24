@@ -34,17 +34,8 @@
    <children>
       <VBox fx:id="mainContent" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="370.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <HBox alignment="CENTER_RIGHT">
-               <children>
-                  <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" onKeyReleased="#changeIdIcon" pickOnBounds="false" promptText="User Name" styleClass="bold" />
-                  <CheckBox fx:id="loginIdSaveCheckBox" focusTraversable="false" mnemonicParsing="false" style="-fx-text-fill: white;">
-                     <HBox.margin>
-                        <Insets left="17.0" />
-                     </HBox.margin>
-                  </CheckBox>
-               </children>
-            </HBox>
-            <Label fx:id="labelLoginID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" textFill="WHITE" visible="false">
+            <TextField fx:id="inputLoginID" onKeyPressed="#checkValidateLoginID" onKeyReleased="#changeIdIcon" pickOnBounds="false" promptText="User Name" styleClass="bold" />
+            <Label fx:id="labelLoginID" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" text="Please enter the username" textFill="WHITE" visible="false">
                <font>
                   <Font size="10.0" />
                </font>
@@ -64,14 +55,26 @@
                   <Insets left="43.0" />
                </padding>
             </HBox>
-            <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" textFill="WHITE" visible="false">
+            <Label fx:id="labelPassword" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" styleClass="title_warning" text="Please enter the password" textFill="WHITE" visible="false">
                <font>
                   <Font size="10.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="20.0" />
+                  <Insets bottom="3.0" />
                </VBox.margin>
             </Label>
+            <HBox>
+               <children>
+                  <CheckBox fx:id="loginIdSaveCheckBox" alignment="TOP_LEFT" focusTraversable="false" mnemonicParsing="false" style="-fx-text-fill: white; -fx-font-size: 10;" text="Remember User ID">
+                     <HBox.margin>
+                        <Insets left="45.0" />
+                     </HBox.margin>
+                  </CheckBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
             <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                <children>
                   <Button id="btnLogin" fx:id="loginBtn" alignment="TOP_LEFT" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#runLogin" prefHeight="35.0" prefWidth="160.0" styleClass="bold" text="LOGIN">
@@ -85,7 +88,7 @@
                         <Insets />
                      </opaqueInsets>
                      <HBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets bottom="15.0" />
                      </HBox.margin>
                   </Button>
                   <ProgressIndicator fx:id="progress" prefHeight="20.0" prefWidth="20.0" progress="0.0" visible="false">
@@ -103,7 +106,7 @@
             </HBox>
             <HBox alignment="CENTER" maxWidth="130.0" minWidth="130.0" onMouseClicked="#openSettingURLDialog" prefWidth="130.0" styleClass="cursor_hand">
                <VBox.margin>
-                  <Insets bottom="20.0" />
+                  <Insets bottom="15.0" />
                </VBox.margin>
                <children>
                   <Button fx:id="settingURLButton" mnemonicParsing="false" onMouseClicked="#openSettingURLDialog">
