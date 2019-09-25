@@ -1262,7 +1262,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 return;
             }
             if(StringUtils.isNotEmpty(canonicalTranscriptTextArea.getText())) {
-                params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText());
+                params.put("canonicalTranscripts", canonicalTranscriptTextArea.getText().replace(" ", ""));
             }
             params.put("qcPassConfig", setQCPassingConfig());
             if(defaultDiseaseComboBox.getSelectionModel().getSelectedItem() != null) {
@@ -1280,7 +1280,6 @@ public class SystemManagerPanelController extends SubPaneController {
             if(!StringUtils.isEmpty(reportId)) {
                 params.put("reportTemplateId", Integer.parseInt(reportId));
             }
-
 
             HttpClientResponse response = null;
             try {
