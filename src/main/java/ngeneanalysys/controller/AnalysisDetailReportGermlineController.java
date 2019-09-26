@@ -831,6 +831,19 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                 //리포트를 생성할 때마다 고유 ID 부여 report ID + random Int
                 contentsMap.put("reportID", String.format("%05d-%05d", sample.getId(), random.nextInt(99999)));
 
+                List<VariantAndInterpretationEvidence> allVariant = new ArrayList<>();
+                allVariant.addAll(pathogenicList);
+                allVariant.addAll(likelyPathgenicList);
+                allVariant.addAll(uncertainSignificanceList);
+                allVariant.addAll(likelyBenignList);
+                allVariant.addAll(benignList);
+
+                List<VariantAndInterpretationEvidence> notReportedVariant = allVariant.stream()
+                        .filter(item -> item.getSnpInDel().getIncludedInReport().equals("N"))
+                        .collect(Collectors.toList());
+
+                contentsMap.put("notReportedVariantList", notReportedVariant);
+
                 contentsMap.put("inspectorOrganization", "");
                 contentsMap.put("inspectorName", "");
                 contentsMap.put("inspectorContact", "");
