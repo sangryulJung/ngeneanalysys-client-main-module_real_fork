@@ -132,9 +132,6 @@ public class SystemManagerPanelController extends SubPaneController {
     private TextField populationFrequencyTextField;
 
     @FXML
-    private CheckBox clinVarDrugResponseCheckBox;
-
-    @FXML
     private Button roiFileSelectionButton;
 
     @FXML
@@ -515,8 +512,6 @@ public class SystemManagerPanelController extends SubPaneController {
         lowConfidenceMinAlleleFractionTextField.setDisable(true);
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(true);
-        clinVarDrugResponseCheckBox.setSelected(false);
-        clinVarDrugResponseCheckBox.setDisable(true);
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(true);
 
@@ -557,8 +552,6 @@ public class SystemManagerPanelController extends SubPaneController {
         lowConfidenceMinAlleleFractionTextField.setDisable(false);
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(false);
-        clinVarDrugResponseCheckBox.setSelected(false);
-        clinVarDrugResponseCheckBox.setDisable(false);
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(false);
 
@@ -600,8 +593,6 @@ public class SystemManagerPanelController extends SubPaneController {
         lowConfidenceMinAlleleFractionTextField.setDisable(false);
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(false);
-        clinVarDrugResponseCheckBox.setSelected(false);
-        clinVarDrugResponseCheckBox.setDisable(true);
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(false);
 
@@ -666,8 +657,6 @@ public class SystemManagerPanelController extends SubPaneController {
 
         populationFrequencyTextField.setText("");
         populationFrequencyTextField.setDisable(true);
-        clinVarDrugResponseCheckBox.setSelected(false);
-        clinVarDrugResponseCheckBox.setDisable(true);
         frequencyDBCheckComboBox.getCheckModel().clearChecks();
         frequencyDBCheckComboBox.setDisable(true);
 
@@ -979,7 +968,7 @@ public class SystemManagerPanelController extends SubPaneController {
             value.deleteCharAt(value.length() - 1);
             variantFilter.setPopulationFrequencyDBs(value.toString());
         }
-        variantFilter.setClinVarDrugResponseCheck(clinVarDrugResponseCheckBox.isSelected());
+
         try {
             BigDecimal reportCutOffPopulationFrequency = new BigDecimal(populationFrequencyTextField.getText());
             variantFilter.setPopulationFrequency(reportCutOffPopulationFrequency);
@@ -1414,7 +1403,7 @@ public class SystemManagerPanelController extends SubPaneController {
         }
         bedFile = null;
         panelSaveButton.setDisable(true);
-        clinVarDrugResponseCheckBox.setSelected(false);
+
         groupCheckComboBox.getCheckModel().clearChecks();
         diseaseCheckComboBox.getCheckModel().clearChecks();
         defaultDiseaseComboBox.getSelectionModel().clearSelection();
@@ -1489,7 +1478,7 @@ public class SystemManagerPanelController extends SubPaneController {
         defaultSampleSourceComboBox.setDisable(condition);
         mappingQuality60PercentageTextField.setDisable(condition);
         uniformity02PercentageTextField.setDisable(condition);
-        clinVarDrugResponseCheckBox.setDisable(condition);
+
         lowConfidenceCnvDeletionTextField.setDisable(condition);
         lowConfidenceCnvDuplicationTextField.setDisable(condition);
         customDatabaseAddBtn.setDisable(condition);
@@ -1640,7 +1629,6 @@ public class SystemManagerPanelController extends SubPaneController {
                     }
                 }
                 if(panel.getVariantFilter().getPopulationFrequency() != null) populationFrequencyTextField.setText(variantFilter.getPopulationFrequency().toString());
-                if(panel.getVariantFilter().getClinVarDrugResponseCheck() != null) clinVarDrugResponseCheckBox.setSelected(variantFilter.getClinVarDrugResponseCheck());
 
                 if(panel.getQcPassConfig() != null) {
                     if(panel.getQcPassConfig().getTotalBasePair() != null) totalBasePairTextField.setText(panel.getQcPassConfig().getTotalBasePair().toString());
