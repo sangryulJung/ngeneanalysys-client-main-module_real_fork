@@ -4,10 +4,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import ngeneanalysys.code.constants.CommonConstants;
 import ngeneanalysys.code.enums.PipelineCode;
 import ngeneanalysys.code.enums.VariantLevelCode;
@@ -17,6 +19,7 @@ import ngeneanalysys.model.*;
 import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.RawDataDownloadService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -68,11 +71,12 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
     public void show(Parent root) throws IOException {
 
         Panel panel = (Panel)paramMap.get("panel");
+        SampleView sample = (SampleView)paramMap.get("sampleView");
 
         if(panel.getCode().equals(PipelineCode.SOLID_ACCUTEST_CNV_DNA.getCode())) {
             TableColumn<Cnv, String> tierColumn = new TableColumn<>("Tier");
             tierColumn.setPrefWidth(60);
-            tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
+            tierColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.getTierInfo(cellData.getValue())));
             tierColumn.setCellFactory(param -> new TableCell<Cnv, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
@@ -81,12 +85,12 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                         setGraphic(null);
                     } else {
 
-                        Cnv variant = getTableView().getItems().get(getIndex());
+                        Cnv cnv = getTableView().getItems().get(getIndex());
 
                         String value = "";
                         String code = "NONE";
-                        if(StringUtils.isNotEmpty(variant.getTier())) {
-                            value = variant.getTier();
+                        if(StringUtils.isNotEmpty(ConvertUtil.getTierInfo(cnv))) {
+                            value = ConvertUtil.getTierInfo(cnv);
                             code = "tier_" + VariantLevelCode.getCodeFromAlias(value);
                         }
 
@@ -97,6 +101,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                             tierColumn.getStyleClass().add("alignment_center");
                             label.getStyleClass().add(code);
                         }
+
                         setGraphic(label);
                     }
                 }
@@ -121,24 +126,24 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                     } else {
                         label.getStyleClass().add("report_uncheck");
                     }
-                    //label.setCursor(Cursor.HAND);
-                    /*label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
+                    label.setCursor(Cursor.HAND);
+                    label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                         try {
                             Map<String, Object> params = new HashMap<>();
                             params.put("sampleId", sample.getId());
-                            params.put("snpInDelIds", variant.getSnpInDel().getId().toString());
+                            params.put("cnvIds", variant.getId().toString());
                             params.put("comment", "N/A");
                             if(!StringUtils.isEmpty(item) && "Y".equals(item)) {
                                 params.put("includeInReport", "N");
                             } else {
                                 params.put("includeInReport", "Y");
                             }
-                            apiService.put("analysisResults/snpInDels/updateIncludeInReport", params, null, true);
+                            apiService.put("analysisResults/cnv/updateReport", params, null, true);
                             cnvTableView.refresh();
                         } catch (WebAPIException wae) {
                             wae.printStackTrace();
                         }
-                    });*/
+                    });
                     setGraphic(label);
                 }
 
