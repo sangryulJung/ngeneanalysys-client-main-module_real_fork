@@ -31,10 +31,7 @@ import ngeneanalysys.controller.VirtualPanelEditController;
 import ngeneanalysys.controller.extend.SubPaneController;
 import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.*;
-import ngeneanalysys.model.paged.PagedCustomDatabase;
-import ngeneanalysys.model.paged.PagedPanel;
-import ngeneanalysys.model.paged.PagedPanelView;
-import ngeneanalysys.model.paged.PagedReportTemplate;
+import ngeneanalysys.model.paged.*;
 import ngeneanalysys.model.render.ComboBoxConverter;
 import ngeneanalysys.model.render.ComboBoxItem;
 import ngeneanalysys.service.APIService;
@@ -46,10 +43,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.controlsfx.control.CheckComboBox;
 import org.slf4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -254,6 +248,9 @@ public class SystemManagerPanelController extends SubPaneController {
     private Button saveTextFile;
 
     @FXML
+    private Button roiFileDownloadButton;
+
+    @FXML
     private TitledPane customDatabaseTitledPane;
 
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
@@ -404,6 +401,7 @@ public class SystemManagerPanelController extends SubPaneController {
         });
 
         setDisabledItem(true);
+        roiFileDownloadButton.setDisable(true);
         initToolTip();
     }
 
@@ -1322,6 +1320,7 @@ public class SystemManagerPanelController extends SubPaneController {
                         try {
                             setPanelList(1);
                             setDisabledItem(true);
+                            roiFileDownloadButton.setDisable(true);
                             panelSaveButton.setDisable(true);
                             basicInformationTitlePane.setExpanded(true);
                         } catch (Exception e) {
@@ -1332,6 +1331,7 @@ public class SystemManagerPanelController extends SubPaneController {
                 } else {
                     setPanelList(1);
                     setDisabledItem(true);
+                    roiFileDownloadButton.setDisable(true);
                     panelSaveButton.setDisable(true);
                     basicInformationTitlePane.setExpanded(true);
                 }
@@ -1490,6 +1490,7 @@ public class SystemManagerPanelController extends SubPaneController {
         titleLabel.setText("Panel Add");
         panelId = 0;
         setDisabledItem(false);
+        roiFileDownloadButton.setDisable(true);
         //새로 추가하는 패널에 경우 panel id가 존재하지 않으므로 custom db를 생성해둘 수 없음
         customDatabaseAddBtn.setDisable(true);
         customDatabaseTable.setDisable(true);
@@ -1528,6 +1529,8 @@ public class SystemManagerPanelController extends SubPaneController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                roiFileDownloadButton.setDisable(false);
 
                 titleLabel.setText("Panel Update");
 
@@ -2130,6 +2133,41 @@ public class SystemManagerPanelController extends SubPaneController {
                 logger.debug(e.getMessage());
             }
         }
+    }
+
+    @FXML
+    private void downloadROIfile() {
+        PagedTargetROI  pagedTargetROI;
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("panelId", panelId);
+            HttpClientResponse response = apiService.get("admin/targetROIs", params, null, false);
+            pagedTargetROI = response.getObjectBeforeConvertResponseToJSON(PagedTargetROI.class);
+            if(pagedTargetROI.getCount() > 0) {
+                System.out.println(pagedTargetROI.getCount() + "");
+
+                List<String> list = pagedTargetROI.getResult().stream().map(TargetROI::getGeneSymbol).distinct().collect(Collectors.toList());
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.getExtensionFilters()
+                        .addAll(new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"));
+                fileChooser.setTitle("export Target ROI to txt format file");
+                File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+                if (file != null) {
+                    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
+                        out.write("chr\tstart\tend\tgene\tstrand\texon\ttranscript_ID");
+                        out.newLine();
+                        for (TargetROI targetROI : pagedTargetROI.getResult()) {
+                            out.write(targetROI.toString());
+                            out.newLine();
+                        }
+                        out.flush();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
