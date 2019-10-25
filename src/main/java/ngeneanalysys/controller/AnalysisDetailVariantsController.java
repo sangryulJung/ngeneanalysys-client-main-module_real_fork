@@ -16,7 +16,7 @@ import ngeneanalysys.exceptions.WebAPIException;
 import ngeneanalysys.model.Panel;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.TopMenu;
-import ngeneanalysys.model.paged.PagedBrcaCNV;
+import ngeneanalysys.model.paged.PagedBrcaCNVExon;
 import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.model.paged.PagedNormalizedCoverage;
 import ngeneanalysys.service.APIService;
@@ -47,6 +47,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     @FXML
     private BorderPane detailContents;
+
+    private Label cnvTextLabel;
 
     private AnalysisDetailSNVController snvController;
 
@@ -92,42 +94,46 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     }
 
-    private boolean checkSomaticCNV() {
+    private Integer checkSomaticCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
 
         try {
             HttpClientResponse response = apiService.get("/analysisResults/cnv/" + sample.getId(), null, null, null);
             PagedCnv pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedCnv.class);
             if (pagedCNV.getCount() > 0) {
-                return true;
+                return (int)pagedCNV.getResult().stream()
+                        .filter(cnv -> cnv.getIncludedInReport().equals("Y"))
+                        .count();
             }
         } catch (WebAPIException wae) {
-            return false;
+            return -1;
         }
 
-        return false;
+        return -1;
     }
 
-    private boolean checkBrcaCNV() {
+    private Integer checkBrcaCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
         Integer sampleSize = (Integer)paramMap.get("sampleSize");
 
         if(PipelineCode.isBRCACNVPipeline(sample.getPanel().getCode()) && sampleSize > 5) {
             try {
-                HttpClientResponse response = apiService.get("/analysisResults/brcaCnv/" + sample.getId(), null, null, null);
-                PagedBrcaCNV pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNV.class);
+                HttpClientResponse response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null, null, null);
+                PagedBrcaCNVExon pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);
                 if (pagedCNV.getCount() > 0) {
-                    return true;
+                    return (int)pagedCNV.getResult().stream()
+                            .filter(cnv -> cnv.getIncludedInReport().equals("Y"))
+                            .count();
                 }
             } catch (WebAPIException wae) {
-                return false;
+                return -1;
             }
         }
 
-        return false;
+        return -1;
     }
 
-    private boolean checkHeredAmcCNV() {
+    private Integer checkHeredAmcCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
 
         if(sample.getPanel().getCode().equals(PipelineCode.HERED_ACCUTEST_AMC_CNV_DNA.getCode())) {
@@ -135,14 +141,14 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 HttpClientResponse response = apiService.get("/analysisResults/normalizedCoverage/" + sample.getId(), null, null, null);
                 PagedNormalizedCoverage pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedNormalizedCoverage.class);
                 if (pagedCNV.getCount() > 0) {
-                    return true;
+                    return 0;
                 }
             } catch (WebAPIException wae) {
-                return false;
+                return -1;
             }
         }
 
-        return false;
+        return -1;
     }
 
     private void setDefaultTab() {
@@ -159,7 +165,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 menu.setStaticMenu(true);
                 topMenus[1] = menu;
             } else {
-                if(checkSomaticCNV()) {
+                int v;
+                if((v = checkSomaticCNV()) >= 0) {
                     topMenus = new TopMenu[2];
                     topMenuContent = new Node[topMenus.length];
                     menu = new TopMenu();
@@ -169,17 +176,17 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     menu.setDisplayOrder(1);
                     menu.setStaticMenu(true);
                     topMenus[1] = menu;
-                } else if(checkBrcaCNV()) {
+                } else if((v = checkBrcaCNV()) >= 0) {
                     topMenus = new TopMenu[2];
                     topMenuContent = new Node[topMenus.length];
                     menu = new TopMenu();
-                    menu.setMenuName("CNV");
+                    menu.setMenuName("CNV (R :" + v + ")");
                     menu.setParamMap(getParamMap());
                     menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV);
                     menu.setDisplayOrder(1);
                     menu.setStaticMenu(true);
                     topMenus[1] = menu;
-                } else if(checkHeredAmcCNV()) {
+                } else if((v = checkHeredAmcCNV()) >= 0) {
                     topMenus = new TopMenu[2];
                     topMenuContent = new Node[topMenus.length];
                     menu = new TopMenu();
@@ -232,6 +239,10 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
         }
     }
 
+    void setCnvTextLabel(String text) {
+        cnvTextLabel.setText(text);
+    }
+
     /**
      * 상단 메뉴 새로 출력
      * @param selectIdx int
@@ -251,6 +262,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                 Region region = new Region();
                 Label menuName = new Label(topMenu.getMenuName());
                 menuName.setLayoutX(0);
+
+                if(topMenu.getMenuName().contains("CNV")) cnvTextLabel = menuName;
 
                 region.getStyleClass().removeAll(region.getStyleClass());
                 menuName.getStyleClass().removeAll(menuName.getStyleClass());
