@@ -793,12 +793,26 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
         List<VariantAndInterpretationEvidence> negativeResult = new ArrayList<>();
         //리포트에서 제외된 negative 정보를 제거
         if(negativeList != null && !negativeList.isEmpty()) {
-            negativeResult.addAll(negativeList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList()));
+            negativeResult.addAll(negativeList.stream()
+                    .filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList()));
         }
+
+        List<VariantAndInterpretationEvidence> allVariant = new ArrayList<>();
+        allVariant.addAll(tierOne);
+        allVariant.addAll(tierTwo);
+        allVariant.addAll(tierThree);
+        allVariant.addAll(tierFour);
+
+        List<VariantAndInterpretationEvidence> notReportedVariant = allVariant.stream()
+                .filter(item -> item.getSnpInDel().getIncludedInReport().equals("N"))
+                .collect(Collectors.toList());
 
         //리포트에서 제외된 variant를 제거
         if(!variantList.isEmpty()) {
-            variantList = variantList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList());
+            variantList = variantList.stream()
+                    .filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y"))
+                    .collect(Collectors.toList());
         }
 
         List<VariantAndInterpretationEvidence> clinicalVariantList = new ArrayList<>();
@@ -872,6 +886,7 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
         contentsMap.put("clinicalVariantList", clinicalVariantList);
         contentsMap.put("variantList", variantList);
+        contentsMap.put("notReportedVariantList", notReportedVariant);
         contentsMap.put("tierThreeVariantList", tierThree);
         contentsMap.put("tierOneCount", (int)tierOne.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());
         contentsMap.put("tierTwoCount", (int)tierTwo.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).count());

@@ -447,7 +447,6 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
             negativeList = list.stream().filter(item -> (
                     StringUtils.isEmpty(item.getSnpInDel().getExpertTier()) && "TN".equalsIgnoreCase(item.getSnpInDel().getSwTier())) ||
                     "TN".equalsIgnoreCase(item.getSnpInDel().getExpertTier())).collect(Collectors.toList());
-
             tierOne = settingTierList(list, "T1");
 
             tierTwo = settingTierList(list, "T2");
@@ -722,6 +721,18 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
         if(!variantList.isEmpty()) {
             variantList = variantList.stream().filter(item -> item.getSnpInDel().getIncludedInReport().equals("Y")).collect(Collectors.toList());
         }
+
+        List<VariantAndInterpretationEvidence> allVariant = new ArrayList<>();
+        allVariant.addAll(tierOne);
+        allVariant.addAll(tierTwo);
+        allVariant.addAll(tierThree);
+        allVariant.addAll(tierFour);
+
+        List<VariantAndInterpretationEvidence> notReportedVariant = allVariant.stream()
+                .filter(item -> item.getSnpInDel().getIncludedInReport().equals("N"))
+                .collect(Collectors.toList());
+
+        contentsMap.put("notReportedVariantList", notReportedVariant);
 
         List<VariantAndInterpretationEvidence> clinicalVariantList = new ArrayList<>();
 
