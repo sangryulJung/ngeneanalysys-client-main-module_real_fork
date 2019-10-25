@@ -1318,7 +1318,10 @@ public class VariantFilterController extends SubPaneController {
 
         if(StringUtils.isNotEmpty(geneTextField.getText())) {
 
-            String[] geneList = geneTextField.getText().replace(" ", "").split(",");
+            String[] geneList = geneTextField.getText()
+                    .replaceAll("\\p{Z}", "")
+                    .replaceAll(",+", ",")
+                    .split(",");
 
             for(String gene : geneList) {
                 list.add("gene " + gene);
@@ -1327,7 +1330,10 @@ public class VariantFilterController extends SubPaneController {
 
         if(StringUtils.isNotEmpty(chromosomeTextField.getText())) {
 
-            String[] chrList = chromosomeTextField.getText().replace(" ", "").split(",");
+            String[] chrList = chromosomeTextField.getText()
+                    .replaceAll("\\p{Z}", "")
+                    .replaceAll(",+", ",")
+                    .split(",");
 
             for(String chr : chrList) {
                 list.add("chromosome " + chr);
