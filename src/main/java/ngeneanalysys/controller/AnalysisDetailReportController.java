@@ -1070,7 +1070,9 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             // Show save bedFile dialog
             FileChooser fileChooser = new FileChooser();
-            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
+            if(panel.getName().contains("SOLIDaccuTest PSS")) {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ZIP (*.zip)", "*.zip"));
+            } else if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("WORD (*.docx)", "*.docx"));
             } else if(outputType != null && outputType.equalsIgnoreCase("PDF")){
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));

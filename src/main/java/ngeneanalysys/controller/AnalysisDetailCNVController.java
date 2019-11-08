@@ -126,7 +126,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                     } else {
                         label.getStyleClass().add("report_uncheck");
                     }
-                    label.setCursor(Cursor.HAND);
+                    /*label.setCursor(Cursor.HAND);
                     label.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> {
                         try {
                             Map<String, Object> params = new HashMap<>();
@@ -143,7 +143,7 @@ public class AnalysisDetailCNVController extends AnalysisDetailCommonController 
                         } catch (WebAPIException wae) {
                             wae.printStackTrace();
                         }
-                    });
+                    });*/
                     setGraphic(label);
                 }
 

@@ -14,6 +14,11 @@ public class Cnv {
     private String swTier;
     private String expertTier;
     private String includedInReport;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
 
     public Integer getId() {
         return id;

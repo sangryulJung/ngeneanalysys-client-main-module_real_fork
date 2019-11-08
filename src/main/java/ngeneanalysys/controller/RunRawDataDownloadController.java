@@ -83,11 +83,13 @@ public class RunRawDataDownloadController extends SubPaneController {
         checkBoxes.add(createCheckBox("QC SUMMARY", "xlsx"));
         checkBoxes.add(createCheckBox("VCF", "vcf"));
         checkBoxes.add(createCheckBox("FASTQ", "fastq.gz"));
+        checkBoxes.add(createCheckBox("VARIANT", "variant"));
 
         GridPane grid = new GridPane();
         grid.setVgap(10.0);
         grid.setHgap(10.0);
 
+        grid.getRowConstraints().add(new RowConstraints(30));
         grid.getRowConstraints().add(new RowConstraints(30));
         grid.getRowConstraints().add(new RowConstraints(30));
 
@@ -97,6 +99,7 @@ public class RunRawDataDownloadController extends SubPaneController {
         grid.add(checkBoxes.get(1), 0, 1);
         grid.add(checkBoxes.get(2), 1, 0);
         grid.add(checkBoxes.get(3), 1, 1);
+        grid.add(checkBoxes.get(4), 0, 2);
         if(runSampleView.getSampleViews().stream()
                 .anyMatch(item -> !PipelineCode.isBRCAPipeline(item.getPanel().getCode()))) {
             checkBoxes.get(1).setDisable(true);
