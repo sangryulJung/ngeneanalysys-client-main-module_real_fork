@@ -713,6 +713,8 @@ public class SystemManagerPanelController extends SubPaneController {
             panelListTable.refresh();
         }
 
+        roiFileDownloadButton.setDisable(true);
+
         customDatabaseTitledPane.setVisible(false);
 
         int totalCount = 0;
