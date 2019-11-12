@@ -91,6 +91,15 @@
     -fx-background-color : #5a64a5;
 }
 
+.cnv_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 18;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #8F9FB9;
+}
+
 .count_label {
     -fx-pref-width : 32;
     -fx-alignment : center-left;
@@ -100,9 +109,15 @@
     -fx-font-weight : 100;
 }
 
-.variant_hbox {
+.status_hbox {
     -fx-background-color : #FFFFFF;
     -fx-alignment : center;
+    -fx-pref-height : 30;
+}
+
+.variant_hbox {
+    -fx-background-color : #FFFFFF;
+    -fx-alignment : center-left;
     -fx-pref-height : 30;
 }
 

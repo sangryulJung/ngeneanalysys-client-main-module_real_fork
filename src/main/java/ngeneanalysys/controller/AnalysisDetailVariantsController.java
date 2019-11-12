@@ -180,7 +180,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
                     topMenus = new TopMenu[2];
                     topMenuContent = new Node[topMenus.length];
                     menu = new TopMenu();
-                    menu.setMenuName("CNV (R :" + v + ")");
+                    //menu.setMenuName("CNV (R :" + v + ")");
+                    menu.setMenuName("CNV");
                     menu.setParamMap(getParamMap());
                     menu.setFxmlPath(FXMLConstants.ANALYSIS_DETAIL_BRCA_CNV);
                     menu.setDisplayOrder(1);

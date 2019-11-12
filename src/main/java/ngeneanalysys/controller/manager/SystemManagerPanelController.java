@@ -2146,8 +2146,6 @@ public class SystemManagerPanelController extends SubPaneController {
             HttpClientResponse response = apiService.get("admin/targetROIs", params, null, false);
             pagedTargetROI = response.getObjectBeforeConvertResponseToJSON(PagedTargetROI.class);
             if(pagedTargetROI.getCount() > 0) {
-                System.out.println(pagedTargetROI.getCount() + "");
-
                 List<String> list = pagedTargetROI.getResult().stream().map(TargetROI::getGeneSymbol).distinct().collect(Collectors.toList());
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.getExtensionFilters()

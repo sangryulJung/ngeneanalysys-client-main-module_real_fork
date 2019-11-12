@@ -14,13 +14,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
+<GridPane fx:id="experimentPastResultsWrapper" prefHeight="555.0" prefWidth="1200.0" styleClass="background_white" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ngeneanalysys.controller.PastResultsController">
    <columnConstraints>
       <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
       <ColumnConstraints prefWidth="350.0" />
-      <ColumnConstraints minWidth="10.0" prefWidth="510.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="530.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="30.0" />
-      <ColumnConstraints minWidth="10.0" prefWidth="250.0" />
+      <ColumnConstraints minWidth="10.0" prefWidth="230.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" prefWidth="30.0" />
    </columnConstraints>
    <rowConstraints>
@@ -52,7 +52,7 @@
          </GridPane.margin></Pagination>
       <GridPane fx:id="sampleListHeaderGridPane" alignment="CENTER" prefWidth="860.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="225.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="245.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="235.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="185.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="185.0" />
@@ -84,9 +84,9 @@
                </styleClass></Label>
          </children>
       </GridPane>
-      <ScrollPane fx:id="mainContentsScrollPane" maxHeight="1.7976931348623157E308" maxWidth="870.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
+      <ScrollPane fx:id="mainContentsScrollPane" maxHeight="1.7976931348623157E308" maxWidth="890.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
          <content>
-            <VBox fx:id="resultVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="858.0" />
+            <VBox fx:id="resultVBox" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="878.0" />
          </content>
       </ScrollPane>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2">

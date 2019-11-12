@@ -737,7 +737,7 @@ public class PastResultsController extends SubPaneController {
 			Label panel = new Label("Panel");
 			labelSize(panel, 170., styleClass);
 			Label variants = new Label("Variant");
-			labelSize(variants, 340., styleClass);
+			labelSize(variants, 360., styleClass);
 			Label qc = new Label("QC");
 			labelSize(qc, 78., styleClass);
 			Label restart = new Label();
@@ -826,7 +826,7 @@ public class PastResultsController extends SubPaneController {
 				labelSize(name, 180., styleClass);
 				HBox statusHBox = new HBox();
 				statusHBox.setPrefWidth(70);
-				statusHBox.getStyleClass().add("variant_hbox");
+				statusHBox.getStyleClass().add("status_hbox");
 				Label status = new Label(sampleView.getSampleStatus().getStatus().substring(0,1));
 				if(sampleView.getSampleStatus().getStatus().startsWith("C")) {
 					status.getStyleClass().addAll("label","run_complete_icon");
@@ -847,7 +847,7 @@ public class PastResultsController extends SubPaneController {
 				labelSize(panel, 170., styleClass);
 				HBox variants = new HBox();
 				variants.getStyleClass().add("variant_hbox");
-				variants.setPrefWidth(340);
+				variants.setPrefWidth(360);
 				variants.setSpacing(5);
 				if(sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
@@ -974,6 +974,13 @@ public class PastResultsController extends SubPaneController {
 								lv4Icon, lv4Value);
 
 			}
+
+			if(StringUtils.isNotEmpty(summary.getCnvResult()) &&
+					summary.getCnvResult().equals("Y")) {
+				Label cnvIcon = createIconLabel("CNV", "cnv_icon");
+				variantHBox.getChildren().addAll(cnvIcon);
+			}
+
 		}
 
 		private Label createIconLabel(String text, String styleClass) {
@@ -999,7 +1006,7 @@ public class PastResultsController extends SubPaneController {
 
 		public RunStatusGirdPane() {
 			ColumnConstraints col1 = new ColumnConstraints();
-			col1.setPrefWidth(225);
+			col1.setPrefWidth(245);
 			ColumnConstraints col2 = new ColumnConstraints();
 			col2.setPrefWidth(235);
 			ColumnConstraints col3 = new ColumnConstraints();
