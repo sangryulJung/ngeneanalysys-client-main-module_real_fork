@@ -1070,12 +1070,12 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
 
             // Show save bedFile dialog
             FileChooser fileChooser = new FileChooser();
-            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
+            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD_ZIP")) {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ZIP (*.zip)", "*.zip"));
+            } else if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("WORD (*.docx)", "*.docx"));
             } else if(outputType != null && outputType.equalsIgnoreCase("PDF")){
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
-            } else if(outputType != null && outputType.equalsIgnoreCase("IMG")){
-                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG (*.jpg)", "*.jpg"));
             }
             fileChooser.setInitialFileName(baseSaveName);
             File file = fileChooser.showSaveDialog(this.getMainApp().getPrimaryStage());
@@ -1127,7 +1127,8 @@ public class AnalysisDetailReportController extends AnalysisDetailCommonControll
                     final ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
                     if(reportContents.getReportTemplate().getOutputType() != null
-                            && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD")) {
+                            && (reportContents.getReportTemplate().getOutputType().contains("MS_WORD") ||
+                            reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD_ZIP"))) {
                         List<ReportComponent> components = reportContents.getReportComponents();
 
                         if(components == null || components.isEmpty()) throw new Exception();

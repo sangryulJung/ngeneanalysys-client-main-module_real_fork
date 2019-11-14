@@ -355,7 +355,8 @@ public class SystemManagerReportTemplateController extends SubPaneController{
 
                 ReportTemplate reportTemplate = response.getObjectBeforeConvertResponseToJSON(ReportTemplate.class);
 
-                if(outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("MS_WORD")) {
+                if(outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("MS_WORD")
+                        || outputTypeComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("MS_WORD_ZIP")) {
 
                     if(wordCreatorJar == null) return;
 
@@ -535,6 +536,7 @@ public class SystemManagerReportTemplateController extends SubPaneController{
     private void settingReportType() {
         outputTypeComboBox.getItems().add("PDF");
         outputTypeComboBox.getItems().add("MS_WORD");
+        outputTypeComboBox.getItems().add("MS_WORD_ZIP");
         outputTypeComboBox.getSelectionModel().select("MS_WORD");
     }
 

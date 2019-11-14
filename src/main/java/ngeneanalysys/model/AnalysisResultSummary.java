@@ -20,6 +20,7 @@ public class AnalysisResultSummary implements Serializable {
     private Integer level4VariantCount;
     private Integer level5VariantCount;
     private Integer reportVariantCount;
+    private String cnvResult;
 
     /**
      * @return reportVariantCount
@@ -78,6 +79,10 @@ public class AnalysisResultSummary implements Serializable {
         return geneCount;
     }
 
+    public String getCnvResult() {
+        return cnvResult;
+    }
+
     @Override
     public String toString() {
         return "AnalysisResultSummary{" +
@@ -87,13 +92,15 @@ public class AnalysisResultSummary implements Serializable {
                 ", depthMean=" + depthMean +
                 ", geneCount=" + geneCount +
                 ", allVariantCount=" + allVariantCount +
-                ", warningVariantCount=" + warningVariantCount +
                 ", falseVariantCount=" + falseVariantCount +
+                ", warningVariantCount=" + warningVariantCount +
                 ", level1VariantCount=" + level1VariantCount +
                 ", level2VariantCount=" + level2VariantCount +
                 ", level3VariantCount=" + level3VariantCount +
                 ", level4VariantCount=" + level4VariantCount +
                 ", level5VariantCount=" + level5VariantCount +
+                ", reportVariantCount=" + reportVariantCount +
+                ", cnvResult='" + cnvResult + '\'' +
                 '}';
     }
 }

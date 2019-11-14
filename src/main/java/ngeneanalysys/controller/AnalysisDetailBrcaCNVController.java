@@ -679,7 +679,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             setTableItem(geneComboBox.getSelectionModel().getSelectedItem().getValue());
 
             initImageArea();
-
         } catch (WebAPIException wae) {
             DialogUtil.warning(wae.getHeaderText(), wae.getMessage(), mainApp.getPrimaryStage(), true);
         }

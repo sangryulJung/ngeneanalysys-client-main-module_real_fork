@@ -7,24 +7,28 @@ import java.math.BigDecimal;
  * @since 2018-05-23
  */
 public class Cnv {
+    private Integer id;
     private Integer sampleId;
     private String gene;
     private BigDecimal cnvValue;
-    private String tier;
+    private String swTier;
+    private String expertTier;
     private String includedInReport;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     /**
      * @return includedInReport
      */
     public String getIncludedInReport() {
         return includedInReport;
-    }
-
-    /**
-     * @return tier
-     */
-    public String getTier() {
-        return tier;
     }
 
     /**
@@ -46,5 +50,13 @@ public class Cnv {
      */
     public BigDecimal getCnvValue() {
         return cnvValue;
+    }
+
+    public String getSwTier() {
+        return swTier;
+    }
+
+    public String getExpertTier() {
+        return expertTier;
     }
 }

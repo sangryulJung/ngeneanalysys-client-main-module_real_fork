@@ -854,24 +854,6 @@ public class SampleUploadScreenFirstController extends BaseStageController{
             return;
         }
 
-        if(isBrcaCnvPanel && sampleArrayList.size() < 6) {
-            String alertContentText = "More than 6 samples are required for running appropriate CNV analysis. Would you like to continue to proceed?";
-
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            DialogUtil.setIcon(alert);
-            alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
-            alert.initOwner(this.mainController.getPrimaryStage());
-            alert.setTitle("CNV Warning");
-            alert.setHeaderText("");
-            alert.setContentText(alertContentText);
-
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if(result.isPresent() && result.get() == ButtonType.CANCEL) {
-                return;
-            }
-        }
-
         if(sampleUploadController.getRun() != null) {
             newSampleAdded();
             if((uploadFileData != null && !uploadFileData.isEmpty()) &&

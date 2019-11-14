@@ -1034,7 +1034,11 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, Object> params = new HashMap<>();
         Map<String, List<Object>> filterList = new HashMap<>();
         setFilterItem(filterList);
-        params.put("exportFields", getExportFields());
+        if(PipelineCode.isHeredPipeline(panel.getCode()) || PipelineCode.isBRCAPipeline(panel.getCode())) {
+            params.put("exportFields", getExportFields() + ",enigmaPathogenicity,acmg,acmgCriteria");
+        } else {
+            params.put("exportFields", getExportFields() + ",evidence");
+        }
         WorksheetUtil worksheetUtil = new WorksheetUtil();
         worksheetUtil.exportSampleData(fileType, filterList, params, this.getMainApp(), sample);
     }
@@ -1139,9 +1143,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         checkBoxColumn.setCellValueFactory(cellData -> new SimpleBooleanProperty(cellData.getValue() != null ));
         checkBoxColumn.setCellFactory(param -> new BooleanCell());
         double predictionColumnSize = 30d;
-        String columnName = "Pathogenicity";
+        String columnName = SnvTableColumnCode.PATHOGENICITY.getName();
         if(panel.getAnalysisType().equals(AnalysisTypeCode.SOMATIC.getDescription())) {
-            columnName = "Tier";
+            columnName = SnvTableColumnCode.TIER.getName();
         }
         TableColumn<VariantAndInterpretationEvidence, String> predictionColumn = new TableColumn<>(columnName);
         createTableHeader(predictionColumn, columnName, columnName, predictionColumnSize, columnName.toLowerCase());
@@ -1216,8 +1220,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>("Warning");
-        createTableHeader(warn, "Warning", "Warning" , 30., "warningReason");
+        TableColumn<VariantAndInterpretationEvidence, String> warn = new TableColumn<>(SnvTableColumnCode.WARNING.getName());
+        createTableHeader(warn, SnvTableColumnCode.WARNING.getName(), "Warning" , 30., SnvTableColumnCode.WARNING.getId());
         warn.getStyleClass().add(centerStyleClass);
         warn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getHasWarning()));
         warn.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1227,8 +1231,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>("False");
-        createTableHeader(falsePositive, "False", "",55., "falseReason");
+        TableColumn<VariantAndInterpretationEvidence, String> falsePositive = new TableColumn<>(SnvTableColumnCode.FALSE.getName());
+        createTableHeader(falsePositive, SnvTableColumnCode.FALSE.getName(), "",55., SnvTableColumnCode.FALSE.getId());
         falsePositive.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getIsFalse()));
         falsePositive.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
@@ -1265,8 +1269,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         falsePositive.setMinWidth(0);
         falsePositive.setMaxWidth(0);
 
-        TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>("Report");
-        createTableHeader(reportTest, "Report", "Report", 30., "includedInReport");
+        TableColumn<VariantAndInterpretationEvidence, String> reportTest = new TableColumn<>(SnvTableColumnCode.REPORT.getName());
+        createTableHeader(reportTest, SnvTableColumnCode.REPORT.getName(), "Report", 30., SnvTableColumnCode.REPORT.getId());
         reportTest.getStyleClass().add(centerStyleClass);
         reportTest.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getIncludedInReport()));
         reportTest.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1332,8 +1336,8 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>("Gene");
-        createTableHeader(gene, "Gene", "" ,null, "gene");
+        TableColumn<VariantAndInterpretationEvidence, String> gene = new TableColumn<>(SnvTableColumnCode.GENE.getName());
+        createTableHeader(gene, SnvTableColumnCode.GENE.getName(), "" ,null, SnvTableColumnCode.GENE.getId());
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         gene.setCellFactory(column ->
             new TableCell<VariantAndInterpretationEvidence, String>() {
@@ -1358,47 +1362,47 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         );
 
-        TableColumn<VariantAndInterpretationEvidence, String> transcriptAccession = new TableColumn<>("Transcript Accession");
-        createTableHeader(transcriptAccession, "Transcript Accession", null ,null, "transcriptAccession");
+        TableColumn<VariantAndInterpretationEvidence, String> transcriptAccession = new TableColumn<>(SnvTableColumnCode.TRANSCRIPT_ACCESSION.getName());
+        createTableHeader(transcriptAccession, SnvTableColumnCode.TRANSCRIPT_ACCESSION.getName(), null ,null, SnvTableColumnCode.TRANSCRIPT_ACCESSION.getId());
         transcriptAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getTranscriptAccession()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> proteinAccession = new TableColumn<>("Protein Accession");
-        createTableHeader(proteinAccession, "Protein Accession", null ,null, "proteinAccession");
+        TableColumn<VariantAndInterpretationEvidence, String> proteinAccession = new TableColumn<>(SnvTableColumnCode.PROTEIN_ACCESSION.getName());
+        createTableHeader(proteinAccession, SnvTableColumnCode.PROTEIN_ACCESSION.getName(), null ,null, SnvTableColumnCode.PROTEIN_ACCESSION.getId());
         proteinAccession.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getProteinAccession()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>("Type");
-        createTableHeader(type, "Type", "" ,null, "variantType");
+        TableColumn<VariantAndInterpretationEvidence, String> type = new TableColumn<>(SnvTableColumnCode.TYPE.getName());
+        createTableHeader(type, SnvTableColumnCode.TYPE.getName(), "" ,null, SnvTableColumnCode.TYPE.getId());
         type.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantType()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>("Consequence");
-        createTableHeader(codCons, "Consequence", null ,140., "codingConsequence");
+        TableColumn<VariantAndInterpretationEvidence, String> codCons = new TableColumn<>(SnvTableColumnCode.CONSEQUENCE.getName());
+        createTableHeader(codCons, SnvTableColumnCode.CONSEQUENCE.getName(), null ,140., SnvTableColumnCode.CONSEQUENCE.getId());
         codCons.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getCodingConsequence()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>("NT Change");
-        createTableHeader(ntChange, "NT Change", null ,160., "ntChange");
+        TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>(SnvTableColumnCode.NT_CHANGE.getName());
+        createTableHeader(ntChange, SnvTableColumnCode.NT_CHANGE.getName(), null ,160., SnvTableColumnCode.NT_CHANGE.getId());
         ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>("NT Change (BIC)");
-        createTableHeader(ntChangeBIC, "NT Change (BIC)", null ,140., "ntChangeBic");
+        TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>(SnvTableColumnCode.NT_CHANGE_BIC.getName());
+        createTableHeader(ntChangeBIC, SnvTableColumnCode.NT_CHANGE_BIC.getName(), null ,140., SnvTableColumnCode.NT_CHANGE_BIC.getId());
         ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().createNtChangeBRCA()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>("AA Change");
-        createTableHeader(aaChange, "AA Change", null ,140., "aaChange");
+        TableColumn<VariantAndInterpretationEvidence, String> aaChange = new TableColumn<>(SnvTableColumnCode.AA_CHANGE.getName());
+        createTableHeader(aaChange, SnvTableColumnCode.AA_CHANGE.getName(), null ,140., SnvTableColumnCode.AA_CHANGE.getId());
         aaChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChange()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>("AA Change (Single)");
-        createTableHeader(aaChangeConversion, "AA Change (Single)", null ,140., "aaChangeSingleLetter");
+        TableColumn<VariantAndInterpretationEvidence, String> aaChangeConversion = new TableColumn<>(SnvTableColumnCode.AA_CHANGE_SINGLE.getName());
+        createTableHeader(aaChangeConversion, SnvTableColumnCode.AA_CHANGE_SINGLE.getName(), null ,140., SnvTableColumnCode.AA_CHANGE_SINGLE.getId());
         aaChangeConversion.setCellValueFactory(cellData -> cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter() == null ?
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeConversion()) :
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAaChangeSingleLetter()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>("Chr");
-        createTableHeader(chr, "Chr", "" ,null, "chromosome");
+        TableColumn<VariantAndInterpretationEvidence, String> chr = new TableColumn<>(SnvTableColumnCode.CHROMOSOME.getName());
+        createTableHeader(chr, SnvTableColumnCode.CHROMOSOME.getName(), "" ,null, SnvTableColumnCode.CHROMOSOME.getId());
         chr.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getChromosome()));
 
-        TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>("Start Position");
+        TableColumn<VariantAndInterpretationEvidence, Integer> genomicCoordinate = new TableColumn<>(SnvTableColumnCode.START_POSITION.getName());
         genomicCoordinate.setStyle(genomicCoordinate.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(genomicCoordinate, "Start Position", "" ,null, "startPosition");
+        createTableHeader(genomicCoordinate, SnvTableColumnCode.START_POSITION.getName(), "" ,null, SnvTableColumnCode.START_POSITION.getId());
         genomicCoordinate.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStartPosition()).asObject());
         genomicCoordinate.setCellFactory(column ->
                 new TableCell<VariantAndInterpretationEvidence, Integer>() {
@@ -1422,16 +1426,16 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
         );
 
-        TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>("Ref");
-        createTableHeader(ref, "Ref", null ,null, "refSequence");
+        TableColumn<VariantAndInterpretationEvidence, String> ref = new TableColumn<>(SnvTableColumnCode.REF.getName());
+        createTableHeader(ref, SnvTableColumnCode.REF.getName(), null ,null, SnvTableColumnCode.REF.getId());
         ref.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getRefSequence()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> alt = new TableColumn<>("Alt");
-        createTableHeader(alt, "Alt", null ,null, "altSequence");
+        TableColumn<VariantAndInterpretationEvidence, String> alt = new TableColumn<>(SnvTableColumnCode.ALT.getName());
+        createTableHeader(alt, SnvTableColumnCode.ALT.getName(), null ,null, SnvTableColumnCode.ALT.getId());
         alt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getAltSequence()));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>("Fraction");
-        createTableHeader(fraction, "Fraction", "" ,null, "alleleFraction");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> fraction = new TableColumn<>(SnvTableColumnCode.FRACTION.getName());
+        createTableHeader(fraction, SnvTableColumnCode.FRACTION.getName(), "" ,null, SnvTableColumnCode.FRACTION.getId());
         fraction.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getReadInfo().getAlleleFraction()));
         fraction.setCellFactory(column ->
                 new TableCell<VariantAndInterpretationEvidence, BigDecimal>() {
@@ -1458,18 +1462,18 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
         );
 
-        TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>("Depth");
+        TableColumn<VariantAndInterpretationEvidence, Integer> depth = new TableColumn<>(SnvTableColumnCode.DEPTH.getName());
         depth.setStyle(depth.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(depth, "Depth", "" ,null, "readDepth");
+        createTableHeader(depth, SnvTableColumnCode.DEPTH.getName(), "" ,null, SnvTableColumnCode.DEPTH.getId());
         depth.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getReadDepth()).asObject());
 
-        TableColumn<VariantAndInterpretationEvidence, Integer> refNum = new TableColumn<>("Ref Count");
+        TableColumn<VariantAndInterpretationEvidence, Integer> refNum = new TableColumn<>(SnvTableColumnCode.REF_COUNT.getName());
         refNum.setStyle(refNum.getStyle() + "-fx-alignment : baseline-right;");
-        createTableHeader(refNum, "Ref Count", "" ,null, "refReadNum");
+        createTableHeader(refNum, SnvTableColumnCode.REF_COUNT.getName(), "" ,null, SnvTableColumnCode.REF_COUNT.getId());
         refNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getRefReadNum()).asObject());
 
-        TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>("Alt Count");
-        createTableHeader(altNum, "Alt Count", "" ,null, "altReadNum");
+        TableColumn<VariantAndInterpretationEvidence, Integer> altNum = new TableColumn<>(SnvTableColumnCode.ALT_COUNT.getName());
+        createTableHeader(altNum, SnvTableColumnCode.ALT_COUNT.getName(), "" ,null, SnvTableColumnCode.ALT_COUNT.getId());
         altNum.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getSnpInDel().getReadInfo().getAltReadNum()).asObject());
         altNum.setCellFactory(column ->
                 new TableCell<VariantAndInterpretationEvidence, Integer>() {
@@ -1491,28 +1495,28 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 }
         );
 
-        TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>("dbSNP ID");
-        createTableHeader(dbSnpRsId, "dbSNP ID", null ,null, "dbSnpRsId");
+        TableColumn<VariantAndInterpretationEvidence, String> dbSnpRsId = new TableColumn<>(SnvTableColumnCode.DBSNP_ID.getName());
+        createTableHeader(dbSnpRsId, SnvTableColumnCode.DBSNP_ID.getName(), null ,null, SnvTableColumnCode.DBSNP_ID.getId());
         dbSnpRsId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpRsId()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>("Exon");
-        createTableHeader(exon, "Exon", null ,null, "exonNum");
+        TableColumn<VariantAndInterpretationEvidence, String> exon = new TableColumn<>(SnvTableColumnCode.EXON.getName());
+        createTableHeader(exon, SnvTableColumnCode.EXON.getName(), null ,null, SnvTableColumnCode.EXON.getId());
         exon.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNum()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>("COSMIC ID");
-        createTableHeader(cosmicIds, "COSMIC ID", null ,null, "cosmicIds");
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicIds = new TableColumn<>(SnvTableColumnCode.COSMIC_ID.getName());
+        createTableHeader(cosmicIds, SnvTableColumnCode.COSMIC_ID.getName(), null ,null, SnvTableColumnCode.COSMIC_ID.getId());
         cosmicIds.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicIds()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>("ClinVar Submitted Accession");
-        createTableHeader(clinVarAcc, "ClinVar Submitted Accession", null ,150d, "clinVarSubmittedAcc");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarAcc = new TableColumn<>(SnvTableColumnCode.CLINVAR_SUBMITTED_ACCESSION.getName());
+        createTableHeader(clinVarAcc, SnvTableColumnCode.CLINVAR_SUBMITTED_ACCESSION.getName(), null ,150d, SnvTableColumnCode.CLINVAR_SUBMITTED_ACCESSION.getId());
         clinVarAcc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarAcc()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>("ClinVar Submitted Class");
-        createTableHeader(clinVarClass, "ClinVar Submitted Class", null ,150d, "clinVarSubmittedClass");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarClass = new TableColumn<>(SnvTableColumnCode.CLINVAR_SUBMITTED_CLASS.getName());
+        createTableHeader(clinVarClass, SnvTableColumnCode.CLINVAR_SUBMITTED_CLASS.getName(), null ,150d, SnvTableColumnCode.CLINVAR_SUBMITTED_CLASS.getId());
         clinVarClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarClass()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>("ClinVar Review Status");
-        createTableHeader(clinVarReviewStatus, "ClinVar Review Status", null ,150d, "clinVarReviewStatus");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarReviewStatus = new TableColumn<>(SnvTableColumnCode.CLINVAR_REVIEW_STATUS.getName());
+        createTableHeader(clinVarReviewStatus, SnvTableColumnCode.CLINVAR_REVIEW_STATUS.getName(), null ,150d, SnvTableColumnCode.CLINVAR_REVIEW_STATUS.getId());
         clinVarReviewStatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarReviewStatus()));
         clinVarReviewStatus.setCellFactory(cell -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override
@@ -1534,308 +1538,308 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         });
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>("ClinVar Submitted Disease");
-        createTableHeader(clinVarDisease, "ClinVar Submitted Disease", null ,150d, "clinVarSubmittedDisease");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDisease = new TableColumn<>(SnvTableColumnCode.CLINVAR_SUBMITTED_DISEASE.getName());
+        createTableHeader(clinVarDisease, SnvTableColumnCode.CLINVAR_SUBMITTED_DISEASE.getName(), null ,150d, SnvTableColumnCode.CLINVAR_SUBMITTED_DISEASE.getId());
         clinVarDisease.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDisease()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarDrugResponse = new TableColumn<>("ClinVar Condition");
-        createTableHeader(clinVarDrugResponse, "ClinVar Condition", null ,150d, "clinVarDrugResponse");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarDrugResponse = new TableColumn<>(SnvTableColumnCode.CLINVAR_CONDITION.getName());
+        createTableHeader(clinVarDrugResponse, SnvTableColumnCode.CLINVAR_CONDITION.getName(), null ,150d, SnvTableColumnCode.CLINVAR_CONDITION.getId());
         clinVarDrugResponse.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarDrugResponse()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>("ClinVar Submitted OMIM");
-        createTableHeader(clinVarTraitOMIM, "ClinVar Submitted OMIM", null, null, "clinVarSubmittedOMIM");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarTraitOMIM = new TableColumn<>(SnvTableColumnCode.CLINVAR_SUBMITTED_OMIM.getName());
+        createTableHeader(clinVarTraitOMIM, SnvTableColumnCode.CLINVAR_SUBMITTED_OMIM.getName(), null, null, SnvTableColumnCode.CLINVAR_SUBMITTED_OMIM.getId());
         clinVarTraitOMIM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarTraitOMIM()));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000All = new TableColumn<>("1KGP All");
-        createTableHeader(g1000All, "1KGP All", "1000 genomes : All" ,null, "g1000All");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000All = new TableColumn<>(SnvTableColumnCode.KGP_ALL.getName());
+        createTableHeader(g1000All, SnvTableColumnCode.KGP_ALL.getName(), "1000 genomes : All" ,null, SnvTableColumnCode.KGP_ALL.getId());
         g1000All.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAll())));
         g1000All.setCellFactory(cell -> new PopTableCell("g1000.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000African = new TableColumn<>("1KGP AFR");
-        createTableHeader(g1000African, "1KGP AFR", "1000 genomes : African" ,null, "g1000African");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000African = new TableColumn<>(SnvTableColumnCode.KGP_AFR.getName());
+        createTableHeader(g1000African, SnvTableColumnCode.KGP_AFR.getName(), "1000 genomes : African" ,null, SnvTableColumnCode.KGP_AFR.getId());
         g1000African.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAfrican())));
         g1000African.setCellFactory(cell -> new PopTableCell("g1000.african"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000American = new TableColumn<>("1KGP AMR");
-        createTableHeader(g1000American, "1KGP AMR", "1000 genomes : American" ,null, "g1000American");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000American = new TableColumn<>(SnvTableColumnCode.KGP_AMR.getName());
+        createTableHeader(g1000American, SnvTableColumnCode.KGP_AMR.getName(), "1000 genomes : American" ,null, SnvTableColumnCode.KGP_AMR.getId());
         g1000American.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getAmerican())));
         g1000American.setCellFactory(cell -> new PopTableCell("g1000.american"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000EastAsian = new TableColumn<>("1KGP EAS");
-        createTableHeader(g1000EastAsian, "1KGP EAS", "1000 genomes : East Asian" ,null, "g1000EastAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000EastAsian = new TableColumn<>(SnvTableColumnCode.KGP_EAS.getName());
+        createTableHeader(g1000EastAsian, SnvTableColumnCode.KGP_EAS.getName(), "1000 genomes : East Asian" ,null, SnvTableColumnCode.KGP_EAS.getId());
         g1000EastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEastAsian())));
         g1000EastAsian.setCellFactory(cell -> new PopTableCell("g1000.eastAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000European = new TableColumn<>("1KGP EUR");
-        createTableHeader(g1000European, "1KGP EUR", "1000 genomes : European" ,null, "g1000European");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000European = new TableColumn<>(SnvTableColumnCode.KGP_EUR.getName());
+        createTableHeader(g1000European, SnvTableColumnCode.KGP_EUR.getName(), "1000 genomes : European" ,null, SnvTableColumnCode.KGP_EUR.getId());
         g1000European.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getEuropean())));
         g1000European.setCellFactory(cell -> new PopTableCell("g1000.european"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000SouthAsian = new TableColumn<>("1KGP SAS");
-        createTableHeader(g1000SouthAsian, "1KGP SAS", "1000 genomes : South Asian" ,null, "g1000SouthAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> g1000SouthAsian = new TableColumn<>(SnvTableColumnCode.KGP_SAS.getName());
+        createTableHeader(g1000SouthAsian, SnvTableColumnCode.KGP_SAS.getName(), "1000 genomes : South Asian" ,null, SnvTableColumnCode.KGP_SAS.getId());
         g1000SouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getG1000().getSouthAsian())));
         g1000SouthAsian.setCellFactory(cell -> new PopTableCell("g1000.southAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espAll = new TableColumn<>("ESP All");
-        createTableHeader(espAll, "ESP All", "Exome Sequencing Project : All" ,null, "esp6500All");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espAll = new TableColumn<>(SnvTableColumnCode.ESP_ALL.getName());
+        createTableHeader(espAll, SnvTableColumnCode.ESP_ALL.getName(), "Exome Sequencing Project : All" ,null, SnvTableColumnCode.ESP_ALL.getId());
         espAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAll())));
         espAll.setCellFactory(cell -> new PopTableCell("esp6500.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espaa = new TableColumn<>("ESP AA");
-        createTableHeader(espaa, "ESP AA", "ESP : African American" ,null, "esp6500aa");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espaa = new TableColumn<>(SnvTableColumnCode.ESP_AA.getName());
+        createTableHeader(espaa, SnvTableColumnCode.ESP_AA.getName(), "ESP : African American" ,null, SnvTableColumnCode.ESP_AA.getId());
         espaa.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getAa())));
         espaa.setCellFactory(cell -> new PopTableCell("esp6500.aa"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>("ESP EA");
-        createTableHeader(espea, "ESP EA", "ESP : European American" ,null, "esp6500ea");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> espea = new TableColumn<>(SnvTableColumnCode.ESP_EA.getName());
+        createTableHeader(espea, SnvTableColumnCode.ESP_EA.getName(), "ESP : European American" ,null, SnvTableColumnCode.ESP_EA.getId());
         espea.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getEsp6500().getEa())));
         espea.setCellFactory(cell -> new PopTableCell("esp6500.ea"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>("ExAC");
-        createTableHeader(exac, "ExAC", "Exome Aggregation Consortium : All" ,null, "exac");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> exac = new TableColumn<>(SnvTableColumnCode.EXAC.getName());
+        createTableHeader(exac, SnvTableColumnCode.EXAC.getName(), "Exome Aggregation Consortium : All" ,null, SnvTableColumnCode.EXAC.getId());
         exac.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getExac())));
         exac.setCellFactory(cell -> new PopTableCell("exac"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAll = new TableColumn<>("gnomAD All");
-        createTableHeader(gnomadAll, "gnomAD All", "gnomAD : All", null, "gnomADall");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAll = new TableColumn<>(SnvTableColumnCode.GNOMAD_ALL.getName());
+        createTableHeader(gnomadAll, SnvTableColumnCode.GNOMAD_ALL.getName(), "gnomAD : All", null, SnvTableColumnCode.GNOMAD_ALL.getId());
         gnomadAll.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAll())));
         gnomadAll.setCellFactory(cell -> new PopTableCell("gnomAD.all"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAdmixedAmerican = new TableColumn<>("gnomAD AMR");
-        createTableHeader(gnomadAdmixedAmerican, "gnomAD AMR", "gnomAD : Admixed American", null, "gnomADadmixedAmerican");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAdmixedAmerican = new TableColumn<>(SnvTableColumnCode.GNOMAD_AMR.getName());
+        createTableHeader(gnomadAdmixedAmerican, SnvTableColumnCode.GNOMAD_AMR.getName(), "gnomAD : Admixed American", null, SnvTableColumnCode.GNOMAD_AMR.getId());
         gnomadAdmixedAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAdmixedAmerican())));
         gnomadAdmixedAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.admixedAmerican"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAfricanAfricanAmerican = new TableColumn<>("gnomAD AFR");
-        createTableHeader(gnomadAfricanAfricanAmerican, "gnomAD AFR", "gnomAD : African, African American", null, "gnomADafricanAfricanAmerican");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadAfricanAfricanAmerican = new TableColumn<>(SnvTableColumnCode.GNOMAD_AFR.getName());
+        createTableHeader(gnomadAfricanAfricanAmerican, SnvTableColumnCode.GNOMAD_AFR.getName(), "gnomAD : African, African American", null, SnvTableColumnCode.GNOMAD_AFR.getId());
         gnomadAfricanAfricanAmerican.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getAfricanAfricanAmerican())));
         gnomadAfricanAfricanAmerican.setCellFactory(cell -> new PopTableCell("gnomAD.africanAfricanAmerican"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>("gnomAD EAS");
-        createTableHeader(gnomadEastAsian, "gnomAD EAS", "gnomAD : East Asian", null, "gnomADeastAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadEastAsian = new TableColumn<>(SnvTableColumnCode.GNOMAD_EAS.getName());
+        createTableHeader(gnomadEastAsian, SnvTableColumnCode.GNOMAD_EAS.getName(), "gnomAD : East Asian", null, SnvTableColumnCode.GNOMAD_EAS.getId());
         gnomadEastAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getEastAsian())));
         gnomadEastAsian.setCellFactory(cell -> new PopTableCell("gnomAD.eastAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>("gnomAD FIN");
-        createTableHeader(gnomadFinnish, "gnomAD FIN", "gnomAD : Finnish", null, "gnomADfinnish");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadFinnish = new TableColumn<>(SnvTableColumnCode.GNOMAD_FIN.getName());
+        createTableHeader(gnomadFinnish, SnvTableColumnCode.GNOMAD_FIN.getName(), "gnomAD : Finnish", null, SnvTableColumnCode.GNOMAD_FIN.getId());
         gnomadFinnish.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getFinnish())));
         gnomadFinnish.setCellFactory(cell -> new PopTableCell("gnomAD.finnish"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadNonFinnishEuropean = new TableColumn<>("gnomAD NFE");
-        createTableHeader(gnomadNonFinnishEuropean, "gnomAD NFE", "gnomAD : Non-Finnsh European", null, "gnomADnonFinnishEuropean");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadNonFinnishEuropean = new TableColumn<>(SnvTableColumnCode.GNOMAD_NFE.getName());
+        createTableHeader(gnomadNonFinnishEuropean, SnvTableColumnCode.GNOMAD_NFE.getName(), "gnomAD : Non-Finnsh European", null, SnvTableColumnCode.GNOMAD_NFE.getId());
         gnomadNonFinnishEuropean.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getNonFinnishEuropean())));
         gnomadNonFinnishEuropean.setCellFactory(cell -> new PopTableCell("gnomAD.nonFinnishEuropean"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadOthers = new TableColumn<>("gnomAD OTH");
-        createTableHeader(gnomadOthers, "gnomAD OTH", "gnomAD : Other", null, "gnomADothers");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadOthers = new TableColumn<>(SnvTableColumnCode.GNOMAD_OTH.getName());
+        createTableHeader(gnomadOthers, SnvTableColumnCode.GNOMAD_OTH.getName(), "gnomAD : Other", null, SnvTableColumnCode.GNOMAD_OTH.getId());
         gnomadOthers.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getOthers())));
         gnomadOthers.setCellFactory(cell -> new PopTableCell("gnomAD.others"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadSouthAsian = new TableColumn<>("gnomAD SAS");
-        createTableHeader(gnomadSouthAsian, "gnomAD SAS", "gnomAD : South Asian", null, "gnomADsouthAsian");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> gnomadSouthAsian = new TableColumn<>(SnvTableColumnCode.GNOMAD_SAS.getName());
+        createTableHeader(gnomadSouthAsian, SnvTableColumnCode.GNOMAD_SAS.getName(), "gnomAD : South Asian", null, SnvTableColumnCode.GNOMAD_SAS.getId());
         gnomadSouthAsian.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getGnomAD().getSouthAsian())));
         gnomadSouthAsian.setCellFactory(cell -> new PopTableCell("gnomAD.southAsian"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>("KRGDB");
-        createTableHeader(koreanReferenceDatabase, "KRGDB", "Korean Reference Genome Database" ,null, "koreanReferenceGenomeDatabase");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanReferenceDatabase = new TableColumn<>(SnvTableColumnCode.KRGDB.getName());
+        createTableHeader(koreanReferenceDatabase, SnvTableColumnCode.KRGDB.getName(), "Korean Reference Genome Database" ,null, SnvTableColumnCode.KRGDB.getId());
         koreanReferenceDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanReferenceGenomeDatabase())));
         koreanReferenceDatabase.setCellFactory(cell -> new PopTableCell("koreanReferenceGenomeDatabase"));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>("KoEXID");
-        createTableHeader(koreanExomInformationDatabase, "KoEXID", "Korean Exome Information Database" ,null, "koreanExomInformationDatabase");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> koreanExomInformationDatabase = new TableColumn<>(SnvTableColumnCode.KOEXID.getName());
+        createTableHeader(koreanExomInformationDatabase, SnvTableColumnCode.KOEXID.getName(), "Korean Exome Information Database" ,null, SnvTableColumnCode.KOEXID.getId());
         koreanExomInformationDatabase.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKoreanExomInformationDatabase())));
         koreanExomInformationDatabase.setCellFactory(cell -> new PopTableCell("koreanExomInformationDatabase"));
 
-        TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>("dbSNP Common ID");
-        createTableHeader(dbSnpCommonId, "dbSNP Common ID", null ,null, "dbSnpCommonId");
+        TableColumn<VariantAndInterpretationEvidence, String> dbSnpCommonId = new TableColumn<>(SnvTableColumnCode.DBSNP_COMMON_ID.getName());
+        createTableHeader(dbSnpCommonId, SnvTableColumnCode.DBSNP_COMMON_ID.getName(), null ,null, SnvTableColumnCode.DBSNP_COMMON_ID.getId());
         dbSnpCommonId.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getDbSNP().getDbSnpCommonId()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>("Strand");
-        createTableHeader(strand, "Strand", null ,55., "strand");
+        TableColumn<VariantAndInterpretationEvidence, String> strand = new TableColumn<>(SnvTableColumnCode.STRAND.getName());
+        createTableHeader(strand, SnvTableColumnCode.STRAND.getName(), null ,55., SnvTableColumnCode.STRAND.getId());
         strand.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>("Type Extension");
-        createTableHeader(typeExtension, "Type Extension", "variantTypeExtension", 70., "variantTypeExtension");
+        TableColumn<VariantAndInterpretationEvidence, String> typeExtension = new TableColumn<>(SnvTableColumnCode.TYPE_EXTENSION.getName());
+        createTableHeader(typeExtension, SnvTableColumnCode.TYPE_EXTENSION.getName(), "variantTypeExtension", 70., SnvTableColumnCode.TYPE_EXTENSION.getId());
         typeExtension.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getVariantTypeExtension()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>("Exon (BIC)");
-        createTableHeader(exonBic, "Exon (BIC)", null ,null, "exonNumBic");
+        TableColumn<VariantAndInterpretationEvidence, String> exonBic = new TableColumn<>(SnvTableColumnCode.EXON_BIC.getName());
+        createTableHeader(exonBic, SnvTableColumnCode.EXON_BIC.getName(), null ,null, SnvTableColumnCode.EXON_BIC.getId());
         exonBic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getExonNumBic()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>("Zygosity");
-        createTableHeader(zigosity, "Zygosity", null, null, "zygosity");
+        TableColumn<VariantAndInterpretationEvidence, String> zigosity = new TableColumn<>(SnvTableColumnCode.ZYGOSITY.getName());
+        createTableHeader(zigosity, SnvTableColumnCode.ZYGOSITY.getName(), null, null, SnvTableColumnCode.ZYGOSITY.getId());
         zigosity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getZygosity()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>("SIFT Prediction");
-        createTableHeader(siftPrediction, "SIFT Prediction", null,100., "siftPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> siftPrediction = new TableColumn<>(SnvTableColumnCode.SIFT_PREDICTION.getName());
+        createTableHeader(siftPrediction, SnvTableColumnCode.SIFT_PREDICTION.getName(), null,100., SnvTableColumnCode.SIFT_PREDICTION.getId());
         siftPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getSiftPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> mutationTasterPrediction = new TableColumn<>("Mutation Taster Prediction");
-        createTableHeader(mutationTasterPrediction, "Mutation Taster Prediction", null,null, "mutationTasterPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> mutationTasterPrediction = new TableColumn<>(SnvTableColumnCode.MUTATION_TASTER_PREDICTION.getName());
+        createTableHeader(mutationTasterPrediction, SnvTableColumnCode.MUTATION_TASTER_PREDICTION.getName(), null,null, SnvTableColumnCode.MUTATION_TASTER_PREDICTION.getId());
         mutationTasterPrediction.getStyleClass().clear();
         mutationTasterPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationTasterPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> gerpNrScore = new TableColumn<>("GERP++ NR");
-        createTableHeader(gerpNrScore, "GERP++ NR", "Genomic Evolutionary Rate Profiling++ NR",null, "gerpNrScore");
+        TableColumn<VariantAndInterpretationEvidence, String> gerpNrScore = new TableColumn<>(SnvTableColumnCode.GERP_NR.getName());
+        createTableHeader(gerpNrScore, SnvTableColumnCode.GERP_NR.getName(), "Genomic Evolutionary Rate Profiling++ NR",null, SnvTableColumnCode.GERP_NR.getId());
         gerpNrScore.getStyleClass().clear();
         gerpNrScore.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpNrScore()));
         gerpNrScore.setCellFactory(cell -> new GERPTableCell());
 
-        TableColumn<VariantAndInterpretationEvidence, String> gerpRsScore = new TableColumn<>("GERP++ RS");
-        createTableHeader(gerpRsScore, "GERP++ RS", "Genomic Evolutionary Rate Profiling++ RS",null, "gerpRsScore");
+        TableColumn<VariantAndInterpretationEvidence, String> gerpRsScore = new TableColumn<>(SnvTableColumnCode.GERP_RS.getName());
+        createTableHeader(gerpRsScore, SnvTableColumnCode.GERP_RS.getName(), "Genomic Evolutionary Rate Profiling++ RS",null, SnvTableColumnCode.GERP_RS.getId());
         gerpRsScore.getStyleClass().clear();
         gerpRsScore.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getGerpRsScore()));
         gerpRsScore.setCellFactory(cell -> new GERPTableCell());
 
-        TableColumn<VariantAndInterpretationEvidence, String> fathmmPrediction = new TableColumn<>("FATHMM Prediction");
-        createTableHeader(fathmmPrediction, "FATHMM Prediction", "Functional Analysis through Hidden Markov Models Prediction",null, "fathmmPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> fathmmPrediction = new TableColumn<>(SnvTableColumnCode.FATHMM_PREDICTION.getName());
+        createTableHeader(fathmmPrediction, SnvTableColumnCode.FATHMM_PREDICTION.getName(), "Functional Analysis through Hidden Markov Models Prediction",null, SnvTableColumnCode.FATHMM_PREDICTION.getId());
         fathmmPrediction.getStyleClass().clear();
         fathmmPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getFathmmPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> lrtPrediction = new TableColumn<>("LRT Prediction");
-        createTableHeader(lrtPrediction, "LRT Prediction", "Likelihood Ratio Test Prediction",null, "lrtPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> lrtPrediction = new TableColumn<>(SnvTableColumnCode.LRT_PREDICTION.getName());
+        createTableHeader(lrtPrediction, SnvTableColumnCode.LRT_PREDICTION.getName(), "Likelihood Ratio Test Prediction",null, SnvTableColumnCode.LRT_PREDICTION.getId());
         lrtPrediction.getStyleClass().clear();
         lrtPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getLrtPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> mutationAssessorPrediction = new TableColumn<>("Mutation Assessor Prediction");
-        createTableHeader(mutationAssessorPrediction, "Mutation Assessor Prediction", null,null, "mutationAssessorPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> mutationAssessorPrediction = new TableColumn<>(SnvTableColumnCode.MUTATION_ASSESSOR_PREDICTION.getName());
+        createTableHeader(mutationAssessorPrediction, SnvTableColumnCode.MUTATION_ASSESSOR_PREDICTION.getName(), null,null, SnvTableColumnCode.MUTATION_ASSESSOR_PREDICTION.getId());
         mutationAssessorPrediction.getStyleClass().clear();
         mutationAssessorPrediction.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMutationAssessorPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>("COSMIC Occurrence");
-        createTableHeader(cosmicOccurrence, "COSMIC Occurrence", "Catalogue Of Somatic Mutations In Cancer Occurrence" ,null, "cosmicOccurrence");
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicOccurrence = new TableColumn<>(SnvTableColumnCode.COSMIC_OCCURRENCE.getName());
+        createTableHeader(cosmicOccurrence, SnvTableColumnCode.COSMIC_OCCURRENCE.getName(), "Catalogue Of Somatic Mutations In Cancer Occurrence" ,null, SnvTableColumnCode.COSMIC_OCCURRENCE.getId());
         cosmicOccurrence.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicOccurrence()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> cosmicCount = new TableColumn<>("COSMIC Count");
-        createTableHeader(cosmicCount, "COSMIC Count", "Catalogue Of Somatic Mutations In Cancer Count" ,null, "cosmicCount");
+        TableColumn<VariantAndInterpretationEvidence, String> cosmicCount = new TableColumn<>(SnvTableColumnCode.COSMIC_COUNT.getName());
+        createTableHeader(cosmicCount, SnvTableColumnCode.COSMIC_COUNT.getName(), "Catalogue Of Somatic Mutations In Cancer Count" ,null, SnvTableColumnCode.COSMIC_COUNT.getId());
         cosmicCount.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCosmic().getCosmicCount()));
 
 
-        TableColumn<VariantAndInterpretationEvidence, String> bicCategory = new TableColumn<>("BIC Category");
-        createTableHeader(bicCategory, "BIC Category", "Breast Cancer Information Core Category" ,null, "bicCategory");
+        TableColumn<VariantAndInterpretationEvidence, String> bicCategory = new TableColumn<>(SnvTableColumnCode.BIC_CATEGORY.getName());
+        createTableHeader(bicCategory, SnvTableColumnCode.BIC_CATEGORY.getName(), "Breast Cancer Information Core Category" ,null, SnvTableColumnCode.BIC_CATEGORY.getId());
         bicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicCategory()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> bicClass = new TableColumn<>("BIC Class");
-        createTableHeader(bicClass, "BIC Class", "Breast Cancer Information Core Class" ,null, "bicClass");
+        TableColumn<VariantAndInterpretationEvidence, String> bicClass = new TableColumn<>(SnvTableColumnCode.BIC_CLASS.getName());
+        createTableHeader(bicClass, SnvTableColumnCode.BIC_CLASS.getName(), "Breast Cancer Information Core Class" ,null, SnvTableColumnCode.BIC_CLASS.getId());
         bicClass.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicClass()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> bicDesignation = new TableColumn<>("BIC Designation");
-        createTableHeader(bicDesignation, "BIC Designation", "Breast Cancer Information Core Designation" ,null, "bicDesignation");
+        TableColumn<VariantAndInterpretationEvidence, String> bicDesignation = new TableColumn<>(SnvTableColumnCode.BIC_DESIGNATION.getName());
+        createTableHeader(bicDesignation, SnvTableColumnCode.BIC_DESIGNATION.getName(), "Breast Cancer Information Core Designation" ,null, SnvTableColumnCode.BIC_DESIGNATION.getId());
         bicDesignation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicDesignation()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> bicImportance = new TableColumn<>("BIC Importance");
-        createTableHeader(bicImportance, "BIC Importance", "Breast Cancer Information Core Importance" ,null, "bicImportance");
+        TableColumn<VariantAndInterpretationEvidence, String> bicImportance = new TableColumn<>(SnvTableColumnCode.BIC_IMPORTANCE.getName());
+        createTableHeader(bicImportance, SnvTableColumnCode.BIC_IMPORTANCE.getName(), "Breast Cancer Information Core Importance" ,null, SnvTableColumnCode.BIC_IMPORTANCE.getId());
         bicImportance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicImportance()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> bicNt = new TableColumn<>("BIC NT");
-        createTableHeader(bicNt, "BIC NT", "Breast Cancer Information Core NT" ,null, "bicNt");
+        TableColumn<VariantAndInterpretationEvidence, String> bicNt = new TableColumn<>(SnvTableColumnCode.BIC_NT.getName());
+        createTableHeader(bicNt, SnvTableColumnCode.BIC_NT.getName(), "Breast Cancer Information Core NT" ,null, SnvTableColumnCode.BIC_NT.getId());
         bicNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBic().getBicNt()));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> kohbraFrequency = new TableColumn<>("KOHBRA Frequency");
-        createTableHeader(kohbraFrequency, "KOHBRA Frequency", "The Korean Hereditary Breast Cancer Frequency", null, "kohbraFreq");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> kohbraFrequency = new TableColumn<>(SnvTableColumnCode.KOHBRA_FREQUENCY.getName());
+        createTableHeader(kohbraFrequency, SnvTableColumnCode.KOHBRA_FREQUENCY.getName(), "The Korean Hereditary Breast Cancer Frequency", null, SnvTableColumnCode.KOHBRA_FREQUENCY.getId());
         kohbraFrequency.setCellValueFactory(cellData -> new SimpleObjectProperty<>(ConvertUtil.removeZero(cellData.getValue().getSnpInDel().getPopulationFrequency().getKohbraFreq())));
 
-        TableColumn<VariantAndInterpretationEvidence, String> kohbraPatient = new TableColumn<>("KOHBRA Patient");
-        createTableHeader(kohbraPatient, "KOHBRA Patient", "The Korean Hereditary Breast Cancer Patient", null, "kohbraPatient");
+        TableColumn<VariantAndInterpretationEvidence, String> kohbraPatient = new TableColumn<>(SnvTableColumnCode.KOHBRA_PATIENT.getName());
+        createTableHeader(kohbraPatient, SnvTableColumnCode.KOHBRA_PATIENT.getName(), "The Korean Hereditary Breast Cancer Patient", null, SnvTableColumnCode.KOHBRA_PATIENT.getId());
         kohbraPatient.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getKohbraPatient()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beBicCategory = new TableColumn<>("Be BIC Category");
-        createTableHeader(beBicCategory, "Be BIC Category", "BRCA Exchange BIC Category",null, "beBicCategory");
+        TableColumn<VariantAndInterpretationEvidence, String> beBicCategory = new TableColumn<>(SnvTableColumnCode.BE_BIC_CATEGORY.getName());
+        createTableHeader(beBicCategory, SnvTableColumnCode.BE_BIC_CATEGORY.getName(), "BRCA Exchange BIC Category",null, SnvTableColumnCode.BE_BIC_CATEGORY.getId());
         beBicCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicCategory()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beBicEthnic = new TableColumn<>("Be BIC Ethnic");
-        createTableHeader(beBicEthnic, "Be BIC Ethnic", "BRCA Exchange BIC Ethnic" ,null, "beBicEthnic");
+        TableColumn<VariantAndInterpretationEvidence, String> beBicEthnic = new TableColumn<>(SnvTableColumnCode.BE_BIC_ETHNIC.getName());
+        createTableHeader(beBicEthnic, SnvTableColumnCode.BE_BIC_ETHNIC.getName(), "BRCA Exchange BIC Ethnic" ,null, SnvTableColumnCode.BE_BIC_ETHNIC.getId());
         beBicEthnic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicNationality()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beBicNationality = new TableColumn<>("Be BIC Nationality");
-        createTableHeader(beBicNationality, "Be BIC Nationality", "BRCA Exchange BIC Nationality" ,null, "beBicNationality");
+        TableColumn<VariantAndInterpretationEvidence, String> beBicNationality = new TableColumn<>(SnvTableColumnCode.BE_BIC_NATIONALITY.getName());
+        createTableHeader(beBicNationality, SnvTableColumnCode.BE_BIC_NATIONALITY.getName(), "BRCA Exchange BIC Nationality" ,null, SnvTableColumnCode.BE_BIC_NATIONALITY.getId());
         beBicNationality.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicNationality()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beBicPathogenicity = new TableColumn<>("Be BIC Pathogenicity");
-        createTableHeader(beBicPathogenicity, "Be BIC Pathogenicity", "BRCA Exchange BIC Pathogenicity" ,null, "beBicPathogenicity");
+        TableColumn<VariantAndInterpretationEvidence, String> beBicPathogenicity = new TableColumn<>(SnvTableColumnCode.BE_BIC_PATHOGENICITY.getName());
+        createTableHeader(beBicPathogenicity, SnvTableColumnCode.BE_BIC_PATHOGENICITY.getName(), "BRCA Exchange BIC Pathogenicity" ,null, SnvTableColumnCode.BE_BIC_PATHOGENICITY.getId());
         beBicPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeBicPathogenicity()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beClinVarMethod = new TableColumn<>("Be ClinVar Method");
-        createTableHeader(beClinVarMethod, "Be ClinVar Method", "BRCA Exchange ClinVar Method" ,null, "beClinVarMethod");
+        TableColumn<VariantAndInterpretationEvidence, String> beClinVarMethod = new TableColumn<>(SnvTableColumnCode.BE_CLINVAR_METHOD.getName());
+        createTableHeader(beClinVarMethod, SnvTableColumnCode.BE_CLINVAR_METHOD.getName(), "BRCA Exchange ClinVar Method" ,null, SnvTableColumnCode.BE_CLINVAR_METHOD.getId());
         beClinVarMethod.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarMethod()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beClinVarOrigin = new TableColumn<>("Be ClinVar Origin");
-        createTableHeader(beClinVarOrigin, "Be ClinVar Origin", "BRCA Exchange ClinVar Origin" ,null, "beClinVarOrigin");
+        TableColumn<VariantAndInterpretationEvidence, String> beClinVarOrigin = new TableColumn<>(SnvTableColumnCode.BE_CLINVAR_ORIGIN.getName());
+        createTableHeader(beClinVarOrigin, SnvTableColumnCode.BE_CLINVAR_ORIGIN.getName(), "BRCA Exchange ClinVar Origin" ,null, SnvTableColumnCode.BE_CLINVAR_ORIGIN.getId());
         beClinVarOrigin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarOrigin()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beClinVarPathogenicity = new TableColumn<>("Be ClinVar Pathogenicity");
-        createTableHeader(beClinVarPathogenicity, "Be ClinVar Pathogenicity", "BRCA Exchange ClinVar Pathogenicity" ,null, "beClinVarPathogenicity");
+        TableColumn<VariantAndInterpretationEvidence, String> beClinVarPathogenicity = new TableColumn<>(SnvTableColumnCode.BE_CLINVAR_PATHOGENICITY.getName());
+        createTableHeader(beClinVarPathogenicity, SnvTableColumnCode.BE_CLINVAR_PATHOGENICITY.getName(), "BRCA Exchange ClinVar Pathogenicity" ,null, SnvTableColumnCode.BE_CLINVAR_PATHOGENICITY.getId());
         beClinVarPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarPathogenicity()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beClinVarUpdate = new TableColumn<>("Be ClinVar Update");
-        createTableHeader(beClinVarUpdate, "Be ClinVar Update", "BRCA Exchange ClinVar Update" ,null, "beClinVarUpdate");
+        TableColumn<VariantAndInterpretationEvidence, String> beClinVarUpdate = new TableColumn<>(SnvTableColumnCode.BE_CLINVAR_UPDATE.getName());
+        createTableHeader(beClinVarUpdate, SnvTableColumnCode.BE_CLINVAR_UPDATE.getName(), "BRCA Exchange ClinVar Update" ,null, SnvTableColumnCode.BE_CLINVAR_UPDATE.getId());
         beClinVarUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeClinVarUpdate()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beEnigmaCondition = new TableColumn<>("Be ENIGMA Condition");
-        createTableHeader(beEnigmaCondition, "Be ENIGMA Condition", "BRCA Exchange ENIGMA Condition" ,null, "beEnigmaCondition");
+        TableColumn<VariantAndInterpretationEvidence, String> beEnigmaCondition = new TableColumn<>(SnvTableColumnCode.BE_ENIGMA_CONDITION.getName());
+        createTableHeader(beEnigmaCondition, SnvTableColumnCode.BE_ENIGMA_CONDITION.getName(), "BRCA Exchange ENIGMA Condition" ,null, SnvTableColumnCode.BE_ENIGMA_CONDITION.getId());
         beEnigmaCondition.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaCondition()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beEnigmaPathogenicity = new TableColumn<>("Be ENIGMA Pathogenicity");
-        createTableHeader(beEnigmaPathogenicity, "Be ENIGMA Pathogenicity", "BRCA Exchange ENIGMA Pathogenicity" ,null, "beEnigmaPathogenicity");
+        TableColumn<VariantAndInterpretationEvidence, String> beEnigmaPathogenicity = new TableColumn<>(SnvTableColumnCode.BE_ENIGMA_PATHOGENICITY.getName());
+        createTableHeader(beEnigmaPathogenicity, SnvTableColumnCode.BE_ENIGMA_PATHOGENICITY.getName(), "BRCA Exchange ENIGMA Pathogenicity" ,null, SnvTableColumnCode.BE_ENIGMA_PATHOGENICITY.getId());
         beEnigmaPathogenicity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaPathogenicity()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beEnigmaUpdate = new TableColumn<>("Be ENIGMA Update");
-        createTableHeader(beEnigmaUpdate, "Be ENIGMA Update", "BRCA Exchange ENIGMA Update" ,null, "beEnigmaUpdate");
+        TableColumn<VariantAndInterpretationEvidence, String> beEnigmaUpdate = new TableColumn<>(SnvTableColumnCode.BE_ENIGMA_UPDATE.getName());
+        createTableHeader(beEnigmaUpdate, SnvTableColumnCode.BE_ENIGMA_UPDATE.getName(), "BRCA Exchange ENIGMA Update" ,null, SnvTableColumnCode.BE_ENIGMA_UPDATE.getId());
         beEnigmaUpdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeEnigmaUpdate()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beGene = new TableColumn<>("Be Gene");
-        createTableHeader(beGene, "Be Gene", "BRCA Exchange Gene" ,null, "beGene");
+        TableColumn<VariantAndInterpretationEvidence, String> beGene = new TableColumn<>(SnvTableColumnCode.BE_GENE.getName());
+        createTableHeader(beGene, SnvTableColumnCode.BE_GENE.getName(), "BRCA Exchange Gene" ,null, SnvTableColumnCode.BE_GENE.getId());
         beGene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeGene()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beNt = new TableColumn<>("Be NT");
-        createTableHeader(beNt, "Be NT", "BRCA Exchange NT",null, "beNt");
+        TableColumn<VariantAndInterpretationEvidence, String> beNt = new TableColumn<>(SnvTableColumnCode.BE_NT.getName());
+        createTableHeader(beNt, SnvTableColumnCode.BE_NT.getName(), "BRCA Exchange NT",null, SnvTableColumnCode.BE_NT.getId());
         beNt.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeNt()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> beTranscript = new TableColumn<>("Be Transcript");
-        createTableHeader(beTranscript, "Be Transcript", "BRCA Exchange Transcript",null, "beTranscript");
+        TableColumn<VariantAndInterpretationEvidence, String> beTranscript = new TableColumn<>(SnvTableColumnCode.BE_TRANSCRIPT.getName());
+        createTableHeader(beTranscript, SnvTableColumnCode.BE_TRANSCRIPT.getName(), "BRCA Exchange Transcript",null, SnvTableColumnCode.BE_TRANSCRIPT.getId());
         beTranscript.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getBe().getBeTranscript()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> enigma = new TableColumn<>("ENIGMA");
-        createTableHeader(enigma, "ENIGMA", "Evidence-based Network for the Interpretation of Germline Mutant Alleles" ,null, "enigma");
+        TableColumn<VariantAndInterpretationEvidence, String> enigma = new TableColumn<>(SnvTableColumnCode.ENIGMA.getName());
+        createTableHeader(enigma, SnvTableColumnCode.ENIGMA.getName(), "Evidence-based Network for the Interpretation of Germline Mutant Alleles" ,null, SnvTableColumnCode.ENIGMA.getId());
         enigma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getEnigma()));
 
-        TableColumn<VariantAndInterpretationEvidence, Integer> clinVarVariationId = new TableColumn<>("ClinVar Variation ID");
-        createTableHeader(clinVarVariationId, "ClinVar Variation ID", null ,null, "clinVarVariationId");
+        TableColumn<VariantAndInterpretationEvidence, Integer> clinVarVariationId = new TableColumn<>(SnvTableColumnCode.CLINVAR_VARIATION_ID.getName());
+        createTableHeader(clinVarVariationId, SnvTableColumnCode.CLINVAR_VARIATION_ID.getName(), null ,null, SnvTableColumnCode.CLINVAR_VARIATION_ID.getId());
         clinVarVariationId.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarVariationId()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> clinVarInterpretation = new TableColumn<>("ClinVar Interpretation");
-        createTableHeader(clinVarInterpretation, "ClinVar Interpretation", null ,null, "clinVarInterpretation");
+        TableColumn<VariantAndInterpretationEvidence, String> clinVarInterpretation = new TableColumn<>(SnvTableColumnCode.CLINVAR_INTERPRETATION.getName());
+        createTableHeader(clinVarInterpretation, SnvTableColumnCode.CLINVAR_INTERPRETATION.getName(), null ,null, SnvTableColumnCode.CLINVAR_INTERPRETATION.getId());
         clinVarInterpretation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getClinVar().getClinVarInterpretation()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> metaSvmPrediction = new TableColumn<>("metaSVM Prediction");
-        createTableHeader(metaSvmPrediction, "metaSVM Prediction", null ,null, "metaSvmPrediction");
+        TableColumn<VariantAndInterpretationEvidence, String> metaSvmPrediction = new TableColumn<>(SnvTableColumnCode.METASVM_PREDICTION.getName());
+        createTableHeader(metaSvmPrediction, SnvTableColumnCode.METASVM_PREDICTION.getName(), null ,null, SnvTableColumnCode.METASVM_PREDICTION.getId());
         metaSvmPrediction.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getMetaSvmPrediction()));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvAdaScore = new TableColumn<>("dbscSNV ADA Score");
-        createTableHeader(dbscSnvAdaScore, "dbscSNV ADA Score", null ,null, "dbscSnvAdaScore");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvAdaScore = new TableColumn<>(SnvTableColumnCode.DBSCSNV_ADA_SCORE.getName());
+        createTableHeader(dbscSnvAdaScore, SnvTableColumnCode.DBSCSNV_ADA_SCORE.getName(), null ,null, SnvTableColumnCode.DBSCSNV_ADA_SCORE.getId());
         dbscSnvAdaScore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getDbscSnvAdaScore()));
 
-        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvRfScore = new TableColumn<>("dbscSNV RF Score");
-        createTableHeader(dbscSnvRfScore, "dbscSNV RF Score", null ,null, "dbscSnvRfScore");
+        TableColumn<VariantAndInterpretationEvidence, BigDecimal> dbscSnvRfScore = new TableColumn<>(SnvTableColumnCode.DBSCSNV_RF_SCORE.getName());
+        createTableHeader(dbscSnvRfScore, SnvTableColumnCode.DBSCSNV_RF_SCORE.getName(), null ,null, SnvTableColumnCode.DBSCSNV_RF_SCORE.getId());
         dbscSnvRfScore.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSnpInDel().getClinicalDB().getDbNSFP().getDbscSnvRfScore()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> inheritance = new TableColumn<>("Inheritance");
-        createTableHeader(inheritance, "Inheritance", null ,null, "inheritance");
+        TableColumn<VariantAndInterpretationEvidence, String> inheritance = new TableColumn<>(SnvTableColumnCode.INHERITANCE.getName());
+        createTableHeader(inheritance, SnvTableColumnCode.INHERITANCE.getName(), null ,null, SnvTableColumnCode.INHERITANCE.getId());
         inheritance.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getInheritance()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> commonVariants = new TableColumn<>("Common Variants");
-        createTableHeader(commonVariants, "Common Variants", null ,null, "commonVariants");
+        TableColumn<VariantAndInterpretationEvidence, String> commonVariants = new TableColumn<>(SnvTableColumnCode.COMMON_VARIANTS.getName());
+        createTableHeader(commonVariants, SnvTableColumnCode.COMMON_VARIANTS.getName(), null ,null, SnvTableColumnCode.COMMON_VARIANTS.getId());
         commonVariants.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getCommonVariants()));
 
-        TableColumn<VariantAndInterpretationEvidence, String> customDatabase = new TableColumn<>("Custom Database");
-        createTableHeader(customDatabase, "Custom Database", null ,null, "customDatabase");
+        TableColumn<VariantAndInterpretationEvidence, String> customDatabase = new TableColumn<>(SnvTableColumnCode.CUSTOM_DATABASE.getName());
+        createTableHeader(customDatabase, SnvTableColumnCode.CUSTOM_DATABASE.getName(), null ,null, SnvTableColumnCode.CUSTOM_DATABASE.getId());
         customDatabase.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getClinicalDB().getCustomDatabase()));
         customDatabase.setCellFactory(param -> new TableCell<VariantAndInterpretationEvidence, String>() {
             @Override

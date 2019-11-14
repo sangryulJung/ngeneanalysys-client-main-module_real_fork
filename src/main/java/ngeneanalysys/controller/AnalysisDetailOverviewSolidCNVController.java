@@ -18,6 +18,7 @@ import ngeneanalysys.model.Cnv;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.StringUtils;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
@@ -95,7 +96,7 @@ public class AnalysisDetailOverviewSolidCNVController extends AnalysisDetailComm
     public void show(Parent root) throws IOException {
         geneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
         valueTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCnvValue()));
-        tierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
+        tierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.getTierInfo(cellData.getValue())));
         tierTableColumn.setCellFactory(param -> new TableCell<Cnv, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
@@ -108,8 +109,8 @@ public class AnalysisDetailOverviewSolidCNVController extends AnalysisDetailComm
 
                     String value = "";
                     String code = "NONE";
-                    if(StringUtils.isNotEmpty(variant.getTier())) {
-                        value = variant.getTier();
+                    if(StringUtils.isNotEmpty(ConvertUtil.getTierInfo(variant))) {
+                        value = ConvertUtil.getTierInfo(variant);
                         code = "tier_" + VariantLevelCode.getCodeFromAlias(value);
                     }
 

@@ -1,16 +1,14 @@
 package ngeneanalysys.task;
 
 import javafx.application.Platform;
+import ngeneanalysys.code.enums.PipelineCode;
+import ngeneanalysys.code.enums.SnvTableColumnCode;
 import ngeneanalysys.controller.RawDataDownloadProgressTaskController;
 import ngeneanalysys.exceptions.WebAPIException;
-import ngeneanalysys.model.AnalysisFile;
-import ngeneanalysys.model.AnalysisFileList;
-import ngeneanalysys.model.RunSampleView;
-import ngeneanalysys.model.SampleView;
+import ngeneanalysys.model.*;
 import ngeneanalysys.service.APIService;
 import ngeneanalysys.service.RawDataDownloadService;
-import ngeneanalysys.util.DialogUtil;
-import ngeneanalysys.util.LoggerUtil;
+import ngeneanalysys.util.*;
 import ngeneanalysys.util.httpclient.HttpClientResponse;
 import org.slf4j.Logger;
 
@@ -101,6 +99,47 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
                 sampleViewList = runSampleView.getSampleViews();
             }
 
+            if(type.contains("variant")) {
+                SampleView sampleView = runSampleView.getSampleViews().stream()
+                        .min(Comparator.comparing(SampleView::getId))
+                        .orElse(null);
+                if(sampleView != null) {
+                    String[] columnList = null;
+                    try {
+                        HttpClientResponse response;
+                        String key = getDefaultColumnOrderKey(sampleView.getPanel());
+                        response = apiService.get("/member/memberOption/" + key, null, null, null);
+                        if (response != null && response.getStatus() == 200) {
+                            columnList = response.getContentString().split(",");
+                            columnList = Arrays.stream(columnList).map(column -> column.split(":")[0])
+                                    .toArray(String[]::new);
+                        }
+                    } catch (WebAPIException wae) {
+                        if (wae.getResponse().getStatus() != 404) throw wae;
+                    }
+
+                    if(columnList == null) {
+                        ResourceUtil resourceUtil = new ResourceUtil();
+                        String path = resourceUtil.getDefaultColumnOrderResourcePath(sampleView.getPanel());
+                        String str = PropertiesUtil.getJsonString(path);
+                        List<TableColumnInfo> columnInfos = (List<TableColumnInfo>) JsonUtil.getObjectList(str, TableColumnInfo.class);
+                        if(columnInfos != null) {
+                            columnInfos.sort(Comparator.comparing(TableColumnInfo::getOrder));
+                            columnList = columnInfos.stream().map(TableColumnInfo::getColumnName).toArray(String[]::new);
+                        }
+
+                    }
+                    if(columnList != null) {
+                        rawDataDownloadService.downloadRunExcel(runSampleView.getRun().getId(), sampleViewList,
+                                Arrays.stream(columnList)
+                                        .map(SnvTableColumnCode::getIdFromName)
+                                        .collect(Collectors.joining(",")),
+                                folder);
+                    }
+                }
+                type.remove("variant");
+            }
+
             for (SampleView sampleView : sampleViewList) {
 
                 if(type == null || type.isEmpty()) break;
@@ -188,6 +227,24 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
 
 
         return null;
+    }
+
+    private String getDefaultColumnOrderKey(Panel panel) {
+        String key = null;
+        if(PipelineCode.isHemePipeline(panel.getCode())) {
+            key = "hemeColumnOrder";
+        } else if(PipelineCode.isSolidPipeline(panel.getCode())) {
+            key = "solidColumnOrder";
+        } else if(panel.getCode().equals(PipelineCode.TST170_DNA.getCode())) {
+            key = "tstDNAColumnOrder";
+        } else if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CNV_DNA_V2_SNU.getCode())) {
+            key = "brcaSnuColumnOrder";
+        } else if(PipelineCode.isBRCAPipeline(panel.getCode())) {
+            key = "brcaColumnOrder";
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
+            key = "heredColumnOrder";
+        }
+        return key;
     }
 
     /**

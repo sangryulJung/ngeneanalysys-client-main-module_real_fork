@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import ngeneanalysys.code.constants.CommonConstants;
+import ngeneanalysys.model.Cnv;
 import ngeneanalysys.model.SnpInDelEvidence;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -237,5 +238,16 @@ public class ConvertUtil {
 		}
 
 		return sb.toString();
+	}
+
+	static public String getTierInfo(Cnv cnv) {
+		if(cnv != null) {
+			if (ngeneanalysys.util.StringUtils.isNotEmpty(cnv.getExpertTier())) {
+				return cnv.getExpertTier();
+			} else {
+				return cnv.getSwTier();
+			}
+		}
+		return null;
 	}
 }

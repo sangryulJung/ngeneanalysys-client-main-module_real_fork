@@ -17,6 +17,7 @@ import ngeneanalysys.model.Cnv;
 import ngeneanalysys.model.SampleView;
 import ngeneanalysys.model.paged.PagedCnv;
 import ngeneanalysys.service.APIService;
+import ngeneanalysys.util.ConvertUtil;
 import ngeneanalysys.util.DialogUtil;
 import ngeneanalysys.util.LoggerUtil;
 import ngeneanalysys.util.StringUtils;
@@ -69,7 +70,7 @@ public class AnalysisDetailSolidCNVReportController extends SubPaneController {
                     if(!solidCnvResultTable.getItems().isEmpty()) {
                         solidCnvResultTable.getItems().removeAll(solidCnvResultTable.getItems());
                     }
-                    list = list.stream().filter(item -> StringUtils.isNotEmpty(item.getTier()))
+                    list = list.stream().filter(item -> StringUtils.isNotEmpty(ConvertUtil.getTierInfo(item)))
                             .collect(Collectors.toList());
                     solidCnvResultTable.getItems().addAll(list);
 
@@ -102,7 +103,7 @@ public class AnalysisDetailSolidCNVReportController extends SubPaneController {
     public void show(Parent root) throws IOException {
         geneTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGene()));
         valueTableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCnvValue()));
-        tierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTier()));
+        tierTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(ConvertUtil.getTierInfo(cellData.getValue())));
         tierTableColumn.setCellFactory(param -> new TableCell<Cnv, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
@@ -115,8 +116,8 @@ public class AnalysisDetailSolidCNVReportController extends SubPaneController {
 
                     String value = "";
                     String code = "NONE";
-                    if(StringUtils.isNotEmpty(variant.getTier())) {
-                        value = variant.getTier();
+                    if(StringUtils.isNotEmpty(ConvertUtil.getTierInfo(variant))) {
+                        value = ConvertUtil.getTierInfo(variant);
                         code = "tier_" + VariantLevelCode.getCodeFromAlias(value);
                     }
 
