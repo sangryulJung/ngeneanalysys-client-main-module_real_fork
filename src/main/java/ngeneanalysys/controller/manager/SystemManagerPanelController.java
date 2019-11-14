@@ -2137,37 +2137,4 @@ public class SystemManagerPanelController extends SubPaneController {
         }
     }
 
-    @FXML
-    private void downloadROIfile() {
-        PagedTargetROI  pagedTargetROI;
-        try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("panelId", panelId);
-            HttpClientResponse response = apiService.get("admin/targetROIs", params, null, false);
-            pagedTargetROI = response.getObjectBeforeConvertResponseToJSON(PagedTargetROI.class);
-            if(pagedTargetROI.getCount() > 0) {
-                List<String> list = pagedTargetROI.getResult().stream().map(TargetROI::getGeneSymbol).distinct().collect(Collectors.toList());
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.getExtensionFilters()
-                        .addAll(new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"));
-                fileChooser.setTitle("export Target ROI to txt format file");
-                File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-                if (file != null) {
-                    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-                        out.write("chr\tstart\tend\tgene\tstrand\texon\ttranscript_ID");
-                        out.newLine();
-                        for (TargetROI targetROI : pagedTargetROI.getResult()) {
-                            out.write(targetROI.toString());
-                            out.newLine();
-                        }
-                        out.flush();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
 }

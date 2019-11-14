@@ -679,8 +679,6 @@ public class AnalysisDetailBrcaCNVController extends AnalysisDetailCommonControl
             setTableItem(geneComboBox.getSelectionModel().getSelectedItem().getValue());
 
             initImageArea();
-            /*variantsController.setCnvTextLabel("CNV (R : " + pagedBrcaCNVExon
-                    .getResult().stream().filter(cnv -> cnv.getIncludedInReport().equals("Y")).count() + ")");*/
         } catch (WebAPIException wae) {
             DialogUtil.warning(wae.getHeaderText(), wae.getMessage(), mainApp.getPrimaryStage(), true);
         }

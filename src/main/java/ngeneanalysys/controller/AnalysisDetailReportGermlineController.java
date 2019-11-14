@@ -804,7 +804,9 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
 
             // Show save file dialog
             FileChooser fileChooser = new FileChooser();
-            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
+            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD_ZIP")) {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ZIP (*.zip)", "*.zip"));
+            } else if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("WORD (*.docx)", "*.docx"));
             } else {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
@@ -1039,7 +1041,7 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
                     if(reportContents.getReportTemplate().getOutputType() != null
-                            && reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD")) {
+                            && reportContents.getReportTemplate().getOutputType().contains("MS_WORD")) {
                         List<ReportComponent> components = reportContents.getReportComponents();
 
                         if(components == null || components.isEmpty()) throw new Exception();

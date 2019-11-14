@@ -438,11 +438,6 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="roiFileDownloadButton" mnemonicParsing="false" onAction="#downloadROIfile" styleClass="submitBtn" text="Download ROI">
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </Button>
                         <Button fx:id="panelSaveButton" mnemonicParsing="false" onAction="#savePanel" styleClass="submitBtn" text="Save" />
                      </children>
                      <padding>

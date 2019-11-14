@@ -1035,7 +1035,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, List<Object>> filterList = new HashMap<>();
         setFilterItem(filterList);
         if(PipelineCode.isHeredPipeline(panel.getCode()) || PipelineCode.isBRCAPipeline(panel.getCode())) {
-            params.put("exportFields", getExportFields() + ",enigmaPathogenicity,acmg,acmgReason");
+            params.put("exportFields", getExportFields() + ",enigmaPathogenicity,acmg,acmgCriteria");
         } else {
             params.put("exportFields", getExportFields() + ",evidence");
         }

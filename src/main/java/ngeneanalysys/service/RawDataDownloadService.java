@@ -125,7 +125,7 @@ public class RawDataDownloadService {
         CloseableHttpResponse response = null;
         if(PipelineCode.isBRCAPipeline(sampleViews.get(0).getPanel().getCode()) ||
                 PipelineCode.isHeredPipeline(sampleViews.get(0).getPanel().getCode())) {
-            field = "sampleName," + field + ",enigmaPathogenicity,acmg,acmgReason";
+            field = "sampleName," + field + ",enigmaPathogenicity,acmg,acmgCriteria";
         } else {
             field = "sampleName," + field + ",evidence";
         }
@@ -133,16 +133,10 @@ public class RawDataDownloadService {
             String downloadUrl = "runSnpInDels";
 
             File file = new File(folder + File.separator +
-                    sampleViews.get(0).getRun().getName() + "_variant.xlsx");
+                    sampleViews.get(0).getRun().getName().replace("\\p{Z}", "_") + "_variant.xlsx");
 
             OutputStream os = null;
-            /*List<Map<String, Object>> samples = new ArrayList<>();
-            sampleViews.forEach(v -> {
-                Map<String, Object> sampleVO = new HashMap<>();
-                sampleVO.put("id", v.getId());
-                sampleVO.put("name", v.getName());
-                samples.add(sampleVO);
-            });*/
+
             String connectURL = apiService.getConvertConnectURL(downloadUrl);
             try {
                 URIBuilder builder = new URIBuilder(connectURL);
