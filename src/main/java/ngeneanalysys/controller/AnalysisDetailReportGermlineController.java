@@ -1041,7 +1041,8 @@ public class AnalysisDetailReportGermlineController extends AnalysisDetailCommon
                     ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
                     if(reportContents.getReportTemplate().getOutputType() != null
-                            && reportContents.getReportTemplate().getOutputType().contains("MS_WORD")) {
+                            && (reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD") ||
+                            reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD_ZIP"))) {
                         List<ReportComponent> components = reportContents.getReportComponents();
 
                         if(components == null || components.isEmpty()) throw new Exception();

@@ -875,8 +875,10 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
 
             // Show save bedFile dialog
             FileChooser fileChooser = new FileChooser();
-            if(outputType != null && outputType.contains("MS_WORD")) {
-                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.docx)", "*.docx"));
+            if(outputType != null && outputType.equalsIgnoreCase("MS_WORD_ZIP")) {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ZIP (*.zip)", "*.zip"));
+            } else if(outputType != null && outputType.equalsIgnoreCase("MS_WORD")) {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("WORD (*.docx)", "*.docx"));
             } else {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF (*.pdf)", "*.pdf"));
             }
@@ -925,7 +927,8 @@ public class AnalysisDetailTSTRNAReportController extends AnalysisDetailCommonCo
                     final ReportContents reportContents = response.getObjectBeforeConvertResponseToJSON(ReportContents.class);
 
                     if(reportContents.getReportTemplate().getOutputType() != null
-                            && reportContents.getReportTemplate().getOutputType().contains("MS_WORD")) {
+                            && (reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD") ||
+                            reportContents.getReportTemplate().getOutputType().equalsIgnoreCase("MS_WORD_ZIP"))) {
                         List<ReportComponent> components = reportContents.getReportComponents();
 
                         if(components == null || components.isEmpty()) throw new Exception();

@@ -846,15 +846,17 @@ public class PastResultsController extends SubPaneController {
 				panel.setTooltip(new Tooltip(sampleView.getPanel().getName()));
 				labelSize(panel, 170., styleClass);
 				HBox variants = new HBox();
-				variants.getStyleClass().add("variant_hbox");
+
 				variants.setPrefWidth(360);
 				variants.setSpacing(5);
 				if(sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_PIPELINE) &&
 						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_COMPLETE)) {
 					setVariantHBox(variants, sampleView);
+					variants.getStyleClass().add("variant_hbox");
 				} else if (sampleView.getSampleStatus().getStep().equals(SAMPLE_ANALYSIS_STEP_UPLOAD)){
 					Label uploadLabel = new Label("UPLOAD");
 					variants.getChildren().add(uploadLabel);
+					variants.getStyleClass().add("status_hbox");
 				} else if (sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_RUNNING) ||
 						sampleView.getSampleStatus().getStatus().equals(SAMPLE_ANALYSIS_STATUS_FAIL)){
 					String statusMsg = (sampleView.getSampleStatus().getProgressPercentage() != null ?
@@ -864,6 +866,7 @@ public class PastResultsController extends SubPaneController {
 							sampleView.getSampleStatus().getStatusMsg() :"");
 							Label statusMsgLabel = new Label(statusMsg);
 					variants.getChildren().add(statusMsgLabel);
+					variants.getStyleClass().add("status_hbox");
 				}
 				String qcValue = sampleView.getQcResult();
 				if(qcValue.equalsIgnoreCase("NONE")) qcValue = "";
