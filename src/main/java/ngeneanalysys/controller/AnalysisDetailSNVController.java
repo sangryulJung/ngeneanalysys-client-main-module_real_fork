@@ -434,9 +434,9 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                     setSNVTabName();
                 } else */if (e.getClickCount() <= 2) {
                     logger.debug(e.getClickCount() + " Click count");
-                   if(e.getClickCount() == 2) {
-                       expandRight();
-                   }
+                    if(e.getClickCount() == 2) {
+                        expandRight();
+                    }
                 }
             });
             return row;
@@ -1068,13 +1068,13 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
     @FXML
     public void viewAppliedFilters() {
-    	viewAppliedFiltersLabel.setOpacity(100);
+        viewAppliedFiltersLabel.setOpacity(100);
         ComboBoxItem comboBoxItem = filterComboBox.getSelectionModel().getSelectedItem();
         PopOverUtil.openFilterPopOver(viewAppliedFiltersLabel, filterList.get(comboBoxItem.getValue()));
     }
 
     private void   createTableHeader(TableColumn<VariantAndInterpretationEvidence, ?> column, String name, String tooltipName,
-                                   Double size, String id) {
+                                     Double size, String id) {
         Label label = new Label(name);
         ContextMenu contextMenu = new ContextMenu();
         contextMenu.getStyleClass().add("font_size_11");
@@ -1183,7 +1183,7 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
                 if(empty) {
-                  setGraphic(null);
+                    setGraphic(null);
                 } else {
 
                     VariantAndInterpretationEvidence variant = getTableView().getItems().get(getIndex());
@@ -1340,26 +1340,26 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         createTableHeader(gene, SnvTableColumnCode.GENE.getName(), "" ,null, SnvTableColumnCode.GENE.getId());
         gene.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getGenomicCoordinate().getGene()));
         gene.setCellFactory(column ->
-            new TableCell<VariantAndInterpretationEvidence, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if(item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(item);
-                        if(panel.getVariantFilter() != null
-                                && StringUtils.isNotEmpty(panel.getVariantFilter().getEssentialGenes())) {
-                            if(Arrays.stream(panel.getVariantFilter().getEssentialGenes().split(",")).anyMatch(
-                                    gene -> gene.equalsIgnoreCase(item))) {
-                                setTextFill(Color.RED);
-                            } else {
-                                setTextFill(Color.BLACK);
+                new TableCell<VariantAndInterpretationEvidence, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(item);
+                            if(panel.getVariantFilter() != null
+                                    && StringUtils.isNotEmpty(panel.getVariantFilter().getEssentialGenes())) {
+                                if(Arrays.stream(panel.getVariantFilter().getEssentialGenes().split(",")).anyMatch(
+                                        gene -> gene.equalsIgnoreCase(item))) {
+                                    setTextFill(Color.RED);
+                                } else {
+                                    setTextFill(Color.BLACK);
+                                }
                             }
                         }
                     }
                 }
-            }
         );
 
         TableColumn<VariantAndInterpretationEvidence, String> transcriptAccession = new TableColumn<>(SnvTableColumnCode.TRANSCRIPT_ACCESSION.getName());
@@ -1380,18 +1380,20 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>(SnvTableColumnCode.NT_CHANGE.getName());
         createTableHeader(ntChange, SnvTableColumnCode.NT_CHANGE.getName(), null ,160., SnvTableColumnCode.NT_CHANGE.getId());
-        ntChange.setCellValueFactory(cellData -> {
-        	if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
-	        	if(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand().equals("-")) {
-	        		return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange() + "(" + ntChangeReverse(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()) + ")");
-	        	} else {
-	        		return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange());
-	        	}
-        	} else {
-        		return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange());
-        	}
-        });
-        
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
+            ntChange.setCellValueFactory(cellData -> {
+                if(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand().equals("-")) {
+                    return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange() + "(" + ntChangeReverse(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()) + ")");
+                } else {
+                    return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange());
+                }
+            });
+        } else {
+            ntChange.setCellValueFactory(cellData -> {
+                return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange());
+            });
+        }
+
         TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>(SnvTableColumnCode.NT_CHANGE_BIC.getName());
         createTableHeader(ntChangeBIC, SnvTableColumnCode.NT_CHANGE_BIC.getName(), null ,140., SnvTableColumnCode.NT_CHANGE_BIC.getId());
         ntChangeBIC.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().createNtChangeBRCA()));
@@ -2195,72 +2197,72 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
             }
         }
     }
-    
+
     public static String ntChangeReverse(String ntChangeStr) {
-		String result = "";
-		try {
-			String strconv = ntChangeStr.replace("c.", "0").replace("_", "0").replace("+", "0").replace("-", "0").replace("*", "0");
-			char[] cha = strconv.toCharArray();
-			int indexKey = 0;
-			for (int i = 0; i < cha.length; i++) {
-				if(cha[i] < 48 || cha[i] > 57) {
-					indexKey = i;
-					break;
-				}
-			}
-			
-			String frontStr = ntChangeStr.substring(0,indexKey+1);
-			String afterStr = ntChangeStr.substring(indexKey+1, ntChangeStr.length());
-			
-			String[] seqStr = null;
-			String splitKey = "";
-			if(afterStr.indexOf("delins") == -1) {
-				if(afterStr.indexOf(">") != -1) {
-					seqStr = afterStr.split(">");
-					splitKey = ">";
-				} else if(afterStr.indexOf("del") != -1) {
-					seqStr = afterStr.split("del");
-					splitKey = "del";
-				} else if(afterStr.indexOf("dup") != -1) {
-					seqStr = afterStr.split("dup");
-					splitKey = "dup";
-				} else if(afterStr.indexOf("ins") != -1) {
-					seqStr = afterStr.split("ins");
-					splitKey = "ins";
-				}
-			} else {
-				seqStr = afterStr.split("delins");
-				splitKey = "delins";
-			}
-		
-			try {
-				result = frontStr + getReverseIndexSeq(seqStr[0]) + splitKey + getReverseIndexSeq(seqStr[1]);	
-			} catch (Exception e) {
-				result = frontStr + splitKey;
-			}
-			
-		} catch (Exception e) {
-			result = "";
-		}
-		logger.debug(" ntChangeresultvalue = " + result);
-    	return result;
-	}
-    
+        String result = "";
+        try {
+            String strconv = ntChangeStr.replace("c.", "0").replace("_", "0").replace("+", "0").replace("-", "0").replace("*", "0");
+            char[] cha = strconv.toCharArray();
+            int indexKey = 0;
+            for (int i = 0; i < cha.length; i++) {
+                if(cha[i] < 48 || cha[i] > 57) {
+                    indexKey = i;
+                    break;
+                }
+            }
+
+            String frontStr = ntChangeStr.substring(0,indexKey+1);
+            String afterStr = ntChangeStr.substring(indexKey+1, ntChangeStr.length());
+
+            String[] seqStr = null;
+            String splitKey = "";
+            if(afterStr.indexOf("delins") == -1) {
+                if(afterStr.indexOf(">") != -1) {
+                    seqStr = afterStr.split(">");
+                    splitKey = ">";
+                } else if(afterStr.indexOf("del") != -1) {
+                    seqStr = afterStr.split("del");
+                    splitKey = "del";
+                } else if(afterStr.indexOf("dup") != -1) {
+                    seqStr = afterStr.split("dup");
+                    splitKey = "dup";
+                } else if(afterStr.indexOf("ins") != -1) {
+                    seqStr = afterStr.split("ins");
+                    splitKey = "ins";
+                }
+            } else {
+                seqStr = afterStr.split("delins");
+                splitKey = "delins";
+            }
+
+            try {
+                result = frontStr + getReverseIndexSeq(seqStr[0]) + splitKey + getReverseIndexSeq(seqStr[1]);
+            } catch (Exception e) {
+                result = frontStr + splitKey;
+            }
+
+        } catch (Exception e) {
+            result = "";
+        }
+        logger.debug(" ntChangeresultvalue = " + result);
+        return result;
+    }
+
     public static String getReverseIndexSeq(String midseq) throws Exception {
-	    String rcmidseq = new StringBuilder(midseq).reverse().toString();
-	    String result = "";
-	    for(int i = 0;i<rcmidseq.length();i++) {
-	    	char k = rcmidseq.charAt(i);
-	    	if(k == 'A')
-	    		k = 'T';
-	    	else if(k == 'T')
-	    		k = 'A';
-	    	else if(k == 'G')
-	    		k = 'C';
-	    	else if(k == 'C')
-	    		k = 'G';
-	    	result += k;
-	    }
-		return result;
-	}
+        String rcmidseq = new StringBuilder(midseq).reverse().toString();
+        String result = "";
+        for(int i = 0;i<rcmidseq.length();i++) {
+            char k = rcmidseq.charAt(i);
+            if(k == 'A')
+                k = 'T';
+            else if(k == 'T')
+                k = 'A';
+            else if(k == 'G')
+                k = 'C';
+            else if(k == 'C')
+                k = 'G';
+            result += k;
+        }
+        return result;
+    }
 }
