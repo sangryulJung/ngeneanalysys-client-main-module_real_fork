@@ -982,6 +982,10 @@ public class PastResultsController extends SubPaneController {
 					summary.getCnvResult().equals("Y")) {
 				Label cnvIcon = createIconLabel("CNV", "cnv_icon");
 				variantHBox.getChildren().addAll(cnvIcon);
+			} else if(StringUtils.isNotEmpty(summary.getCnvResult()) &&
+					summary.getCnvResult().equals("N")) {
+				Label cnvIcon = createIconLabel("CNV", "cnv_none_icon");
+				variantHBox.getChildren().addAll(cnvIcon);
 			}
 
 		}

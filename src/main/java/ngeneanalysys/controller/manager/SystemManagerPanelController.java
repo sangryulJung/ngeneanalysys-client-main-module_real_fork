@@ -248,9 +248,6 @@ public class SystemManagerPanelController extends SubPaneController {
     private Button saveTextFile;
 
     @FXML
-    private Button roiFileDownloadButton;
-
-    @FXML
     private TitledPane customDatabaseTitledPane;
 
     private CheckComboBox<ComboBoxItem> groupCheckComboBox = null;
@@ -401,7 +398,6 @@ public class SystemManagerPanelController extends SubPaneController {
         });
 
         setDisabledItem(true);
-        roiFileDownloadButton.setDisable(true);
         initToolTip();
     }
 
@@ -712,8 +708,6 @@ public class SystemManagerPanelController extends SubPaneController {
             panelListTable.getItems().removeAll(panelListTable.getItems());
             panelListTable.refresh();
         }
-
-        roiFileDownloadButton.setDisable(true);
 
         customDatabaseTitledPane.setVisible(false);
 
@@ -1322,7 +1316,6 @@ public class SystemManagerPanelController extends SubPaneController {
                         try {
                             setPanelList(1);
                             setDisabledItem(true);
-                            roiFileDownloadButton.setDisable(true);
                             panelSaveButton.setDisable(true);
                             basicInformationTitlePane.setExpanded(true);
                         } catch (Exception e) {
@@ -1333,7 +1326,6 @@ public class SystemManagerPanelController extends SubPaneController {
                 } else {
                     setPanelList(1);
                     setDisabledItem(true);
-                    roiFileDownloadButton.setDisable(true);
                     panelSaveButton.setDisable(true);
                     basicInformationTitlePane.setExpanded(true);
                 }
@@ -1492,7 +1484,6 @@ public class SystemManagerPanelController extends SubPaneController {
         titleLabel.setText("Panel Add");
         panelId = 0;
         setDisabledItem(false);
-        roiFileDownloadButton.setDisable(true);
         //새로 추가하는 패널에 경우 panel id가 존재하지 않으므로 custom db를 생성해둘 수 없음
         customDatabaseAddBtn.setDisable(true);
         customDatabaseTable.setDisable(true);
@@ -1531,8 +1522,6 @@ public class SystemManagerPanelController extends SubPaneController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                roiFileDownloadButton.setDisable(false);
 
                 titleLabel.setText("Panel Update");
 
