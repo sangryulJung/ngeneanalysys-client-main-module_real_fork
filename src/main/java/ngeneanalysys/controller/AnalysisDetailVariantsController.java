@@ -114,9 +114,8 @@ public class AnalysisDetailVariantsController extends AnalysisDetailCommonContro
 
     private Integer checkBrcaCNV() {
         SampleView sample = (SampleView)paramMap.get("sampleView");
-        Integer sampleSize = (Integer)paramMap.get("sampleSize");
 
-        if(PipelineCode.isBRCACNVPipeline(sample.getPanel().getCode()) && sampleSize > 5) {
+        if(PipelineCode.isBRCACNVPipeline(sample.getPanel().getCode())) {
             try {
                 HttpClientResponse response = apiService.get("/analysisResults/brcaCnvExon/" + sample.getId(), null, null, null);
                 PagedBrcaCNVExon pagedCNV = response.getObjectBeforeConvertResponseToJSON(PagedBrcaCNVExon.class);

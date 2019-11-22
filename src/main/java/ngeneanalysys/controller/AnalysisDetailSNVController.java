@@ -1034,16 +1034,30 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
         Map<String, Object> params = new HashMap<>();
         Map<String, List<Object>> filterList = new HashMap<>();
         setFilterItem(filterList);
-        if(PipelineCode.isHeredPipeline(panel.getCode()) || PipelineCode.isBRCAPipeline(panel.getCode())) {
-            params.put("exportFields", getExportFields() + ",enigmaPathogenicity,acmg,acmgCriteria");
+        if(PipelineCode.isBRCAPipeline(panel.getCode())) {
+            params.put("exportFields", "enigmaPathogenicity,acmg,acmgCriteria," +getExportFields());
+        } else if(PipelineCode.isHeredPipeline(panel.getCode())) {
+            params.put("exportFields", "acmg,acmgCriteria," + getExportFields());
         } else {
-            params.put("exportFields", getExportFields() + ",evidence");
+            params.put("exportFields", "evidence," + getExportFields());
         }
         WorksheetUtil worksheetUtil = new WorksheetUtil();
         worksheetUtil.exportSampleData(fileType, filterList, params, this.getMainApp(), sample);
     }
 
     private String getExportFields() {
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
+            return variantListTableView.getColumns().stream().filter(TableColumn::isVisible)
+                    .filter(c -> c.getId() != null && c.getWidth() > 0)
+                    .map(TableColumn::getId)
+                    .map(v -> {
+                        if(v.equals("ntChange")) {
+                            return "ntChangeCMC";
+                        }
+                        return v;
+                    })
+                    .collect(Collectors.joining(","));
+        }
         return variantListTableView.getColumns().stream().filter(TableColumn::isVisible)
                 .filter(c -> c.getId() != null && c.getWidth() > 0)
                 .map(TableColumn::getId).collect(Collectors.joining(","));
