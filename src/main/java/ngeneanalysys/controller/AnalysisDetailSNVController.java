@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -1380,7 +1382,19 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
 
         TableColumn<VariantAndInterpretationEvidence, String> ntChange = new TableColumn<>(SnvTableColumnCode.NT_CHANGE.getName());
         createTableHeader(ntChange, SnvTableColumnCode.NT_CHANGE.getName(), null ,160., SnvTableColumnCode.NT_CHANGE.getId());
-        ntChange.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()));
+        if(panel.getCode().equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
+            ntChange.setCellValueFactory(cellData -> {
+                if(cellData.getValue().getSnpInDel().getGenomicCoordinate().getStrand().equals("-")) {
+                    return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange() + "(" + ntChangeReverse(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange()) + ")");
+                } else {
+                    return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange());
+                }
+            });
+        } else {
+            ntChange.setCellValueFactory(cellData -> {
+                return new SimpleStringProperty(cellData.getValue().getSnpInDel().getSnpInDelExpression().getNtChange());
+            });
+        }
 
         TableColumn<VariantAndInterpretationEvidence, String> ntChangeBIC = new TableColumn<>(SnvTableColumnCode.NT_CHANGE_BIC.getName());
         createTableHeader(ntChangeBIC, SnvTableColumnCode.NT_CHANGE_BIC.getName(), null ,140., SnvTableColumnCode.NT_CHANGE_BIC.getId());
@@ -2184,5 +2198,70 @@ public class AnalysisDetailSNVController extends AnalysisDetailCommonController 
                 });
             }
         }
+    }
+
+
+    public static String ntChangeReverse(String ntChangeStr) {
+        String result = "";
+        try {
+            String regexp = "[>A-Z]";
+            String strconv = ntChangeStr.replace("c.", "0").replace("_", "0").replace("+", "0").replace("-", "0").replace("*", "0");
+            char[] cha = strconv.toCharArray();
+            int indexKey = 0;
+            String keyStr = "";
+            for (int j = 0; j < cha.length; j++) {
+                if(cha[j] >= 97 && cha[j] <= 122) {
+                    keyStr += cha[j];
+                }
+            }
+            for (int j = 0; j < cha.length; j++) {
+                if(cha[j] < 48 || cha[j] > 57) {
+                    indexKey = j;
+                    break;
+                }
+            }
+
+            String frontStr = ntChangeStr.substring(0,indexKey+1);
+            Pattern pattern = Pattern.compile(regexp);
+            Matcher matcher = pattern.matcher(ntChangeStr);
+            String seq = "";
+            while (matcher.find()) {
+                seq += matcher.group();
+            }
+
+            if(!seq.equals("")) {
+                String seqResult = "";
+                if(seq.indexOf(">") != -1)
+                    seqResult = getReverseIndexSeq(seq.split(">")[0])+">"+getReverseIndexSeq(seq.split(">")[1]);
+                else
+                    seqResult = getReverseIndexSeq(seq);
+
+
+                result = frontStr+keyStr+seqResult;
+            }
+
+        } catch (Exception e) {
+            result = "";
+        }
+        logger.debug(" ntChangeresultvalue = " + result);
+        return result;
+    }
+
+    public static String getReverseIndexSeq(String midseq) throws Exception {
+        String rcmidseq = new StringBuilder(midseq).reverse().toString();
+        String result = "";
+        for(int i = 0;i<rcmidseq.length();i++) {
+            char k = rcmidseq.charAt(i);
+            if(k == 'A')
+                k = 'T';
+            else if(k == 'T')
+                k = 'A';
+            else if(k == 'G')
+                k = 'C';
+            else if(k == 'C')
+                k = 'G';
+            result += k;
+        }
+        return result;
     }
 }
