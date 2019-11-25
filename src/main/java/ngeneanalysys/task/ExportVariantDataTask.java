@@ -206,7 +206,11 @@ public class ExportVariantDataTask extends Task<Void> {
 			alert.initOwner(this.mainApp.getPrimaryStage());
 			alert.setTitle("Confirmation Dialog");
 			alert.setHeaderText("");
-			alert.setContentText("Do you want to check the " + fileType + " document?");
+			if(StringUtils.isEmpty(fileType)) {
+				alert.setContentText("Do you want to check the EXCEL document?");
+			} else {
+				alert.setContentText("Do you want to check the " + fileType + " document?");
+			}
 
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {

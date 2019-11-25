@@ -94,10 +94,21 @@
 .cnv_icon {
     -fx-background-radius : 20;
     -fx-pref-width : 25;
-    -fx-pref-height : 18;
+    -fx-pref-height : 20;
     -fx-text-fill : #FFFFFF;
     -fx-alignment : center;
-    -fx-background-color : #8F9FB9;
+    -fx-background-color : #F6545C;
+    -fx-font-size : 11;
+}
+
+.cnv_none_icon {
+    -fx-background-radius : 20;
+    -fx-pref-width : 25;
+    -fx-pref-height : 20;
+    -fx-text-fill : #FFFFFF;
+    -fx-alignment : center;
+    -fx-background-color : #AAAAAA;
+    -fx-font-size : 11;
 }
 
 .count_label {

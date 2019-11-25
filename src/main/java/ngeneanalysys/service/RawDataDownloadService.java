@@ -123,11 +123,12 @@ public class RawDataDownloadService {
     public boolean downloadRunExcel(Integer runId, List<SampleView> sampleViews, String field, File folder) {
         CloseableHttpClient httpclient = null;
         CloseableHttpResponse response = null;
-        if(PipelineCode.isBRCAPipeline(sampleViews.get(0).getPanel().getCode()) ||
-                PipelineCode.isHeredPipeline(sampleViews.get(0).getPanel().getCode())) {
-            field = "sampleName," + field + ",enigmaPathogenicity,acmg,acmgCriteria";
+        if(PipelineCode.isBRCAPipeline(sampleViews.get(0).getPanel().getCode())) {
+            field = "sampleName,enigmaPathogenicity,acmg,acmgCriteria," + field;
+        } else if(PipelineCode.isHeredPipeline(sampleViews.get(0).getPanel().getCode())) {
+            field = "sampleName,acmg,acmgCriteria," + field;
         } else {
-            field = "sampleName," + field + ",evidence";
+            field = "sampleName,evidence," + field;
         }
         if(sampleViews != null && folder != null) {
             String downloadUrl = "runSnpInDels";

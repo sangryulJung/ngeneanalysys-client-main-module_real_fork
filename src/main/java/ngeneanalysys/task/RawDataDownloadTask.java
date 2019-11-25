@@ -125,16 +125,43 @@ public class RawDataDownloadTask extends FileUploadTask<Void> {
                         List<TableColumnInfo> columnInfos = (List<TableColumnInfo>) JsonUtil.getObjectList(str, TableColumnInfo.class);
                         if(columnInfos != null) {
                             columnInfos.sort(Comparator.comparing(TableColumnInfo::getOrder));
-                            columnList = columnInfos.stream().map(TableColumnInfo::getColumnName).toArray(String[]::new);
+                            ArrayList visibleTableColumns = columnInfos.stream().filter(tableColumnInfo -> tableColumnInfo.isVisible() ||
+                                    tableColumnInfo.getColumnName().equals("False"))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+
+                            ArrayList invisibleTableColumns = columnInfos.stream().filter(tableColumnInfo -> !tableColumnInfo.isVisible()
+                                    && !tableColumnInfo.getColumnName().equals("False"))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                            List<TableColumnInfo> columnOrderList = new ArrayList<>();
+
+                            columnOrderList.addAll(visibleTableColumns);
+                            columnOrderList.addAll(invisibleTableColumns);
+
+                            columnList = columnOrderList.stream().map(TableColumnInfo::getColumnName).toArray(String[]::new);
                         }
 
                     }
                     if(columnList != null) {
-                        rawDataDownloadService.downloadRunExcel(runSampleView.getRun().getId(), sampleViewList,
-                                Arrays.stream(columnList)
-                                        .map(SnvTableColumnCode::getIdFromName)
-                                        .collect(Collectors.joining(",")),
-                                folder);
+                        if(runSampleView.getSampleViews().get(1).getPanel().getCode()
+                                .equals(PipelineCode.BRCA_ACCUTEST_PLUS_CMC_DNA.getCode())) {
+                            rawDataDownloadService.downloadRunExcel(runSampleView.getRun().getId(), sampleViewList,
+                                    Arrays.stream(columnList)
+                                            .map(SnvTableColumnCode::getIdFromName)
+                                            .map(v -> {
+                                                if(v.equals("ntChange")) {
+                                                    return "ntChangeCMC";
+                                                }
+                                                return v;
+                                            })
+                                            .collect(Collectors.joining(",")),
+                                    folder);
+                        } else {
+                            rawDataDownloadService.downloadRunExcel(runSampleView.getRun().getId(), sampleViewList,
+                                    Arrays.stream(columnList)
+                                            .map(SnvTableColumnCode::getIdFromName)
+                                            .collect(Collectors.joining(",")),
+                                    folder);
+                        }
                     }
                 }
                 type.remove("variant");
