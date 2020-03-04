@@ -21,8 +21,13 @@ public class FileUtil {
         if (fileName.contains("_")) {
             String[] arr = fileName.split("_");
             int idx = 0;
+            int num = 4;
+
+            if(arr.length == 4)
+                num = 3;
+
             for (String name : arr) {
-                if (idx < arr.length - 4) {
+                if (idx < arr.length - num) {
                     if (idx > 0)
                         pairName.append("_");
                     pairName.append(name);

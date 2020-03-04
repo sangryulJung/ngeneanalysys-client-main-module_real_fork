@@ -223,7 +223,7 @@ public class SampleUploadController extends BaseStageController{
             }
         });
 
-        nextSeqDxRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(false));
+        nextSeqDxRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(true));
 
         sequencerMiSeqDXRadioButton.addEventHandler(MouseEvent.MOUSE_CLICKED, ev -> uploadBtnActive(true));
 
